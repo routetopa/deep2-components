@@ -15,7 +15,7 @@ export default (function () {
     ckan_Provider.prototype.getHTMLFormattedMetadata = function(dataset, resourceIndex) {
         dataset = dataset.result;
 
-        var html = '';
+        let html = '';
 
         html += '<b>Resource Name:</b> <b style="color: #2196F3;">' + dataset.resources[resourceIndex].name + '</b><br>';
         html += '<b>Resource Description:</b> ' + dataset.resources[resourceIndex].description + '</b><div style="height: 1px; background: #2196F3; margin: 12px 0;"></div>';
@@ -28,12 +28,12 @@ export default (function () {
 
         filters = ["id", "creator_user_id", "license_id", "owner_org", "revision_id", "name", "title", "notes", "num_resources", "num_tags", "state", "type"];
 
-        var orderedKeys = Object.keys(dataset).sort();
+        let orderedKeys = Object.keys(dataset).sort();
 
-        for(var i in orderedKeys) {
-            var key = orderedKeys[i];
-            var value = dataset[key];
-            if (value != null && value != undefined && String(value).trim() != "" && typeof(value) != 'object' && $.inArray(key, filters) == -1)
+        for(let i in orderedKeys) {
+            let key = orderedKeys[i];
+            let value = dataset[key];
+            if (value !== null && value !== undefined && String(value).trim() !== "" && typeof(value) !== 'object' && $.inArray(key, filters) === -1)
                 html += '<b>' + key + ':</b> ' + value + '<br>';
         }
 

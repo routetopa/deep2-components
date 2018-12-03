@@ -63,9 +63,9 @@ class LeafletDatalet extends BaseDatalet
             categories = [];
             let cat, catIndex;
 
-            for(let i=0; i<t.data[cat_index].data.length; i++)
+            for(let i=0; i<data[cat_index].data.length; i++)
             {
-                cat = t.data[cat_index].data[i];
+                cat = data[cat_index].data[i];
                 catIndex = -1;
 
                 for(let j=0; j<categories.length; j++)
@@ -90,9 +90,9 @@ class LeafletDatalet extends BaseDatalet
 
             categories.sort(function(a,b) {return (a.frequency < b.frequency) ? 1 : ((b.frequency < a.frequency) ? -1 : 0);} );
 
-            for(let i=0; i<t.data[cat_index].data.length; i++)
+            for(let i=0; i<data[cat_index].data.length; i++)
             {
-                cat = t.data[cat_index].data[i];
+                cat = data[cat_index].data[i];
 
                 catIndex = -1;
                 for(let j=0; j<categories.length; j++)
@@ -104,10 +104,10 @@ class LeafletDatalet extends BaseDatalet
                     }
                 }
                 if (catIndex >= 8) {
-                    t.data[cat_index].data[i] = 7;
+                    data[cat_index].data[i] = 7;
                 }
                 else {
-                    t.data[cat_index].data[i] = catIndex;
+                    data[cat_index].data[i] = catIndex;
                 }
             }
 
@@ -128,7 +128,7 @@ class LeafletDatalet extends BaseDatalet
 
         let coordinates = [];
         let coordinates_index  = 0;
-        let isArray = data[0].data[0].constructor === Array;
+        let isArray = data[0].data[0] ? data[0].data[0].constructor === Array : false;
         let geo;
         let markers_cluster = L.markerClusterGroup({ disableClusteringAtZoom: 17 });
 

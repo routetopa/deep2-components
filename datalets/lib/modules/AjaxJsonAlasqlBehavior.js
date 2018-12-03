@@ -1,9 +1,11 @@
-import * as alasql_utility from '../vendors/alasql/alasql-utility.js';
-import ckan_Provider       from './providers-utility-controllet/ckan.js';
-import generic_Provider    from './providers-utility-controllet/generic.js';
-import SPOD_Provider       from './providers-utility-controllet/spod.js';
-import SPARQL_Provider     from './providers-utility-controllet/sparql.js';
-import DataTypeConverter   from '../vendors/jsdatachecker/jsdatacheckermodule.js';
+import * as alasql_utility   from '../vendors/alasql/alasql-utility.js';
+import ckan_Provider         from './providers-utility-controllet/ckan.js';
+import dkan_Provider         from './providers-utility-controllet/dkan.js';
+import generic_Provider      from './providers-utility-controllet/generic.js';
+import SPOD_Provider         from './providers-utility-controllet/spod.js';
+import SPARQL_Provider       from './providers-utility-controllet/sparql.js';
+import openDataSoft_Provider from './providers-utility-controllet/openDataSoft.js';
+import DataTypeConverter     from '../vendors/jsdatachecker/jsdatacheckermodule.js';
 
 export const requestData = function(data_url)
 {
@@ -22,7 +24,7 @@ export const requestData = function(data_url)
             }
         };
 
-        xhttp.open("POST", data_url, true);
+        xhttp.open("GET", data_url, true);
         xhttp.send();
     });
 };

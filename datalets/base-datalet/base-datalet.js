@@ -160,46 +160,45 @@ export default class BaseDatalet extends HTMLElement
         this.shadow_root.querySelector('#span_title').innerHTML = this.getAttribute("datalettitle");
         this.shadow_root.querySelector('#span_description').innerHTML = this.getAttribute("description");
 
-        if(this.getAttribute("data-url"))
+        if(this.data_url)
         {
             let base_datalet_source       = this.shadow_root.querySelector('#base_datalet_source');
             let base_datalet_link         = this.shadow_root.querySelector('#base_datalet_link');
             let base_datalet_link_span    = this.shadow_root.querySelector('#base_datalet_link_span');
             let base_datalet_source_link  = this.shadow_root.querySelector('#base_datalet_source_link');
 
-            let data_url                  = this.getAttribute("data-url");
-            let data_url_split            = data_url.split("/");
+            let data_url_split            = this.data_url.split("/");
             let urlSource                 = data_url_split[0] + "//" + data_url_split[2];
 
             base_datalet_source.innerHTML = urlSource;
             base_datalet_source.setAttribute("href", urlSource);
 
-            if(data_url.indexOf("/cocreation/") > -1)
+            if(this.data_url.indexOf("/cocreation/") > -1)
             {
                 base_datalet_link.setAttribute("href", urlSource + "/cocreation/data-room-list");
             }
-            else if(data_url.indexOf("/records/") > -1 )
+            else if(this.data_url.indexOf("/records/") > -1 )
             {
                 let i;
-                if(dataUrl.indexOf("&") > -1)
-                    i = dataUrl.indexOf("&");
+                if(this.data_url.indexOf("&") > -1)
+                    i = this.data_url.indexOf("&");
                 else
-                    i = dataUrl.length;
+                    i = this.data_url.length;
 
-                base_datalet_link.setAttribute("href", urlSource + "/explore/dataset/" + dataUrl.substring(dataUrl.indexOf("=")+1, i));
+                base_datalet_link.setAttribute("href", urlSource + "/explore/dataset/" + this.data_url.substring(this.data_url.indexOf("=")+1, i));
             }
             // CKAN
-            else if(data_url.indexOf("datastore_search?resource_id") > -1 )
+            else if(this.data_url.indexOf("datastore_search?resource_id") > -1 )
             {}
             // dkan and mysir --> ckan like
-            else if(data_url.indexOf("datastore/search.json?resource_id") > -1 )
+            else if(this.data_url.indexOf("datastore/search.json?resource_id") > -1 )
             {}
             else
             {
                 base_datalet_link_span.style.display = 'none';
             }
 
-            if(data_url === "false")//decision-tree & ...
+            if(this.data_url === "false")//decision-tree & ...
             {
                 //this.hideFooter();
                 base_datalet_source_link.style.display = 'none';
