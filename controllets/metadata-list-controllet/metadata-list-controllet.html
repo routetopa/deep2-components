@@ -1,0 +1,589 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html" />
+
+<link rel="import" href="../../bower_components/iron-autogrow-textarea/iron-autogrow-textarea.html">
+
+<script src="../../locales/metadata_list_ln.js"></script>
+
+
+<dom-module id="metadata-list-controllet">
+
+    <template>
+
+        <style is="custom-style">
+            #metadata_container {
+                height: 100%;
+                width: 100%;
+                overflow: hidden;
+            }
+
+            #metadata_container * {
+                font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                font-size: 16px;
+                line-height: 24px;
+            }
+
+            #metadata_container .header{
+                height: 24px;
+                padding: 12px;
+                text-align: center;
+                font-weight: 700;
+                background-color: #FF5722;
+                color: #FFFFFF;
+            }
+
+            #metadata_container #metadata_list{
+                position: relative;
+                height: calc(100% - 48px - 32px);
+                width: calc(100% - 32px);
+                padding: 16px;
+                overflow-y: scroll;
+            }
+
+            #metadata_container .title_container {
+                margin-top: 32px;
+                height: 40px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            #metadata_container .title_container:first-child {
+                margin-top: 16px;
+            }
+
+            #metadata_container .title {
+                font-size: 24px;
+            }
+
+            #metadata_container .box{
+                margin: 16px 0 8px 0;
+                display: flex;
+                flex-direction: row;
+            }
+
+            #metadata_container .avatar {
+                height: 40px;
+                width: 40px;
+                min-width: 40px;
+                border-radius: 50%;
+                background: #FF5722;
+                color: #FFFFFF;
+                line-height: 40px;
+                font-size: 32px;
+                vertical-align: middle;
+                text-align: center;
+                margin: 4px 0;
+            }
+
+            #metadata_container .text {
+                height: 64px;
+                width: calc(100% - 56px);
+                padding-left: 16px;
+                /*background: blue;*/
+            }
+
+            #metadata_container .name {
+                color: #FF5722;
+                font-weight: 700;
+                display: flex;
+                flex-direction: row;
+            }
+
+            #metadata_container .description {
+                height: 40px;
+                width: 100%;
+                color: #616161;
+
+                font-size: 14px;
+                line-height: 20px;
+
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            iron-autogrow-textarea {
+                width: calc(100% - 6px - 56px);
+                margin-left: 56px;
+                max-height: 96px;
+            }
+
+            select {
+                width: calc(100% - 6px - 56px);
+                margin-left: 56px;
+                background: transparent;
+                border: 1px solid #A9A9A9;
+                height: 30px;
+                padding: 2px;
+            }
+
+            #save {
+                position: absolute;
+                bottom: 24px;
+                right: 24px;
+
+                height: 40px;
+                width: 160px;
+
+                background-color: #00BCD4;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+                transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+
+                border-radius: 5px;
+
+                line-height: 40px !important;
+                font-size: 16px !important;;
+                color: #212121;
+                text-align: center;
+                cursor: pointer;
+
+                z-index: 10;
+            }
+
+            #save:hover {
+                box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+                background-color: #00ACC1;
+                color: #FFFFFF;
+            }
+
+            .icon
+            {
+                height: 24px;
+                width: 24px;
+                background-size: 16px 16px;
+                background-repeat: no-repeat;
+                background-position: 4px 4px;
+                cursor: pointer;
+            }
+
+            .icon.magic
+            {
+                background-image: url("./icons/magic-wand.svg");
+                margin-left: 24px;
+            }
+
+            .icon.auction
+            {
+                position: relative;
+                background-image: url("./icons/auction.svg");
+                margin-left: 8px;
+            }
+
+            /* AAA */
+
+            .auction > span {
+                top: -6px;
+                left: 32px;
+            }
+
+            :hover.auction > span {
+                display: inline;
+            }
+
+            .auction  > span {
+                display: none;
+                position: absolute;
+                width: 40vw;
+                min-width: 640px;
+                padding: 8px;
+                border-radius: 4px;
+                z-index: 999;
+
+                background-color: rgba(0, 0, 0, 0.666);
+                font-size: 14px;
+                font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                line-height: 20px !important;
+                color: #FFFFFF;
+            }
+
+            .auction > span:after {
+                top: 10px;
+                left: -16px;
+                border: 8px solid transparent;
+                border-right: 8px solid rgba(0, 0, 0, 0.666);
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 0;
+            }
+
+        </style>
+
+        <div id="metadata_container">
+            <div class="header"><span id="metadata"></span></div>
+            <div id="metadata_list">
+
+                <!--MANDATORY-->
+                <template is="dom-repeat" items={{_toArray(MANDATORY)}}>
+
+                    <div>
+
+                    <div class="box">
+                        <div class="avatar">{{item.index}}</div>
+                        <div class="text">
+                            <div class="name" data-code$="{{item.name}}">
+                                <div>{{_getName(item.name)}} *</div>
+                                <template is="dom-if" if="{{_isGueassable(item.name)}}">
+                                    <div on-click="_guessMetadata" class="icon magic"></div>
+                                </template>
+                                <div class="icon auction">
+                                    <span>
+                                        {{_getTooltip(item.name)}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="description" title="{{_getDescription(item.name)}}">{{_getDescription(item.name)}}</div>
+                        </div>
+                    </div>
+
+                    <template is="dom-if" if="{{_checkType(item.name, 'license')}}">
+                        <select id="MANDATORY+{{item.name}}" on-change="_updateMetadata">
+                            <template is="dom-repeat" items="{{licenses}}">
+                                <option value="{{item.value}}" selected="{{item.selected}}">{{item.label}}</option>
+                            </template>
+                        </select>
+                    </template>
+
+                    <template is="dom-if" if="{{_checkType(item.name, 'language')}}">
+                        <select id="MANDATORY+{{item.name}}" on-change="_updateMetadata">
+                            <template is="dom-repeat" items="{{languages}}">
+                                <option value="{{item.value}}" selected="{{item.selected}}">{{item.label}}</option>
+                            </template>
+                        </select>
+                    </template>
+
+                    <!--<template is="dom-if" if="{{!_checkType(item.name, 'license')}}">-->
+                    <template is="dom-if" if="{{_checkSelect(item.name)}}">
+                        <iron-autogrow-textarea id="MANDATORY+{{item.name}}" value="{{item.value}}" on-keyup="_updateMetadata"></iron-autogrow-textarea>
+                    <!--</template>-->
+                    </template>
+
+                    </div>
+
+                </template>
+
+                <!--CC_RF-->
+                <div id="title_CC_RF" class="title_container"><span class="title" id="CC_RF"></span></div>
+
+                <template is="dom-repeat" items={{_toArray(CC_RF)}}>
+
+                    <div class="box">
+                        <div class="avatar">{{item.index}}</div>
+                        <div class="text">
+                            <div class="name" title="{{_getName(item.name)}}">
+                                <div>{{_getName(item.name)}}</div>
+                                <div class="icon auction">
+                                    <span>
+                                        {{_getTooltip(item.name)}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="description" title="{{_getDescription(item.name)}}">{{_getDescription(item.name)}}</div>
+                        </div>
+                    </div>
+
+                    <iron-autogrow-textarea id="CC_RF+{{item.name}}" value="{{item.value}}" on-keyup="_updateMetadata"></iron-autogrow-textarea>
+
+                </template>
+
+                <!--CC_RAF-->
+                <div id="title_CC_RAF" class="title_container"><span class="title" id="CC_RAF"></span></div>
+
+                <template is="dom-repeat" items={{_toArray(CC_RAF)}}>
+
+                    <div class="box">
+                        <div class="avatar">{{item.index}}</div>
+                        <div class="text">
+                            <div class="name" title="{{_getName(item.name)}}">
+                                <div>{{_getName(item.name)}}</div>
+                                <div class="icon auction">
+                                    <span>
+                                        {{_getTooltip(item.name)}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="description" title="{{_getDescription(item.name)}}">{{_getDescription(item.name)}}</div>
+                        </div>
+                    </div>
+
+                    <iron-autogrow-textarea id="CC_RAF+{{item.name}}" value="{{item.value}}" on-keyup="_updateMetadata"></iron-autogrow-textarea>
+
+                </template>
+
+                <!--EF-->
+                <div id="title_EF" class="title_container"><span class="title" id="EF"></span></div>
+
+                <template is="dom-repeat" items={{_toArray(EF)}}>
+
+                    <div class="box">
+                        <div class="avatar">{{item.index}}</div>
+                        <div class="text">
+                            <div class="name" title="{{_getName(item.name)}}">
+                                <div>{{_getName(item.name)}}</div>
+                                <div class="icon auction">
+                                    <span>
+                                        {{_getTooltip(item.name)}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="description" title="{{_getDescription(item.name)}}">{{_getDescription(item.name)}}</div>
+                        </div>
+                    </div>
+
+                    <iron-autogrow-textarea id="EF+{{item.name}}" value="{{item.value}}" on-keyup="_updateMetadata"></iron-autogrow-textarea>
+
+                </template>
+
+            </div>
+
+            <!--<div id="save" on-click="_forceUpdateMetadata">SAVE</div>-->
+        </div>
+
+    </template>
+
+    <script>
+
+        Polymer({
+
+            is : 'metadata-list-controllet',
+
+            properties : {
+
+                metadata : {
+                    type  : Object,
+                    value : undefined
+                },
+                licenses : {
+                    type  : Array,
+                    value : [
+                        { value: "notspecified", label: "License not specified", selected: true},
+                        { value: "cc-by", label: "Creative Commons Attribution", selected: false},
+                        { value: "cc-by-sa", label: "Creative Commons Attribution Share-Alike", selected: false},
+                        { value: "cc-zero", label: "Creative Commons CCZero", selected: false},
+                        { value: "cc-nc", label: "Creative Commons Non-Commercial (Any)", selected: false},
+                        { value: "gfdl", label: "GNU Free Documentation License", selected: false},
+                        { value: "odc-by", label: "Open Data Commons Attribution License", selected: false},
+                        { value: "odc-odbl", label: "Open Data Commons Open Database License (ODbL)", selected: false},
+                        { value: "odc-pddl", label: "Open Data Commons Public Domain Dedication and License (PDDL)", selected: false},
+                        { value: "other-at", label: "Other (Attribution)", selected: false},
+                        { value: "other-nc", label: "Other (Non-Commercial)", selected: false},
+                        { value: "other-closed", label: "Other (Not Open)", selected: false},
+                        { value: "other-open", label: "Other (Open)", selected: false},
+                        { value: "other-pd", label: "Other (Public Domain)", selected: false},
+                        { value: "uk-ogl", label: "UK Open Government Licence (OGL)", selected: false}
+                    ]
+                },
+                languages : {
+                    type  : Array,
+                    value : [
+                        { value: "", label: "", selected: true},
+                        { value: "it", label: "Italiano", selected: false},
+                        { value: "en", label: "English", selected: false},
+                        { value: "es", label: "Español", selected: false},
+                        { value: "fr", label: "Français", selected: false},
+                        { value: "de", label: "Deutsch", selected: false},
+                        { value: "pl", label: "Polski", selected: false},
+                        { value: "nl", label: "Nederlands", selected: false}
+                    ]
+                },
+
+                guessableMetadata : {
+                  type : Array,
+                  value : ['title', 'description', 'license', 'language', 'contact_name', 'contact_email', 'maintainer', 'maintainer_email']
+                },
+                roomInfo : {
+                    type  : Object,
+                    value : undefined
+                }
+            },
+
+            ready : function() {
+                try
+                {
+                    metadata_ln["ln"] = ODE.user_language;
+                }
+                catch(ex){
+                    console.log(ex);
+                }
+//                metadata_ln["ln"] = "it";
+
+                $(this.$.metadata_list).perfectScrollbar();
+                this.roomInfo = JSON.parse(COCREATION.info);
+            },
+
+            attached : function() {
+                this._translate();
+
+                this.fire("metadata-list-controllet_attached");
+            },
+
+            _translate : function() {
+                this.$.metadata.innerHTML = metadata_ln["metadata_" + metadata_ln["ln"]];
+
+                this.$.CC_RF.innerHTML = metadata_ln["CC_RF_" + metadata_ln["ln"]];
+                this.$.CC_RAF.innerHTML = metadata_ln["CC_RAF_" + metadata_ln["ln"]];
+                this.$.EF.innerHTML = metadata_ln["EF_" + metadata_ln["ln"]];
+            },
+
+            _getName : function(name) {
+//                console.log('Test = ' + name);
+                return metadata_ln[name + "_" +     metadata_ln["ln"]];
+            },
+
+            _getDescription : function(name) {
+                return metadata_ln[name + "_description_" + metadata_ln["ln"]];
+            },
+
+            _getTooltip : function(name) {
+                return metadata_ln[name + "_tooltip_" + metadata_ln["ln"]];
+            },
+
+            setMetadata : function(metadata) {
+                this.metadata = JSON.parse(metadata);
+
+                this.mandatory_list = [{"name":"title","type":"CC_RF"},{"name":"description","type":"CC_RF"},{"name":"license","type":"CC_RAF"},{"name":"language","type":"EF"}];//this.metadata["MANDATORY"];
+                this.metadata["MANDATORY"] = {};
+
+                var that = this;
+                this.mandatory_list.forEach(function(element) {
+                    that.metadata["MANDATORY"][element.name] = that.metadata[element.type][element.name];
+                    delete that.metadata[element.type][element.name];
+                });
+
+                this.MANDATORY = this.metadata["MANDATORY"];
+                this.CC_RF = this.metadata["CC_RF"];
+                this.CC_RAF = this.metadata["CC_RAF"];
+                this.EF = this.metadata["EF"];
+
+                if(Object.keys(this.CC_RF).length == 0)
+                    $(this.$.title_CC_RF).hide();
+                if(this.CC_RAF == null || Object.keys(this.CC_RAF).length == 0)
+                    $(this.$.title_CC_RAF).hide();
+                if(this.EF == null || Object.keys(this.EF).length == 0)
+                    $(this.$.title_EF).hide();
+
+                const actualLicenseLabel = this.MANDATORY["license"];
+                this.licenses.forEach(function(item) { item.selected = (actualLicenseLabel === item.label); });
+
+                this.licenses = JSON.parse(JSON.stringify(this.licenses));
+
+                const actualLanguageLabel = this.MANDATORY["language"];
+                this.languages.forEach(function(item) { item.selected = (actualLanguageLabel === item.label); });
+
+                this.languages = JSON.parse(JSON.stringify(this.languages));
+            },
+
+            getMetadata : function() {
+                var that = this;
+                this.mandatory_list.forEach(function(element) {
+                    that.metadata[element.type][element.name] = that.metadata["MANDATORY"][element.name];
+                });
+
+                var metadata = {"CC_RF":this.CC_RF, "CC_RAF":this.CC_RAF, "EF":this.EF};
+
+                return JSON.stringify(metadata);
+            },
+
+            _updateMetadata : function(e) {
+                this.debounce('_filter', function () {
+                    var splitted, category, name, value;
+                    if(e.target.type.indexOf("select") > -1) {
+                        var t = e.target;
+                        splitted = e.target.id.split("+");
+                        value = t.options[t.selectedIndex].text;
+                    }
+                    else {
+                        splitted = ($(e.target).parents("iron-autogrow-textarea")[0].id).split("+");
+                        value = e.target.value;
+                    }
+
+                    category = splitted[0];
+                    name = splitted[1];
+
+                    this._setMetadata(name, value, category);
+                    this._forceUpdateMetadata();
+
+                }, 300);
+            },
+
+            _setMetadata : function (name, value, category) {
+                switch (category) {
+                    case "MANDATORY":
+                        this.MANDATORY[name] = value;
+                        break;
+                    case "CC_RF":
+                        this.CC_RF[name] = value;
+                        break;
+                    case "CC_RAF":
+                        this.CC_RAF[name] = value;
+                        break;
+                    case "EF":
+                        this.EF[name] = value;
+                }
+            },
+
+            _forceUpdateMetadata : function() {
+
+                var that = this;
+                this.mandatory_list.forEach(function(element) {
+                    that.metadata[element.type][element.name] = that.metadata["MANDATORY"][element.name];
+                });
+
+                var metadata = {"CC_RF":this.CC_RF, "CC_RAF":this.CC_RAF, "EF":this.EF};
+                this.fire('metadata-list-controllet_update-metadata', {metadata : JSON.stringify(metadata)});
+            },
+
+            _checkType: function(type, check){
+                return (type == check);
+            },
+
+            _checkSelect: function(type){
+//                console.log(type);
+                return !(type == 'license' || type == 'language');
+            },
+
+            _toArray: function(obj) {
+                var index = 0;
+                return Object.keys(obj).map(function(key) {
+                    return {
+                        index: ++index,
+                        name: key,
+                        value: obj[key]
+                    };
+                });
+            },
+
+            _isGueassable: function(metadata_name)
+            {
+                return (this.guessableMetadata.indexOf(metadata_name) > -1)
+            },
+
+            _guessMetadata: function(e)
+            {
+                let field = e.target.parentElement.getAttribute('data-code');
+                let val = '';
+
+                switch (field)
+                {
+                    case 'title'            : $(e.currentTarget).parents().eq(3).find('iron-autogrow-textarea').val(this.roomInfo.name);            val = this.roomInfo.name;            break;
+                    case 'description'      : $(e.currentTarget).parents().eq(3).find('iron-autogrow-textarea').val(this.roomInfo.description);     val = this.roomInfo.description;     break;
+                    case 'license'          : $(e.currentTarget).parents().eq(3).find('select option:eq(1)').attr('selected', 'true');              val = 'Creative Commons Attribution';                       break;
+                    case 'language'         : $(e.currentTarget).parents().eq(3).find('select option:eq(1)').attr('selected', 'true');              val = 'Italiano';             break;
+                    case 'contact_name'     : $(e.currentTarget).parents().eq(3).find('iron-autogrow-textarea').val(COCREATION.user_info.username); val = COCREATION.user_info.username; break;
+                    case 'contact_email'    : $(e.currentTarget).parents().eq(3).find('iron-autogrow-textarea').val(COCREATION.user_info.mail);     val = COCREATION.user_info.mail;     break;
+                    case 'maintainer'       : $(e.currentTarget).parents().eq(3).find('iron-autogrow-textarea').val(COCREATION.owner.username);     val = COCREATION.owner.username;     break;
+                    case 'maintainer_email' : $(e.currentTarget).parents().eq(3).find('iron-autogrow-textarea').val(COCREATION.owner.mail);         val = COCREATION.owner.mail;         break;
+                    default                 : break;
+                }
+
+                this._setMetadata(field, val, 'MANDATORY');
+                this._forceUpdateMetadata();
+            }
+
+        });
+
+    </script>
+
+</dom-module>

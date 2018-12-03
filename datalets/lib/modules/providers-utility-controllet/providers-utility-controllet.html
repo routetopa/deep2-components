@@ -1,0 +1,80 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html" />
+
+<script type="text/javascript" src="../../bower_components/jsdatachecker/jsdatachecker.min.js"></script>
+
+<script src="ckan.js"></script>
+<script src="openDataSoft.js"></script>
+<script src="generic.js"></script>
+<script src="../shared_js/json-stat.js"></script>
+<script src="eurostat.js"></script>
+<script src="istat.js"></script>
+<script src="OData.js"></script>
+<script src="spod.js"></script>
+<script src="sparql.js"></script>
+
+<script>
+    var providerFactory = {
+        getProvider: function(dataUrl) {
+            if (dataUrl.indexOf("datastore_search?resource_id") > -1)
+                return new ckan_Provider();
+            else if (dataUrl.indexOf("search?dataset") > -1 || dataUrl.indexOf("search/?dataset") > -1)
+                return new openDataSoft_Provider();
+            else if (dataUrl.indexOf("eurostat") > -1 )
+                return new eurostat_Provider();
+            else if (dataUrl.indexOf("datiopen.istat.it") > -1 )
+                return new istat_Provider();
+            else if (dataUrl.indexOf("ODataApi") > -1 )
+                return new OData_Provider();
+            else if (dataUrl.indexOf("sparql?") > -1 )
+                return new SPARQL_Provider();
+            else
+                return new generic_Provider();//dkan and mysir --> ckan like
+        },
+        getProviderByType: function(provider_type) {
+            if (provider_type == "CKAN")
+                return new ckan_Provider();
+            else if (provider_type == "ODS")
+                return new openDataSoft_Provider();
+            else if (provider_type == "SPOD")
+                return new SPOD_Provider();
+            else
+                return null;
+        }
+    };
+
+    //utility non legato al provider, aggiungere copy e creare un altro js!!!
+
+    //jsdatachecker
+    utility_getFields = function(types) {
+        return Object.keys(types).map(function(key) { return key; });
+    };
+
+    utility_getSelectedFields = function(fields, indices) {
+        var selectedFileds = [];
+        for (var i = 0; i < indices.length; i++)
+            selectedFileds.push(fields[indices[i]]);
+        return selectedFileds;
+    };
+
+    utility_getSelectedIndices = function(fields, selectedFields) {
+        selectedFields = JSON.parse(selectedFields);
+        var selectedIndices = [];
+        for (var i = 0; i < selectedFields.length; i++)
+            if(selectedFields[i] && $.inArray(selectedFields[i].value, fields) > -1)
+                selectedIndices.push(fields.indexOf(selectedFields[i].value));
+        return selectedIndices;
+    };
+
+</script>
+
+<dom-module id="providers-utility-controllet">
+
+    <template></template>
+
+    <script>
+        Polymer({
+            is : 'providers-utility-controllet'
+        });
+    </script>
+
+</dom-module>

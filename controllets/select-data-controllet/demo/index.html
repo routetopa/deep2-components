@@ -1,0 +1,35 @@
+<html>
+
+<head>
+    <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+
+    <script src="../../shared_js/jquery-1.11.2.min.js"></script>
+
+    <script src="../../shared_js/perfect-scrollbar/js/min/perfect-scrollbar.jquery.min.js"></script>
+    <link rel="stylesheet" href="../../shared_js/perfect-scrollbar/css/perfect-scrollbar.min.css">
+
+    <link rel="import" href="../../select-data-controllet/select-data-controllet.html" />
+
+    <script src="../../../locales/controllet_ln.js"></script>
+</head>
+
+<body>
+
+    <select-data-controllet id="sd" data-url="https://data.issy.com/api/records/1.0/search?dataset=repartitiondeladetteparpreteursau3112n-feuille1&rows=10000"></select-data-controllet>
+    <!--<select-data-controllet id="sd" data-url="http://ckan.routetopa.eu/api/action/datastore_search?resource_id=642ceea8-711e-4124-b450-0d23010c44e6"></select-data-controllet>-->
+
+    <script>
+        ln["localization"] = "en";
+        var sd = document.getElementById('sd');
+        sd.init();
+
+//        tvmt.addEventListener("tree-view-controllet_selected-fields", function (e) {
+//            console.log(tvmt.getFlatFields());
+//            console.log(tvmt.getFields());
+//        });
+
+    </script>
+
+</body>
+
+</html>

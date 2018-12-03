@@ -1,0 +1,144 @@
+<!doctype html>
+
+<html>
+<head>
+    <script src="../../shared_js/jquery-1.11.2.min.js"></script>
+
+    <script src="../../shared_js/perfect-scrollbar/js/min/perfect-scrollbar.jquery.min.js"></script>
+    <link rel="stylesheet" href="../../shared_js/perfect-scrollbar/css/perfect-scrollbar.min.css">
+
+    <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+
+    <link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
+    <link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+    <link rel="import" href="../../../bower_components/iron-icons/iron-icons.html">
+    <link rel="import" href="../../../bower_components/iron-icon/iron-icon.html">
+
+    <link rel="import" href="../split-screen-controllet.html" />
+
+    <link rel="import" href="../../../bower_components/paper-material/paper-material.html" />
+</head>
+<body>
+
+<style>
+
+    * {
+        font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        font-size: 16px;
+        line-height: 24px;
+    }
+
+    #container {
+        position: relative;
+        top: 40px;
+        left :48px;
+        height: calc(100vh - 96px);
+        width: calc(100% - 96px);
+        background: white;
+    }
+
+    .btn {
+        position: absolute;
+        top: 8px;
+        left: 56px;
+        max-height: 32px;
+    }
+
+</style>
+<paper-button class="btn"  raised onClick="_splitscreen()">split</paper-button>
+<paper-button class="btn" style="left: 160px;" raised onClick="_fullscreen()">full</paper-button>
+<paper-button class="btn" style="left: 264px;" raised onClick="_showL()">L (0-5)</paper-button>
+<paper-button class="btn" style="left: 368px;" raised onClick="_showR()">R (0-5)</paper-button>
+<paper-button class="btn" style="left: 472px;" raised onClick="_loadL()">L (t=0)</paper-button>
+<paper-button class="btn" style="left: 576px;" raised onClick="_loadR()">R (t=1s)</paper-button>
+<paper-button class="btn" style="left: 680px;" raised onClick="_stop()">stop</paper-button>
+
+<div id="container">
+
+    <!--<split-screen-controllet id="splitter">-->
+    <split-screen-controllet id="splitter" split left="3" right="0">
+        <paper-material elevation="5">
+            <div class="content">
+                <div style="height: 48px; background: #4CAF50;"></div>
+                <p>0 0 0 Bla bla bla</p>
+            </div>
+        </paper-material>
+
+        <paper-material elevation="5">
+            <div class="content">
+                <div style="height: 48px; background: #2196F3;"></div>
+                <p>1 1 1 Bla bla bla</p>
+            </div>
+        </paper-material>
+
+        <paper-material elevation="5">
+            <div class="content">
+                <div style="height: 48px; background: mediumvioletred;"></div>
+                <p>2 2 2 Bla bla bla</p>
+            </div>
+        </paper-material>
+
+        <paper-material elevation="5">
+            <div class="content">
+                <div style="height: 48px; background: yellowgreen;"></div>
+                <p>3 3 3 Bla bla bla</p>
+            </div>
+        </paper-material>
+
+        <paper-material elevation="5">
+            <div class="content">
+                <div style="height: 48px; background: darkslateblue;"></div>
+                <p>4 4 4 Bla bla bla</p>
+            </div>
+        </paper-material>
+
+        <paper-material elevation="5">
+            <div class="content">
+                <div style="height: 48px; background: darkslategray;"></div>
+                <p>5 5 5 Bla bla bla</p>
+            </div>
+        </paper-material>
+    </split-screen-controllet>
+
+</div>
+
+<script>
+
+    var splitter = document.getElementById('splitter');
+
+    function _splitscreen() {
+        splitter.splitscreen();
+    }
+
+    function _fullscreen() {
+        splitter.fullscreen();
+    }
+
+    function _showL() {
+        var index = Math.floor((Math.random() * 6));
+        splitter.show("left", index);
+        console.log("left " + index);
+    }
+
+    function _showR() {
+        var index = Math.floor((Math.random() * 6));
+        splitter.show("right", index);
+        console.log("right " + index);
+    }
+
+    function _loadL() {
+        splitter.startLoader("left", 0);
+    }
+
+    function _loadR() {
+        splitter.startLoader("right", 1000);
+    }
+
+    function _stop() {
+        splitter.stopLoader("left");
+    }
+
+</script>
+
+</body>
+</html>

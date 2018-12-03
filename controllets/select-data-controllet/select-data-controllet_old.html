@@ -1,0 +1,250 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html" />
+
+<link rel="import" href="../select-fields-controllet/select-fields-controllet.html" />
+<link rel="import" href="../data-table-controllet/data-table-controllet.html" />
+<link rel="import" href="../filters-controllet/filters-controllet.html" />
+
+<link rel="import" href="../providers-utility-controllet/providers-utility-controllet.html" />
+
+<script type="text/javascript" src="../../alasql-utility/alasql.min.js"></script>
+<script type="text/javascript" src="../../alasql-utility/alasql-utility.js"></script>
+
+<script type="text/javascript" src="../../bower_components/jsdatachecker/jsdatachecker.min.js"></script>
+
+<dom-module id="select-data-controllet">
+
+    <style is="custom-style">
+
+        #select_data_controllet_container {
+            display: flex;
+            flex-direction: row;
+            margin-top: 8px;
+        }
+
+        #select_data_controllet_container * {
+            font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            line-height: 24px;
+        }
+
+        #select_data_controllet_container #fields_container {
+            height: 100%;
+            width: 20%;
+            min-width: 192px;
+        }
+
+        #select_data_controllet_container #right_container {
+            height: 100%;
+            width: calc(80% - 24px);
+            margin-left: 24px;
+        }
+
+        #select_data_controllet_container #table_container {
+            height: calc(100% - 72px);
+            width: 100%;
+        }
+
+        #select_data_controllet_container #filters_container {
+            height: 48px;
+            width: 100%;
+            margin-top: 24px;
+        }
+
+    </style>
+
+    <template>
+
+        <providers-utility-controllet></providers-utility-controllet>
+
+        <div id="select_data_controllet_container">
+            <div id="fields_container">
+                <select-fields-controllet id="select_fields"></select-fields-controllet>
+            </div>
+            <div id="right_container">
+                <div id="table_container">
+                    <data-table-controllet id="data_table"></data-table-controllet>
+                </div>
+                <div id="filters_container">
+                    <filters-controllet id="filters"></filters-controllet>
+                </div>
+            </div>
+        </div>
+
+
+    </template>
+
+    <script>
+        Polymer({
+
+            is : 'select-data-controllet',
+
+            properties : {
+
+                dataUrl : {
+                    type  : String,
+                    value : undefined
+//                    observer : '_init'
+                },
+
+                data : {
+                    type  : Object,
+                    value : undefined
+                },
+
+                filters : {
+                    type  : Array,
+                    value : []
+                },
+
+                selectedFields : {
+                    type : Array,
+                    value : []
+                }
+
+            },
+
+            listeners: {
+                'filters-controllet_show': '_resizeFilters',
+                'select-fields-controllet_selected-fields': '_updateFields',
+                'filters-controllet_filters': '_updateFilters'
+            },
+
+            ready : function() {
+                this.showFilter = false;
+            },
+
+            attached : function(){
+                this._resize();
+                var that = this;
+                window.addEventListener("resize", function() { that._resize(); });
+            },
+
+            getSelectedFields : function() {
+                return utility_getSelectedFields(this.fields, this.selectedFields);;
+            },
+
+            getFilters : function() {
+                return this.filters;
+            },
+
+            getData : function() {
+                //return datatable.getData
+                //this.fields = "*"
+                var data = alasql_QUERY(this.data, this.fields, this.filters, null, null);
+                var converter = new DataTypeConverter();
+                var result = converter.inferJsonDataType(data, ["*"]);
+                result = converter.cast(result);
+                data = result.dataset;
+
+                return data;
+            },
+
+            setSelectedFields : function(selectedFields) {
+                this.async(function() {
+                    var selectedIndices = utility_getSelectedIndices(this.fields, selectedFields);
+                    this.$.select_fields.setSelectFields(selectedIndices);
+                }, 0);
+            },
+
+            setFilters : function(filters) {
+                this.async(function() {
+                    this.$.filters.setFilters(filters);
+                }, 0);
+            },
+
+            _resizeFilters : function() {
+                if(!this.showFilter) {
+                    this.$.table_container.style.height = "calc(50% - 12px)";
+                    this.$.filters_container.style.height = "calc(50% - 12px)";
+                }
+                else {
+                    this.$.table_container.style.height = "calc(100% - 72px)";
+                    this.$.filters_container.style.height = "48px";
+                }
+
+                this.$.data_table._resize();
+
+                this.showFilter = !this.showFilter;
+            },
+
+            _updateFields : function(e) {
+                this.selectedFields = e.detail.selectedFields;
+                var fields = utility_getSelectedFields(this.fields, this.selectedFields);
+                var data = alasql_QUERY(this.data, fields, this.filters, null, null);
+                this.$.data_table.setData(data);
+            },
+
+            _updateFilters : function(e) {
+                this.filters = e.detail.filters;
+                var fields = utility_getSelectedFields(this.fields, this.selectedFields);
+                var data = alasql_QUERY(this.data, fields, this.filters, null, null);
+                this.$.data_table.setData(data);
+            },
+
+            init : function() {
+                if(this.dataUrl) {
+
+                    var that = this;
+
+                    $.ajax({
+                        url: this.dataUrl,
+                        dataType: "json",
+                        success: function(data){
+                            that.reset();
+
+                            var f = Object.create(providerFactory);
+                            var provider = f.getProvider(that.dataUrl);
+                            data = provider.selectData(data);
+
+                            var converter = new DataTypeConverter();
+                            var result = converter.inferJsonDataType(data, ["*"]);
+                            result = converter.cast(result);
+                            that.fields = utility_getFields(result.types);
+                            data = result.dataset;
+                            that.data = alasql_QUERY(data, that.fields, null, null, null);
+
+                            that.$.select_fields.setFields(that.fields);
+                            that.$.filters.setFields(that.fields);
+
+                            that.fire('data-ready', {ready : true});
+                        },
+                        error: function(){
+                            that.fire('data-ready', {ready : false});
+                        }
+                    });
+                }
+
+                else {
+                    this.reset();
+
+                    var converter = new DataTypeConverter();
+                    var result = converter.inferJsonDataType(this.data, ["*"]);
+                    result = converter.cast(result);
+                    this.fields = utility_getFields(result.types);
+                    data = result.dataset;
+                    this.data = alasql_QUERY(data, this.fields, null, null, null);
+
+                    this.$.select_fields.setFields(this.fields);
+                    this.$.filters.setFields(this.fields);
+                }
+            },
+
+            reset : function() {
+                this.filters = [];
+                this.selectedFields = [];
+                this.$.select_fields.reset();
+                this.$.data_table.reset();
+                this.$.filters.reset();
+            },
+
+            _resize : function(){
+                var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - 16;
+                h = h - 64 - 8; //height with page scroller + margin-top
+                $("#select_data_controllet_container").height(h);
+            }
+
+        });
+
+    </script>
+
+</dom-module>

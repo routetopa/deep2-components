@@ -1,0 +1,253 @@
+<link rel="stylesheet" href="../shared_js/perfect-scrollbar/css/perfect-scrollbar.min.css">
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+
+<link rel="import" href="../../bower_components/polymer/polymer.html"/>
+<link rel="import" href="../../bower_components/paper-material/paper-material.html" />
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<!--per la lingua inportare nell' HEADER-->
+<!--<link rel="localization" href="locales/{ln}.l20n">-->
+<!--<script defer src="/dist/compat/web/l20n.js"></script>-->
+<!--<card_Info "BASE INFO">-->
+<!--<card_Text "TEXT">-->
+<!--<card_Link "LINK">-->
+<!--<card_Preview "PREVIEW"> -->
+
+<dom-module id="create-card-controllet">
+
+    <template>
+
+        <style is="custom-style">
+            #create_card_container {
+                position: relative;
+                display: flex;
+                height: 100%;
+                width: 100%;
+
+                font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                font-size: 16px;
+            }
+
+            #create_card_info {
+                height: calc(100% - 16px);
+                width: 50%;
+                margin: 8px 16px 8px 8px;
+
+                overflow-y: auto;
+            }
+
+            #create_card_content {
+                height: calc(100% - 16px);
+                width: 50%;
+                margin: 8px 8px 8px 16px;
+            }
+
+            .input_header {
+                height: 32px;
+                padding-top: 16px;
+                background-color: #B6B6B6;
+                text-align: center;
+                font-weight: 700;
+            }
+
+            p {
+                padding: 16px 0px 0px 8px;
+                margin: 0px;
+            }
+
+            #create_card_text {
+                max-width: 100%;
+                height: calc(100% - 48px - 8px);
+                padding-bottom: 8px;
+                background-color: #FFFFCC;
+
+                word-break: break-all;
+
+                overflow-y: auto;
+            }
+
+            #create_card_title {
+                font-weight: bold;
+                color: #2196F3;
+                text-align: center;
+            }
+
+            #create_card_description {
+                font-style: italic;
+                color: #727272;
+            }
+
+            paper-input, paper-textarea {
+                height: 48px;
+                width: calc(100% - 16px);
+                margin: 0px 0px 8px 8px;
+                --paper-input-container-focus-color: #2196F3;
+            }
+
+            paper-button {
+                position: absolute;
+                bottom: 28px;
+                right: calc(50% + 33px);
+
+                height: 48px;
+                width: 172px;
+                background-color: #00BCD4;
+                color: white;
+                font-weight: 700;
+                padding: 16px;
+            }
+
+            paper-button:hover {
+                background-color: #00AABF;
+
+                box-shadow: 0px 8px 12px #888;
+                -webkit-box-shadow: 0px 8px 12px #888;
+                -moz-box-shadow: 0px 8px 12px #888;
+            }
+
+            paper-button[disabled] {
+                background-color: #B6B6B6;
+            }
+        </style>
+
+        <div id="create_card_container">
+
+            <paper-material id="create_card_info" elevation="5">
+                <div class="input_header">BASE INFO</div>
+
+                <paper-input value="{{cardTitle}}" maxlength="32" label="title"></paper-input>
+
+                <paper-input value="{{description}}" maxlength="100" label="description"></paper-input>
+
+                <template is="dom-if" if="{{_checkType(type, 'link')}}">
+
+                    <div class="input_header" style="margin-top: 16px;">LINK</div>
+
+                    <paper-input
+                            id="create_card_link"
+                            value="{{link}}"
+                            label="link"
+                            error-message="Invalid link">
+                    </paper-input>
+
+                </template>
+
+                <template is="dom-if" if="{{_checkType(type, 'text')}}">
+
+                    <div class="input_header" style="margin-top: 16px;">TEXT</div>
+
+                    <paper-textarea value="{{text}}" label="text"></paper-textarea>
+
+                </template>
+
+            </paper-material>
+
+            <paper-material id="create_card_content" elevation="5">
+
+                <div class="input_header">PREVIEW</div>
+
+                <template is="dom-if" if="{{_checkType(type, 'link')}}">
+
+                    <iframe id="create_card_iframe"></iframe>
+
+                </template>
+
+                <template is="dom-if" if="{{_checkType(type, 'text')}}">
+
+                    <div id="create_card_text">
+                        <p id ="create_card_title">{{cardTitle}}</p>
+                        <p id ="create_card_description">{{description}}</p>
+                        <p>{{text}}</p>
+                    </div>
+
+                </template>
+
+            </paper-material>
+
+            <paper-button id="add_button" raised on-click="_addCard">SAVE</paper-button>
+
+        </div>
+
+    </template>
+
+    <script>
+        Polymer({
+            is: "create-card-controllet",
+            properties: {
+                type:{
+                    type: String,
+                    value: undefined//text or link
+                },
+
+                cardTitle:{
+                    type: String,
+                    value: ""
+                },
+
+                description:{//comment
+                    type: String,
+                    value: ""
+                },
+
+                text:{
+                    type: String,
+                    value: ""
+                },
+
+                link:{
+                    type: String,
+                    value: "",
+                    observer : '_load'
+                }
+
+            },
+
+            ready : function() {
+//                $(this.$.create_card_info).perfectScrollbar();
+//                $(this.$.create_card_content).perfectScrollbar();
+
+                var that = this;
+                window.addEventListener("resize", function() { that._resize(); });
+            },
+
+            attached : function() {
+                this.async(function(){this._load();},100);
+            },
+
+            _load : function() {
+                var link = this.$$("#create_card_link");
+                var iframe = this.$$("#create_card_iframe");
+
+                if(link){
+                    var value = link.value;
+
+                    if (value.indexOf("http") != 0)
+                        value = "http://" + value;
+
+                    if(/*!link.invalid &&*/ value.length > 16) {
+                        iframe.setAttribute("src", value);
+                        this.link = value;
+                        this._resize();
+                    }
+                }
+            },
+
+            _checkType: function(type, check){
+                return (type == check);
+            },
+
+            _addCard: function(){
+                this.fire('create-card-controllet_data', {data : this});
+            },
+
+            _resize : function(){
+                var h = $("#create_card_info").height() -64;
+                $("#create_card_iframe").height(h);
+            }
+
+        })
+    </script>
+
+</dom-module>

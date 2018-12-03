@@ -1,0 +1,54 @@
+<html>
+
+<head>
+    <script src="../../shared_js/jquery-1.11.2.min.js"></script>
+
+    <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+
+    <link rel="import" href="../filters-controllet.html" />
+
+    <script src="../../../locales/controllet_ln.js"></script>
+
+    <script src="../../shared_js/perfect-scrollbar/js/min/perfect-scrollbar.jquery.min.js"></script>
+    <link rel="stylesheet" href="../../shared_js/perfect-scrollbar/css/perfect-scrollbar.min.css">
+</head>
+
+<body>
+
+    <style>
+
+        .container {
+            height: 400px;
+            width: 1200px;
+            /*width: 400px;*/
+            position: relative;
+            top: 100px;
+            left:300px;
+        }
+
+    </style>
+
+    <div class="container">
+        <filters-controllet id="filters_controllet"></filters-controllet>
+    </div>
+
+    <script>
+        ln["localization"] = "en";
+
+        var fields = ["result,records,Lat","result,records,Lng", "Sbiricos"];
+
+        var filters_controllet = document.getElementById('filters_controllet');
+
+        filters_controllet.setFields(fields);
+
+        filters_controllet.filters = [{field: "Lat", operation: "<=", value: "16", logicalOperator: "", "lp": "", "rp": ""}, {field: "Long", operation: "!=", value: "32", logicalOperator: "AND", "lp": "", "rp": ""}, {field: "Sbiricos", operation: "!=", value: "12AAA32+DAO", logicalOperator: "OR", "lp": "", "rp": ""}];
+
+        var filters = filters_controllet.getFilters();
+
+        console.log(filters);
+
+    </script>
+
+</body>
+
+</html>

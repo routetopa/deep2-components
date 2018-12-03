@@ -1,0 +1,190 @@
+<script src="controllet_ln.js"></script>
+<link rel="import" href="../../bower_components/polymer/polymer.html"/>
+
+<link rel="import" href="../../bower_components/paper-material/paper-material.html"/>
+<link rel="import" href="../../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+
+<link rel="import" href="../../datalets/openlayers-datalet/openlayers-datalet.html">
+<link rel="import" href="map-controllet.html">
+
+<dom-module id="map-preview-controllet">
+
+    <style>
+        :host {
+            background: #FFF;
+        }
+
+        #header {
+            background: #B6B6B6;
+            height: 24px;
+            padding: 12px;
+            text-align: center;
+            font-weight: 700;
+            /*cursor: pointer;*/
+        }
+
+        #datalet_placeholder {
+            position: relative;
+            height: calc(100% - 48px);
+            width: 100%;
+        }
+
+        paper-icon-button {
+            z-index: 10;
+            padding: 0px;
+            width: 24px;
+            height: 24px;
+        }
+
+        paper-icon-button#zoomLayersButton {
+            position: absolute;
+            right: 10px;
+            /*color: #00BCD4;*/
+        }
+
+        paper-tooltip {
+            --paper-tooltip-background: black;
+        }
+
+        paper-tooltip p {
+            font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            line-height: 24px;
+            margin: 0;
+            padding: 0;
+        }
+
+    </style>
+
+    <template>
+
+        <paper-material elevation="5">
+            <div id="header">
+                <span id = "title">[[_translate('title')]]</span>
+                <paper-icon-button id="zoomLayersButton" icon="search" on-tap="zoomToLayers"></paper-icon-button>
+            </div>
+            <div id="datalet_placeholder">
+                <openlayers-datalet id="mapPreview"
+                                    params={"layerSwitcher":true,"zoomOnLayerAdd":false}></openlayers-datalet>
+                <!--<paper-button id="add_button" disabled={{addButtonState.disabled}} hidden={{addButtonState.hidden}}-->
+                <!--raised on-click="_addDatalet">{{_translate('add-datalet')}}-->
+                <!--</paper-button>-->
+            </div>
+        </paper-material>
+
+        <paper-tooltip for="zoomLayersButton" position="left" offset="0"><p>
+            <span id = "zoomLayersButtonTlp" >[[_translate('zoomLayersButton')]]</span></p></paper-tooltip>
+
+    </template>
+
+    <script>
+        Polymer({
+
+            is: 'map-preview-controllet',
+
+            properties: {
+            },
+
+            listeners: {},
+
+            ready: function () {
+                $(this.$.menu_container).perfectScrollbar();
+            },
+
+            attached : function(){
+                this._resize();
+                var that = this;
+                window.addEventListener("resize", function() { that._resize(); });
+            },
+
+            _resize : function(){
+                var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - 88 - 96 - 24;
+                $("#datalet_placeholder").height(h);
+            },
+
+            resize_for_layout : function (flag) {
+                if(flag){
+                    var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - 88 - 96;
+                    h = h/2 - 12;
+                    $("#datalet_placeholder").height(h);
+                }else{
+                    var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - 88 - 96 - 24;
+                    $("#datalet_placeholder").height(h);
+                }
+            },
+
+            _translate: function (key) {
+                return getTranslatedText([this.localName, key]);
+            },
+
+            getDatalet: function () {
+                var dataletParams = this.$.mapPreview.behavior.getParams();
+
+
+                return {
+                    datalet: "openlayers-datalet",
+                    staticData: "",
+                    fields: [],
+                    params: {params: JSON.stringify(dataletParams), "zoom-on-layer-add": true}
+                };
+            },
+
+            getLayers: function () {
+                var layers = [];
+                var olLayers = this.$.mapPreview.behavior.getLayers();
+                for (l = 0; l < olLayers.length; l++) {
+                    layers.push({
+                        title: olLayers[l].title,
+                        url: olLayers[l].url,
+                        element: olLayers[l]
+                    });
+                }
+                return layers;
+            },
+            addLayer: function (params) {
+                params = $.extend(true, params, {group: this._translate("user-layers")});
+                if ($.inArray(params.format, ['GeoJSON', 'KML']) != -1) {
+                    params = $.extend(true, {
+                        stroke: {'width': 1, 'color': [51, 153, 204, 1], 'linedash': []},
+                        fill: {'color': [255, 255, 255, 0.4]},
+                        icon: {'color': [51, 153, 204, 1]},
+                        text: {
+                            'field': '',
+                            'align': 'center',    // center , end, left, right, start
+                            'baseline': 'bottom',    // alphabetic , bottom, hanging, ideographic, middle, top
+                            'weight': 'Normal',    // Bold , Normal
+                            'size': 12,
+                            'font': 'Arial', // Arial, Courier New, Verdana, ...
+                            'outline-width': 3,
+                            'outline-color': [255, 255, 255, 1],
+                            'fill-color': [51, 153, 204, 1]
+                        }
+                    }, params)
+                }
+                if ($.inArray(params.format, ['WMS']) != -1) {
+                    params = $.extend(true, params, {requireCapabilities: true});
+                }
+                this.$.mapPreview.behavior.addLayer(params);
+                this.$.title.innerHTML = this._translate("title");
+                this.$.zoomLayersButtonTlp.innerHTML = this._translate("zoomLayersButton");
+
+            },
+            removeLayer: function (layer) {
+                this.$.mapPreview.behavior.removeLayer(layer);
+            },
+            zoomToLayer: function (layer) {
+                this.$.mapPreview.behavior.zoomToLayer(layer);
+            },
+            zoomToLayers: function () {
+                this.$.mapPreview.behavior.zoomToLayers();
+            },
+            updateSize: function () {
+//                this.$.mapPreview
+            }
+
+        });
+
+    </script>
+
+</dom-module>

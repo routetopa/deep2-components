@@ -1,0 +1,46 @@
+<html>
+
+<head>
+    <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+
+    <script src="../../shared_js/jquery-1.11.2.min.js"></script>
+
+    <script src="../../shared_js/perfect-scrollbar/js/min/perfect-scrollbar.jquery.min.js"></script>
+    <link rel="stylesheet" href="../../shared_js/perfect-scrollbar/css/perfect-scrollbar.min.css">
+
+    <script src="../../../locales/controllet_ln.js"></script>
+
+    <link rel="import" href="../select-fields-controllet.html" />
+</head>
+
+<body>
+
+    <style>
+        .container {
+            display: flex;
+            flex-direction: row;
+        }
+        #select_fields_container {
+            height: 600px;
+            width: 300px;
+            margin-left: 100px;
+        }
+
+    </style>
+
+    <div class="container">
+        <div id="select_fields_container">
+            <select-fields-controllet fields='["pippo", "pluto", "paperino", "pippo", "pluto", "paperino"]' preselected-fields="[0,2]"></select-fields-controllet>
+        </div>
+    </div>
+
+    <script>
+        ln["localization"] = "en";
+
+        document.addEventListener("select-fields-controllet_selected-fields", function (e) {
+            console.log(e.detail.selectedFields);
+        });
+
+    </script>
+
+</body>

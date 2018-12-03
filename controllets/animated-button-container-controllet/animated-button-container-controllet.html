@@ -1,0 +1,186 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
+
+<link rel="import" href="../../controllets/search-panel-controllet/search-panel-controllet.html">
+
+<dom-module id="animated-button-container-controllet">
+
+    <style>
+
+        iron-icon.myspace {
+            padding: 2px;
+            margin: 0px;
+            color: #FFFFFF;
+            height: 32px;
+            width: 32px;
+            background-color: #2196F3;
+            border-radius: 18px;
+            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+        }
+
+        iron-icon.myspace:hover {
+            box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+            -webkit-transition: 0.2s ease-out;
+            -moz-transition: 0.2s ease-out;
+            -o-transition: 0.2s ease-out;
+            -ms-transition: 0.2s ease-out;
+            transition: 0.2s ease-out;
+        }
+
+        .button-container {
+            cursor: pointer;
+            height: 36px;
+            width: 36px;
+            border-radius: 18px;
+        }
+
+        .window {
+            height: 620px;
+            width: 760px;
+            display: none;
+            position: fixed;
+            top: 100px;
+            right: 0;
+            left: 0;
+            margin-right: auto;
+            margin-left: auto;
+            z-index: 1000;
+        }
+
+        .transparent {
+            position:fixed;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .toolbar {
+            background: #2196F3;
+            height: 48px;
+            padding: 4px 0px 0px 0px;
+        }
+
+        paper-fab.close {
+            position: absolute;
+            height: 32px;
+            width: 32px;
+            margin: 8px;
+            top: 0px;
+            right: 0px;
+            --paper-fab-background:#B6B6B6;
+        }
+
+        #search_from_animated_button_container {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+
+        #container_content {
+            position: relative;
+            overflow: auto;
+            height: 100%;
+            background-color: #E8E8E8;
+            z-index: 1000;
+        }
+
+    </style>
+
+    <template>
+
+        <div class="button-container" style$="display: {{_display(pluginKey)}};" title$="{{tooltip}}">
+           <span on-click="_onOpenClick">
+              <iron-icon class="myspace" icon="icons:create-new-folder"></iron-icon>
+           </span>
+        </div>
+
+        <paper-material id="window" class="window" elevation="5">
+
+            <div class="transparent"></div>
+
+            <paper-toolbar class="toolbar">
+                <search-panel-controllet id="search_from_animated_button_container" left-direction="true"></search-panel-controllet>
+            </paper-toolbar>
+
+            <paper-fab class="close" mini icon="close" on-click="_onCloseClick"></paper-fab>
+
+            <div id="container_content">
+                <content></content>
+            </div>
+
+        </paper-material>
+
+    </template>
+
+    <script type="text/javascript" src="../shared_js/perfect-scrollbar/js/perfect-scrollbar.jquery.js"></script>
+
+    <script>
+
+        Polymer({
+
+            is: 'animated-button-container-controllet',
+
+            listeners:{
+                'search-panel-controllet_content-changed' : '_handleSearch',
+                'animated-button-container-controllet_close' : '_onCloseClick',
+                'animated-button-container-controllet_open-window' : '_onOpenClick'
+            },
+
+            properties: {
+
+                searchFunction: {
+                    type: String,
+                    notify: true
+                },
+
+                pluginKey: {
+                    type: String,
+                    value: ""
+                },
+
+                tooltip: {
+                    type: String,
+                    value: ""
+                }
+            },
+
+            ready: function(){
+                $(this.$.container_content).perfectScrollbar();
+            },
+
+            _onOpenClick: function() {
+                $(this.$.window).show();
+            },
+
+            _onCloseClick: function(){
+                $(this.$.window).hide();
+            },
+
+            _handleSearch: function(e){
+                if(this.$.container_content.children[0]._handleSearch != undefined) {
+                    this.$.container_content.children[0]._handleSearch(e);
+                }else{
+                    if(this.searchFunction != undefined){
+                        this.searchFunction = new Function('e','return '+ this.searchFunction);
+                        this.searchFunction(e);
+                    }
+                }
+            },
+
+            _display: function(pluginKey){
+                if (pluginKey == "public-room")
+                    return "none";
+                return "inline";
+            }
+
+        });
+
+    </script>
+</dom-module>

@@ -1,0 +1,64 @@
+<template id="base-datalet">
+
+    <!-- CSS DEPENDENCY -->
+    <link rel="stylesheet" type="text/css" href="./static/css/base-datalet.css"/>
+
+    <div id="fullscreen_placeholder">
+        <div id="fullscreen_cover"></div>
+        <div id="fullscreen_close"></div>
+    </div>
+
+    <div id="datalet_container">
+        <div id="base_datalet_spinner"></div>
+    </div>
+
+    <div id="base_datalet_container">
+
+        <div id="base_datalet_title_description">
+            <span id="span_title" title="{{datalettitle}}">{{title}}</span>
+            <span id="span_description" title="{{description}}">{{description}}</span>
+        </div>
+
+        <div id="base_datalet_source_link">
+            <b>Source:&nbsp</b> <a id="base_datalet_source" target="_blank"></a> <span id="base_datalet_link_span">&nbsp(<a id="base_datalet_link" target="_blank">dataset</a>)</span> <span id="ajax_error"></span>
+            <div id="refresh"><img id="img_refresh" src="./static/images/refresh.svg"></div>
+        </div>
+
+        <div id="base_datalet_rtp">
+            <div id="rtp">Powered by ROUTE-TO-PA</div>
+            <div><a href="http://www.routetopa.eu/" target="_blank"><img id="rtpalogo" src="./static/images/rtpalogo.png"></a></div>
+        </div>
+
+        <!--<div id="refresh"><img id="img_refresh" src="static/images/refresh.svg"></div>-->
+
+        <div id="fullscreen"></div>
+
+        <div id="export">
+            <div class="export" id="export_menu" icon="more-horiz"></div>
+            <div class="highcharts-contextmenu" id="highcharts-contextmenu">
+                <div class="highcharts-contextmenu-container">
+                    <div id="link_lp">        <span id="datalet_link">Datalet Link</span></div>
+                    <div id="export_html">    <span id="export_to_html">Export to HTML</span></div>
+                    <div id="export_png">     <span id="export_to_png">Export to PNG</span></div>
+                    <div id="export_doc">     <span id="export_to_doc">Export to DOC</span></div>
+                    <div id="export_my_space"><span id="import_myspace">Import in My Space</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="social">
+            <div id="twitter"></div>
+            <div id="facebook"></div>
+            <div id="googleplus"></div>
+        </div>
+
+    </div>
+
+    <div class="overlay" id="overlay">
+        <div class="modal-content"><span class="button-close" onclick="this.parentElement.parentElement.style.display = 'none'"></span>
+            <textarea id="export_area" class="export_area"></textarea>
+        </div>
+    </div>
+
+</template>
+

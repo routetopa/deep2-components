@@ -1,0 +1,135 @@
+<!--
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-shared-element-animatable-behavior.html">
+
+<dom-module id="fullsize-page-with-card-controllet">
+
+    <style>
+
+        :host {
+            display: block;
+        }
+
+        .fixed {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100vw;
+        }
+
+        .card {
+            position: relative;
+            /*margin: 6px;*/
+            height: 100%;
+            height: 100%;
+        }
+
+    </style>
+
+    <template>
+
+        <div id="fixed" class="fixed" style$="background-color:{{color}}"></div>
+        <div id="card" class="card" style$="background-color:{{color}}">
+            <template is="dom-if" if="{{_checkUndefined(agora_url)}}">
+                <iframe id="agora_room_iframe" src="{{agora_url}}" width="100%" height="100%"></iframe>
+            </template>
+        </div>
+
+    </template>
+
+</dom-module>
+
+<script>
+
+    Polymer({
+
+        is: 'fullsize-page-with-card-controllet',
+
+        behaviors: [
+            Polymer.NeonSharedElementAnimatableBehavior
+        ],
+
+        properties: {
+
+            agora_url : {
+              type: String
+            },
+
+            color: {
+                type: String
+            },
+
+            sharedElements: {
+                type: Object,
+                value: function() {
+                    return {
+                        'hero': this.$.card,
+                        'ripple': this.$.fixed
+                    }
+                }
+            },
+
+            animationConfig: {
+                type: Object,
+                value: function() {
+                    return {
+                        'entry': [{
+                            name: 'ripple-animation',
+                            id: 'ripple',
+                            toPage: this,
+                        }, {
+                            name: 'hero-animation',
+                            id: 'hero',
+                            toPage: this,
+                            timing: {
+                                delay: 150
+                            }
+                        }],
+                        'exit': [{
+                            name: 'fade-out-animation',
+                            node: this.$.fixed
+                        }, {
+                            name: 'transform-animation',
+                            transformFrom: 'none',
+                            transformTo: 'translate(0px,-200vh) scale(0.9,1)',
+                            node: this.$.card
+                        }]
+                    }
+                }
+            }
+
+        },
+
+        _checkUndefined: function(variable)
+        {
+          if(typeof variable === 'undefined') {
+              public_room_iframe.src = "";
+              return false;
+          }
+          return true;
+        },
+
+        _computeCardClass: function(color) {
+            this.$.card = color;
+        },
+
+        _computeFixedBackgroundClass: function(color) {
+            this.$.fixed = color;
+        },
+
+        attached: function()
+        {
+            this.fire('fullsize-page-with-card-controllet_attached');
+        }
+
+    });
+
+</script>

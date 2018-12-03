@@ -1,0 +1,111 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <script src="../../shared_js/jquery-1.11.2.min.js"></script>
+
+    <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+
+    <link rel="import" href="../map-controllet.html"/>
+</head>
+
+<body>
+<!--deep-url="http://deep.routetopa.eu/deep_1_17/DEEP/"-->
+<!--datalets-list-url="http://deep.routetopa.eu/deep_1_17/DEEP/datalets-list"-->
+
+<map-controllet
+        deep-url="http://172.18.13.9/routetopa/DEEP/"
+        datalets-list-url="http://172.18.13.9/routetopa/DEEP/datalets-list"
+        datasets='{
+    "28" : {
+		"p_name" : "CKAN Salerno laboratory",
+		"p_url" : "http:\/\/ckan.routetopa.eu\/",
+		"p_datasets" : [{
+				"name" : "Vini",
+				"id" : "5c3b71df-cffd-4f1f-9783-939f244aac16",
+				"p" : "CKAN_28",
+				"resources" : ["vini", "cast", "note di cocreazione in pdf", "test odt", "Note di cocreazione per i Vini in Campania"]
+			}, {
+				"name" : "WiFi -Prato test",
+				"id" : "87fe2d39-4412-4761-8222-1d3f1c68b90b",
+				"p" : "CKAN_28",
+				"resources" : ["WI-FI Prato test", "Wi-Fi"]
+			}, {
+				"name" : "Prato: free WiFi",
+				"id" : "fcf0e3e3-7dce-43cf-9865-0f341b4511c6",
+				"p" : "CKAN_28",
+				"resources" : ["Prato: Wi-Fi free", "risorsa 2"]
+			}, {
+				"name" : "Super Fingers!",
+				"id" : "7801529a-985c-4079-941c-747ada0f5ec9",
+				"p" : "CKAN_28"
+			}, {
+				"name" : "Prato: Giardini e Prati",
+				"id" : "cbe3b1f0-7d35-4557-878d-2442f0d878e1",
+				"p" : "CKAN_28"
+			}, {
+				"name" : "Test-01",
+				"id" : "68a5b7de-1770-4ee9-80fd-b6ef15083b8d",
+				"p" : "CKAN_28",
+				"resources" : ["GeoJson-test-01", "pure geojson", "geo test 2", "geo 33", "geo 4", "geo 5"]
+			}
+        ]
+	},
+    "99" : {
+		"p_name" : "CKAN Ancitel",
+		"p_url" : "http:\/\/ckan.ancitel.it\/",
+		"p_datasets" : [{
+				"name" : "SINVA",
+				"id" : "2318178b-00be-43c2-8542-28a1f854e9cf",
+				"p" : "CKAN_99",
+				"resources" : [
+				    "Workspace-TEST , WMS Capabilities",
+                    "KML TEST:vt_aeroporti_2015",
+                    "KML 2 TEST:vt_aeroporti_2015",
+                    "Workspace-TEST , WFS Capabilities",
+                    "GeoJSON TEST:vt_aeroporti_2015"
+                 ]
+			}
+        ]
+	},
+    "100" : {
+		"p_name" : "WMS Sinva TEST",
+		"p_url" : "http:\/\/sinva.ancitel.it\/geoserver\/TEST\/wms",
+		"p_datasets" : [{
+				"name" : "SINVA WMS TEST",
+				"p" : "WMS_100"
+			}
+        ]
+	},
+    "101" : {
+		"p_name" : "KML Sinva Aeroporti 2015",
+		"p_url" : "http:\/\/ckan.ancitel.it\/dataset\/2318178b-00be-43c2-8542-28a1f854e9cf\/resource/c919a8a4-74cf-4435-8237-f2552f707f8a\/download\/vtaeroporti2015.kml",
+		"p_datasets" : [{
+				"name" : "KML SINVA Aeroporti 2015",
+				"p" : "KML_101"
+			}
+        ]
+	},
+    "102" : {
+		"p_name" : "WMS Sinva Via Opere Puntuali",
+		"p_url" : "http:\/\/sinva.ancitel.it\/geoserver\/VA\/wms?service=WMS&version=1.1.0&request=GetMap&layers=VA:vt_30112016_via_opere_puntuali&styles=&bbox=746136.67182439,4334621.00908369,2082559.41333259,5745681.47634511&width=484&height=512&srs=EPSG:3857&format=image%2Fpng",
+		"p_datasets" : [{
+				"name" : "WMS Sinva Via Opere Puntuali",
+				"p" : "WMS_102"
+			}
+        ]
+    }
+
+
+
+}'>
+
+</map-controllet>
+
+<!--<co-datalets-creator-controllet data='[{"a":"0", "b":"1"},{"a":"2", "b":"3a"},{"a":"2", "b":"3"}]' deep-url="http://172.16.15.38/DEEalerProvider/DEEP/"-->
+<!--datalets-list-url="http://172.16.15.38/DEEalerProvider/DEEP/datalets-list">-->
+<!--</co-datalets-creator-controllet>-->
+
+</body>
+
+</html>

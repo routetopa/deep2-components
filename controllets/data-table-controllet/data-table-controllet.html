@@ -1,0 +1,542 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html" />
+
+<link rel="import" href="../../bower_components/paper-material/paper-material.html" />
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
+
+<script type="text/javascript" src="../../bower_components/jsdatachecker/jsdatachecker.min.js"></script>
+
+<dom-module id="data-table-controllet">
+
+    <template>
+
+        <style is="custom-style">
+
+            paper-input {
+                max-width: 288px;
+                --paper-input-container-focus-color: #2196F3;
+            }
+
+            paper-icon-button{
+                height: 48px;
+                width: 48px;
+                padding: 0px;
+                --paper-icon-button-ink-color: #FFFFFF;
+            }
+
+            paper-icon-button:hover{
+                color: #2196F3;
+            }
+
+            paper-icon-button.clear {
+                width: 24px;
+                height: 24px;
+                padding: 0px 4px;
+                color: #F44336;
+                --paper-icon-button-ink-color: #FFFFFF;
+            }
+
+            paper-icon-button.order {
+                height: 40px;
+                width: 40px;
+                padding: 4px;
+
+                cursor: pointer;
+            }
+
+            paper-icon-button.warning {
+                height: 40px;
+                width: 40px;
+                padding: 4px;
+                color: #FFEB3B;
+                --paper-icon-button-ink-color: #FFEB3B;
+
+                cursor: help;
+            }
+
+            paper-icon-button.order:hover {
+               color: #FFFFFF;
+            }
+
+            paper-tooltip {
+                --paper-tooltip-background: black;
+            }
+
+            iron-icon.icon {
+                color: #2196F3;
+            }
+
+            #data_table_container {
+                height: 100%;
+                width: 100%;
+            }
+
+            #data_table_container * {
+                font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                font-size: 16px;
+                line-height: 24px;
+            }
+
+            #data_table_container #header {
+                background: #B6B6B6;
+                height: 40px;
+                padding: 4px;
+                text-align: center;
+                font-weight: 700;
+                cursor: help;
+            }
+
+            #data_table_container #header * {
+                line-height: 40px !important;
+            }
+
+            #data_table_container table {
+                height: calc(100% - 96px);
+                width: 100%;
+
+                border-spacing: 0;
+            }
+
+            #data_table_container tbody {
+                width: 100%;
+                display: block;
+                position: relative;
+            }
+
+            #data_table_container tr:nth-child(odd) {
+                background: #E0E0E0;
+            }
+
+            #data_table_container th,
+            #data_table_container td{
+                height: 32px;
+                /*padding: 12px;*/
+                text-align: center;
+                /*max-width: 256px;*/
+                /*min-width: 156px;*/
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                width: 1%;
+            }
+
+            #data_table_container td {
+                font-size: 14px;
+                padding: 4px 12px;
+                max-width: calc(360px - 24px);
+            }
+
+            #data_table_container th {
+                background: #2196F3;
+                color: #FFFFFF;
+                font-weight: 700;
+                cursor: help;
+                border-right: 2px solid #FFFFFF;
+                height: 40px;
+                padding: 4px 12px;
+            }
+
+            #data_table_container tr :nth-last-child(2) {
+                border-right: 0;
+            }
+
+            #data_table_container th,
+            #data_table_container th * {
+                line-height: 22px;/**/
+            }
+
+            #data_table_container th .th_label {
+                display: inline-block;
+                /*max-width: calc(100% - 48px - 8px);*/
+                vertical-align: middle;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                line-height: 24px;/**/
+                max-width: calc(360px - 114px);
+            }
+
+            #data_table_container #footer {
+                width: 100%;
+                height: 48px;
+                background: #B6B6B6;
+
+                display: flex;
+                flex-direction: row;
+            }
+
+            #data_table_container .footer_block {
+                height: 24px;
+                padding: 12px 8px;
+                text-align: right;
+            }
+
+            #data_table_container .footer_block:nth-child(1) {
+                width: 30%;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+
+            #data_table_container .footer_block:nth-child(2) {
+                width: 40%;
+                height: 48px;
+                padding: 0px 8px;
+                text-align: center;
+            }
+
+            #data_table_container .footer_block:nth-child(3) {
+                width: 30%;
+                height: 40px;
+                padding: 4px 8px;
+                text-align: left;
+            }
+
+            #data_table_container br {
+                display: block;
+                margin-top: 8px;
+                content: " ";
+            }
+
+            #data_table_container p {
+                margin: 0;
+                padding: 0;
+            }
+
+            #data_table_container p .type{
+                font-weight: 700;
+            }
+
+            #data_table_container p .warning{
+                font-weight: 700;
+                color: #F44336;
+            }
+
+        </style>
+
+        <paper-material id="data_table_container" elevation="5">
+
+            <div id="header">
+                <template is="dom-if" if={{hasWarnings}}>
+                    <paper-icon-button class="warning" icon="warning"></paper-icon-button>
+                </template>
+                <span id="selected_data"></span>
+            </div>
+
+            <paper-tooltip id="tooltip_wornings" for="header" offset="56">
+                <template is="dom-repeat" items="{{fields}}">
+                    <template is="dom-if" if={{item.errorsDescription.length}}>
+                        <p>
+                            <span class="warning">{{_warning()}}:</span> {{item.errorsDescription}}
+                        </p>
+                    </template>
+                </template>
+            </paper-tooltip>
+
+            <table>
+                <tbody id="tbody">
+                    <tr>
+                        <template is="dom-repeat" items="{{fields}}">
+                            <th id="id_{{index}}">
+
+                                <template is="dom-if" if={{item.errorsDescription.length}}>
+                                    <paper-icon-button class="warning" icon="warning"></paper-icon-button>
+                                </template>
+                                <div class="th_label">{{item.name}}</div>
+                                <paper-icon-button id="{{index}}" class="order" on-click="_order" icon="unfold-more"></paper-icon-button>
+                            </th>
+                        </template>
+                    </tr>
+                    <template is="dom-repeat" items="{{shownData}}">
+                        <tr>
+                            <template is="dom-repeat" items="{{_toArray(item)}}">
+                                <template is="dom-if" if={{!_isObject(item)}}>
+                                    <td title="{{item.value}}">{{item.value}}</td>
+                                </template>
+                                <template is="dom-if" if={{_isObject(item)}}>
+                                    <template is="dom-if" if={{_isGEOJSON(item)}}>
+                                        <td title="GEOJSON"><iron-icon icon="maps:map" class="icon"></iron-icon></td>
+                                    </template>
+                                    <template is="dom-if" if={{!_isGEOJSON(item)}}>
+                                        <td title="OBJECT"><iron-icon icon=":help-outline" class="icon"></iron-icon></td>
+                                    </template>
+                                </template>
+                            </template>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+
+            <template is="dom-repeat" items="{{fields}}">
+                <paper-tooltip for="{{_fieldId(index)}}" offset="8">
+                    <p>
+                        <span class="type">{{_type()}}:</span> {{item.type}}
+                        <template is="dom-if" if={{item.subtype}}>
+                            ({{item.subtype}})
+                        </template>
+                        <template is="dom-if" if={{item.errorsDescription.length}}>
+                            <br/>
+                            <span class="warning">{{_warning()}}:</span> {{item.errorsDescription}}
+                        </template>
+                    </p>
+                </paper-tooltip>
+            </template>
+
+            <div id="footer">
+                <div class="footer_block">
+                    <span id="showing"></span> {{shownPrev}} <span id="to"></span> {{shownNext}} <span id="of"></span> {{length}} <span id="rows"></span>
+                </div>
+                <div class="footer_block">
+                    <paper-icon-button id="slider_chevron_left" class="chevron-left" on-click="_onPrevClick" icon="chevron-left"></paper-icon-button>
+                    <paper-icon-button id="slider_chevron_right" class="chevron-right" on-click="_onNextClick" icon="chevron-right"></paper-icon-button>
+                </div>
+                <div class="footer_block">
+                    <paper-input id="filter" value={{filter}} no-label-float>
+                        <iron-icon class="search" icon="search" prefix></iron-icon>
+                        <paper-icon-button class="clear" suffix on-click="_clearInput" icon="clear"></paper-icon-button>
+                    </paper-input>
+                </div>
+            </div>
+
+        </paper-material>
+
+    </template>
+
+    <script>
+
+        Polymer({
+
+            is : 'data-table-controllet',
+
+            properties : {
+
+                data : {
+                    type  : Array,
+                    value : []
+                },
+
+                filter : {
+                    type  : String,
+                    value : "",
+                    observer : '_filter'
+                }
+
+            },
+
+            ready : function() {
+                this.step = 100;
+            },
+
+            attached : function(){
+                $(this.$.tbody).perfectScrollbar();
+
+                this._resize();
+                var that = this;
+                window.addEventListener("resize", function() { that._resize(); });
+
+                this._translate();
+
+                if(this.data.length > 0)
+                    this.setData(this.data);
+            },
+
+            _translate : function(){
+                this.$.selected_data.innerHTML = ln["selectedData_" + ln["localization"]];
+
+                this.$.showing.innerHTML = ln["showing_" + ln["localization"]];
+                this.$.to.innerHTML = ln["to_" + ln["localization"]];
+                this.$.of.innerHTML = ln["of_" + ln["localization"]];
+                this.$.rows.innerHTML = ln["rows_" + ln["localization"]];
+
+                this.$.filter.setAttribute("label", ln["search_" + ln["localization"]]);
+            },
+
+            _type : function() {return ln["type_" + ln["localization"]];},
+            _warning : function() {return ln["warning_" + ln["localization"]];},
+
+            setData : function(data) {
+                var converter = new DataTypeConverter();
+                var result = converter.inferJsonDataType(data, ["*"], { language: ln["localization"] } );
+                result = converter.cast(result);
+                this.fields = ArrayUtils.toFieldsArray(result.types);
+                this.data = result.dataset;
+
+                this.filter = "";
+                $(".order").attr("icon", "unfold-more");
+
+                this.prev = 1;
+                this.next = this.step;
+                this.length = this.data.length;
+
+                this.shownPrev = Math.min(this.prev, this.length);
+                this.shownNext = Math.min(this.next, this.length);
+                this.shownData = this.data.slice(this.prev-1, this.next);
+
+                this.hasWarnings = this._hasWarnings();
+
+                this.async(function() {
+                    if(this.hasWarnings)
+                        this.$.tooltip_wornings.show();
+                    else
+                        this.$.tooltip_wornings.hide();
+                }, 1);
+
+                this._resize();
+            },
+
+            reset : function(){
+                this.setData([]);
+                $(this.$.tbody).animate({ scrollTop: 0}, 0);
+            },
+
+            _onPrevClick : function(){
+                if(this.prev != 1) {
+                    this.prev -= this.step;
+                    this.next -= this.step;
+
+                    this.shownPrev = Math.min(this.prev, this.length);
+                    this.shownNext = Math.min(this.next, this.length);
+                    this.shownData = this.data.slice(this.prev - 1, this.next);
+                }
+                $(this.$.tbody).animate({ scrollTop: 0}, 0);
+            },
+
+            _onNextClick : function(){
+                if(this.next < this.length) {
+                    this.prev += this.step;
+                    this.next += this.step;
+
+                    this.shownPrev = Math.min(this.prev, this.length);
+                    this.shownNext = Math.min(this.next, this.length);
+                    this.shownData = this.data.slice(this.prev - 1, this.next);
+                }
+                $(this.$.tbody).animate({ scrollTop: 0}, 0);
+            },
+
+            _filter : function() {
+                this.debounce('_filter', function () {
+                    if(this.data.length) {
+                        var filter = this.filter.toLowerCase();
+
+                        if(filter == "")
+                            this.shownData = this.data
+                        else {
+                            var keys = Object.keys(this.data[0]);
+                            this.shownData = this.data.filter(function (el) {
+                                var values = keys.map(function (key) {
+                                    return el[key];
+                                });
+                                for (var i in values)
+                                    if (values[i] && String(values[i]).toLowerCase().indexOf(filter) > -1)
+                                        return true;
+                                return false;
+                            });
+                        }
+
+                        this.prev = 1;
+                        this.next = this.step;
+                        this.length = this.shownData.length;
+
+                        this.shownPrev = Math.min(this.prev, this.length);
+                        this.shownNext = Math.min(this.next, this.length);
+                        this.shownData = this.shownData.slice(this.prev - 1, this.next);
+
+                        $(this.$.tbody).animate({ scrollTop: 0}, 0);
+                    }
+                }, 300);
+            },
+
+            _clearInput : function() {
+                this.$.filter.value = "";
+            },
+
+            _order : function(e) {
+                t = $(e.target).parents("paper-icon-button")[0];
+
+                var icon = t.getAttribute("icon");
+                var id = t.getAttribute("id");
+                var field = this.fields[id];
+                var reverse = false;
+
+                if(icon.indexOf("unfold-more") > -1){
+                    t.setAttribute("icon", "arrow-drop-up");
+                }
+                else if(icon.indexOf("arrow-drop-up") > -1){
+                    t.setAttribute("icon", "arrow-drop-down");
+                    reverse = true;
+                }
+                else if(icon.indexOf("arrow-drop-down") > -1){
+                    t.setAttribute("icon", "arrow-drop-up");
+                }
+
+
+                if(field.type == "NUMBER")
+//                    this.data = this.data.sort(this._sort_by(field.name, reverse, parseInt));
+                    this.data = this.data.sort(this._sort_by(field.name, reverse, function(a){return (isNaN(a) ? -Number.MAX_VALUE : a)}));
+                else
+                    this.data = this.data.sort(this._sort_by(field.name, reverse, function(a){a = a.toString(); return (a ? a.toLowerCase() : "")}));
+                this._filter();
+            },
+
+            _sort_by : function(field, reverse, primer){
+                var key = primer ?
+                        function(x) {return primer(x[field])} :
+                        function(x) {return x[field]};
+
+                reverse = !reverse ? 1 : -1;
+
+                return function (a, b) {
+                    return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
+                }
+            },
+
+            _toArray: function(obj) {
+                return Object.keys(obj).map(function(key) {
+                    return {
+                        key: key,
+                        value: obj[key]
+                    };
+                });
+            },
+
+            _fieldId: function(index) {
+                return "id_" + index;
+            },
+
+            _hasWarnings: function() {
+                for (var i in this.fields)
+                    if (this.fields[i].errorsDescription.length)
+                        return true;
+                return false;
+            },
+
+            _isObject: function(item) {
+                if(item.value instanceof Array)
+                    return false;
+                if(item.value instanceof Object)
+                    return true;
+                return false;
+            },
+
+            _isGEOJSON: function(item) {
+                var dt = new DataTypeConverter();
+                return (dt.inferDataSubTypeOfValue(item.value) && dt.inferDataSubTypeOfValue(item.value).name == DataTypeConverter.SUBTYPES.GEOJSON.name);
+            },
+
+            _resize : function(){
+                this.async(function() {
+                    var h = $(this.$.data_table_container).height() - 96;
+                    var w = $(this.$.data_table_container).width();
+                    $(this.$.tbody).width(w).height(h);
+                    $(this.$.tbody).perfectScrollbar('update');
+                }, 0);
+            }
+
+        });
+
+    </script>
+
+</dom-module>

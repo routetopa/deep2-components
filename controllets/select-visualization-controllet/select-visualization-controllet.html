@@ -1,0 +1,391 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html" />
+
+<link rel="import" href="../../bower_components/paper-material/paper-material.html" />
+
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<link rel="import" href="../items-vslider-controllet/items-vslider-controllet.html" />
+<link rel="import" href="../select-inputs-controllet/select-inputs-controllet.html" />
+<link rel="import" href="../datalet-preview-controllet/datalet-preview-controllet.html" />
+
+<script type="text/javascript" src="../../bower_components/jsdatachecker/jsdatachecker.min.js"></script>
+
+<script src="../../../DEEPCLIENT/js/deepClient.js"></script>
+
+<dom-module id="select-visualization-controllet">
+
+    <template>
+
+        <style is="custom-style">
+            #select_visualization_container {
+                display: flex;
+                margin-top: 8px;
+            }
+
+            #select_visualization_container * {
+                font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                font-size: 16px;
+                line-height: 24px;
+            }
+
+            #items_vslider_container {
+                position: relative;
+                width: 172px;
+            }
+
+            #select_inputs_container {
+                position: relative;
+                width: calc(50% - 12px - 172px - 24px);
+                min-width: 258px;
+                margin-left: 24px;
+            }
+
+            #datalet_preview_container {
+                position: relative;
+                width: calc(50% - 12px);
+                margin-left: 24px;
+            }
+
+            /*#datalet_placeholder {*/
+                /*width: calc(100% - 32px);*/
+                /*height: calc(100% - 48px - 32px);*/
+                /*padding: 16px;*/
+            /*}*/
+
+            /*.header {*/
+                /*height: 24px;*/
+                /*padding: 12px;*/
+                /*text-align: center;*/
+                /*font-weight: 700;*/
+                /*background-color: #B6B6B6;*/
+            /*}*/
+
+            paper-button {
+                position: absolute;
+                height: 48px;
+                width: 172px;
+                padding: 12px;
+                background: #00BCD4;
+                color: #FFFFFF;
+                font-weight: 700;
+
+                /*bottom: 16px;*/
+                /*right: 11px;*/
+                top: -64px;
+                right: 0;
+                margin: 0 16px;
+            }
+
+            paper-button:hover {
+                background-color: #00AABF;
+
+                box-shadow: 0px 8px 12px #888;
+                -webkit-box-shadow: 0px 8px 12px #888;
+                -moz-box-shadow: 0px 8px 12px #888;
+            }
+
+            paper-button[disabled] {
+                background-color: #B6B6B6;
+            }
+        </style>
+
+        <iron-ajax id="selectedDatalet_request" on-response="_handleSelectedDatalet"></iron-ajax>
+
+        <div id="select_visualization_container">
+
+            <div id="items_vslider_container">
+                <items-vslider-controllet id="vslider" datalets-list-url="{{dataletsListUrl}}"></items-vslider-controllet>
+            </div>
+
+            <div id="select_inputs_container">
+                <select-inputs-controllet id="inputs"></select-inputs-controllet>
+            </div>
+
+            <div id="datalet_preview_container">
+                <datalet-preview-controllet id="preview" components-url="{{componentsUrl}}"></datalet-preview-controllet>
+            </div>
+
+            <paper-button id="add_button" disabled raised on-click="_addDatalet"></paper-button>
+
+            <!--<paper-material id="datalet_preview_container" elevation="5">-->
+                <!--<div class="header"><span id="dataletPreview"></span></div>-->
+
+                <!--<div id="datalet_placeholder"></div>-->
+
+            <!--</paper-material>-->
+
+        </div>
+
+    </template>
+
+    <script>
+
+        Polymer({
+
+            is : 'select-visualization-controllet',
+
+            properties : {
+
+                deepUrl : {
+                    type : String,
+                    value : undefined
+                },
+
+                componentsUrl : {
+                    type : String,
+                    value : undefined
+                },
+
+                dataletsListUrl : {
+                    type : String,
+                    value : undefined
+                },
+
+                dataUrl : {
+                    type  : String,
+                    value : undefined
+                },
+
+                data : {
+                    type  : Object,
+                    value : undefined
+                },
+
+                selectedFields : {
+                    type : Array,
+                    value : []
+                },
+
+                filters : {
+                    type : Array,
+                    value : []
+                },
+
+                aggregators : {
+                    type : Array,
+                    value : []
+                },
+
+//                orders : {
+//                    type : Array,
+//                    value : []
+//                },
+
+                selectedDatalet : {
+                    type  : String,
+                    value : undefined
+                },
+
+                dataletType : {
+                    type : String,
+                    value : undefined
+                },
+
+                preselectedDatalet : {
+                    type  : String,
+                    value : undefined
+                },
+
+                dataletPreset : {
+                    type  : Object,
+                    value : []
+                },
+
+                context : {
+                    type  : Object,
+                    value : []
+                }
+
+            },
+
+            listeners: {
+                'items-vslider-controllet_selected-datalet': '_selectDatalet',
+                'select-inputs_isReady': '_loadDatalet'
+            },
+
+            ready : function() {
+            },
+
+            attached : function() {
+                this._resize();
+                var that = this;
+                window.addEventListener("resize", function() { that._resize(); });
+
+                this._translate();
+            },
+
+            setFilters : function(filters) {
+                this.filters = this._copy(filters);
+            },
+
+            setAggregators : function(aggregators) {
+                this.aggregators = this._copy(aggregators);
+            },
+
+//            setOrders : function(orders) {
+//                this.orders = this._copy(orders);
+//            },
+
+            setSelectedFields : function(selectedFields) {
+                this.selectedFields = this._copy(selectedFields);
+            },
+
+            setData : function(data) {
+                this.data = this._copy(data);
+
+                var converter = new DataTypeConverter();
+                var result = converter.inferJsonDataType(data, ["*"]);
+                result = converter.cast(result);
+                this.$.inputs.setFields(ArrayUtils.toFieldsArray(result.types));
+                this.$.vslider.setEnabledDatalets(ArrayUtils.toFieldsArray(result.types));
+            },
+
+            init : function() {
+                if(this.selectedDatalet !== undefined)
+                    this.$.vslider.reset();// fire _selectDatalet undefined
+            },
+
+            _translate : function(){
+                if(this.preselectedDatalet)
+                    this.$.add_button.innerHTML = ln["modifyDatalet_" + ln["localization"]];
+                else
+                    this.$.add_button.innerHTML = ln["addDatalet_" + ln["localization"]];
+            },
+
+            _selectDatalet : function(e){
+                this.selectedDatalet = e.detail.datalet;
+
+                this.$.add_button.setAttribute("disabled", "true");
+                this.$.preview.eraseDatalet();
+                this.$.preview.eraseInfo();
+
+                if(this.selectedDatalet) {
+                    this.$.selectedDatalet_request.url = this.deepUrl + e.detail.datalet + "-datalet";
+                    this.$.selectedDatalet_request.generateRequest();
+                }
+                else {
+                    this.dataletType = undefined;
+                    this.$.inputs._reset();
+                }
+            },
+
+            _handleSelectedDatalet : function(e){
+                this.$.preview.loadInfo(e.detail.response);
+
+                if(this.dataletType != e.detail.response.type) {
+                    this.dataletType = e.detail.response.type;
+                    this.$.inputs.setInputs(e.detail.response.idm);
+                }
+                else {
+                    this.$.inputs._fire();
+                }
+            },
+
+            preselect : function() {
+                if(this.preselectedDatalet) {
+                    this.$.vslider.preselectDatalet(this.preselectedDatalet);
+                    this.async(function () {
+                        this.$.inputs._preselectInputs(this.dataletPreset);
+                        this.preselectedDatalet = undefined;
+                    }, 100);
+                }
+            },
+
+            _loadDatalet : function(e){
+                if(!e.detail.isReady) {
+                    this.$.add_button.setAttribute("disabled", "true");
+                    this.$.preview.eraseDatalet();
+                    return;
+                }
+
+                this.params = {'data-url' : this.dataUrl};/*???*/
+
+                this.params["selectedfields"] = JSON.stringify(this.$.inputs.getSelectedInputs());
+                this.params["filters"] = JSON.stringify(this.filters);
+                this.params["aggregators"] = JSON.stringify(this.aggregators);
+                this.params["orders"] = JSON.stringify(this.$.inputs.getOrders());
+
+                this.params["export_menu"] = "0";
+
+                var params = this.$.inputs.getSelectedOptions();
+                for (var key in params) { this.params[key] = params[key]; }
+
+                //use cache
+                var selectedFields = this.$.inputs.getSelectedInputs();
+                var fields = [];
+                for (var i=0; i < selectedFields.length; i++)
+                    if (selectedFields[i])
+                        fields.push(selectedFields[i].value);
+
+                var converter = new DataTypeConverter();
+
+                var data = alasql_QUERY(this.data, fields, null, null, this.$.inputs.getOrders());
+                var result = converter.inferJsonDataType(data, ["*"]);
+                result = converter.cast(result);
+                data = result.dataset;
+
+                data = alasql_transformData(data, fields, true);
+
+                this.params["data"] = JSON.stringify(data).replace(/'/g, "&#39;");
+                //
+
+                var dataletParams ={
+                    component: this.selectedDatalet+"-datalet",
+                    fields: this.selectedFields,
+                    params: this.params
+//                    placeHolder: this.$.datalet_placeholder
+                };
+
+//                ComponentService.deep_url = this.deepUrl;
+//                ComponentService.getComponent(dataletParams);
+
+                this.$.preview.loadDatalet(dataletParams);
+
+                if(this.$.inputs.$.datalettitle.value != "")
+                    this.$.add_button.removeAttribute("disabled");
+                else
+                    this.$.add_button.setAttribute("disabled", "disabled");
+            },
+
+            _addDatalet : function(){
+                var staticData = this.params["data"];
+
+                delete this.params["data"];
+                delete this.params["export_menu"];
+
+                var data = {
+                    dataUrl: this.dataUrl,
+                    datalet: this.selectedDatalet+"-datalet",
+                    fields: this.selectedFields,
+                    params: this.params,
+                    staticData: staticData,
+                    context: this.context
+                };
+
+                this.fire('data-sevc-controllet.dataletCreated', {data : data});
+            },
+
+            _copy : function(o) {
+                var out, v, key;
+                out = Array.isArray(o) ? new Array(o.length) : {};
+                for (key in o) {
+                    v = o[key];
+                    out[key] = (typeof v === "object") ? this._copy(v) : v;
+                }
+                return out;
+            },
+
+            _resize : function(){
+                var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - 16;
+                h = h - 64 - 8; //height with page scroller
+
+                $("#items_vslider_container").height(h);
+                $("#select_inputs_container").height(h);
+                $("#datalet_preview_container").height(h);
+            }
+
+        });
+
+    </script>
+
+</dom-module>
