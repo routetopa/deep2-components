@@ -28,7 +28,7 @@ export const transformData = function (data, selectedFields) {
         let y = data[1]["data"];
         let cat = data[cat_index]["data"];
 
-        let categories = x.filter(function (item, pos) {
+        categories = x.filter(function (item, pos) {
             return x.indexOf(item) === pos;
         });
 
@@ -36,7 +36,7 @@ export const transformData = function (data, selectedFields) {
             return cat.indexOf(item) === pos;
         });
 
-        let series = [];
+        series = [];
         for (let i = 0; i < s.length; i++) {
             series.push({name: s[i], data: new Array(categories.length + 1).join('0').split('').map(parseFloat)});
         }
