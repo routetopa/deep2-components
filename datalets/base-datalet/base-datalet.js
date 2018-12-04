@@ -557,5 +557,28 @@ export default class BaseDatalet extends HTMLElement
     {
         //PARSA ERRORE
     }
+
+    merge_deep(target, ...sources)
+    {
+        if (!sources.length) return target;
+        const source = sources.shift();
+
+        if (this.is_object(target) && this.is_object(source)) {
+            for (const key in source) {
+                if (this.is_object(source[key])) {
+                    if (!target[key]) Object.assign(target, { [key]: {} });
+                    this.merge_deep(target[key], source[key]);
+                } else {
+                    Object.assign(target, { [key]: source[key] });
+                }
+            }
+        }
+        return this.merge_deep(target, ...sources);
+    }
+
+    is_object(item)
+    {
+        return (item && typeof item === 'object' && !Array.isArray(item));
+    }
 }
 
