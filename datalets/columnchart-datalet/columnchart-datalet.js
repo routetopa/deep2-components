@@ -29,10 +29,23 @@ class ColumnchartDatalet extends BaseDatalet
         console.log('RENDER - columnchart-datalet');
 
         await this.import_module('../lib/vendors/highstock/highstock.js');
-        await this.import_module('../lib/vendors/highstock/themes/themes.js');
         const builder = await this.import_module('../lib/modules/HighChartsBuilder.js');
 
-        builder.build('column', this, data);
+        let options = await builder.build('column', this, data);
+
+        options.plotOptions.column = {
+            dataLabels: {
+                formatter: function() {
+                    return this.y + ' ' + this.getAttribute("suffix");
+                },
+                enabled: this.getAttribute("dataLabels")
+            }
+        };
+
+        if(data.series[0].data.length > 20)
+            Highcharts.stockChart(this.shadowRoot.querySelector('#datalet_container'), options);
+        else
+            Highcharts.chart(this.shadowRoot.querySelector('#datalet_container'), options);
     }
 }
 

@@ -29,13 +29,35 @@ class AreachartDatalet extends BaseDatalet
         console.log('RENDER - areachart-datalet');
 
         await this.import_module('../lib/vendors/highstock/highstock.js');
-        await this.import_module('../lib/vendors/highstock/themes/themes.js');
-        const builder = await this.import_module('AreaChartBuilder.js');
+        const builder = await this.import_module('../lib/modules/HighChartsBuilder.js');
 
-        builder.build('area', this, data);
+        let options = await builder.build('area', this, data);
+
+        options.plotOptions.area = {
+            dataLabels: {
+                formatter: function() {
+                    return this.y + ' ' + this.getAttribute("suffix");
+                },
+                enabled: this.getAttribute("dataLabels")
+            },
+            marker: {
+                enabled: false,
+                symbol: 'circle',
+                radius: 2,
+                states: {
+                    hover: {
+                        enabled: true
+                    }
+                }
+            }
+        };
+
+        if(data.series[0].data.length > 20)
+            Highcharts.stockChart(context.shadowRoot.querySelector('#datalet_container'), options);
+        else
+            Highcharts.chart(this.shadowRoot.querySelector('#datalet_container'), options);
     }
 }
-
 
 const FrozenAreachartDatalet = Object.freeze(AreachartDatalet);
 window.customElements.define('areachart-datalet', FrozenAreachartDatalet);
