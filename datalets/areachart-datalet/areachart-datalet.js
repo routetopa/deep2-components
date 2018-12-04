@@ -33,12 +33,15 @@ class AreachartDatalet extends BaseDatalet
 
         let options = await builder.build('area', this, data);
 
+        let suffix = this.getAttribute("suffix");
+        let dataLabels = this.getAttribute("data-labels");
+
         options.plotOptions.area = {
             dataLabels: {
                 formatter: function() {
-                    return this.y + ' ' + this.getAttribute("suffix");
+                    return this.y + ' ' + suffix;
                 },
-                enabled: this.getAttribute("dataLabels")
+                enabled: dataLabels
             },
             marker: {
                 enabled: false,

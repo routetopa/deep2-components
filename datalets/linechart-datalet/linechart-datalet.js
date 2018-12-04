@@ -33,12 +33,15 @@ class LinechartDatalet extends BaseDatalet
 
         let options = await builder.build('line', this, data);
 
+        let suffix = this.getAttribute("suffix");
+        let dataLabels = this.getAttribute("data-labels");
+
         options.plotOptions.line = {
             dataLabels: {
                 formatter: function() {
-                    return this.y + ' ' + this.getAttribute("suffix");
+                    return this.y + ' ' + suffix;
                 },
-                enabled: this.getAttribute("dataLabels")
+                enabled: dataLabels
             }
         };
 

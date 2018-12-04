@@ -22,7 +22,7 @@ export const build = async function(type, context, data) {
         xAxis: {
             categories: data.categories,
             title: {
-                text: context.getAttribute("xAxisLabel")
+                text: context.getAttribute("x-axis-label")
             },
             labels: {
                 formatter: function () {
@@ -36,7 +36,7 @@ export const build = async function(type, context, data) {
         yAxis: {
             min: min,
             title: {
-                text: context.getAttribute("yAxisLabel"),
+                text: context.getAttribute("y-axis-label"),
             }
         },
         plotOptions: {
@@ -118,7 +118,7 @@ export const build = async function(type, context, data) {
 
         options.tooltip = {
             formatter: function () {
-                let s = '<b>' + C[this.x] + '</b>';
+                let s = '<b>' + data.categories[this.x] + '</b>';
                 this.points.forEach(function (point) {
                     s += '<br/><span style="color: ' + point.color + ';">\u25CF</span> ' + point.series.name + ': <b>' + point.y + ' ' + suffix + '</b> ';
                 });
