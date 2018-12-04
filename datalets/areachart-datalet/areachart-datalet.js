@@ -30,7 +30,7 @@ class AreachartDatalet extends BaseDatalet
 
         await this.import_module('../lib/vendors/highstock/highstock.js');
         await this.import_module('../lib/vendors/highstock/themes/themes.js');
-        const builder = await this.import_module('../lib/modules/HighChartsBuilder.js');
+        const builder = await this.import_module('AreaChartBuilder.js');
 
         builder.build('area', this, data);
     }
