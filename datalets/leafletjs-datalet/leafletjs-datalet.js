@@ -1,4 +1,4 @@
-import BaseDatalet from '../base-datalet/base-datalet.js';
+import BaseDatalet from '../base-datalet/_base-datalet.js';
 
 class LeafletDatalet extends BaseDatalet
 {
@@ -12,6 +12,7 @@ class LeafletDatalet extends BaseDatalet
         try {
             //{requestData:0}, {selectData:0}, {filterData:0}, {trasformData:0} -> [0, 0, 0, 0]
             this.set_behaviours(['../lib/modules/AjaxJsonAlasqlBehavior.js']);
+            this.export_to_img_doc = false;
         } catch (e) {
             console.log(e);
         }
