@@ -1,4 +1,4 @@
-import BaseDatalet from '../base-datalet/_base-datalet.js';
+import BaseDatalet from '../base-datalet/base-datalet.js';
 
 class LeafletDatalet extends BaseDatalet
 {
