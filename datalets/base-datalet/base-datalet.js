@@ -10,7 +10,7 @@ export default class BaseDatalet extends HTMLElement
         this.component = component;
         this.currentDocument = document.querySelector(`link[href*="${this.component}"]`).import;
         this.baseUri = this.currentDocument.baseURI.substring(0, this.currentDocument.baseURI.lastIndexOf("/") + 1);
-        this.is_dynamic_import_supported = this.is_dynamic_import_available();
+        this.dynamic_import_support = this.get_dynamic_import();
 
         // Create a Shadow DOM using our template
         this.shadow_root = this.attachShadow({mode: 'open'}); // con mode open è possibile accedere agli elementi DOM all'interno dello shadow DOM
@@ -121,11 +121,11 @@ export default class BaseDatalet extends HTMLElement
 
     async import_module(url)
     {
-        //TODO : something better than this  [exclude define, eval (inserted for ff support)]
+        //TODO : something better than this  [exclude define]
         let tmp = window.define;
         window.define = undefined;
         url = this.build_uri(url);
-        let mod = await (this.is_dynamic_import_supported ? eval(`import("${url}")`) : importModule(url));
+        let mod = await this.dynamic_import_support(url);
         window.define = tmp;
         return mod;
     }
@@ -534,13 +534,12 @@ export default class BaseDatalet extends HTMLElement
         return (path.indexOf('http') >= 0);
     }
 
-    is_dynamic_import_available()
+    get_dynamic_import()
     {
         try {
-            new Function('import("")');
-            return true;
+            return new Function('url', 'return import(url)');
         } catch (err) {
-            return false;
+            return importModule;
         }
     }
 
