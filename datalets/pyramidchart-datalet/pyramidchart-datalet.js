@@ -1,10 +1,10 @@
 import BaseDatalet from '../base-datalet/base-datalet.js';
 
-class PiechartDatalet extends BaseDatalet
+class PyramidchartDatalet extends BaseDatalet
 {
     constructor()
     {
-        super('piechart-datalet');
+        super('pyramidchart-datalet');
     }
 
     handle_behaviour()
@@ -20,15 +20,16 @@ class PiechartDatalet extends BaseDatalet
 
     template()
     {
-        const template = this.currentDocument.querySelector('#piechart-datalet');
+        const template = this.currentDocument.querySelector('#pyramidchart-datalet');
         return template.content.cloneNode(true);
     }
 
     async render(data)
     {
-        console.log('RENDER - piechart-datalet');
+        console.log('RENDER - pyramidchart-datalet');
 
         await this.import_module('../lib/vendors/highstock/highstock.js');
+        await this.import_module('https://code.highcharts.com/modules/funnel.js');
         const builder = await this.import_module('../lib/modules/HighChartsBuilder.js');
 
         let series = [{"name": data.data[1].name, "data": []}];
@@ -51,13 +52,9 @@ class PiechartDatalet extends BaseDatalet
         if(other[1] > 0)
             series[0].data.push(other);
 
-        let innerSize = 0;
-        if(this.getAttribute("donut") === "true")
-            innerSize = 100;
-
         data.series = series;
 
-        let options = await builder.build('pie', this, data);
+        let options = await builder.build('pyramid', this, data);
 
         let suffix = this.getAttribute("suffix");
         let dataLabels = this.getAttribute("data-labels");
@@ -66,14 +63,17 @@ class PiechartDatalet extends BaseDatalet
         options.tooltip = {
             valueSuffix: ' ' + suffix
         };
-        options.plotOptions.pie = {
-            innerSize: innerSize,
-            allowPointSelect: true,
-            cursor: 'pointer',
-            dataLabels: {
-                enabled: dataLabels,
-                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                color: (Highcharts[theme] && Highcharts[theme].contrastTextColor) || 'black',
+
+        options.plotOptions = {
+            series: {
+                dataLabels: {
+                    enabled: dataLabels,
+                    format: '<b>{point.name}</b> ({point.y:,.0f})',
+                    color: (Highcharts[theme] && Highcharts[theme].contrastTextColor) || 'black',
+                    softConnector: true
+                },
+                center: ['40%', '50%'],
+                width: '80%'
             }
         };
 
@@ -82,5 +82,5 @@ class PiechartDatalet extends BaseDatalet
 }
 
 
-const FrozenPiechartDatalet = Object.freeze(PiechartDatalet);
-window.customElements.define('piechart-datalet', FrozenPiechartDatalet);
+const FrozenPyramidchartDatalet = Object.freeze(PyramidchartDatalet);
+window.customElements.define('pyramidchart-datalet', FrozenPyramidchartDatalet);

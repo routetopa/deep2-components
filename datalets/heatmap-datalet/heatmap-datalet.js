@@ -30,7 +30,8 @@ class HeatpmapDatalet extends BaseDatalet
 
         await this.import_module('../lib/vendors/highstock/highstock.js');
         await this.import_module('../lib/vendors/highstock/heatmap.js');
-        await this.import_module('../lib/vendors/highstock/themes/themes.js');
+
+        const builder = await this.import_module('../lib/modules/HighChartsBuilder.js');
 
         let Xcategories = data.categories;
         let Ycategories = [];
@@ -58,79 +59,53 @@ class HeatpmapDatalet extends BaseDatalet
         else
             stops = [[0, '#FFFFFF'], [1, Highcharts.getOptions().colors[0]]];
 
-        let stockLimit = 20;
-        let l = data.series[0].data.length;
         let borderWidth = 1;
-        if (l > 20) {
-            //this._component.dataLabels = false;
+        if(data.series[0].data.length > 20)
             borderWidth = 0;
-        }
+
+        let options = await builder.build('heatmap', this, data);
 
         let suffix = this.getAttribute("suffix");
+        let dataLabels = this.getAttribute("data-labels");
+        let legend = this.getAttribute("legend");
 
-        let options = {
-            chart: {
-                type: 'heatmap',
-                zoomType: 'xy'
-            },
-
-            boost: {
-                useGPUTranslations: true
-            },
-
-            title: {
-                text: ''
-            },
-
-            xAxis: {
-                categories: Xcategories,
-                title: {
-                    text: this.getAttribute("xAxisLabel")
-                }
-            },
-
-            yAxis: {
-                categories: Ycategories,
-                title: {
-                    text: this.getAttribute("yAxisLabel")
-                }
-            },
-
-            colorAxis: {
-                stops: stops,
-                min: min,
-                max: max,
-            },
-
-            tooltip: {
-                formatter: function() {
-                    let s = '<span  style="color: #7cb5ec;">\u25CF</span> (' + this.series.yAxis.categories[this.point.y] + ', ' + this.series.xAxis.categories[this.point.x] + '): <b>' +  this.point.value + ' ' + suffix + '</b>';
-                    return s;
-                },
-                shared: true
-            },
-
-            series: [{
-                data: series,
-                boostThreshold: 100,
-                borderWidth: borderWidth,
-                nullColor: '#EFEFEF',
-//                        colsize: 100, // one day
-                dataLabels: {
-                    enabled:  this.getAttribute("dataLabels"),
-                    formatter: function() {
-                        return this.point.value + ' ' + suffix;
-                    }
-                },
-                turboThreshold: Number.MAX_VALUE // #3404, remove after 4.0.5 release
-            }],
-
-            credits: {
-                enabled: false
-            }
+        options.boost = {
+            useGPUTranslations: true
         };
 
-        if(this.getAttribute("legend") === "topRight")
+        options.xAxis.categories = Xcategories;
+
+        options.yAxis.categories = Xcategories;
+
+        options.colorAxis = {
+            stops: stops,
+            min: min,
+            max: max,
+        };
+
+        options.tooltip = {
+            formatter: function() {
+                let s = '<span  style="color: #7cb5ec;">\u25CF</span> (' + this.series.yAxis.categories[this.point.y] + ', ' + this.series.xAxis.categories[this.point.x] + '): <b>' +  this.point.value + ' ' + suffix + '</b>';
+                return s;
+            },
+            shared: true
+        };
+
+        options.series = [{
+            data: series,
+            boostThreshold: 100,
+            borderWidth: borderWidth,
+            nullColor: '#EFEFEF',
+            dataLabels: {
+                enabled:  dataLabels,
+                formatter: function() {
+                    return this.point.value + ' ' + suffix;
+                }
+            },
+            turboThreshold: Number.MAX_VALUE // #3404, remove after 4.0.5 release
+        }];
+
+        if (legend === "topRight") {
             options.legend = {
                 layout: 'vertical',
                 verticalAlign: 'top',
@@ -139,23 +114,11 @@ class HeatpmapDatalet extends BaseDatalet
                 y: 28,
                 symbolHeight: 280
             };
-        else if(this.getAttribute("legend") === "bottom")
-            options.legend = {
-                enabled: true
-            };
-        else
-            options.legend ={
-                enabled: false
-            };
-
-        //if(this.getAttribute("theme") !== "themeBase" && this.getAttribute("theme") !== "")
-            //jQuery.extend(true, options, Highcharts[this.getAttribute("theme")]);
+        }
 
         Highcharts.chart(this.shadowRoot.querySelector('#datalet_container'), options);
-
     }
 }
-
 
 const FrozenHeatpmapDatalet = Object.freeze(HeatpmapDatalet);
 window.customElements.define('heatmap-datalet', FrozenHeatpmapDatalet);

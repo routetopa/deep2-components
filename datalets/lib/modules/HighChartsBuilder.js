@@ -1,5 +1,19 @@
 export const build = async function(type, context, data) {
 
+    if(!data.series) {
+        return {
+            title: {
+                text: '' //context.getAttribute("datalettitle")
+            },
+            exporting: {
+                enabled: false
+            },
+            credits: {
+                enabled: false
+            }
+        };
+    }
+
     let min = 0;
     for (let i in data.series.value)
         min = Math.min(Math.min.apply(Math, data.series.value[i].data), min);
@@ -79,7 +93,7 @@ export const build = async function(type, context, data) {
     if(data.series[0].data.length > 20) { // stockLimit --> area/bar/column/line
         let l = data.series[0].data.length;
         options.rangeSelector = {
-            selected: 4,
+            selected: 0,
             inputEnabled: false,
             buttons: [
                 {
@@ -151,7 +165,7 @@ export const build = async function(type, context, data) {
 
     // THEME
 
-    if(theme != "themeBase" && theme != "") {
+    if(theme && theme != "" && theme != "themeBase") {
         await context.import_module('../lib/vendors/highstock/themes/themes.js');
         options = context.merge_deep(options, Highcharts[theme]);
         options.legend.backgroundColor = Highcharts[theme].legendBackgroundColor || '#FFFFFF';

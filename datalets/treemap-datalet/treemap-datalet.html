@@ -1,55 +1,5 @@
 <!-- BASE DATALET -->
 <link rel="import" href="../base-datalet/base-datalet.html">
 
-<template id="treemap-datalet">
-
-    <style>
-
-        text {
-            pointer-events: none;
-        }
-
-        .grandparent text {
-            font-weight: bold;
-        }
-
-        rect {
-            fill: none;
-            stroke: #fff;
-        }
-
-        rect.parent {
-            stroke-width: 2px;
-        }
-
-        .grandparent rect {
-            fill: orange;
-        }
-
-        .grandparent:hover rect {
-            fill: #ee9700;
-        }
-
-        .children rect.parent {
-            cursor: pointer;
-        }
-
-        .grandparent rect {
-            stroke-width: 2px;
-            cursor: pointer;
-        }
-
-        .children rect.parent {
-            fill: #bbb;
-            -fill-opacity: .5;
-            fill-opacity: 1;
-        }
-
-        .children:hover rect.child {
-            fill: #bbb;
-        }
-    </style>
-
-    <script src="../lib/vendors/d3js/d3.js"></script>
-</template>
+<template id="treemap-datalet"></template>
 <script  type="module" src="./treemap-datalet.js"></script>

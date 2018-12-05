@@ -5,19 +5,15 @@ class TreemapDatalet extends BaseDatalet
     constructor()
     {
         super('treemap-datalet');
-        this.map = {name : '', children : []};
     }
 
-    async handle_behaviour()
+    handle_behaviour()
     {
-        try
-        {
-            if(!this.thereis_jQuery())
-                await this.import_module('../lib/vendors/jquery/jquery.js');
-
+        try {
             //{requestData:0}, {selectData:0}, {filterData:0}, {trasformData:0} -> [0, 0, 0, 0]
             this.set_behaviours(['../lib/modules/AjaxJsonAlasqlBehavior.js', {transformData: this.transformData}], [0,0,0,1]);
         } catch (e) {
+            console.log("ERROR");
             console.log(e);
         }
     }
@@ -28,71 +24,157 @@ class TreemapDatalet extends BaseDatalet
         return template.content.cloneNode(true);
     }
 
-    transformData(data, fields)
+    transformData(data, selectedFields)
     {
-        let findChild = function(child, category)
-        {
-            let children = child.children;
-            for (let i=0; i<children.length; i++) {
-                if (children[i].name === category)
-                    return children[i];
-            }
-            let nchild = {name : category , children : []};
-            children.push(nchild);
-            return nchild;
-        };
+        if (data.length === 0)
+            return;
 
-        let checkAggragationField = function(object, levels, value_index, map)
-        {
-            let curchild = map;
-            let keys = Object.keys(object);
-            for(let level= 0; level < levels; level++)
-            {
-                let child = findChild(curchild, object[keys[level]]);
-                curchild = child;
-            }
+        let _data = [];
+        let colors = ["#8dd3c7","#ffffb3","#bebada","#fb8072","#80b1d3","#fdb462","#b3de69","#fccde5","#d9d9d9","#bc80bd","#ccebc5","#ffed6f"];
+        let cat;
 
-            if (curchild.value === undefined)
-                curchild.value = 0;
-
-            let value = curchild.value + parseFloat(object[keys[value_index]]);
-            curchild.children = null;
-            curchild.value = value;
-        };
-
-        let treemapData = [];
-
-        for (let i = 0; i < data.length; i++)
-        {
-            let propName = data[i].name;
-
-            for (let j = 0; j < data[i].data.length; j++)
-            {
-                if (i === 0) treemapData[j] = {};
-                let currObj = {};
-                currObj[propName] = data[i].data[j];
-                jQuery.extend(treemapData[j], currObj);
+        for(let i = 0; i < data.length; i++) {
+            cat = [];
+            for(let j = 0; j < data[i].data.length; j++) { //max 1000
+                let catIndex = cat.indexOf(data[i].data[j]);
+                if(catIndex == -1) {
+                    cat.push(data[i].data[j]);
+                    _data.push({
+                        parent: (i > 0) ? data[i-1].data[j] : null,
+                        id: data[i].data[j],
+                        name: data[i].data[j],
+                        color: colors[(cat.length-1) % colors.length],
+                        value: 0
+                    })
+                } else {
+                    _data[catIndex].value++;
+                }
             }
         }
 
-        this.map.children = [];
+        let categories;
+        let series;
 
-        for(let i = 0; i < treemapData.length; i++)
-            checkAggragationField(treemapData[i], data.length , data.length - 1, this.map);
+        selectedFields = JSON.parse(selectedFields);
+
+        let inputs = [];
+        if (selectedFields) { /*if deprecated*/
+            for (let i = 0; i < selectedFields.length; i++)
+                if (selectedFields[i])
+                    inputs.push(selectedFields[i].field);
+        }
+
+        let cat_index = inputs.indexOf("Categories");
+
+        if (cat_index === -1)
+        {
+            categories = data[0].data;
+            series = [];
+            for (let i = 1; i < data.length; i++)
+                series.push(data[i]);
+        } else {
+            let x = data[0]["data"];
+            let y = data[1]["data"];
+            let cat = data[cat_index]["data"];
+
+            categories = x.filter(function (item, pos) {
+                return x.indexOf(item) === pos;
+            });
+
+            let s = cat.filter(function (item, pos) {
+                return cat.indexOf(item) === pos;
+            });
+
+            series = [];
+            for (let i = 0; i < s.length; i++) {
+                series.push({name: s[i], data: new Array(categories.length + 1).join('0').split('').map(parseFloat)});
+            }
+
+            for (let i = 0; i < y.length; i++) {
+                let index = categories.indexOf(x[i]);
+                let s = series.filter(function (obj) {
+                    return obj.name === cat[i];
+                });
+                s[0]["data"][index] = y[i];
+            }
+        }
+
+        return {data:_data};
     };
 
     async render(data)
     {
         console.log('RENDER - treemap-datalet');
 
-        this.map.name = this.getAttribute('datalettitle');
+        await this.import_module('../lib/vendors/highstock/highstock.js');
+        await this.import_module('https://code.highcharts.com/modules/treemap.js');
 
-        let builder = await this.import_module('./js/buildtreemap.js');
+        const builder = await this.import_module('../lib/modules/HighChartsBuilder.js');
 
-        builder.default(this.map, this.shadowRoot.querySelector('#datalet_container'));
+        let options = await builder.build('heatmap', this, data);
+
+        let dataLabels = this.getAttribute("data-labels");
+
+        delete options.tooltip;
+
+        // options.series = [{
+        //     type: "treemap",
+        //     layoutAlgorithm: 'stripes',
+        //     alternateStartingDirection: true,
+        //     levels: [{
+        //         level: 1,
+        //         layoutAlgorithm: 'sliceAndDice',
+        //         dataLabels: {
+        //             enabled: dataLabels,
+        //             align: 'left',
+        //             verticalAlign: 'top',
+        //             style: {
+        //                 fontSize: '15px',
+        //                 fontWeight: 'bold'
+        //             }
+        //         }
+        //     }],
+        //     data: data.data
+        // }];
+
+        options.series = [{
+            type: 'treemap',
+            layoutAlgorithm: 'squarified',
+            allowDrillToNode: true,
+            animationLimit: 1000,
+            dataLabels: {
+                enabled: dataLabels
+            },
+            levelIsConstant: false,
+            levels: [{
+                level: 1,
+                dataLabels: {
+                    enabled: dataLabels
+                },
+                borderWidth: 3
+            }],
+            data: data.data
+        }];
+
+        Highcharts.chart(this.shadowRoot.querySelector('#datalet_container'), options);
     }
 }
 
-
 const FrozenTreemapDatalet = Object.freeze(TreemapDatalet);
 window.customElements.define('treemap-datalet', FrozenTreemapDatalet);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

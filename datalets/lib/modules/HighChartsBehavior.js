@@ -51,5 +51,4 @@ export const transformData = function (data, selectedFields) {
     }
 
     return {data:data, categories:categories, series:series};
-
 };
