@@ -1,4 +1,9 @@
 import BaseDatalet from '../base-datalet/base-datalet.js';
+import * as AjaxJsonAlasqlBehavior from '../lib/modules/AjaxJsonAlasqlBehavior.js';
+import * as HighChartsBehavior from '../lib/modules/HighChartsBehavior.js';
+import '../lib/vendors/highcharts/highstock.js';
+import '../lib/vendors/highcharts/highcharts-more.js';
+import '../lib/vendors/highcharts/themes/themes.js';
 
 class BubblechartDatalet extends BaseDatalet
 {
@@ -11,7 +16,7 @@ class BubblechartDatalet extends BaseDatalet
     {
         try {
             //{requestData:0}, {selectData:0}, {filterData:0}, {trasformData:0} -> [0, 0, 0, 0]
-            this.set_behaviours(['../lib/modules/AjaxJsonAlasqlBehavior.js', '../lib/modules/HighChartsBehavior.js'], [0, 0, 0, 1]);
+            this.set_behaviours([AjaxJsonAlasqlBehavior, HighChartsBehavior], [0, 0, 0, 1]);
         } catch (e) {
             console.log("ERROR");
             console.log(e);
@@ -27,10 +32,6 @@ class BubblechartDatalet extends BaseDatalet
     async render(data)
     {
         console.log('RENDER - bubblechart-datalet');
-
-        await this.import_module('../lib/vendors/highstock/highstock.js');
-        await this.import_module('../lib/vendors/highstock/highcharts-more.js');
-        await this.import_module('../lib/vendors/highstock/themes/themes.js');
 
         let properties_series;
 

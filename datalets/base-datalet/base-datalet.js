@@ -121,12 +121,11 @@ export default class BaseDatalet extends HTMLElement
 
     async import_module(url)
     {
-        //TODO : something better than this  [exclude define]
-        let tmp = window.define;
+        //TODO : something better than this [exclude define]
+        let define = window.define;
         window.define = undefined;
-        url = this.build_uri(url);
-        let mod = await this.dynamic_import_support(url);
-        window.define = tmp;
+        let mod = await this.dynamic_import_support(this.build_uri(url));
+        window.define = define;
         return mod;
     }
 

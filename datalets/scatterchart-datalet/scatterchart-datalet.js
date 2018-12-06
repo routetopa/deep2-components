@@ -1,4 +1,7 @@
 import BaseDatalet from '../base-datalet/base-datalet.js';
+import * as AjaxJsonAlasqlBehavior from '../lib/modules/AjaxJsonAlasqlBehavior.js';
+import * as HighChartsBehavior from '../lib/modules/HighChartsBehavior.js';
+import '../lib/vendors/highcharts/highstock.js';
 
 class ScatterchartDatalet extends BaseDatalet
 {
@@ -11,7 +14,7 @@ class ScatterchartDatalet extends BaseDatalet
     {
         try {
             //{requestData:0}, {selectData:0}, {filterData:0}, {trasformData:0} -> [0, 0, 0, 0]
-            this.set_behaviours(['../lib/modules/AjaxJsonAlasqlBehavior.js', '../lib/modules/HighChartsBehavior.js'], [0, 0, 0, 1]);
+            this.set_behaviours([AjaxJsonAlasqlBehavior, HighChartsBehavior], [0, 0, 0, 1]);
         } catch (e) {
             console.log("ERROR");
             console.log(e);
@@ -27,9 +30,6 @@ class ScatterchartDatalet extends BaseDatalet
     async render(data)
     {
         console.log('RENDER - scatterchart-datalet');
-
-        await this.import_module('../lib/vendors/highstock/highstock.js');
-        await this.import_module('../lib/vendors/highstock/themes/themes.js');
 
         let properties_series;
 
@@ -124,9 +124,6 @@ class ScatterchartDatalet extends BaseDatalet
             options.legend = {
                 enabled: false
             };
-
-        //if (this.getAttribute("theme") !== "themeBase" && this.getAttribute("theme") !== "")
-            //Object.assign(options, Highcharts[this.getAttribute("theme")]);
 
         Highcharts.chart(this.shadowRoot.querySelector('#datalet_container'), options);
     }

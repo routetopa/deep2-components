@@ -1,4 +1,9 @@
 import BaseDatalet from '../base-datalet/base-datalet.js';
+import * as AjaxJsonAlasqlBehavior from '../lib/modules/AjaxJsonAlasqlBehavior.js';
+import * as HighMapsBehavior from '../lib/modules/HighMapsBehavior.js';
+import '../lib/vendors/highcharts/highstock.js';
+import '../lib/vendors/highmaps/js/map.js';
+import '../lib/vendors/highmaps/themes/themes.js';
 
 class ItalymapDatalet extends BaseDatalet
 {
@@ -11,7 +16,7 @@ class ItalymapDatalet extends BaseDatalet
     {
         try {
             //{requestData:0}, {selectData:0}, {filterData:0}, {trasformData:0} -> [0, 0, 0, 0]
-            this.set_behaviours(['../lib/modules/AjaxJsonAlasqlBehavior.js', '../lib/modules/HighMapsBehavior.js'], [0, 0, 0, 1]);
+            this.set_behaviours([AjaxJsonAlasqlBehavior, HighMapsBehavior], [0, 0, 0, 1]);
         } catch (e) {
             console.log("ERROR");
             console.log(e);
@@ -27,10 +32,6 @@ class ItalymapDatalet extends BaseDatalet
     async render(data)
     {
         console.log('RENDER - italymap-datalet');
-
-        await this.import_module('../lib/vendors/highstock/highstock.js');
-        await this.import_module('../lib/vendors/highmaps/js/map.js');
-        await this.import_module('../lib/vendors/highmaps/themes/themes.js');
 
         let mapIndex = this.getAttribute("map").split("_")[0];
         let map;

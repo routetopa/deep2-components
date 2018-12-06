@@ -1,4 +1,6 @@
 import BaseDatalet from '../base-datalet/base-datalet.js';
+import * as AjaxJsonAlasqlBehavior from '../lib/modules/AjaxJsonAlasqlBehavior.js';
+import './leafletjs/leaflet.js';
 
 class LeafletGeoJsonDatalet extends BaseDatalet
 {
@@ -11,7 +13,7 @@ class LeafletGeoJsonDatalet extends BaseDatalet
     {
         try {
             //{requestData:0}, {selectData:0}, {filterData:0}, {trasformData:0} -> [0, 0, 0, 0]
-            this.set_behaviours(['../lib/modules/AjaxJsonAlasqlBehavior.js']);
+            this.set_behaviours([AjaxJsonAlasqlBehavior]);
         } catch (e) {
             console.log(e);
         }
@@ -29,8 +31,6 @@ class LeafletGeoJsonDatalet extends BaseDatalet
 
         try
         {
-            await this.import_module('./leafletjs/leaflet.js');
-
             let map = L.map(this.shadowRoot.querySelector('#datalet_container')).setView([0, 0], 13, {reset: true});
 
             L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -38,7 +38,7 @@ class LeafletGeoJsonDatalet extends BaseDatalet
                 attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
             }).addTo(map);
 
-            L.Icon.Default.imagePath = 'http://services.routetopa.eu/DEEalerProvider/COMPONENTS/datalets/leafletjs-datalet/leafletsjs/images/';
+            L.Icon.Default.imagePath = `${this.baseUri}leafletjs/images/`;
 
             let geo_layer = L.geoJson();
             let geo;

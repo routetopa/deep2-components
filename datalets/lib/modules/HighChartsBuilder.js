@@ -165,8 +165,8 @@ export const build = async function(type, context, data) {
 
     // THEME
 
-    if(theme && theme != "" && theme != "themeBase") {
-        await context.import_module('../lib/vendors/highstock/themes/themes.js');
+    if(theme && theme !== "" && theme !== "themeBase") {
+        await context.import_module('../lib/vendors/highcharts/themes/themes.js');
         options = context.merge_deep(options, Highcharts[theme]);
         options.legend.backgroundColor = Highcharts[theme].legendBackgroundColor || '#FFFFFF';
     }

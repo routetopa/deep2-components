@@ -1,4 +1,6 @@
 import BaseDatalet from '../base-datalet/base-datalet.js';
+import * as AjaxJsonAlasqlBehavior from '../lib/modules/AjaxJsonAlasqlBehavior.js';
+import './leafletjs/leaflet.js';
 
 class LeafletDatalet extends BaseDatalet
 {
@@ -11,7 +13,7 @@ class LeafletDatalet extends BaseDatalet
     {
         try {
             //{requestData:0}, {selectData:0}, {filterData:0}, {trasformData:0} -> [0, 0, 0, 0]
-            this.set_behaviours(['../lib/modules/AjaxJsonAlasqlBehavior.js']);
+            this.set_behaviours([AjaxJsonAlasqlBehavior]);
             this.export_to_img_doc = false;
         } catch (e) {
             console.log(e);
@@ -28,7 +30,6 @@ class LeafletDatalet extends BaseDatalet
     {
         console.log('RENDER - leafletjs-datalet');
 
-        await this.import_module('./leafletjs/leaflet.js');
         await this.import_module('./leafletjs/marker_cluster/dist/leaflet.markercluster.js');
 
         let map;

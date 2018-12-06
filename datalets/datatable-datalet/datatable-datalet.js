@@ -1,4 +1,5 @@
 import BaseDatalet from '../base-datalet/base-datalet.js';
+import * as AjaxJsonAlasqlBehavior from '../lib/modules/AjaxJsonAlasqlBehavior.js';
 
 class DatatableDatalet extends BaseDatalet
 {
@@ -11,7 +12,7 @@ class DatatableDatalet extends BaseDatalet
     {
         try {
             //{requestData:0}, {selectData:0}, {filterData:0}, {trasformData:0} -> [0, 0, 0, 0]
-            this.set_behaviours(['../lib/modules/AjaxJsonAlasqlBehavior.js'], [0, 0, 0, 0]);
+            this.set_behaviours([AjaxJsonAlasqlBehavior], [0, 0, 0, 0]);
         } catch (e) {
             console.log("ERROR");
             console.log(e);

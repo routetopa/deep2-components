@@ -1,4 +1,5 @@
 import BaseDatalet from '../base-datalet/base-datalet.js';
+import * as AjaxJsonAlasqlBehavior from '../lib/modules/AjaxJsonAlasqlBehavior.js';
 
 class TimelineDatalet extends BaseDatalet {
     constructor() {
