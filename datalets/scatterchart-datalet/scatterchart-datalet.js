@@ -29,7 +29,7 @@ class ScatterchartDatalet extends BaseDatalet
     }
 
     async render(data)
-    {debugger
+    {
         console.log('RENDER - scatterchart-datalet');
 
         let properties_series;
