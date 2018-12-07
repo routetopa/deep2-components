@@ -212,7 +212,7 @@ export default class BaseDatalet extends HTMLElement
 
     handle_behaviour()
     {
-        throw new Error("handle_behaviour method not implemented");
+        throw new Error("Render method not implemented");
     }
 
     render()

@@ -24,7 +24,7 @@
 
             <neon-animatable>
 
-                <select-visualization-controllet id="select_visualization" deep-url={{deepUrl}} datalets-list-url={{dataletsListUrl}}></select-visualization-controllet>
+                <select-visualization-controllet id="select_visualization" deep-url={{deepUrl}} components-url={{componentsUrl}} datalets-list-url={{dataletsListUrl}}></select-visualization-controllet>
 
             </neon-animatable>
 
@@ -58,6 +58,11 @@
                 },
 
                 deepUrl : {
+                    type : String,
+                    value : undefined
+                },
+
+                componentsUrl : {
                     type : String,
                     value : undefined
                 },
