@@ -1,10 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html"/>
 <link rel="import" href="../../bower_components/paper-card/paper-card.html"/>
 <link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
-<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html"/>
-<link rel="import" href="../../bower_components/paper-button/paper-button.html"/>
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html"/>
-<link rel="import" href="../../bower_components/iron-icon/image-icons.html"/>
 <link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
 
 <script src="../../locales/cocreation_paper_card_ln.js"></script>
@@ -13,73 +10,71 @@
 
     <template>
         <style>
-
             #card_container {
-                height: 200px;
-                width: 300px;
-                margin-top: 32px;
-                margin-left: 32px;
-                margin-right: -3.7px;
+                height: 153px;
+                width: 288px;
+                margin-top: 24px;
+                margin-left: 24px;
+                /*margin-right: -3.7px;*/
+                cursor: pointer;
             }
 
             #card_container * {
                 font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-                font-size: 16px;
-                line-height: 24px;
+                /*font-size: 16px;*/
+                /*line-height: 24px;*/
             }
 
             .card-content {
-                padding: 12px;
-                height: 103px;
-                /*overflow: hidden;*/
+                padding: 8px;
                 background: #E0E0E0;
             }
 
             .card-actions {
-                padding: 12px;
-                height: 48px;
-                /*border-color: #2196F3;*/
-                /*border-color: #4CAF50;*/
+                padding: 8px;
+                /*cursor: pointer;*/
             }
 
-            paper-button {
+            .owner {
+                display: flex;
+                flex-direction: row;
+                height: 40px;
+            }
+
+            .ow_avatar {
+                padding: 0;
+            }
+
+            .owner_name {
+                height: 40px;
+                line-height: 40px !important;
+                font-size: 16px;
+                padding-left: 12px;
+                /*font-weight: 700;*/
+            }
+
+            .room_description {
+                font-size: 12px;
+                line-height: 16px;
+                overflow: hidden;
                 height: 48px;
-                width: 136px;/*+2*/
-                padding: 12px;
-                margin: 0;
+                padding-top: 8px;
+            }
+
+            #c_name {
+                height: 24px;
+                font-size: 16px;
+                line-height: 24px;
                 font-weight: 700;
 
-                background: #FFFFFF;
-                color: #000000;
-                --paper-button-ink-color: #00BCD4;
-            }
-
-            paper-button.info {
-                cursor: help;
-                float: right;
-            }
-
-            paper-button.info:hover {
-                color: #000000;
-            }
-
-            paper-button:hover {
-                color: #00BCD4;
-            }
-
-            paper-icon-button[icon="info-outline"] {
-                cursor: help;
-                float: right;
-
-                height: 48px;
-                width: 48px;
-                padding: 8px;
-                color: #000000;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
             }
 
             paper-tooltip {
-                min-width: 400px;
-                --paper-tooltip-background: black;
+                min-width: 300px;
+                --paper-tooltip-background: rgba(0, 0, 0, 0.8);
             }
 
             paper-fab {
@@ -94,66 +89,12 @@
                 --iron-icon-width: 18px;
                 width: 24px;
                 height: 24px;
+                color: #FFFFFF;
                 --paper-fab-background:#B6B6B6;
                 padding: 0px;
             }
-
-            #card_container br {
-                display: block;
-                margin-top: 8px;
-                content: " ";
-            }
-
-            #card_container p {
-                margin: 0;
-                padding: 0;
-            }
-
-            #card_container p .title{
-                font-weight: 700;
-                /*color: #2196F3;*/
-                /*color: #4CAF50;*/
-                white-space: nowrap;
-            }
-
-            #card_container p .description{
-            }
-
-            #card_container .name{
-                font-size: 18px;
-                font-weight: 700;
-                /*color: #2196F3;*/
-                /*color: #4CAF50;*/
-                height: 32px;
-
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-            }
-
-            #card_container .owner{
-                font-size: 14px;
-                height: 47px;
-
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-            }
-
-            #card_container .time{
-                display: flex;
-                flex-direction: row;
-                height: 24px;
-            }
-
-            #card_container .from {
-                width: 50%;
-                font-size: 12px;
-            }
-
-            #card_container .to {
-                width: 50%;
-                font-size: 12px;
+            paper-fab.delete:hover {
+                background: #F44336;
             }
 
             paper-fab.assessment,
@@ -162,7 +103,7 @@
             paper-fab.collections{
                 bottom: -20px;
                 right: 12px;
-                cursor: auto;
+                /*cursor: auto;*/
             }
 
             paper-fab.description {
@@ -181,54 +122,62 @@
                 background: #FF0206;
             }
 
+            #card_container p {
+                margin: 0;
+                padding: 0;
+
+                line-height: 24px;
+                font-size: 16px;
+            }
+
+            #card_container p .title{
+                font-weight: 700;
+                /*white-space: nowrap;*/
+            }
+
+            #card_container p .description{
+            }
         </style>
 
-        <paper-card id="card_container">
-                <div class="card-content">
-                    <template is="dom-if" if="{{isOwner}}">
-                        <paper-fab id="card_delete" class="delete" mini icon="delete" on-click="_handleDeleteClick"></paper-fab>
-                    </template>
-                    <div id="c_name" class="name" style$="color: {{color}};">{{name}}</div>
-                    <paper-tooltip for="c_name" position="bottom" offset="-8">
-                        <p>
-                            <span class="title" style$="color: {{color}};">{{name}}</span>
-                        </p>
-                    </paper-tooltip>
-                    <div class="owner">{{owner}}</div>
-                    <div class="time">
-                        <div class="from">
-                            <iron-icon class="icon-from" icon="alarm"></iron-icon>&nbsp; {{from}}
-                        </div>
-                        <div class="to">
-                            <iron-icon class="icon-to" icon="alarm-off"></iron-icon>&nbsp; {{to}}
-                        </div>
-                    </div>
-                    <template is="dom-if" if="{{_checkDataRoom(roomType)}}">
-                        <paper-fab mini icon="assessment" class="assessment" noink></paper-fab>
-                    </template>
-                    <template is="dom-if" if="{{_checkKnowledgeRoom(roomType)}}">
-                        <paper-fab mini icon="description" class="description" noink></paper-fab>
-                    </template>
-                    <template is="dom-if" if="{{_checkMediaRoom(roomType)}}">
-                        <paper-fab mini icon="image:collections" class="collections" noink></paper-fab>
-                    </template>
-                    <template is="dom-if" if="{{_checkCommentariumRoom(roomType)}}">
-                        <paper-fab mini icon="chrome-reader-mode" class="chrome-reader-mode" noink></paper-fab>
-                    </template>
-                </div>
-                <div class="card-actions" style$="border-color: {{color}};">
-                    <paper-button on-click="_onExplore"><span id="explore"></span></paper-button>
-                    <paper-button id="goal_button" class="info" noink><span id="goal"></span></paper-button>
-                    <!--<paper-icon-button id="goal_button" icon="info-outline" noink></paper-icon-button>-->
+        <paper-card id="card_container" on-click="_onExplore">
+            <div class="card-content">
+                <template is="dom-if" if="{{isOwner}}">
+                    <paper-fab id="card_delete" class="delete" mini icon="delete" on-click="_handleDeleteClick"></paper-fab>
+                </template>
 
-                    <paper-tooltip for="goal_button" position="bottom" offset="-8">
-                        <p>
-                            <span class="title" style$="color: {{color}};" id="tooltip_goal"></span>
-                            <br>
-                            <span class="description">{{goal}}</span>
-                        </p>
-                    </paper-tooltip>
+                <div class="owner">
+                    <div class="ow_avatar style-scope" title="{{owner}}"><a class="style-scope" href="{{ownerUrl}}"><img alt="" style="max-width: 100%;" class="style-scope dataset-table-controllet" src="{{ownerSrc}}"></a></div>
+                    <div class="owner_name">{{owner}}</div>
                 </div>
+
+                <div id="c_description" class="room_description">{{description}}</div>
+                <paper-tooltip for="c_description" position="bottom" offset="-8">
+                    <p>
+                        <span class="title" style$="color: {{color}};">{{description}}</span>
+                    </p>
+                </paper-tooltip>
+
+                <template is="dom-if" if="{{_checkDataRoom(roomType)}}">
+                    <paper-fab on-click="_onExplore" mini icon="assessment" class="assessment" noink></paper-fab>
+                </template>
+                <template is="dom-if" if="{{_checkKnowledgeRoom(roomType)}}">
+                    <paper-fab on-click="_onExplore" mini icon="description" class="description" noink></paper-fab>
+                </template>
+                <template is="dom-if" if="{{_checkMediaRoom(roomType)}}">
+                    <paper-fab on-click="_onExplore" mini icon="image:collections" class="collections" noink></paper-fab>
+                </template>
+                <template is="dom-if" if="{{_checkCommentariumRoom(roomType)}}">
+                    <paper-fab on-click="_onExplore" mini icon="chrome-reader-mode" class="chrome-reader-mode" noink></paper-fab>
+                </template>
+            </div>
+            <div class="card-actions" style$="border-color: {{color}};">
+                <div id="c_name" class="name" style$="color: {{color}};">{{name}}</div>
+                <paper-tooltip for="c_name" position="bottom" offset="-8">
+                    <p>
+                        <span class="title" style$="color: {{color}};">{{name}}</span>
+                    </p>
+                </paper-tooltip>
+            </div>
         </paper-card>
 
     </template>
@@ -296,9 +245,9 @@
             attached: function(){
                 cocreation_room_ln["ln"] = ODE.user_language;
 
-                this.$.goal.innerHTML = cocreation_room_ln["goal_" + cocreation_room_ln["ln"]];
-                this.$.tooltip_goal.innerHTML = cocreation_room_ln["goal_" + cocreation_room_ln["ln"]];
-                this.$.explore.innerHTML = cocreation_room_ln["explore_" + cocreation_room_ln["ln"]];
+//                this.$.goal.innerHTML = cocreation_room_ln["goal_" + cocreation_room_ln["ln"]];
+//                this.$.tooltip_goal.innerHTML = cocreation_room_ln["goal_" + cocreation_room_ln["ln"]];
+//                this.$.explore.innerHTML = cocreation_room_ln["explore_" + cocreation_room_ln["ln"]];
             },
 
             _handleDeleteClick: function(){

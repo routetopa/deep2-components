@@ -2,6 +2,7 @@ import BaseDatalet from '../base-datalet/base-datalet.js';
 import * as AjaxJsonAlasqlBehavior from '../lib/modules/AjaxJsonAlasqlBehavior.js';
 import * as HighChartsBehavior from '../lib/modules/HighChartsBehavior.js';
 import '../lib/vendors/highcharts/highstock.js';
+import * as builder from '../lib/modules/HighChartsBuilder.js';
 
 class ScatterchartDatalet extends BaseDatalet
 {
@@ -28,7 +29,7 @@ class ScatterchartDatalet extends BaseDatalet
     }
 
     async render(data)
-    {
+    {debugger
         console.log('RENDER - scatterchart-datalet');
 
         let properties_series;
@@ -73,57 +74,10 @@ class ScatterchartDatalet extends BaseDatalet
             properties_series = scatterSeries;
         }
 
-        let options = {
-            chart: {
-                type: 'scatter',
-                zoomType: 'xy'
-            },
-            title: {
-                text: ''
-            },
-            xAxis: {
-                title: {
-                    text: this.getAttribute("xAxisLabel")
-                }
-            },
-            yAxis: {
-                title: {
-                    text: this.getAttribute("yAxisLabel")
-                }
-            },
-            plotOptions: {
-                scatter: {
-                    dataLabels: {
-                        enabled: this.getAttribute("dataLabels")
-                    }
-                },
-            },
-            credits: {
-                enabled: false
-            },
-            series: properties_series
-        };
+        let options = await builder.build('scatter', this, data);
 
-        if (this.getAttribute("legend") === "topRight")
-            options.legend = {
-                layout: 'vertical',
-                verticalAlign: 'top',
-                align: 'right',
-                x: -4,
-                y: 4,
-                floating: true,
-                borderWidth: 1,
-                backgroundColor: ((Highcharts[this.getAttribute("theme")] && Highcharts[this.getAttribute("theme")].legendBackgroundColor) || '#FFFFFF'),
-                shadow: true
-            };
-        else if (this.getAttribute("legend") === "bottom")
-            options.legend = {
-                enabled: true
-            };
-        else
-            options.legend = {
-                enabled: false
-            };
+        options.series = properties_series;
+        delete options.tooltip;
 
         Highcharts.chart(this.shadowRoot.querySelector('#datalet_container'), options);
     }
