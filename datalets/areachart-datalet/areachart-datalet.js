@@ -57,7 +57,7 @@ class AreachartDatalet extends BaseDatalet
         };
 
         if(data.series[0].data.length > 20)
-            Highcharts.stockChart(context.shadowRoot.querySelector('#datalet_container'), options);
+            Highcharts.stockChart(this.shadowRoot.querySelector('#datalet_container'), options);
         else
             Highcharts.chart(this.shadowRoot.querySelector('#datalet_container'), options);
     }
