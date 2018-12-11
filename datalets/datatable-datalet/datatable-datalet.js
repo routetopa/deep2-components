@@ -30,9 +30,9 @@ class DatatableDatalet extends BaseDatalet
         console.log('RENDER - datatable-datalet');
 
         if (!this.thereis_jQuery())
-                await this.import_module('../lib/vendors/jquery/jquery.js');
+            await this.import_module('../lib/vendors/jquery/jquery.js');
 
-        await this.import_module('./js/DataTables-1.10.16/js/jquery.dataTables.js');
+        await this.import_module('./js/DataTables/datatables.js');
 
         let html = '<table id="datatable" class="stripe row-border" cellspacing="0" style="height: auto; width: auto;">';
 
