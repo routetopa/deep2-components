@@ -1,8 +1,6 @@
 import BaseDatalet from '../base-datalet/base-datalet.js';
 import * as AjaxJsonAlasqlBehavior from '../lib/modules/AjaxJsonAlasqlBehavior.js';
 import * as HighChartsBehavior from '../lib/modules/HighChartsBehavior.js';
-import '../lib/vendors/highcharts/highstock.js';
-import '../lib/vendors/highcharts/funnel.js';
 import * as builder from '../lib/modules/HighChartsBuilder.js';
 
 class PyramidchartDatalet extends BaseDatalet
@@ -31,7 +29,10 @@ class PyramidchartDatalet extends BaseDatalet
 
     async render(data)
     {
-        console.log('RENDER - pyramidchart-datalet');
+        //console.log('RENDER - pyramidchart-datalet');
+
+        await this.import_module('../lib/vendors/highcharts/highstock.js');
+        await this.import_module('../lib/vendors/highcharts/funnel.js');
 
         let series = [{"name": data.data[1].name, "data": []}];
 

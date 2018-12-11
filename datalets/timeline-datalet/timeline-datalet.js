@@ -23,7 +23,7 @@ class TimelineDatalet extends BaseDatalet {
 
     render(data)
     {
-        console.log('RENDER - timeline-datalet');
+        //console.log('RENDER - timeline-datalet');
 
         let _toDate = function (startDateString, endDateString)
         {

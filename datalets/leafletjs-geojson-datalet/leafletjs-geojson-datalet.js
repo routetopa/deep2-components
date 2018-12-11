@@ -27,7 +27,7 @@ class LeafletGeoJsonDatalet extends BaseDatalet
 
     async render(data)
     {
-        console.log('RENDER - leaflet-geojson-datalet');
+        //console.log('RENDER - leaflet-geojson-datalet');
 
         try
         {

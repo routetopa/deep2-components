@@ -1,7 +1,6 @@
 import BaseDatalet from '../base-datalet/base-datalet.js';
 import * as AjaxJsonAlasqlBehavior from '../lib/modules/AjaxJsonAlasqlBehavior.js';
 import * as HighChartsBehavior from '../lib/modules/HighChartsBehavior.js';
-import '../lib/vendors/highcharts/highstock.js';
 import * as builder from '../lib/modules/HighChartsBuilder.js';
 
 class PiechartDatalet extends BaseDatalet
@@ -30,7 +29,9 @@ class PiechartDatalet extends BaseDatalet
 
     async render(data)
     {
-        console.log('RENDER - piechart-datalet');
+        //console.log('RENDER - piechart-datalet');
+
+        await this.import_module('../lib/vendors/highcharts/highstock.js');
 
         let series = [{"name": data.data[1].name, "data": []}];
 

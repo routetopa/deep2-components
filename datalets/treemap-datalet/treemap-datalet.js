@@ -1,7 +1,5 @@
 import BaseDatalet from '../base-datalet/base-datalet.js';
 import * as AjaxJsonAlasqlBehavior from '../lib/modules/AjaxJsonAlasqlBehavior.js';
-import '../lib/vendors/highcharts/highstock.js';
-import '../lib/vendors/highcharts/treemap.js';
 import * as builder from '../lib/modules/HighChartsBuilder.js';
 
 class TreemapDatalet extends BaseDatalet
@@ -108,7 +106,10 @@ class TreemapDatalet extends BaseDatalet
 
     async render(data)
     {
-        console.log('RENDER - treemap-datalet');
+        //console.log('RENDER - treemap-datalet');
+
+        await this.import_module('../lib/vendors/highcharts/highstock.js');
+        await this.import_module('../lib/vendors/highcharts/treemap.js');
 
         let options = await builder.build('heatmap', this, data);
 

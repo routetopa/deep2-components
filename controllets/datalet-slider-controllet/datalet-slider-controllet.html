@@ -417,7 +417,8 @@
                 this.async(function () {
                     if(this.currentDatalets)
                     {
-                        this.currentDatalets[this.selected].behavior.presentData();
+                        //this.currentDatalets[this.selected].behavior.presentData();
+                        this.currentDatalets[this.selected].redraw();
                         this.title = this.currentDatalets[this.selected].datalettitle;
                     }
                 }, 0);

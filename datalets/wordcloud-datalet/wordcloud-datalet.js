@@ -1,8 +1,6 @@
 import BaseDatalet from '../base-datalet/base-datalet.js';
 import * as AjaxJsonAlasqlBehavior from '../lib/modules/AjaxJsonAlasqlBehavior.js';
 import * as HighChartsBehavior from '../lib/modules/HighChartsBehavior.js';
-import '../lib/vendors/highcharts/highstock.js';
-import '../lib/vendors/highcharts/wordcloud.js';
 import * as builder from '../lib/modules/HighChartsBuilder.js';
 
 class WordcloudDatalet extends BaseDatalet
@@ -31,7 +29,10 @@ class WordcloudDatalet extends BaseDatalet
 
     async render(data)
     {
-        console.log('RENDER - wordcloud-datalet');
+        //console.log('RENDER - wordcloud-datalet');
+
+        await this.import_module('../lib/vendors/highcharts/highstock.js');
+        await this.import_module('../lib/vendors/highcharts/wordcloud.js');
 
         let options = await builder.build('wordcloud', this, data);
 

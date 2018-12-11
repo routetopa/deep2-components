@@ -594,5 +594,10 @@ export default class BaseDatalet extends HTMLElement
     {
         return (item && typeof item === 'object' && !Array.isArray(item));
     }
+
+    redraw()
+    {
+        window.dispatchEvent(new Event('resize'));
+    }
 };
 
