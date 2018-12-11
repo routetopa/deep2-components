@@ -27,7 +27,7 @@ class MediaSliderDatalet extends BaseDatalet
 
     async render(data)
     {
-        console.log('RENDER - mediaslider-datalet');
+        //console.log('RENDER - mediaslider-datalet');
 
         if(!this.thereis_jQuery())
             await this.import_module('../lib/vendors/jquery/jquery.js');

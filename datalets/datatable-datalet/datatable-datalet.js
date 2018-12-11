@@ -27,7 +27,7 @@ class DatatableDatalet extends BaseDatalet
 
     async render(data)
     {
-        console.log('RENDER - datatable-datalet');
+        //console.log('RENDER - datatable-datalet');
 
         if (!this.thereis_jQuery())
                 await this.import_module('../lib/vendors/jquery/jquery.js');

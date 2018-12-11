@@ -1,1 +1,1574 @@
-function ArrayUtils(){}ArrayUtils.TestAndSet=function(a,b,c){return'undefined'==typeof a?null:!1==Array.isArray(a)?null:('undefined'==typeof a[b]&&(a[b]=c),a[b])},ArrayUtils.TestAndInitializeKey=function(a,b,c){return'undefined'==typeof a?null:('undefined'==typeof a[b]&&(a[b]=c),a[b])},ArrayUtils.TestAndIncrement=function(a,b){var c=a[b];return'undefined'==typeof c&&(a[b]=0),a[b]++,a},ArrayUtils.toFieldsArray=function(a){var b=[];return ArrayUtils.IteratorOverKeys(a,function(c,d){c.key=d,b.push(c)}),b},ArrayUtils.IteratorOverKeys=function(a,b){for(var c in a)if(a.hasOwnProperty(c)){var d=a[c];b(d,c)}},ArrayUtils.FindMinMax=function(a,b){var c=null,d=null;for(var e in a)null==c||b(a[e],c.value)?(d=c,c={index:-1,key:e,value:a[e]}):(null==d||b(a[e],d.value))&&(d={index:-1,key:e,value:a[e]});return{first:c,second:d}},ArrayUtils.isArray=function(a){return!!Array.isArray(a)&&0<a.length};export default function DataTypeConverter(){this._fields=[],this._numOfRows=0}DataTypeConverter.TYPES={EMPTY:{value:0,name:'NULL'},TEXT:{value:1,name:'TEXT'},NUMBER:{value:2,name:'NUMBER'},OBJECT:{value:3,name:'OBJECT'},DATETIME:{value:4,name:'DATETIME'}},DataTypeConverter.SUBTYPES={GEOCOORDINATE:{value:1e3,name:'GEOCOORDINATE'},GEOJSON:{value:1001,name:'GEOJSON'},BOOL:{value:1002,name:'BOOL'},CONST:{value:1003,name:'CONST'},CATEGORY:{value:1004,name:'CATEGORY'},PERCENTAGE:{value:1100,name:'PERCENTAGE'},LATITUDE:{value:1101,name:'LATITUDE'},LONGITUDE:{value:1102,name:'LONGITUDE'},DATETIMEYM:{value:1200,name:'DATETIMEYM'},DATETIMEYMD:{value:1201,name:'DATETIMEYMD'},DATETIMEDMY:{value:1202,name:'DATETIMEDMY'},DATETIMEMDY:{value:1203,name:'DATETIMEMDY'},DATETIMEXXY:{value:1203,name:'DATETIMEXXY'},NUMINTEGER:{value:1300,name:'INTEGER'},NUMREAL:{value:1300,name:'REAL'}},DataTypeConverter.LANGS={EN:{value:1e3,name:'EN'},IT:{value:1001,name:'IT'},FR:{value:1100,name:'FR'},NL:{value:1101,name:'NL'}},DataTypeConverter.GEOJSONTYPES=['Point','MultiPoint','LineString','MultiLineString','Polygon','MultiPolygon','GeometryCollection','Feature','FeatureCollection'],DataTypeConverter.prototype=function(){var b=function(k){ArrayUtils.IteratorOverKeys(k,function(l){var m=ArrayUtils.FindMinMax(l._inferredTypes,function(w,x){return w>x}),n=m.first.key;n===DataTypeConverter.TYPES.EMPTY.name&&null!=m.second&&'undefined'!=typeof m.second&&(n=m.second.key),l.type=n,l.typeConfidence=l._inferredTypes[l.type]/l.numOfItems;var m=ArrayUtils.FindMinMax(l._inferredSubTypes,function(w,x){return w>x});if('undefined'!=typeof m&&null!=m&&'undefined'!=typeof m.first&&null!=m.first&&m.first.key===DataTypeConverter.SUBTYPES.DATETIMEXXY.name&&'undefined'!=typeof m.second&&null!=m.second){var o=m.first;m.first=m.second,m.second=o}if('undefined'!==m.second&&null!=m.second&&m.second.key===DataTypeConverter.SUBTYPES.DATETIMEXXY.name){var p=0,q=l._inferredSubTypes[m.first.key];for(var r in l._inferredSubTypes)r!==DataTypeConverter.SUBTYPES.DATETIMEXXY.name&&l._inferredSubTypes[r]==q&&p++;1<p&&(m.first=m.second,m.second=null)}if(l.subtype=null,null!=m&&null!=m.first){l.subtype=m.first.key,l.subtypeConfidence=l._inferredSubTypes[l.subtype]/l.numOfItems;var s=l.name.toLowerCase(),t=l.subtype===DataTypeConverter.SUBTYPES.LATITUDE.name,u=0<=s.indexOf('lat'),v=0<=s.indexOf('ng');!0==t&&!1==u&&!0==v&&(l.subtype=DataTypeConverter.SUBTYPES.LONGITUDE.name)}})},c=function(k){if(null===k||'undefined'==typeof k)return DataTypeConverter.TYPES.EMPTY;if('object'==typeof k)return DataTypeConverter.TYPES.OBJECT;var l=DataTypesUtils.FilterNumber(k);if(!0!==isNaN(l))return DataTypeConverter.TYPES.NUMBER;var m=DataTypesUtils.FilterDateTime(k);return null==m?DataTypeConverter.TYPES.TEXT:m},d=function(k){if(null===k||'undefined'==typeof k)return null;if(Array.isArray(k)&&2==k.length&&DataTypesUtils.FilterNumber(k[0])!=NaN&&DataTypesUtils.FilterNumber(k[1])!=NaN&&4<DataTypesUtils.DecimalPlaces(k[0])&&4<DataTypesUtils.DecimalPlaces(k[1]))return DataTypeConverter.SUBTYPES.GEOCOORDINATE;if('string'==typeof k){var l=k.split(',');if(DataTypesUtils.IsLatLng(l[0])&&DataTypesUtils.IsLatLng(l[1]))return DataTypeConverter.SUBTYPES.GEOCOORDINATE}var m=DataTypesUtils.FilterNumber(k);if(!0!==isNaN(m)){if(-90<=m&&90>=m&&5<=DataTypesUtils.DecimalPlaces(m))return DataTypeConverter.SUBTYPES.GEOCOORDINATE;if(-180<=m&&180>=m&&5<=DataTypesUtils.DecimalPlaces(m))return DataTypeConverter.SUBTYPES.GEOCOORDINATE;var n=(k+'').split(/(,|\.)/g);return 1<n.length?DataTypeConverter.SUBTYPES.NUMREAL:DataTypeConverter.SUBTYPES.NUMINTEGER}if('object'==typeof k&&k.hasOwnProperty('type')){var o=k.type,p=DataTypeConverter.GEOJSONTYPES.includes(o);if(p)return DataTypeConverter.SUBTYPES.GEOJSON}return null},e=function(k,l){return ArrayUtils.IteratorOverKeys(k.types,function(m){if(!(m.typeConfidence>=l)){var o=DataTypeHierarchy.HIERARCHY[m.type];if(null==o)return k;var p={lastType:o[0],lastTypeCounter:m._inferredTypes[o[0]],typeConfidence:0};p.typeConfidence=p.lastTypeCounter/m.numOfItems;for(var r,s,q=1;q<o.length,r=o[q];q++)if(s=m._inferredTypes.hasOwnProperty(r)?m._inferredTypes[r]:0,p.lastType=r,p.lastTypeCounter+=s,p.typeConfidence=p.lastTypeCounter/m.numOfItems,p.typeConfidence>=l){m.type=p.lastType,m.typeConfidence=p.typeConfidence;break}}}),k},f=function(k){return k.charAt(0).toUpperCase()+k.slice(1)},h=function(k,l,m){var n=[],o=0;for(n.push({item:k,fieldKeyIndex:0});0<n.length;){var p=n.pop(),q=p.item,r=p.fieldKeyIndex,s=l[r];if('*'==s&&!1==ArrayUtils.isArray(q)){var t=l.slice(0,r).toString();ArrayUtils.IteratorOverKeys(q,function(y,z){var A=t+(0<t.length?',':'')+z,B=m(y,z,A,o);q[z]=B}),o++;continue}if('*'==s&&!0==ArrayUtils.isArray(q)){for(var v,u=0;u<q.length&&(v=q[u]);u++)n.push({item:v,fieldKeyIndex:r}),o++;continue}var w=q[s];if(Array.isArray(w))for(var x,u=0;u<w.length;u++)x=w[u],n.push({item:x,fieldKeyIndex:r+1});else n.push({item:w,fieldKeyIndex:r+1})}};return{constructor:DataTypeConverter,cast:function(k,l){return('undefined'==typeof l||null==l)&&(l={castThresholdConfidence:1,castIfNull:!1,makeChangesToDataset:!1}),this.convert(k,l)},convert:function(k,l){var m=0,p=0,q=0,r=0;return('undefined'==typeof l||null==l)&&(l={castThresholdConfidence:1,castIfNull:!1,makeChangesToDataset:!1}),h(k.dataset,k.fieldKeys,function(t,u,v,w){var x=k.types[v];q++,m!=w&&(m=w,p++),null!=t&&'undefined'!=typeof t&&0!=(t+'').length;var y=x.typeConfidence>=l.castThresholdConfidence;if(x.type==DataTypeConverter.TYPES.NUMBER.name&&y){!1==isNaN(DataTypesUtils.FilterNumber(t))&&'string'==typeof t&&(t=t.replace(',','.'));var z=parseFloat(t);return isNaN(z)?(r++,t):z}return t}),k.qualityIndex.notNullValues=(q-0)/q,k.qualityIndex.errors=(q-r)/q,k},inferJsonDataType:function(k,l,m){('undefined'==typeof m||null==m)&&(m={}),!1==m.hasOwnProperty('thresholdConfidence')&&(m.thresholdConfidence=1),!1==m.hasOwnProperty('filterOnThresholdConfidence')&&(m.filterOnThresholdConfidence=!0),m.language=!1==m.hasOwnProperty('language')?DataTypeConverter.LANGS.EN.name:m.language.toUpperCase(),!1==m.hasOwnProperty('trackCellsForEachType')&&(m.trackCellsForEachType=!1);var n=[],o={},q=0;if('undefined'==typeof l)throw'IllegalArgumentException: undefined json path to analyse.';for(n.push({item:k,fieldKeyIndex:0});0<n.length;){var r=n.pop(),s=r.item,t=r.fieldKeyIndex,u=l[t];if('*'==u&&!1==ArrayUtils.isArray(s)){var v=l.slice(0,t).toString();ArrayUtils.IteratorOverKeys(s,function(F,G){var H=v+(0==v.length?'':',')+G,I=H;if('undefined'!=typeof k&&k.hasOwnProperty('fields'))if('undefined'!=typeof k.fields[G])I=k.fields[G].label;else for(var K,J=0;J<k.fields.length&&(K=k.fields[J]);J++)K.hasOwnProperty('name')&&K.name===G&&K.hasOwnProperty('label')&&(I=K.label);var L=ArrayUtils.TestAndInitializeKey(o,H,{name:H,label:I,_inferredTypes:[],_inferredSubTypes:[],_inferredValues:[],numOfItems:0});L.numOfItems++;var M=c(F),N=M;if(M.hasOwnProperty('type')&&(N=M.type),ArrayUtils.TestAndIncrement(L._inferredTypes,N.name),N===DataTypeConverter.TYPES.TEXT&&ArrayUtils.TestAndIncrement(L._inferredValues,F),m.trackCellsForEachType){var O=ArrayUtils.TestAndInitializeKey(L._inferredTypes,N.name+'_cells',[]);O.push({columnKey:G,rowIndex:q})}var P=M.hasOwnProperty('subtype')?M.subtype:d(F);null!=P&&'undefined'!=typeof P&&ArrayUtils.TestAndIncrement(L._inferredSubTypes,P.name)}),q++;continue}if('*'==u&&ArrayUtils.isArray(s)){for(var x,w=0;w<s.length&&(x=s[w]);w++)n.push({item:x,fieldKeyIndex:t}),q++;continue}var y=s[u];if(Array.isArray(y))for(var z,w=y.length-1;0<=w;w--)z=y[w],n.push({item:z,fieldKeyIndex:t+1});else n.push({item:y,fieldKeyIndex:t+1})}var A=0;ArrayUtils.IteratorOverKeys(o,function(F){F.numOfItems>A&&(A=F.numOfItems)}),ArrayUtils.IteratorOverKeys(o,function(F){F._inferredTypes.hasOwnProperty(DataTypeConverter.TYPES.EMPTY.name)||(F._inferredTypes[DataTypeConverter.TYPES.EMPTY.name]=0),F._inferredTypes[DataTypeConverter.TYPES.EMPTY.name]=F._inferredTypes[DataTypeConverter.TYPES.EMPTY.name]+(A-F.numOfItems)}),b(o);var B={homogeneity:1,completeness:1,totalNullValues:0,totalValues:0};ArrayUtils.IteratorOverKeys(o,function(F){B.totalValues+=F.numOfItems,B.homogeneity*=F.typeConfidence,F.totalNullValues=0,F._inferredTypes.hasOwnProperty(DataTypeConverter.TYPES.EMPTY.name)&&(F.totalNullValues=F._inferredTypes[DataTypeConverter.TYPES.EMPTY.name],B.totalNullValues+=F.totalNullValues)}),B.homogeneity=Math.round(100*B.homogeneity)/100;var C=B.totalValues-B.totalNullValues;B.completeness=Math.round(100*(C/B.totalValues))/100,ArrayUtils.IteratorOverKeys(o,function(F){var G=F.type;F.typeLabel=G;var H=('key_type'+G).toLowerCase();if(JDC_LNG.hasOwnProperty(H)){var I=JDC_LNG[H];I.hasOwnProperty(m.language)?F.typeLabel=I[m.language]:console.warn('JSDatachecker translation not found. Language '+m.language+'. Type '+G)}else console.warn('JSDatachecker translation not found. Language '+m.language+'. Type '+G);var J=F.subtype;if(F.subtypeLabel=J,null!=J){var H=('key_subtype'+J).toLowerCase();if(JDC_LNG.hasOwnProperty(H)){var I=JDC_LNG[H];I.hasOwnProperty(m.language)?F.subtypeLabel=I[m.language]:console.warn('JSDatachecker translation not found. Language '+m.language+'. Subtype '+J)}else console.warn('JSDatachecker translation not found. Language '+m.language+'. Subtype '+J)}});var D='';ArrayUtils.IteratorOverKeys(o,function(F){F.errorsDescription='';var G='';if(1>F.typeConfidence){var H=F.numOfItems-F._inferredTypes[F.type];if(0<H){var I=f(JDC_LNG.key_declaretype[m.language])+'.',J=f(JDC_LNG.key_notoftype_singular[m.language])+'.';1<H&&(J=f(JDC_LNG.key_notoftype_plural[m.language])+'.');var K='',L='';if(m.trackCellsForEachType){K=f(JDC_LNG.key_seewrongrows[m.language])+'.';var M=Object.keys(F._inferredTypes).filter(function(X){return 0>X.indexOf('_cells')&&0<F._inferredTypes[X]&&X!==F.type});F.cellsWithWarnings=[];for(var N=0;N<M.length;N++){var O=M[N],P=F._inferredTypes[O+'_cells'];if('undefined'!=typeof P)for(var Q=0;Q<P.length;Q++){var R=P[Q],S=f(JDC_LNG.key_declaretype[m.language])+'. ';S+=f(JDC_LNG.key_cellnotoftype[m.language])+'. ',S=S.replace(/%COL_NAME/g,F.label),S=S.replace(/%COL_TYPE/g,F.type),R.warningMessage=S,O===DataTypeConverter.TYPES.EMPTY.name&&(R.warningMessage=f(JDC_LNG.key_emptycell[m.language])+'.'),F.cellsWithWarnings.push(R)}}for(var N=0;N<M.length;N++){var T=M[N],U=F._inferredTypes[T+'_cells'];if('undefined'!=typeof U)for(var R,Q=0;Q<U.length;Q++)R=U[Q],L+=R.rowIndex+2+'('+T+')'+(Q==U.length-2?', and ':'')+(Q<U.length-2?', ':'')}}var V=I+' '+J+' '+K;V=V.replace(/%COL_NAME/g,F.label),V=V.replace(/%COL_TYPE/g,F.type),V=V.replace(/%COL_ERRORS/g,H),V=V.replace(/%LIST_WRONG_ROWS/g,L),G+=V}}if(F.type===DataTypeConverter.TYPES.DATETIME.name)if(F.subtype===DataTypeConverter.SUBTYPES.DATETIMEXXY.name)G+=' '+f(JDC_LNG.key_dateformatunknown[m.language])+'. ';else{var W=F.numOfItems-F._inferredSubTypes[F.subtype]-(F.hasOwnProperty(DataTypeConverter.SUBTYPES.DATETIMEXXY.name)?F._inferredSubTypes[DataTypeConverter.SUBTYPES.DATETIMEXXY.name]:0);if(0<W){var V=f(JDC_LNG.key_datenotinformat[m.language]);V=V.replace(/%COL_NUMDATENOTINFORMAT/g,W),G+=V}}var V='';1==F.totalNullValues?V=f(JDC_LNG.key_emptyvalue_singolar[m.language])+'.':1<F.totalNullValues&&(V=f(JDC_LNG.key_emptyvalue_plural[m.language])+'.'),G=G+' '+V,G=G.replace(/%COL_NAME/g,F.label),G=G.replace(/%COL_TYPE/g,F.type),G=G.replace(/%COL_SUBTYPE/g,F.subtypeLabel),G=G.replace(/%COL_NULLVALUES/g,F.totalNullValues),F.errorsDescription=G.trim(),D+=G.trim()});var E={dataset:k,fieldKeys:l,types:o,qualityIndex:B,warningsTextual:D};return!0==m.filterOnThresholdConfidence&&e(E,m.thresholdConfidence),E},inferDataTypeOfValue:function(k){return c(k)},inferDataSubTypeOfValue:function(k){return d(k)}}}();function DataTypesUtils(){}DataTypesUtils.FilterTime=function(a){var b=/^[0-9]{2}:[0-9]{2}(:[0-9]{2})?(\+[0-9]{2}:[0-9]{2})?$/;if(!1==b.test(a))return null;var c=a.split(/[:|\+]/),d=/^[0-9]{2}$/,e=d.test(c[0])?parseInt(c[0]):0,f=d.test(c[1])?parseInt(c[1]):0,g=3<=c.length&&d.test(c[2])?parseInt(c[2]):0,h=new Date;return h.setHours(e),h.setMinutes(f),h.setSeconds(g),h},DataTypesUtils.FilterDateTime=function(a){var b=a.split(/[T|\s]/);if(2==b.length){var c=DataTypesUtils.FilterTime(b[1]);if(null==c)return null;var d=DataTypesUtils.FilterDate(b[0],c);return d}var e=DataTypesUtils.FilterDate(a);if(null!=e)return e;var c=DataTypesUtils.FilterTime(a);return c},DataTypesUtils.FilterDate=function(a,b){if(null==b&&(b=new Date('YYYY-MM-DD')),/^[0-9]{1,4}(\-|\/)[0-9]{1,2}$/.test(a)){var c=a.split(/[\-|\/]/),d=parseInt(c[0]),e=parseInt(c[1]);return 12<e?null:(b.setYear(d),b.setMonth(e),{type:DataTypeConverter.TYPES.DATETIME,subtype:DataTypeConverter.SUBTYPES.DATETIMEYM,date:b})}var f=/^[0-9]{1,4}(\-|\/)[0-9]{1,2}((\-|\/)[0-9]{1,2})?$/;if(f.test(a)){var c=a.split(/[\-|\/]/),d=parseInt(c[0]),e=parseInt(c[1]),g=3==c.length?parseInt(c[2]):0;return 0>=e||13<=e?null:0>=g||32<=g?null:(b.setYear(d),b.setMonth(e),b.setDate(g),{type:DataTypeConverter.TYPES.DATETIME,subtype:DataTypeConverter.SUBTYPES.DATETIMEYMD,date:b})}if(f=/^[0-9]{1,2}(\-|\/)[0-9]{1,2}(\-|\/)[0-9]{1,4}$/,f.test(a)){var c=a.split(/[\-|\/]/),d=parseInt(c[2]),e=parseInt(c[1]),g=parseInt(c[0]),h={type:DataTypeConverter.TYPES.DATETIME,subtype:DataTypeConverter.SUBTYPES.DATETIMEDMY,date:b};if(12<e){var k=e;e=g,g=k,h.subtype=DataTypeConverter.SUBTYPES.DATETIMEMDY}return 0>=e||13<=e?null:0>=g||32<=g?null:(12>=g&&12>=e&&(h.subtype=DataTypeConverter.SUBTYPES.DATETIMEXXY),b.setYear(d),b.setMonth(e),b.setDate(g),h)}return null},DataTypesUtils.FilterFloat=function(a){return /^(\-|\+)?((0|([1-9][0-9]*))(\.[0-9]+)?|Infinity)$/.test(a)?+a:NaN},DataTypesUtils.FilterNumber=function(a){var b=DataTypesUtils.FilterFloat(a);if(!1==isNaN(b))return b;if('string'!=typeof a)return NaN;var c=a.split(/(,|\.)/g),d={idx:a.indexOf('.'),sym:'.'},e={idx:a.lastIndexOf(','),sym:','},f={};f=-1==d.idx?e:-1==e.idx?d:d.idx<e.idx?d:e;var g={idx:a.lastIndexOf('.'),sym:'.'},h={idx:a.lastIndexOf(','),sym:','},k={};k=-1==g.idx?h:-1==h.idx?g:g.idx>h.idx?g:h;var l=a.split(/(\.|,|\-|\+)/g);if(0==l.length)return NaN;var m=0,n=0,o=0;('-'==l[0]||'+'==l[0])&&(o=1);for(var p;o<l.length,p=l[o];o++)if('.'==p)m++;else if(','==p)n++;else if(!1==/^(0|([0-9]+))$/g.test(p))return NaN;var q=l[l.length-1];if('.'==q||','==q||0==q.length)return NaN;if(-1==f.idx&&-1==k.idx)return DataTypesUtils.FilterFloat(a);if(f.idx==k.idx&&'.'==f.sym)return+a;if(f.idx==k.idx&&','==f.sym){var r=a.replace(',','.');return+r}return NaN},DataTypesUtils.DecimalPlaces=function(a){var b=(''+a).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);return b?Math.max(0,(b[1]?b[1].length:0)-(b[2]?+b[2]:0)):0},DataTypesUtils.IsLatLng=function(a){return DataTypesUtils.FilterFloat(a)!=NaN&&!!(4<DataTypesUtils.DecimalPlaces(a))};function DataTypeHierarchy(){}DataTypeHierarchy.HIERARCHY=[],DataTypeHierarchy.HIERARCHY[DataTypeConverter.TYPES.TEXT.name]=[DataTypeConverter.TYPES.TEXT.name],DataTypeHierarchy.HIERARCHY[DataTypeConverter.TYPES.NUMBER.name]=[DataTypeConverter.TYPES.NUMBER.name,DataTypeConverter.TYPES.TEXT.name],DataTypeHierarchy.HIERARCHY[DataTypeConverter.TYPES.DATETIME.name]=[DataTypeConverter.TYPES.DATETIME.name,DataTypeConverter.TYPES.TEXT.name],DataTypeHierarchy.HIERARCHY[DataTypeConverter.SUBTYPES.GEOCOORDINATE.name]=[DataTypeConverter.SUBTYPES.GEOCOORDINATE.name,DataTypeConverter.TYPES.NUMBER.name,DataTypeConverter.TYPES.TEXT.name],DataTypeHierarchy.canConvert=function(a,b){var c=DataTypeHierarchy.HIERARCHY[a],d=c.indexOf(b);return 0<=d};var JDC_LNG={key_declaretype:{EN:'the column \'%COL_NAME\' is of type \'%COL_TYPE\'',IT:'la colonna \'%COL_NAME\' \xE8 di tipo \'%COL_TYPE\'',FR:'le colonne \'%COL_NAME\' est de type \'%COL_TYPE\'',NL:'de kolom \'%COL_NAME\' is van het type \'%COL_TYPE\''},key_notoftype_singular:{EN:'a value is not \'%COL_TYPE\'',IT:'un valore non \xE8 un \'%COL_TYPE\'',FR:'La valeur n\'est pas \'%COL_TYPE\'',NL:'een waarde is niet \'%COL_TYPE\''},key_cellnotoftype:{EN:'the cell value is not \'%COL_TYPE\'',IT:'il valore della cella non \xE8 di tipo \'%COL_TYPE\'',FR:'the cell value is not \'%COL_TYPE\'',NL:'the cell value is not \'%COL_TYPE\''},key_notoftype_plural:{EN:'%COL_ERRORS values are not \'%COL_TYPE\'',IT:'%COL_ERRORS valori non sono di tipo \'%COL_TYPE\'',FR:'%COL_ERRORS les valeurs ne sont pas de type \'%COL_TYPE\'',NL:'%COL_ERRORS waarden niet \'%COL_TYPE\''},key_emptyvalue_singolar:{EN:'the column \'%COL_NAME\' has an empty value',IT:'la colonna \'%COL_NAME\' ha un valore vuoto',FR:'La colonne \'%COL_NAME\'  a une valeur vide',NL:'de kolom \'%COL_NAME\' heeft een lege waarde'},key_emptycell:{EN:'the cell is empty',IT:'la cella \xE8 vuota',FR:'the cell is empty',NL:'the cell is empty'},key_emptyvalue_plural:{EN:'the column \'%COL_NAME\' has \'%COL_NULLVALUES\' empty values',IT:'la colonna \'%COL_NAME\' ha \'%COL_NULLVALUES\' valori vuoti',FR:'La colonne \'%COL_NAME\' a la valeur \'%COL_NULLVALUES\' qui est vide',NL:'de kolom \'%COL_NAME\' heeft \'%COL_NULLVALUES\' lege waarde'},key_seewrongrows:{EN:'check rows \'%LIST_WRONG_ROWS\'',IT:'controlla le righe \'%LIST_WRONG_ROWS\'',FR:'check rows \'%LIST_WRONG_ROWS\'',NL:'check rows \'%LIST_WRONG_ROWS\''},key_type:{EN:'type',IT:'tipo',FR:'type',NL:'type'},key_subtype:{EN:'subtype',IT:'sottotipo',FR:'sous-type',NL:'subtype'},key_typetext:{EN:'text',IT:'testo',FR:'texte',NL:'tekst'},key_typenumber:{EN:'number',IT:'numero',FR:'chiffres',NL:'aantal'},key_typeobject:{EN:'object',IT:'oggetto',FR:'objet',NL:'voorwerp'},key_typedatetime:{EN:'date or time',IT:'data o orario',FR:'date ou l\'heure',NL:'datum of tijd'},key_typeempty:{EN:'empty',IT:'vuoto',FR:'vide',NL:'leeg'},key_typenull:{EN:'empty',IT:'vuoto',FR:'vide',NL:'leeg'},key_typelatitude:{EN:'latitude',IT:'latitudine',FR:'latitude',NL:'breedtegraad'},key_typelongitude:{EN:'longitude',IT:'longitudine',FR:'longitude',NL:'lengtegraad'},key_subtypegeocoordinate:{EN:'coordinate',IT:'coordinate',FR:'coordonn\xE9es',NL:'coordinate'},key_subtypegeojson:{EN:'geojson',IT:'geojson',FR:'geojson',NL:'geojson'},key_subtypebool:{EN:'bool',IT:'bool',FR:'bool',NL:'bool'},key_subtypeconst:{EN:'const',IT:'costante',FR:'const',NL:'const'},key_subtypecategory:{EN:'category',IT:'categoria',FR:'category',NL:'category'},key_subtypepercentage:{EN:'percentage',IT:'percentuale',FR:'percentage',NL:'percentage'},key_subtypelatitude:{EN:'latitude',IT:'latitudine',FR:'latitude',NL:'latitude'},key_subtypelongitude:{EN:'longitude',IT:'longitudine',FR:'longitude',NL:'longitude'},key_subtypedatetimeymd:{EN:'YYYY/MM/DD',IT:'YYYY/MM/DD',FR:'YYYY/MM/DD',NL:'YYYY/MM/DD'},key_subtypedatetimedmy:{EN:'DD/MM/YYYY',IT:'DD/MM/YYYY',FR:'DD/MM/YYYY',NL:'DD/MM/YYYY'},key_subtypedatetimexxy:{EN:'D?M/D?M/YYYY',IT:'D?M/D?M/YYYY',FR:'D?M/D?M/YYYY',NL:'D?M/D?M/YYYY'},key_subtypenuminteger:{EN:'integer number',IT:'numero intero',FR:'integer number',NL:'integer number'},key_subtypenumreal:{EN:'real number',IT:'numero reale',FR:'real number',NL:'real number'},key_subtypeinteger:{EN:'integer number',IT:'numero intero',FR:'integer number',NL:'integer number'},key_subtypereal:{EN:'real number',IT:'numero reale',FR:'real number',NL:'real number'},key_dateformatunknown:{EN:'Cannot determine the date format for the column \'%COL_NAME\'',IT:'Impossibile determinare il formato della data per la colonna \'%COL_NAME\'',FR:'Cannot determine the date format for the column \'%COL_NAME\'',NL:'Cannot determine the date format for the column \'%COL_NAME\''},key_datenotinformat:{EN:'\'%COL_NUMDATENOTINFORMAT\' values of the column \'%COL_NAME\' are not in format \'%COL_SUBTYPE\'',IT:'\'%COL_NUMDATENOTINFORMAT\' valori della colonna \'%COL_NAME\' non sono in formato \'%COL_SUBTYPE\'',FR:'\'%COL_NUMDATENOTINFORMAT\' values of the column \'%COL_NAME\' are not in format \'%COL_SUBTYPE\'',NL:'\'%COL_NUMDATENOTINFORMAT\' values of the column \'%COL_NAME\' are not in format \'%COL_SUBTYPE\''}};function DataTypeHelper(){}DataTypeHelper.forEachType=function(a,b){for(var c=Object.keys(a.types),d=0;d<c.length;d++){var e=c[d],f=a.types[e];b(f)}};
+export default (function ()
+{
+    /*
+     ** This file is part of JSDataChecker.
+     **
+     ** JSDataChecker is free software: you can redistribute it and/or modify
+     ** it under the terms of the GNU General Public License as published by
+     ** the Free Software Foundation, either version 3 of the License, or
+     ** (at your option) any later version.
+     **
+     ** JSDataChecker is distributed in the hope that it will be useful,
+     ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+     ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     ** GNU General Public License for more details.
+     **
+     ** You should have received a copy of the GNU General Public License
+     ** along with JSDataChecker. If not, see <http://www.gnu.org/licenses/>.
+     **
+     ** Copyright (C) 2016 JSDataChecker - Donato Pirozzi (donatopirozzi@gmail.com)
+     ** Distributed under the GNU GPL v3. For full terms see the file LICENSE.
+     ** License: http://www.gnu.org/licenses/gpl.html GPL version 3 or higher
+     **/
+
+    function ArrayUtils() {}
+
+    /**
+     * It tests if the array has an element with the specified key,
+     * if does not have the key it initialises it with the object.
+     * @param arr
+     * @param key
+     * @param object
+     * @returns {*}
+     * @constructor
+     */
+    ArrayUtils.TestAndSet = function (arr, key, object) {
+        if (typeof arr == 'undefined') return null;
+        if (Array.isArray(arr) == false) return null;
+        if (typeof arr[key] == 'undefined')
+            arr[key] = object;
+        return arr[key];
+    };//EndFunction.
+
+    ArrayUtils.TestAndInitializeKey = function (obj, key, value) {
+        if (typeof obj == 'undefined') return null;
+        if (typeof obj[key] == 'undefined')
+            obj[key] = value;
+
+        return obj[key];
+    };//EndFunction.
+
+    /***
+     * It tests whether the array has the key, if not it insert it;
+     * then increases the value by one unit.
+     * @param arr
+     * @param key
+     * @returns {The array}
+     */
+    ArrayUtils.TestAndIncrement = function (arr, key) {
+        var exists = arr[key];
+        if (typeof exists === 'undefined') arr[key] = 0;
+        arr[key]++;
+        return arr;
+    };//EndFunction.
+
+    /***
+     * It converts the object to an array. It loops through the object
+     * keys/properties, retrieves the objects and pushes it in the array.
+     * @param obj
+     * @returns {Array}
+     */
+    ArrayUtils.toFieldsArray = function (obj) {
+        var fields = [];
+
+        ArrayUtils.IteratorOverKeys(obj, function(field, key) {
+            field.key = key;
+            fields.push(field);
+        });
+
+        return fields;
+    };//EndFunction.
+
+    /**
+     * Iterate over the key within the array arr. For each array
+     * value it calls the callback function.
+     * @param arr
+     * @param callback
+     * @constructor
+     */
+    ArrayUtils.IteratorOverKeys = function (arr, callback) {
+        for (var property in arr) {
+            if (arr.hasOwnProperty(property)) {
+                var item = arr[property];
+                callback(item, property);
+            }
+        }
+    };//EndFunction.
+
+    /**
+     * Find the item with the max value within the array.
+     * @param arr
+     * @returns {*} It is an object with index, key, value.
+     */
+    ArrayUtils.FindMinMax = function (arr, fncompare) {
+        var max1 = null;
+        var max2 = null;
+
+        for (var key in arr) {
+            //if (max1 == null) //Only the first time.
+            //    max1 = {index: -1, key: key, value: arr[key]};
+
+            if (max1 == null || fncompare(arr[key], max1.value)) {
+                max2 = max1;
+                max1 = {index: -1, key: key, value: arr[key]};
+            } else if (max2 == null || fncompare(arr[key], max2.value))
+                max2 = {index: -1, key: key, value: arr[key]};
+
+        }//EndFor.
+
+        return { first: max1, second: max2 };
+    }//EndFunction.
+
+    ArrayUtils.isArray = function (arr) {
+        if (Array.isArray(arr))
+            return (arr.length > 0);
+        return false;
+    }//EndFunction.
+
+    /*
+     ** This file is part of JSDataChecker.
+     **
+     ** JSDataChecker is free software: you can redistribute it and/or modify
+     ** it under the terms of the GNU General Public License as published by
+     ** the Free Software Foundation, either version 3 of the License, or
+     ** (at your option) any later version.
+     **
+     ** JSDataChecker is distributed in the hope that it will be useful,
+     ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+     ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     ** GNU General Public License for more details.
+     **
+     ** You should have received a copy of the GNU General Public License
+     ** along with JSDataChecker. If not, see <http://www.gnu.org/licenses/>.
+     **
+     ** Copyright (C) 2016 JSDataChecker - Donato Pirozzi (donatopirozzi@gmail.com)
+     ** Distributed under the GNU GPL v3. For full terms see the file LICENSE.
+     ** License: http://www.gnu.org/licenses/gpl.html GPL version 3 or higher
+     **/
+
+    function DataTypeConverter() {
+        this._fields = [];
+        this._numOfRows = 0;
+    };//EndConstructor.
+
+    DataTypeConverter.TYPES = {
+        EMPTY       : { value: 0, name: "NULL"},
+
+        TEXT        : { value: 1, name: "TEXT" },
+        NUMBER      : { value: 2, name: "NUMBER" },
+        OBJECT      : { value: 3, name: "OBJECT" },
+        DATETIME    : { value: 4, name: "DATETIME" }
+    };
+
+    DataTypeConverter.SUBTYPES = {
+        GEOCOORDINATE   :   { value: 1000, name: "GEOCOORDINATE" },
+        GEOJSON         :   { value: 1001, name: "GEOJSON" },
+        BOOL            :   { value: 1002, name: "BOOL"},
+        CONST           :   { value: 1003, name: "CONST" },
+        CATEGORY        :   { value: 1004, name: "CATEGORY" },
+
+        LATITUDE        :   { value: 1101, name: "LATITUDE" },
+        LONGITUDE       :   { value: 1102, name: "LONGITUDE" },
+
+        DATETIMEYM      :   { value:  1200, name: "DATETIMEYM" },
+        DATETIMEYMD     :   { value:  1201, name: "DATETIMEYMD" },
+        DATETIMEDMY     :   { value:  1202, name: "DATETIMEDMY" },
+        DATETIMEMDY     :   { value:  1203, name: "DATETIMEMDY" },
+        DATETIMEXXY     :   { value:  1203, name: "DATETIMEXXY" },
+
+        NUMINTEGER      :   { value:  1300, name: "INTEGER" },
+        NUMREAL         :   { value:  1300, name: "REAL" },
+        PERCENTAGE      :   { value:  1400, name: "PERCENTAGE" },
+
+        /*CODE        : { value: 2000, name: "CODE"},*/
+    };
+
+    DataTypeConverter.LANGS = {
+        EN   :   { value: 1000, name: "EN" },
+        IT   :   { value: 1001, name: "IT" },
+        FR   :   { value: 1100, name: "FR" },
+        NL   :   { value: 1101, name: "NL" }
+    };
+
+
+    DataTypeConverter.GEOJSONTYPES = [ "Point", "MultiPoint", "LineString",
+        "MultiLineString", "Polygon", "MultiPolygon", "GeometryCollection", "Feature",
+        "FeatureCollection" ];
+
+    DataTypeConverter.prototype = (function () {
+
+        /***
+         * Make an asynchronous call to load the content.
+         * @param theUrl
+         * @param callback
+         * @deprecated
+         */
+        var httpGetAsync = function(theUrl, callbackOnFinish) {
+            console.warn("Calling deprecated function.");
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (xhttp.readyState == 4 && xhttp.status == 200)
+                    _processDataset(xhttp.responseText, callbackOnFinish);
+            }
+            xhttp.open("GET", theUrl, true); // true for asynchronous
+            xhttp.send(null);
+        };//EndFunction.
+
+        /*var _processDataset = function (jsonRows) {
+            //Check if the jsonRow is an array.
+            if (Array.isArray(jsonRows) == false) return;
+
+            for (var i=0; i<jsonRows.length; i++) {
+                var jsonRow = jsonRows[i];
+                _processRow(jsonRow);
+            }//EndFor.
+
+            _analyseDataTypes(this._fields);
+
+            return this._fields;
+        };//EndFunction.*/
+
+        /*var _processRow = function(row) {
+            //Avoid empty rows
+            if (typeof row === 'undefined') return;
+
+            //Get the object keys.
+            for (var property in row) {
+                if (row.hasOwnProperty(property)) {
+                    var cellValue = row[property];
+
+                    //if (property == 'votantspourcentages') debugger;
+                    //if (property == 'va_no_voie') debugger;
+
+                    var inferredType = _processInferType(cellValue);
+
+                    if (typeof this._fields[property] === 'undefined')
+                        this._fields[property] = { name: property, _inferredTypes: [], _inferredValues: [] };
+
+                    _arrUtil.testAndIncrement(this._fields[property]._inferredTypes, inferredType.name);
+                    if (inferredType === DataTypeConverter.TYPES.TEXT)
+                        _arrUtil.testAndIncrement(this._fields[property]._inferredValues, cellValue);
+                    if (inferredType === DataTypeConverter.TYPES.LATITUDE || inferredType === DataTypeConverter.TYPES.LONGITUDE)
+                        _arrUtil.testAndIncrement(this._fields[property]._inferredTypes, DataTypeConverter.TYPES.NUMBER);
+                }
+            }
+
+            this._numOfRows++;
+        };//EndFunction.*/
+
+        var _analyseDataTypes = function(fields) {
+            ArrayUtils.IteratorOverKeys(fields, function(field) {
+
+
+                /*
+                //TODO: removed CODE, I don't know whether it must be inserted
+                if (field._inferredTypes[DataTypeConverter.TYPES.CODE.name]) {
+                    var confidence = field._inferredTypes[DataTypeConverter.TYPES.CODE.name] / field.numOfItems;
+                    var _numericalInferredType = field._inferredTypes[DataTypeConverter.TYPES.NUMBER.name];
+                    if (typeof _numericalInferredType != 'undefined') confidence += _numericalInferredType / field.numOfItems;
+
+                    field.type = DataTypeConverter.TYPES.CODE.name;
+                    field.typeConfidence = confidence;
+                    return;
+                }*/
+
+                //Infers the field TYPE.
+                var max = ArrayUtils.FindMinMax(field._inferredTypes, function (curval, lastval) {
+                    return curval > lastval;
+                });
+
+                //When the first key is null, it uses the second one.
+                var tkey = max.first.key;
+                if (tkey === DataTypeConverter.TYPES.EMPTY.name &&
+                    max.second != null && typeof max.second !== 'undefined')
+                    tkey = max.second.key;
+
+                field.type = tkey;
+                field.typeConfidence = field._inferredTypes[field.type] / field.numOfItems;
+                // field.typeConfidence = field._inferredTypes[max.first.key] / field.numOfItems; //BUG? max.first.key
+
+
+                //##########
+                //Infers the field SUBTYPE.
+
+                var max = ArrayUtils.FindMinMax(field._inferredSubTypes, function (curval, lastval) {
+                    return curval > lastval;
+                });
+
+                //SUBTYPE: special case with date format - when the system selects the XXY subtype.
+                if (typeof max !== 'undefined' && max != null &&
+                    typeof max.first !== 'undefined' && max.first != null && max.first.key === DataTypeConverter.SUBTYPES.DATETIMEXXY.name &&
+                    typeof max.second !== 'undefined' && max.second != null) {
+                    //Swaps first and second.
+                    var temp = max.first;
+                    max.first = max.second;
+                    max.second = temp;
+                }
+
+                //SUBTYPE special case, when two DATETIME formats have the same number of items, the system cannot
+                //determine the format.
+                if (max.second !== 'undefined' && max.second != null && max.second.key === DataTypeConverter.SUBTYPES.DATETIMEXXY.name) {
+                    var counter = 0;
+                    var valueToCompare = field._inferredSubTypes[max.first.key];
+                    for (var _key in field._inferredSubTypes) {
+                        if (_key === DataTypeConverter.SUBTYPES.DATETIMEXXY.name) continue;
+                        if (field._inferredSubTypes[_key] == valueToCompare) counter++;
+                    }//EndFor.
+                    if (counter > 1) { //There are two formats that have two equal number of cells.
+                        max.first = max.second;
+                        max.second = null;
+                    }
+                }
+
+                field.subtype = null;
+                if (max != null && max.first != null) {
+                    field.subtype = max.first.key;
+                    field.subtypeConfidence = field._inferredSubTypes[field.subtype] / field.numOfItems;
+
+                    //TODO: improve this piece of code.
+                    //LAT/LNG.
+                    var fieldName = field.name.toLowerCase();
+                    var isLatType = (field.subtype === DataTypeConverter.SUBTYPES.LATITUDE.name);
+                    var fieldNameContainsLat = fieldName.indexOf('lat') >= 0;
+                    var fieldNameContainsLon = fieldName.indexOf('ng') >= 0; //It could be 'lng'.
+                    if (isLatType == true && fieldNameContainsLat == false && fieldNameContainsLon == true) {
+                        field.subtype = DataTypeConverter.SUBTYPES.LONGITUDE.name;
+                    }
+                }
+
+                ///
+                /// SUBTYPES.
+
+
+                //BOOLEAN.
+                /*var numOfValues = Object.keys(field._inferredValues).length;
+                if (field.type === DataTypeConverter.TYPES.TEXT.name) {
+                    //if (numOfValues == 1) field.type = DataTypeConverter.TYPES.CONST.name;
+                    //else if (numOfValues == 2) field.type = DataTypeConverter.TYPES.BOOL.name;
+                    //else
+                    if (numOfValues < field.numOfItems * 0.20) field.type = DataTypeConverter.TYPES.CATEGORY.name;
+                }*/
+            });
+        };//EndFunction.
+
+        /**
+         * Given a dataset value, it tries to recognise the data types.
+         * This is the central function within the library.
+         * @param value
+         * @returns {*}
+         * @private
+         */
+        var _processInferType = function(value) {
+            //value = value.toLocaleString();
+
+            if (value === null || typeof value === 'undefined')
+                return DataTypeConverter.TYPES.EMPTY;
+
+            if (typeof value === 'object')
+                return DataTypeConverter.TYPES.OBJECT;
+
+            //Try to parse the float.
+            //var isnumber = DataTypesUtils.FilterFloat(value);
+            var isnumber = DataTypesUtils.FilterNumber(value);
+            if (isNaN(isnumber) !== true) {//It is a number.
+                //If the number ranges from -90.0 to 90.0, the value is marked as Latitude.
+                //if (-90.0 <= isnumber && isnumber <= 90.0 && _dataTypesUtils.decimalPlaces(isnumber) >= 5)
+                //    return DataTypeConverter.TYPES.LATITUDE;
+
+                //It the number ranges from -180.0 to 180.0, the value is marked as Longitude.
+                //if (-180.0 <= isnumber && isnumber <= 180.0 && _dataTypesUtils.decimalPlaces(isnumber) >= 5)
+                //    return DataTypeConverter.TYPES.LONGITUDE;
+
+                /*if (0.0 <= isnumber && isnumber <= 100.0)
+                    if(/^(\+)?((0|([1-9][0-9]*))\.([0-9]+))$/ .test(value))
+                        return DataTypeConverter.TYPES.PERCENTAGE;*/
+
+                return DataTypeConverter.TYPES.NUMBER;
+            }
+
+            //Tries to indentify whether the value is a data and/or time.
+            var _datetype = DataTypesUtils.FilterDateTime(value);
+            if (_datetype != null) return _datetype;
+
+            //Tries to identify whether the value is a percentage.
+            var _datetype = DataTypesUtils.FilterPercentage(value);
+            if (_datetype != null) return _datetype;
+
+            return DataTypeConverter.TYPES.TEXT;
+        };//EndFunction.
+
+        var _processInferSubType = function (value) {
+            if (value === null || typeof value === 'undefined') return null;
+
+            //GEOCOORDINATE
+            if (Array.isArray(value) && value.length == 2) {//It recognises the LAT LNG as array of two values.
+                //Checks if the two array's values are numbers.
+                //if ( DataTypesUtils.FilterFloat(value[0]) != NaN && DataTypesUtils.FilterFloat(value[1]) != NaN  )
+                if ( DataTypesUtils.FilterNumber(value[0]) != NaN && DataTypesUtils.FilterNumber(value[1]) != NaN  )
+                    if (DataTypesUtils.DecimalPlaces(value[0]) > 4 && DataTypesUtils.DecimalPlaces(value[1]) > 4 )
+                        return DataTypeConverter.SUBTYPES.GEOCOORDINATE;
+            }//EndIf.
+
+            if (typeof value === 'string') {
+                var split = value.split(",");
+                //if (split.length == 2)
+                if (DataTypesUtils.IsLatLng(split[0]) && DataTypesUtils.IsLatLng(split[1]))
+                    return DataTypeConverter.SUBTYPES.GEOCOORDINATE;
+            }
+
+            //Try to parse the float.
+            //var isnumber = DataTypesUtils.FilterFloat(value);
+            var isnumber = DataTypesUtils.FilterNumber(value);
+            if (isNaN(isnumber) !== true) {//It is a number.
+
+                //If the number ranges from -90.0 to 90.0, the value is marked as Latitude.
+                if (-90.0 <= isnumber && isnumber <= 90.0 && DataTypesUtils.DecimalPlaces(isnumber) >= 5)
+                    return DataTypeConverter.SUBTYPES.GEOCOORDINATE;
+
+                //It the number ranges from -180.0 to 180.0, the value is marked as Longitude.
+                if (-180.0 <= isnumber && isnumber <= 180.0 && DataTypesUtils.DecimalPlaces(isnumber) >= 5)
+                    return DataTypeConverter.SUBTYPES.GEOCOORDINATE;
+
+                /*if (0.0 <= isnumber && isnumber <= 100.0)
+                    if(/^(\+)?((0|([1-9][0-9]*))\.([0-9]+))$/ .test(value))
+                        return DataTypeConverter.SUBTYPES.PERCENTAGE;*/
+
+                //Distinguish between INTEGER and REAL numbers (the discriminant is the presence of a dot or a comma.
+                var parts = (value+"").split(/(,|\.)/g);
+                if (parts.length > 1)
+                    return DataTypeConverter.SUBTYPES.NUMREAL;
+                else
+                    return DataTypeConverter.SUBTYPES.NUMINTEGER;
+
+                return null;
+            }
+
+            //Try to parse GEOJSON.
+            if (typeof value === 'object' && value.hasOwnProperty('type')) {
+                //Check the type variable.
+                var geotype = value.type;
+                var isincluded = DataTypeConverter.GEOJSONTYPES.includes(geotype);
+                if (isincluded) return DataTypeConverter.SUBTYPES.GEOJSON;
+            }
+
+            //If the value starts with a zero and contains all numbers, it is
+            //inferred as textual content.
+            /*if (/^0[0-9]+$/.test(value))
+             return DataTypeConverter.TYPES.CODE;*/
+
+            return null;
+        };//EndFunction.
+
+        var _filterBasedOnThreshold = function(metadata, threshold) {
+            ArrayUtils.IteratorOverKeys(metadata.types, function (fieldType, key) {
+                if (fieldType.typeConfidence >= threshold) return;
+
+                var arrHierarchyTypes = DataTypeHierarchy.HIERARCHY[fieldType.type];
+                if (arrHierarchyTypes == null)
+                    return metadata;
+
+                var lastFieldType = { lastType: arrHierarchyTypes[0],
+                    lastTypeCounter: fieldType._inferredTypes[arrHierarchyTypes[0]],
+                    typeConfidence:  0 };
+                lastFieldType.typeConfidence = lastFieldType.lastTypeCounter / fieldType.numOfItems;
+
+                for (var i= 1, curType; i<arrHierarchyTypes.length, curType = arrHierarchyTypes[i]; i++) {
+                    var numItemsOfCurType = fieldType._inferredTypes.hasOwnProperty(curType) ? fieldType._inferredTypes[curType] : 0 ;
+                    lastFieldType.lastType = curType;
+                    lastFieldType.lastTypeCounter += numItemsOfCurType;
+                    lastFieldType.typeConfidence = lastFieldType.lastTypeCounter / fieldType.numOfItems;
+
+                    if (lastFieldType.typeConfidence >= threshold) {
+                        fieldType.type = lastFieldType.lastType;
+                        fieldType.typeConfidence = lastFieldType.typeConfidence;
+                        break;
+                    }
+                }
+            });
+
+            return metadata;
+        };//EndFunction.
+
+        var _capitalizeFirstLetter = function(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        };//EndFunction.
+
+        var _replaceAll = function(search, replacement) {
+            var target = this;
+            return target.split(search).join(replacement);
+        };
+
+        var jsonTraverse = function(json, fieldKeys, callback) {
+            var stack = [];
+            var numOfRows = 0;
+            stack.push({ item: json, fieldKeyIndex: 0 });
+
+            while (stack.length > 0) {
+                var stackTask = stack.pop();
+                var item = stackTask.item;
+                var fieldKeyIndex = stackTask.fieldKeyIndex;
+                var fieldKey = fieldKeys[fieldKeyIndex];
+
+                //Test fieldKey Value.
+                if (fieldKey == '*' && ArrayUtils.isArray(item) == false) {
+                    var sProcessedKeys = fieldKeys.slice(0, fieldKeyIndex).toString();
+
+                    ArrayUtils.IteratorOverKeys(item, function (value, key) {
+                        var curKey = sProcessedKeys + (sProcessedKeys.length > 0 ? "," : "")  + key;
+                        var _value = callback(value, key, curKey, numOfRows);
+                        item[key] = _value;
+                    });
+
+                    numOfRows++;
+                    continue;
+                }
+
+                //It is an array, loops through its cells and pushes items within the stack.
+                if (fieldKey == '*' && ArrayUtils.isArray(item) == true) {
+                    for (var j= 0, cell; j<item.length && (cell = item[j]); j++) {
+                        stack.push({item: cell, fieldKeyIndex: fieldKeyIndex});
+                        numOfRows++;
+                    }
+                    continue;
+                }
+
+                var jsonSubtree = item[fieldKey];
+                if (Array.isArray(jsonSubtree)) { //It is an array.
+                    for (var j=0; j<jsonSubtree.length; j++) {
+                        var jsonItem = jsonSubtree[j];
+                        stack.push({ item: jsonItem, fieldKeyIndex: fieldKeyIndex+1 });
+                    }//EndForJ.
+                } else {
+                    stack.push({ item: jsonSubtree, fieldKeyIndex: fieldKeyIndex+1 });
+                }
+            }//EndWhile.
+        };//EndFunction.
+
+        return {
+            constructor: DataTypeConverter,
+
+
+            /**
+             *
+             * @param metadata Previous information on the inferred types.
+             * @param options Some options to cast the data.
+             *     - castThresholdConfidence: for which threshold the library must perform the cast (default 1)
+             *     - makeChangesToDataset: is a boolean value, to indicate whether the library can do improvement on the storage
+             *     values, for instance, numbers with the comma will be replaced with the dot.
+             * @returns {*}
+             */
+            cast: function(metadata, options) {
+                if (typeof options === 'undefined' || options == null)
+                    options = { castThresholdConfidence: 1, castIfNull: false, makeChangesToDataset: false };
+                return this.convert(metadata, options);
+            },
+
+            /**
+             * It parses the json in input and converts the content
+             * in according to the inferred data types.
+             * @param json
+             * @param path Format: field1->field2->field3
+             * @deprecated
+             */
+            convert: function (metadata, options) {
+                var lastRowIndex = 0;
+                var isRowInvalid = false;
+                var numOfRowsInvalid = 0;
+
+                var numOfRows = 0;
+                var numOfValues = 0;
+
+                var datasetErrors = 0;
+                var datasetMissingValues = 0;
+
+                if (typeof options === 'undefined' || options == null)
+                    options = { castThresholdConfidence: 1, castIfNull: false, makeChangesToDataset: false };
+
+                jsonTraverse(metadata.dataset, metadata.fieldKeys, function(value, key, traversedKeys, rowIndex) {
+                    var inferredType = metadata.types[traversedKeys];
+                    numOfValues++;
+
+                    if (lastRowIndex != rowIndex) {
+                        lastRowIndex = rowIndex;
+                        numOfRows++;
+                        //if (isRowInvalid) numOfRowsInvalid++;
+                    }
+
+                    if (value == null || typeof value == 'undefined' || (value + "").length == 0) {
+                        //datasetErrors++;
+                    } //isRowInvalid = true;
+
+                    //var isCast = !(options.castIfNull == false && inferredType.totalNullValues > 0);
+                    var isCast = inferredType.typeConfidence >= options.castThresholdConfidence;
+                    if (inferredType.type == DataTypeConverter.TYPES.NUMBER.name && isCast) {
+                        //It is a number but I need to check also the subtype to see whether it is a percentage.
+                        if (inferredType.subtype === DataTypeConverter.SUBTYPES.PERCENTAGE.name) {
+                            if (value == null || typeof value == 'undefined' || (value + "").length == 0) {
+                                //datasetErrors++;
+                            } else {
+                                var dt = DataTypesUtils.FilterPercentage(value);
+                                if (typeof dt !== 'undefined' && 'type' in dt)
+                                    return dt.value;
+                            }
+                        }
+
+                        //--- It is a number (not a pecentage)
+                        if (isNaN(DataTypesUtils.FilterNumber(value)) == false && typeof value === "string")
+                            value = value.replace(',', '.');
+
+                        var number = parseFloat(value);
+
+                        if (isNaN(number)) {
+                            datasetErrors++;
+                            return value;
+                        }
+
+                        return number;
+                    }
+
+                    return value;
+                });
+
+
+                metadata.qualityIndex.notNullValues = (numOfValues - datasetMissingValues) / numOfValues;
+                metadata.qualityIndex.errors = (numOfValues - datasetErrors) / numOfValues;
+
+                return metadata;
+            },//EndFunction.
+
+            /**
+             * It parses the json and infers the data types.
+             * @param json
+             * @param The json (it is mainly a treee) can be very big and one would not analyse it as whole
+             * but only a part of it. One can decide to analyse only a part of the json by indicating the path
+             * within the tree to analyse. The parameter fieldKeys is an array with keys within the json to analyse.
+             * @param options to use during the Infer Data Type process, in particular
+             *     - threshold value for the confidence;
+             *     - language of messages.
+             */
+            inferJsonDataType: function (json, fieldKeys, options) {
+
+                //Default options initialisation.
+                if (typeof options === 'undefined' || options == null) options = { };
+
+                if (options.hasOwnProperty("thresholdConfidence") == false)
+                    options.thresholdConfidence = 1;
+
+                if (options.hasOwnProperty("filterOnThresholdConfidence") == false)
+                    options.filterOnThresholdConfidence = true;
+
+
+                if (options.hasOwnProperty("language") == false)
+                    options.language = DataTypeConverter.LANGS.EN.name;
+                else
+                    options.language = options.language.toUpperCase();
+
+                if (options.hasOwnProperty('trackCellsForEachType') == false)
+                    options.trackCellsForEachType = false;
+
+                var stack = [];
+                var fieldsType = {};
+                var fieldsSubType = {};
+                var numOfRows = 0;
+
+                if (typeof fieldKeys == 'undefined')
+                    throw "IllegalArgumentException: undefined json path to analyse.";
+
+                //Insert the first item (json root) within the stack.
+                stack.push({ item: json, fieldKeyIndex: 0 });
+
+                while (stack.length > 0) {
+                    var stackTask = stack.pop();
+                    var item = stackTask.item;
+
+                    var fieldKeyIndex = stackTask.fieldKeyIndex; //Index within the fieldKeys.
+                    var fieldKey = fieldKeys[fieldKeyIndex]; //Value within the filedKeys corresponding to the fieldKeyIndex.
+
+                    //Test fieldKey Value.
+                    //This if is executed when the fieldKey is * and the dataset it is NOT an ARRAY.
+                    //Thus, it loops through the javascript object KEYs.
+                    if (fieldKey == '*' && ArrayUtils.isArray(item) == false) {
+                        var sProcessedKeys = fieldKeys.slice(0, fieldKeyIndex).toString();
+
+                        ArrayUtils.IteratorOverKeys(item, function (item, key) {
+                            var curKey = sProcessedKeys + ((sProcessedKeys.length == 0) ? "" : ",") + key;
+
+                            var _label = curKey;
+                            if (typeof json !== 'undefined' && json.hasOwnProperty('fields')) {
+                                if (typeof json.fields[key] !== 'undefined') _label = json.fields[key].label;
+                                else {
+                                    for (var iField=0,field; iField < json.fields.length && (field=json.fields[iField]); iField++) {
+                                        if (field.hasOwnProperty('name') && field.name === key && field.hasOwnProperty('label'))
+                                            _label = field.label;
+                                    }//EndFor.
+                                }
+                            }
+
+                            var fieldType = ArrayUtils.TestAndInitializeKey(fieldsType, curKey, { name: curKey, label: _label, _inferredTypes: [], _inferredSubTypes: [], _inferredValues: [], numOfItems: 0 });
+                            fieldType.numOfItems++;
+
+                            ///TYPE
+                            var compundTypeSubtype = _processInferType(item);
+
+                            var inferredType = compundTypeSubtype;
+                            if (compundTypeSubtype.hasOwnProperty("type")) inferredType = compundTypeSubtype.type;
+
+                            ArrayUtils.TestAndIncrement(fieldType._inferredTypes, inferredType.name);
+                            if (inferredType === DataTypeConverter.TYPES.TEXT)
+                                ArrayUtils.TestAndIncrement(fieldType._inferredValues, item);
+
+                            ///Tracks for each type X the cells in the dataset of that type.
+                            if (options.trackCellsForEachType) {
+                                var listCells = ArrayUtils.TestAndInitializeKey(fieldType._inferredTypes, inferredType.name + "_cells", []);
+                                listCells.push({ columnKey: key, rowIndex: numOfRows });
+                            }
+
+                            ///SUBTYPE
+                            var inferredSubType = compundTypeSubtype.hasOwnProperty("subtype") ? compundTypeSubtype.subtype : _processInferSubType(item);
+                            if (inferredSubType != null && typeof inferredSubType !== 'undefined') {
+                                ArrayUtils.TestAndIncrement(fieldType._inferredSubTypes, inferredSubType.name);
+                                /*if (inferredSubType === DataTypeConverter.TYPES.LATITUDE)
+                                    ArrayUtils.TestAndIncrement(fieldType._inferredSubTypes, DataTypeConverter.TYPES.LATITUDE);
+                                if (inferredSubType === DataTypeConverter.TYPES.LONGITUDE)
+                                    ArrayUtils.TestAndIncrement(fieldType._inferredSubTypes, DataTypeConverter.TYPES.LONGITUDE);*/
+                            }//EndSubtype.
+
+                        });
+
+                        numOfRows++;
+                        continue;
+                    }
+
+                    //Loops through the array cells.
+                    if (fieldKey == '*' && ArrayUtils.isArray(item)) {
+                        for (var j= 0, cell; j<item.length && (cell = item[j]); j++) {
+                            stack.push({item: cell, fieldKeyIndex: fieldKeyIndex});
+                            numOfRows++;
+                        }
+                        continue;
+                    }
+
+                    //This is executed when the fieldKey is not '*'.
+                    var jsonSubtree = item[fieldKey]; //Takes the json subtree.
+                    if (Array.isArray(jsonSubtree)) { //It is an array, hence loops through the array and takes its items.
+                        //Note: it is better to push items in reverse order in the stack, to conserve the processing sort.
+                        //for (var j=0; j<jsonSubtree.length; j++) {
+                        for (var j=jsonSubtree.length-1; j>=0; j--) {
+                            var jsonItem = jsonSubtree[j];
+                            stack.push({ item: jsonItem, fieldKeyIndex: fieldKeyIndex+1 });
+                        }//EndForJ.
+                    } else {
+                        stack.push({ item: jsonSubtree, fieldKeyIndex: fieldKeyIndex+1 });
+                    }
+                }//EndWhile.
+
+
+                //Calculates the number of rows in the dataset.
+                var _numOfRows = 0;
+                ArrayUtils.IteratorOverKeys(fieldsType, function(fieldType) {
+                    if (fieldType.numOfItems > _numOfRows)
+                        _numOfRows = fieldType.numOfItems;
+                });
+
+                //Computes the number of null values.
+                ArrayUtils.IteratorOverKeys(fieldsType, function(fieldType) {
+                    if (!fieldType._inferredTypes.hasOwnProperty(DataTypeConverter.TYPES.EMPTY.name)) {
+                        //Initialises the field.
+                        fieldType._inferredTypes[DataTypeConverter.TYPES.EMPTY.name] = 0;
+                    }
+
+                    fieldType._inferredTypes[DataTypeConverter.TYPES.EMPTY.name] = fieldType._inferredTypes[DataTypeConverter.TYPES.EMPTY.name] +  (_numOfRows - fieldType.numOfItems);
+                });
+
+                //Infers the data type.
+                _analyseDataTypes(fieldsType);
+
+                //Data quality.
+                var quality = { homogeneity: 1, completeness: 1, totalNullValues: 0, totalValues: 0 };
+                ArrayUtils.IteratorOverKeys(fieldsType, function(fieldType) {
+                    quality.totalValues += fieldType.numOfItems;
+                    quality.homogeneity *= fieldType.typeConfidence;
+
+                    fieldType.totalNullValues = 0;
+                    if (fieldType._inferredTypes.hasOwnProperty(DataTypeConverter.TYPES.EMPTY.name)) {
+                        fieldType.totalNullValues = fieldType._inferredTypes[DataTypeConverter.TYPES.EMPTY.name];
+                        quality.totalNullValues += fieldType.totalNullValues;
+                    }
+
+                });
+                quality.homogeneity = Math.round(quality.homogeneity * 100) / 100;
+                var totFullValues = quality.totalValues - quality.totalNullValues;
+                quality.completeness = Math.round(totFullValues / quality.totalValues * 100) / 100;
+
+                //TRANSLATIONS.
+                ArrayUtils.IteratorOverKeys(fieldsType, function(fieldType) {
+                    //Translates the type.
+                    var _type = fieldType.type;
+                    fieldType.typeLabel = _type; //Default value.
+                    var _lngkey = ('key_type' + _type).toLowerCase();
+                    if (JDC_LNG.hasOwnProperty(_lngkey)) {
+                        var _entry = JDC_LNG[_lngkey];
+                        if (_entry.hasOwnProperty(options.language)) {
+                            fieldType.typeLabel = _entry[options.language];
+                        } else {
+                            console.warn("JSDatachecker translation not found. Language " + options.language + ". Type " + _type);
+                        }
+                    } else {
+                        console.warn("JSDatachecker translation not found. Language " + options.language + ". Type " + _type);
+                    }
+
+                    //Translates the subtype.
+                    var _subtype = fieldType.subtype;
+                    fieldType.subtypeLabel = _subtype;
+                    if (_subtype != null) {
+                        var _lngkey = ('key_subtype' + _subtype).toLowerCase();
+                        if (JDC_LNG.hasOwnProperty(_lngkey)) {
+                            var _entry = JDC_LNG[_lngkey];
+                            if (_entry.hasOwnProperty(options.language)) {
+                                fieldType.subtypeLabel = _entry[options.language];
+                            } else {
+                                console.warn("JSDatachecker translation not found. Language " + options.language + ". Subtype " + _subtype);
+                            }
+                        } else {
+                            console.warn("JSDatachecker translation not found. Language " + options.language + ". Subtype " + _subtype);
+                        }
+                    }
+
+                });
+
+                //Converts confidence to description.
+                var warningsTextual = "";
+                ArrayUtils.IteratorOverKeys(fieldsType, function(fieldType) {
+                    fieldType.errorsDescription = "";
+
+                    var description = "";
+
+                    //if (fieldType.typeConfidence < 1 || fieldType.totalNullValues > 0)
+                    //    description = "The field <" + fieldType.name + "> is a <" + fieldType.type + ">,  ";
+
+                    if (fieldType.typeConfidence < 1) {
+                        /*if (fieldType._inferredTypes.hasOwnProperty(DataTypeConverter.TYPES.EMPTY.name)) {
+                            var numNulls = fieldType._inferredTypes[DataTypeConverter.TYPES.EMPTY.name];
+                            if (typeof numNulls !== 'undefined' && numNulls > 0)
+                                description += " and has " + numNulls + " EMPTY values, ";
+                        }*/
+
+                        //var incorrect = fieldType.numOfItems - fieldType.totalNullValues - fieldType._inferredTypes[fieldType.type];
+                        var incorrect = fieldType.numOfItems - fieldType._inferredTypes[fieldType.type];
+                        if (incorrect > 0) {
+                            var _descr1 = _capitalizeFirstLetter(JDC_LNG['key_declaretype'][options.language]) + ".";
+                            var _descr2 = _capitalizeFirstLetter(JDC_LNG['key_notoftype_singular'][options.language]) + ".";
+                            if (incorrect > 1)
+                                _descr2 = _capitalizeFirstLetter(JDC_LNG['key_notoftype_plural'][options.language]) + ".";
+
+                            var _descr3 = ""; var _LISTWRONGROS = "";
+
+                            if (options.trackCellsForEachType) {
+                                _descr3 = _capitalizeFirstLetter(JDC_LNG['key_seewrongrows'][options.language]) + ".";
+
+                                //At the end, this array contains keys with wrong types.
+                                var keysWrongTypes =  Object.keys(fieldType._inferredTypes).filter(function(typekey) {
+                                    return (typekey.indexOf("_cells") <0) && (fieldType._inferredTypes[typekey] > 0)
+                                        && (typekey !== fieldType.type);
+                                });
+
+                                //Loop through the wrong types to collect the cells.
+                                //Each type has an array with wrong cells.
+                                fieldType.cellsWithWarnings = [];
+                                for (var iKeyType=0; iKeyType<keysWrongTypes.length; iKeyType++) {
+                                    var _keywrongtype = keysWrongTypes[iKeyType];
+                                    var _wrongcells = fieldType._inferredTypes[_keywrongtype + "_cells"];
+                                    if (typeof _wrongcells === 'undefined') continue;
+
+                                    //Loop on the cells.
+                                    for (var icell = 0; icell < _wrongcells.length; icell++) {
+                                        var _cell = _wrongcells[icell];
+
+                                        var _warningMessage = _capitalizeFirstLetter(JDC_LNG['key_declaretype'][options.language]) + ". ";
+                                        _warningMessage += _capitalizeFirstLetter(JDC_LNG['key_cellnotoftype'][options.language]) + ". ";
+                                        _warningMessage = _warningMessage.replace(/%COL_NAME/g, fieldType.label);
+                                        _warningMessage = _warningMessage.replace(/%COL_TYPE/g, fieldType.type);
+                                        _cell.warningMessage = _warningMessage;
+
+                                        //Build the warning message for the cell.
+                                        if (_keywrongtype === DataTypeConverter.TYPES.EMPTY.name)
+                                            _cell.warningMessage = _capitalizeFirstLetter(JDC_LNG['key_emptycell'][options.language]) + ".";
+
+                                        fieldType.cellsWithWarnings.push(_cell);
+                                    }//EndFor.
+                                }//EndFor.
+
+                                //Build the message for the user.
+                                for (var iKeyType=0; iKeyType<keysWrongTypes.length; iKeyType++) {
+                                    var _keytype = keysWrongTypes[iKeyType];
+                                    var _cells = fieldType._inferredTypes[_keytype + "_cells"];
+                                    if (typeof _cells === 'undefined') continue;
+
+                                    for (var icell = 0; icell < _cells.length; icell++) {
+                                        var _cell = _cells[icell];
+                                        _LISTWRONGROS += (_cell.rowIndex + 2) + "(" + _keytype + ")" +
+                                            (icell == _cells.length - 2 ? ", and " : "") +
+                                            (icell < _cells.length - 2 ? ", " : "");
+                                    }
+                                }//EndForInfTypes.
+                            }
+
+                            var descr = _descr1 + " " + _descr2 + " " + _descr3;
+                            descr = descr.replace(/%COL_NAME/g, fieldType.label);
+                            descr = descr.replace(/%COL_TYPE/g, fieldType.type);
+                            descr = descr.replace(/%COL_ERRORS/g, incorrect);
+                            descr = descr.replace(/%LIST_WRONG_ROWS/g, _LISTWRONGROS);
+
+                            description += descr;
+
+                            /*description += "The column <" + fieldType.name + "> has the type <" + fieldType.type + ">";
+                            var verb = (incorrect == 1) ? " value is" : " values are";
+                            description += ", but " + incorrect + verb + " not a " + fieldType.type;*/
+                        }
+
+                    }
+
+                    //Warning messages on the DATETIME formats.
+                    if (fieldType.type === DataTypeConverter.TYPES.DATETIME.name) {
+                        if (fieldType.subtype === DataTypeConverter.SUBTYPES.DATETIMEXXY.name) {
+                            description += " " + _capitalizeFirstLetter(JDC_LNG['key_dateformatunknown'][options.language]) + ". ";
+                        } else {
+                            var valuesNotInRecognizedFormat = fieldType.numOfItems - fieldType._inferredSubTypes[fieldType.subtype] -
+                                (fieldType.hasOwnProperty(DataTypeConverter.SUBTYPES.DATETIMEXXY.name)?
+                                    fieldType._inferredSubTypes[DataTypeConverter.SUBTYPES.DATETIMEXXY.name] : 0);
+                            if (valuesNotInRecognizedFormat > 0) {
+                                var descr = _capitalizeFirstLetter(JDC_LNG['key_datenotinformat'][options.language]);
+                                descr = descr.replace(/%COL_NUMDATENOTINFORMAT/g, valuesNotInRecognizedFormat);
+                                description += descr;
+                            }
+                        }
+                    }
+
+                    var descr = "";
+                    if (fieldType.totalNullValues == 1)
+                        descr = _capitalizeFirstLetter(JDC_LNG['key_emptyvalue_singolar'][options.language]) + ".";
+                    else if (fieldType.totalNullValues > 1 )
+                        descr = _capitalizeFirstLetter(JDC_LNG['key_emptyvalue_plural'][options.language]) + ".";
+
+                    //descr = descr.replace(/%COL_NAME/g, fieldType.label);
+                    //descr = descr.replace(/%COL_TYPE/g, fieldType.type);
+                    //descr = descr.replace(/%COL_NULLVALUES/g, fieldType.totalNullValues);
+                    description = description + " " + descr;
+
+                    //Replaces keyword in the warning descriptions.
+                    description = description.replace(/%COL_NAME/g, fieldType.label);
+                    description = description.replace(/%COL_TYPE/g, fieldType.type);
+                    description = description.replace(/%COL_SUBTYPE/g, fieldType.subtypeLabel);
+                    description = description.replace(/%COL_NULLVALUES/g, fieldType.totalNullValues);
+
+                    /*if (fieldType.totalNullValues > 0) {
+                        var descr = _capitalizeFirstLetter(JDC_LNG['key_declaretype'][options.language]) + ".";
+
+                        description += "The column <" + fieldType.name + "> has " + fieldType.totalNullValues + " EMPTY value";
+                        if (fieldType.totalNullValues > 1) description += "s";
+                    }
+
+                    if (description.length > 0)
+                        description += ".";*/
+
+                    fieldType.errorsDescription = description.trim();
+                    warningsTextual += description.trim();
+                });
+
+                var metadata = { dataset: json, fieldKeys: fieldKeys, types: fieldsType, qualityIndex: quality, warningsTextual: warningsTextual };
+
+                if (options.filterOnThresholdConfidence == true)
+                    _filterBasedOnThreshold(metadata, options.thresholdConfidence);
+
+                return metadata;
+            },//EndFunction.
+
+            /*inferDataTypes: function (jsonRows) {
+                this._fields = [];
+                this._numOfRows = 0;
+                _processDataset(jsonRows);
+                return this._fields;
+            },//EndFunction.*/
+
+            /**
+             * Given in input a value, the function infers the data type.
+             * @param value
+             * @returns {*}
+             */
+            inferDataTypeOfValue: function (value) {
+                return _processInferType(value);
+            },//EndFunction.
+
+            /**
+             * Given in input a value, the function infers the data type.
+             * @param value
+             * @returns {*}
+             */
+            inferDataSubTypeOfValue: function (value) {
+                return _processInferSubType(value);
+            }//EndFunction.
+
+        };
+    })();
+
+
+    /*
+     ** This file is part of JSDataChecker.
+     **
+     ** JSDataChecker is free software: you can redistribute it and/or modify
+     ** it under the terms of the GNU General Public License as published by
+     ** the Free Software Foundation, either version 3 of the License, or
+     ** (at your option) any later version.
+     **
+     ** JSDataChecker is distributed in the hope that it will be useful,
+     ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+     ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     ** GNU General Public License for more details.
+     **
+     ** You should have received a copy of the GNU General Public License
+     ** along with JSDataChecker. If not, see <http://www.gnu.org/licenses/>.
+     **
+     ** Copyright (C) 2016 JSDataChecker - Donato Pirozzi (donatopirozzi@gmail.com)
+     ** Distributed under the GNU GPL v3. For full terms see the file LICENSE.
+     ** License: http://www.gnu.org/licenses/gpl.html GPL version 3 or higher
+     **/
+
+    function DataTypesUtils() {}
+
+    DataTypesUtils.FilterTime = function (value) {
+        var expTime = /^[0-9]{2}:[0-9]{2}(:[0-9]{2})?(\+[0-9]{2}:[0-9]{2})?$/;
+        if (expTime.test(value) == false) return null;
+
+        var splitted = value.split(/[:|\+]/);
+
+        var expNumber = /^[0-9]{2}$/;
+        var HH = expNumber.test(splitted[0]) ? parseInt(splitted[0]) : 0;
+        var MM = expNumber.test(splitted[1]) ? parseInt(splitted[1]) : 0;
+        var SS = splitted.length >=3 && expNumber.test(splitted[2]) ? parseInt(splitted[2]) : 0;
+
+        var dt = new Date();
+        dt.setHours(HH);
+        dt.setMinutes(MM);
+        dt.setSeconds(SS);
+        return dt;
+    }//EndFunction.
+
+    DataTypesUtils.FilterDateTime = function (value) {
+        var _dtSplitted = value.split(/[T|\s]/);
+        if (_dtSplitted.length == 2) {
+            var dtTime = DataTypesUtils.FilterTime(_dtSplitted[1]);
+            if (dtTime == null) return null;
+
+            var dtDateTime = DataTypesUtils.FilterDate(_dtSplitted[0], dtTime);
+            return dtDateTime;
+        } else {
+            var dtDate = DataTypesUtils.FilterDate(value);
+            if (dtDate != null) return dtDate;
+
+            var dtTime = DataTypesUtils.FilterTime(value);
+            return dtTime;
+        }
+    }//EndFunction.
+
+    /***
+     * Recognized date formats are:
+     *     * YYYY-MM
+     *     * YYYY-MM-DD
+     *     * DD-MM-YYYY
+     *     * MM-DD-YYYY
+     * @param value
+     * @param dtDate
+     * @returns {*}
+     * @constructor
+     */
+    DataTypesUtils.FilterDate = function (value, dtDate) {
+        if (dtDate == null) dtDate = new Date("YYYY-MM-DD");
+
+        // [YYYY-MM] year-month.
+        if (/^[0-9]{1,4}(\-|\/)[0-9]{1,2}$/.test(value)) {
+            var splitted = value.split(/[\-|\/]/);
+            var year = parseInt(splitted[0]);
+            var month = parseInt(splitted[1]);
+
+            if (month > 12) return null;
+
+            dtDate.setYear(year);
+            dtDate.setMonth(month);
+            return { type: DataTypeConverter.TYPES.DATETIME, subtype: DataTypeConverter.SUBTYPES.DATETIMEYM, date: dtDate };
+        }
+
+        // [YYYY-MM-DD]
+        var expDate = /^[0-9]{1,4}(\-|\/)[0-9]{1,2}((\-|\/)[0-9]{1,2})?$/;
+        if (expDate.test(value)) {
+            var splitted = value.split(/[\-|\/]/);
+            var year = parseInt(splitted[0]);
+            var month = parseInt(splitted[1]);
+            var day = splitted.length == 3 ? parseInt(splitted[2]) : 0;
+
+            //Checks the range.
+            if (month <= 0 || month >= 13) return null;
+            if (day <= 0 || day >= 32) return null;
+
+            dtDate.setYear(year);
+            dtDate.setMonth(month);
+            dtDate.setDate(day);
+            return { type: DataTypeConverter.TYPES.DATETIME, subtype: DataTypeConverter.SUBTYPES.DATETIMEYMD, date: dtDate };
+        }
+
+        /// DD-MM-YYYY or MM-DD-YYYY
+        expDate = /^[0-9]{1,2}(\-|\/)[0-9]{1,2}(\-|\/)[0-9]{1,4}$/;
+        if (expDate.test(value)) {
+            var splitted = value.split(/[\-|\/]/);
+            var year = parseInt(splitted[2]);
+            var month = parseInt(splitted[1]);
+            var day = parseInt(splitted[0]);
+            var result =  { type: DataTypeConverter.TYPES.DATETIME, subtype: DataTypeConverter.SUBTYPES.DATETIMEDMY, date: dtDate };
+
+            //Here, recognises the American vs Italian format.
+            //When month is greater than twelve, it swaps month and day variable.
+            if (month > 12) {
+                var temp = month;
+                month = day;
+                day = temp;
+                result.subtype = DataTypeConverter.SUBTYPES.DATETIMEMDY;
+            }
+
+            //Checks the range.
+            if (month <= 0 || month >= 13) return null;
+            if (day <= 0 || day >= 32) return null;
+
+            if (day <= 12 && month <= 12) result.subtype = DataTypeConverter.SUBTYPES.DATETIMEXXY; //It can be both formats.
+
+            dtDate.setYear(year);
+            dtDate.setMonth(month);
+            dtDate.setDate(day);
+            return result;
+        }
+
+        return null;
+    };//EndFunction.
+
+    /**
+     * Converts the value in a number, NaN if it is not a number.
+     * @param value
+     * @returns {*}
+     */
+    DataTypesUtils.FilterFloat = function (value) {
+        if(/^(\-|\+)?((0|([1-9][0-9]*))(\.[0-9]+)?|Infinity)$/
+                .test(value))
+            return Number(value);
+        return NaN;
+    };//EndFunction.
+
+    DataTypesUtils.FilterPercentage = function (value) {
+        value = value.trim();
+        var index = value.indexOf("%");
+        if (index < 0) //Percentage symbol not found.
+            return null;
+
+        if (index != value.length - 1)
+            return null;
+
+        var _number = value.split('%')[0].trim();
+        var number = DataTypesUtils.FilterNumber(_number);
+        if (isNaN(number))
+            return null;
+
+        return { type: DataTypeConverter.TYPES.NUMBER, subtype: DataTypeConverter.SUBTYPES.PERCENTAGE, value: number};
+    };//EndFunction.
+
+    DataTypesUtils.FilterNumber = function (value) {
+        //Check immediatly if it is a classical number.
+        var valnum = DataTypesUtils.FilterFloat(value);
+        if (isNaN(valnum) == false) return valnum;
+
+        //Checks if the value is a string.
+        if (typeof value !== "string")
+            return NaN;
+
+        var parts = value.split(/(,|\.)/g);
+
+        //Find the smallest symbol.
+        var idxDot          = { idx: value.indexOf('.'), sym: '.' };
+        var idxComma        = { idx: value.lastIndexOf(','), sym: ',' };
+        var idxFirst = {};
+        if (idxDot.idx == -1) idxFirst = idxComma;
+        else if (idxComma.idx == -1) idxFirst = idxDot;
+        else if (idxDot.idx < idxComma.idx) idxFirst = idxDot;
+        else idxFirst = idxComma;
+
+        //Find the greatest symbol.
+        var idxLastDot      = { idx: value.lastIndexOf('.'), sym: '.' };
+        var idxLastComma    = { idx: value.lastIndexOf(','), sym: ',' };
+        var idxLast = {};
+        if (idxLastDot.idx == -1) idxLast = idxLastComma;
+        else if (idxLastComma.idx == -1) idxLast = idxLastDot;
+        else if (idxLastDot.idx > idxLastComma.idx) idxLast = idxLastDot;
+        else idxLast = idxLastComma;
+
+        //Splits over the dot and comma and check that are all numbers.
+        var splitted = value.split(/(\.|,|\-|\+)/g);
+        if (splitted.length == 0) return NaN;
+
+        var numOfDots = 0;
+        var numOfComma = 0;
+        var i=0;
+        if (splitted[0] == '-' || splitted[0] == '+') i=1;
+
+        for (var str; i<splitted.length, str=splitted[i]; i++) {
+            if (str == '.') numOfDots++;
+            else if (str == ',') numOfComma++;
+            //else if (/^(0|([1-9][0-9]*))$/g.test(str) == false)
+            else if (/^(0|([0-9]+))$/g.test(str) == false)
+                return NaN;
+        }//EndFor.
+
+        var lastValue = splitted[splitted.length-1];
+        if (lastValue == '.' || lastValue == ',' || lastValue.length == 0) return NaN;
+
+        //No dot/comma char found
+        if (idxFirst.idx == -1 && idxLast.idx == -1)
+            return DataTypesUtils.FilterFloat(value);
+
+        //Only one dot symbol found
+        if (idxFirst.idx == idxLast.idx && idxFirst.sym == '.')
+            return Number(value);
+
+        //Only one comma symbol found
+        if (idxFirst.idx == idxLast.idx && idxFirst.sym == ',') {
+            var nval = value.replace(',', '.');
+            return Number(nval);
+        }
+
+        return NaN;
+    };//EndFunction.
+
+    /**
+     * Solution from here:
+     * http://stackoverflow.com/questions/10454518/javascript-how-to-retrieve-the-number-of-decimals-of-a-string-number
+     * @param num
+     * @returns {number}
+     */
+    DataTypesUtils.DecimalPlaces = function (num) {
+        var match = (''+num).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
+        if (!match) { return 0; }
+        return Math.max(
+            0,
+            // Number of digits right of decimal point.
+            (match[1] ? match[1].length : 0)
+            // Adjust for scientific notation.
+            - (match[2] ? +match[2] : 0));
+    }//EndFunction.
+
+    DataTypesUtils.IsLatLng = function (num) {
+            if (DataTypesUtils.FilterFloat(num) == NaN) return false;
+            if (DataTypesUtils.DecimalPlaces(num) > 4) return true;
+            return false;
+        }//EndFunction.
+        /*
+        ** This file is part of JSDataChecker.
+        **
+        ** JSDataChecker is free software: you can redistribute it and/or modify
+        ** it under the terms of the GNU General Public License as published by
+        ** the Free Software Foundation, either version 3 of the License, or
+        ** (at your option) any later version.
+        **
+        ** JSDataChecker is distributed in the hope that it will be useful,
+        ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+        ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        ** GNU General Public License for more details.
+        **
+        ** You should have received a copy of the GNU General Public License
+        ** along with JSDataChecker. If not, see <http://www.gnu.org/licenses/>.
+    **
+    ** Copyright (C) 2016 JSDataChecker - Donato Pirozzi (donatopirozzi@gmail.com)
+    ** Distributed under the GNU GPL v3. For full terms see the file LICENSE.
+    ** License: http://www.gnu.org/licenses/gpl.html GPL version 3 or higher
+        **/
+
+    function DataTypeHierarchy() {
+
+    };//EndConstructor.
+
+    DataTypeHierarchy.HIERARCHY = [ ];
+
+    DataTypeHierarchy.HIERARCHY[DataTypeConverter.TYPES.TEXT.name] = [ DataTypeConverter.TYPES.TEXT.name ];
+    DataTypeHierarchy.HIERARCHY[DataTypeConverter.TYPES.NUMBER.name] = [ DataTypeConverter.TYPES.NUMBER.name, DataTypeConverter.TYPES.TEXT.name];
+    DataTypeHierarchy.HIERARCHY[DataTypeConverter.TYPES.DATETIME.name] = [ DataTypeConverter.TYPES.DATETIME.name, DataTypeConverter.TYPES.TEXT.name ];
+
+    DataTypeHierarchy.HIERARCHY[DataTypeConverter.SUBTYPES.GEOCOORDINATE.name] = [ DataTypeConverter.SUBTYPES.GEOCOORDINATE.name,
+        DataTypeConverter.TYPES.NUMBER.name, DataTypeConverter.TYPES.TEXT.name];
+
+    DataTypeHierarchy.HIERARCHY[DataTypeConverter.SUBTYPES.PERCENTAGE.name] = [DataTypeConverter.SUBTYPES.PERCENTAGE.name,
+        DataTypeConverter.TYPES.NUMBER.name, DataTypeConverter.TYPES.TEXT.name];
+
+    DataTypeHierarchy.canConvert = function (fromType, toType) {
+        var arrConvertableTypes = DataTypeHierarchy.HIERARCHY[fromType];
+        var idx = arrConvertableTypes.indexOf(toType);
+        return (idx >= 0);
+    };//EndFunction.
+
+    var JDC_LNG = {
+
+        "key_declaretype": {
+            "EN": "the column '%COL_NAME' is of type '%COL_TYPE'",
+            "IT": "la colonna '%COL_NAME' è di tipo '%COL_TYPE'",
+            "FR": "le colonne '%COL_NAME' est de type '%COL_TYPE'",
+            "NL": "de kolom '%COL_NAME' is van het type '%COL_TYPE'"
+        },
+
+        "key_notoftype_singular": {
+            "EN": "a value is not '%COL_TYPE'",
+            "IT": "un valore non è un '%COL_TYPE'",
+            "FR": "La valeur n'est pas '%COL_TYPE'",
+            "NL": "een waarde is niet '%COL_TYPE'"
+        },
+
+        "key_cellnotoftype": {
+            "EN": "the cell value is not '%COL_TYPE'",
+            "IT": "il valore della cella non è di tipo '%COL_TYPE'",
+            "FR": "the cell value is not '%COL_TYPE'",
+            "NL": "the cell value is not '%COL_TYPE'"
+        },
+
+        "key_notoftype_plural": {
+            "EN": "%COL_ERRORS values are not '%COL_TYPE'",
+            "IT": "%COL_ERRORS valori non sono di tipo '%COL_TYPE'",
+            "FR": "%COL_ERRORS les valeurs ne sont pas de type '%COL_TYPE'",
+            "NL": "%COL_ERRORS waarden niet '%COL_TYPE'"
+        },
+
+        "key_emptyvalue_singolar": {
+            "EN": "the column '%COL_NAME' has an empty value",
+            "IT": "la colonna '%COL_NAME' ha un valore vuoto",
+            "FR": "La colonne '%COL_NAME'  a une valeur vide",
+            "NL": "de kolom '%COL_NAME' heeft een lege waarde"
+        },
+
+        "key_emptycell": {
+            "EN": "the cell is empty",
+            "IT": "la cella è vuota",
+            "FR": "the cell is empty",
+            "NL": "the cell is empty"
+        },
+
+        "key_emptyvalue_plural": {
+            "EN": "the column '%COL_NAME' has '%COL_NULLVALUES' empty values",
+            "IT": "la colonna '%COL_NAME' ha '%COL_NULLVALUES' valori vuoti",
+            "FR": "La colonne '%COL_NAME' a la valeur '%COL_NULLVALUES' qui est vide",
+            "NL": "de kolom '%COL_NAME' heeft '%COL_NULLVALUES' lege waarde"
+        },
+
+        "key_seewrongrows": {
+            "EN": "check rows '%LIST_WRONG_ROWS'",
+            "IT": "controlla le righe '%LIST_WRONG_ROWS'",
+            "FR": "check rows '%LIST_WRONG_ROWS'",
+            "NL": "check rows '%LIST_WRONG_ROWS'"
+        },
+
+        "key_type": {
+            "EN": "type",
+            "IT": "tipo",
+            "FR": "type",
+            "NL": "type"
+        },
+
+        "key_subtype": {
+            "EN": "subtype",
+            "IT": "sottotipo",
+            "FR": "sous-type",
+            "NL": "subtype"
+        },
+
+        "key_typetext": {
+            "EN": "text",
+            "IT": "testo",
+            "FR": "texte",
+            "NL": "tekst"
+        },
+
+        "key_typenumber": {
+            "EN": "number",
+            "IT": "numero",
+            "FR": "chiffres",
+            "NL": "aantal"
+        },
+
+        "key_typeobject": {
+            "EN": "object",
+            "IT": "oggetto",
+            "FR": "objet",
+            "NL": "voorwerp"
+        },
+
+        "key_typedatetime": {
+            "EN": "date or time",
+            "IT": "data o orario",
+            "FR": "date ou l'heure",
+            "NL": "datum of tijd"
+        },
+
+        "key_typeempty": {
+            "EN": "empty",
+            "IT": "vuoto",
+            "FR": "vide",
+            "NL": "leeg"
+        },
+
+        "key_typenull": {
+            "EN": "empty",
+            "IT": "vuoto",
+            "FR": "vide",
+            "NL": "leeg"
+        },
+
+        "key_typelatitude": {
+            "EN": "latitude",
+            "IT": "latitudine",
+            "FR": "latitude",
+            "NL": "breedtegraad"
+        },
+
+        "key_typelongitude": {
+            "EN": "longitude",
+            "IT": "longitudine",
+            "FR": "longitude",
+            "NL": "lengtegraad"
+        },
+
+        "key_subtypegeocoordinate": {
+            "EN": "coordinate",
+            "IT": "coordinate",
+            "FR": "coordonnées",
+            "NL": "coordinate"
+        },
+
+        "key_subtypegeojson": {
+            "EN": "geojson",
+            "IT": "geojson",
+            "FR": "geojson",
+            "NL": "geojson"
+        },
+
+        "key_subtypebool": {
+            "EN": "bool",
+            "IT": "bool",
+            "FR": "bool",
+            "NL": "bool"
+        },
+
+        "key_subtypeconst": {
+            "EN": "const",
+            "IT": "costante",
+            "FR": "const",
+            "NL": "const"
+        },
+
+        "key_subtypecategory": {
+            "EN": "category",
+            "IT": "categoria",
+            "FR": "category",
+            "NL": "category"
+        },
+
+        "key_subtypepercentage": {
+            "EN": "percentage",
+            "IT": "percentuale",
+            "FR": "percentage",
+            "NL": "percentage"
+        },
+
+        "key_subtypelatitude": {
+            "EN": "latitude",
+            "IT": "latitudine",
+            "FR": "latitude",
+            "NL": "latitude"
+        },
+
+        "key_subtypelongitude": {
+            "EN": "longitude",
+            "IT": "longitudine",
+            "FR": "longitude",
+            "NL": "longitude"
+        },
+
+        "key_subtypedatetimeymd": {
+            "EN": "YYYY/MM/DD",
+            "IT": "YYYY/MM/DD",
+            "FR": "YYYY/MM/DD",
+            "NL": "YYYY/MM/DD"
+        },
+
+        "key_subtypedatetimedmy": {
+            "EN": "DD/MM/YYYY",
+            "IT": "DD/MM/YYYY",
+            "FR": "DD/MM/YYYY",
+            "NL": "DD/MM/YYYY"
+        },
+
+        "key_subtypedatetimexxy": {
+            "EN": "D?M/D?M/YYYY",
+            "IT": "D?M/D?M/YYYY",
+            "FR": "D?M/D?M/YYYY",
+            "NL": "D?M/D?M/YYYY"
+        },
+
+        "key_subtypenuminteger": {
+            "EN": "integer number",
+            "IT": "numero intero",
+            "FR": "integer number",
+            "NL": "integer number"
+        },
+
+        "key_subtypenumreal": {
+            "EN": "real number",
+            "IT": "numero reale",
+            "FR": "real number",
+            "NL": "real number"
+        },
+
+        "key_subtypeinteger": {
+            "EN": "integer number",
+            "IT": "numero intero",
+            "FR": "integer number",
+            "NL": "integer number"
+        },
+
+        "key_subtypereal": {
+            "EN": "real number",
+            "IT": "numero reale",
+            "FR": "real number",
+            "NL": "real number"
+        },
+
+        "key_dateformatunknown": {
+            "EN": "Cannot determine the date format for the column '%COL_NAME'",
+            "IT": "Impossibile determinare il formato della data per la colonna '%COL_NAME'",
+            "FR": "Cannot determine the date format for the column '%COL_NAME'",
+            "NL": "Cannot determine the date format for the column '%COL_NAME'"
+        },
+
+        "key_datenotinformat": {
+            "EN": "'%COL_NUMDATENOTINFORMAT' values of the column '%COL_NAME' are not in format '%COL_SUBTYPE'",
+            "IT": "'%COL_NUMDATENOTINFORMAT' valori della colonna '%COL_NAME' non sono in formato '%COL_SUBTYPE'",
+            "FR": "'%COL_NUMDATENOTINFORMAT' values of the column '%COL_NAME' are not in format '%COL_SUBTYPE'",
+            "NL": "'%COL_NUMDATENOTINFORMAT' values of the column '%COL_NAME' are not in format '%COL_SUBTYPE'"
+        },
+
+    };
+
+    function DataTypeHelper() {};//EndConstructor.
+
+    DataTypeHelper.forEachType = function (metadata, callback) {
+        var keys = Object.keys(metadata.types);
+        for (var i=0; i<keys.length; i++) {
+            var key = keys[i];
+            var type = metadata.types[key];
+            callback(type);
+        }//EndFor.
+    };
+    //var _converter = function(obj) { return new DataTypeConverter(); };
+    //module.exports = _converter;
+
+    return  DataTypeConverter;
+})();

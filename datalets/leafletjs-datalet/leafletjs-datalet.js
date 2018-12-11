@@ -28,7 +28,7 @@ class LeafletDatalet extends BaseDatalet
 
     async render(data)
     {
-        console.log('RENDER - leafletjs-datalet');
+        //console.log('RENDER - leafletjs-datalet');
 
         await this.import_module('./leafletjs/marker_cluster/dist/leaflet.markercluster.js');
 
