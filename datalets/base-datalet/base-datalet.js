@@ -280,6 +280,12 @@ export default class BaseDatalet extends HTMLElement
         if(this.hasAttribute("disable_my_space"))
             this.shadow_root.querySelector('#export_my_space').style.display = 'none';
 
+        if(this.hasAttribute("disable_html_export"))
+            this.shadow_root.querySelector('#export_to_html').style.display = 'none';
+
+        if(this.hasAttribute("disable_link"))
+            this.shadow_root.querySelector('#datalet_link').style.display = 'none';
+
         if(this.hasAttribute("disable_html"))
             this.shadow_root.querySelector('#export_html').style.display = 'none';
 
