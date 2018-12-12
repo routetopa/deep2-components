@@ -90,7 +90,7 @@ export const build = async function(type, context, data) {
 
     // HIGHSTOCK
 
-    if(data.series[0].data.length > 20) { // stockLimit --> area/bar/column/line
+    if(['area','bar','column','line'].indexOf(type) > -1 && data.series[0].data.length > 20) { // stockLimit
         let l = data.series[0].data.length;
         options.rangeSelector = {
             selected: 0,

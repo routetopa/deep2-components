@@ -77,7 +77,17 @@ class ScatterchartDatalet extends BaseDatalet
 
         let options = await builder.build('scatter', this, data);
 
+        let dataLabels = this.getAttribute("data-labels");
+
         options.series = properties_series;
+        options.plotOptions = {
+            scatter: {
+                dataLabels: {
+                    enabled: dataLabels
+                }
+            },
+        };
+
         delete options.tooltip;
 
         Highcharts.chart(this.shadowRoot.querySelector('#datalet_container'), options);

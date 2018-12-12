@@ -1,6 +1,7 @@
 import BaseDatalet from '../base-datalet/base-datalet.js';
 import * as AjaxJsonAlasqlBehavior from '../lib/modules/AjaxJsonAlasqlBehavior.js';
 import * as HighChartsBehavior from '../lib/modules/HighChartsBehavior.js';
+import * as builder from '../lib/modules/HighChartsBuilder.js';
 
 class BubblechartDatalet extends BaseDatalet
 {
@@ -76,67 +77,26 @@ class BubblechartDatalet extends BaseDatalet
             properties_series = bubbleSeries;
         }
 
-        let options = {
-            chart: {
-                type: 'bubble',
-                zoomType: 'xy',
-                plotBorderWidth: 1
-            },
-            title: {
-                text: ''
-            },
-            xAxis: {
-                title: {
-                    text: this.getAttribute("xAxisLabel")
+        let options = await builder.build('bubble', this, data);
+
+        let dataLabels = this.getAttribute("data-labels");
+
+        options.series = properties_series;
+        options.plotOptions = {
+            bubble: {
+                dataLabels: {
+                    enabled: dataLabels
                 }
             },
-            yAxis: {
-                title: {
-                    text: this.getAttribute("yAxisLabel")
+            series: {
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.content}'
                 }
-            },
-            plotOptions: {
-                bubble: {
-                    dataLabels: {
-                        enabled: this.getAttribute("dataLabels")
-                    }
-                },
-                series: {
-                    dataLabels: {
-                        enabled: true,
-                        format: '{point.content}'
-                    }
-                }
-            },
-            credits: {
-                enabled: false
-            },
-            series: properties_series
+            }
         };
 
-        if(this.getAttribute("legend") === "topRight")
-            options.legend = {
-                layout: 'vertical',
-                verticalAlign: 'top',
-                align: 'right',
-                x: -4,
-                y: 4,
-                floating: true,
-                borderWidth: 1,
-                backgroundColor: ((Highcharts[this.getAttribute("theme")] && Highcharts[this.getAttribute("theme")].legendBackgroundColor) || '#FFFFFF'),
-                shadow: true
-            };
-        else if(this.getAttribute("legend") === "bottom")
-            options.legend = {
-                enabled: true
-            };
-        else
-            options.legend ={
-                enabled: false
-            };
-
-        //if(this.getAttribute("theme") !== "themeBase" && this.getAttribute("theme") !== "")
-            //Object.assign(options, Highcharts[this.getAttribute("theme")]);
+        delete options.tooltip;
 
         Highcharts.chart(this.shadowRoot.querySelector('#datalet_container'), options);
 

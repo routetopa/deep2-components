@@ -1,6 +1,7 @@
 import BaseDatalet from '../base-datalet/base-datalet.js';
 import * as AjaxJsonAlasqlBehavior from '../lib/modules/AjaxJsonAlasqlBehavior.js';
 import * as HighMapsBehavior from '../lib/modules/HighMapsBehavior.js';
+import * as builder from '../lib/modules/HighChartsBuilder.js';
 
 class ItalymapDatalet extends BaseDatalet
 {
@@ -85,89 +86,60 @@ class ItalymapDatalet extends BaseDatalet
             stops = [[0, '#FFFFFF'], [1, Highcharts.getOptions().colors[0]]];
         //stops = [[0, '#F44336'], [1, '#2196F3']];
 
+        let options = await builder.build('map', this, data);
+
         let suffix = this.getAttribute("suffix");
 
-        let options = {
-            chart: {
-                map: map
-            },
+        delete options.chart;
+        delete options.xAxis;
+        delete options.yAxis;
+        delete options.plotOptions;
+        delete options.navigator;
 
-            title: false,
+        options.chart = {
+            map: map
+        };
 
-            exporting: {
-                enabled: false
-            },
-
-            mapNavigation: {
-                enabled: true,
-                buttonOptions: {
-                    verticalAlign: 'bottom'
-                }
-            },
-
-            series: [{
-                data: data.series,
-                dataLabels: {
-                    enabled:  this.getAttribute("dataLabels"),
-                    format: '{point.name}'
-                }
-            }],
-
-            colorAxis: {
-                stops: stops,
-                min: min,
-                max: max,
-            },
-
-            tooltip: {
-                useHTML: true,
-                shared: true,
-                formatter: function() {
-                    let name = this.point ? this.point["name"] : '';
-                    let index = pointsInfo[0].data.findIndex(x => x.trim().toLowerCase() === name.trim().toLowerCase());
-
-                    let s = "";
-                    for (let i=0; i < pointsInfo.length; i++) {
-                        if (pointsInfo[i].data[index] && pointsInfo[i].data[index].toString().match(new RegExp("(https?:\/\/.*\.(?:png|jpg|jpeg|gif))", 'i')))
-                            s += '<image height="124" width="124" style="object-fit: contain;" src="' + pointsInfo[i].data[index] + '" /><br>';
-                        else
-                            s += '<span  style="color: #7cb5ec;">\u25CF</span> ' + pointsInfo[i].name + ': <b>' + pointsInfo[i].data[index] + ' ' + (i == 1 ? suffix : '') + '</b><br>';
-                    }
-//                            var s = '<span  style="color: #7cb5ec;">\u25CF</span> ' + this.point.name + ': <b>' +  this.point.value + ' ' + suffix + '</b>';
-                    return s;
-                }
-            },
-
-            credits: {
-                enabled: false
+        options.mapNavigation = {
+            enabled: true,
+            buttonOptions: {
+                verticalAlign: 'bottom'
             }
         };
 
-        if(this.getAttribute("legend") === "topRight")
-            options.legend = {
-                layout: 'vertical',
-                verticalAlign: 'top',
-                align: 'right',
-                margin: 8,
-                y: 28,
-                symbolHeight: 280,
-                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || 'rgba(255, 255, 255, 0.85)'
-            };
-        else if(this.getAttribute("legend") === "bottom")
-            options.legend = {
-                enabled: true,
-                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || 'rgba(255, 255, 255, 0.85)',
-            };
-        else
-            options.legend ={
-                enabled: false
-            };
+        options.series = [{
+            data: data.series,
+            dataLabels: {
+                enabled:  this.getAttribute("dataLabels"),
+                format: '{point.name}'
+            }
+        }];
 
-        //if(t.getAttribute("theme") !== "themeBase" && t.getAttribute("theme") !== "")
-            //jQuery.extend(true, options, Highcharts[t.getAttribute("theme")]);
+        options.colorAxis = {
+            stops: stops,
+            min: min,
+            max: max,
+        };
+
+        options.tooltip = {
+            useHTML: true,
+            shared: true,
+            formatter: function() {
+                let name = this.point ? this.point["name"] : '';
+                let index = pointsInfo[0].data.findIndex(x => x.trim().toLowerCase() === name.trim().toLowerCase());
+
+                let s = "";
+                for (let i=0; i < pointsInfo.length; i++) {
+                    if (pointsInfo[i].data[index] && pointsInfo[i].data[index].toString().match(new RegExp("(https?:\/\/.*\.(?:png|jpg|jpeg|gif))", 'i')))
+                        s += '<image height="124" width="124" style="object-fit: contain;" src="' + pointsInfo[i].data[index] + '" /><br>';
+                    else
+                        s += '<span  style="color: #7cb5ec;">\u25CF</span> ' + pointsInfo[i].name + ': <b>' + pointsInfo[i].data[index] + ' ' + (i == 1 ? suffix : '') + '</b><br>';
+                }
+                return s;
+            }
+        };
 
         Highcharts.mapChart(this.shadowRoot.querySelector('#datalet_container'), options);
-
     }
 }
 
