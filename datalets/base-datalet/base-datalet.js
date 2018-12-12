@@ -143,15 +143,17 @@ export default class BaseDatalet extends HTMLElement
 
     add_listeners()
     {
-        let fullscreen_cb = this.fullscreen();
+        let fullscreen_cb = this.fullscreen('fullscreen');
+        let export_cb     = this.fullscreen('export');
 
         this.shadow_root.querySelector('#base_datalet_link').addEventListener('click', (e) => {this.go_to_dataset(e)});
         this.shadow_root.querySelector('#fullscreen').addEventListener('click', fullscreen_cb);
-        this.shadow_root.querySelector('#fullscreen_close').addEventListener('click', fullscreen_cb);
+        this.shadow_root.querySelector('.close.fullscreen').addEventListener('click', fullscreen_cb);
+        this.shadow_root.querySelector('.close.export').addEventListener('click', export_cb);
         this.shadow_root.querySelector('#export_menu').addEventListener('click', this.open_export_menu());
         this.shadow_root.querySelector('#link_lp').addEventListener('click', (e) => {this.create_link(e)});
         this.shadow_root.querySelector('#export_html').addEventListener('click', (e) => {this.export_html(e)});
-        this.shadow_root.querySelector('#export_png').addEventListener('click', (e) => {this.export_png(e)});
+        this.shadow_root.querySelector('#export_png').addEventListener('click', export_cb);
         this.shadow_root.querySelector('#export_doc').addEventListener('click', (e) => {this.export_doc(e)});
         this.shadow_root.querySelector('#import_myspace').addEventListener('click', (e) => {this.import_myspace(e)});
         this.shadow_root.querySelector('#facebook').addEventListener('click', (e) => {this.share_on_fb(e)});
@@ -221,22 +223,23 @@ export default class BaseDatalet extends HTMLElement
     }
 
     /* LISTENER */
-    fullscreen()
+    fullscreen(container)
     {
         let open = false;
-        let fph = this.shadow_root.querySelector('#fullscreen_placeholder');
+        let fph = this.shadow_root.querySelector(`#${container}_placeholder`);
 
         return () => {
+
             if (!open) {
                 let html_obj = this.get_html();
                 let iframe = document.createElement('iframe');
                 iframe.setAttribute("frameborder", "0");
-                iframe.setAttribute("id", "fullscreen_container");
+                iframe.setAttribute("id", `iframe_${container}`);
                 iframe.setAttribute("srcdoc", html_obj.script + html_obj.style + html_obj.datalet_definition + html_obj.component);
                 fph.appendChild(iframe);
                 fph.style.display = 'block';
             } else {
-                fph.removeChild(this.shadow_root.querySelector('#fullscreen_container'));
+                fph.removeChild(this.shadow_root.querySelector(`#iframe_${container}`));
                 fph.style.display = 'none';
             }
 
