@@ -147,6 +147,13 @@ export default class BaseDatalet extends HTMLElement
         let fullscreen_cb = this.fullscreen('fullscreen');
         let export_cb     = this.fullscreen('export');
 
+        this.shadow_root.querySelector('#preview_resize').addEventListener('click', (e) => {this.preview_resize()});
+        this.shadow_root.querySelector('#preview_reset').addEventListener('click', (e) => {this.preview_resize('100%', '100%')});
+        // this.shadow_root.querySelector('#preview_export').addEventListener('click', (e) => {this.preview_resize()});
+        this.shadow_root.querySelector('#preview_twitter').addEventListener('click', (e) => {this.preview_resize(1024, 512)});
+        this.shadow_root.querySelector('#preview_facebook').addEventListener('click', (e) => {this.preview_resize(1200, 630)});
+        this.shadow_root.querySelector('#preview_googleplus').addEventListener('click', (e) => {this.preview_resize(544, 408)});//497 x 373
+
         this.shadow_root.querySelector('#base_datalet_link').addEventListener('click', (e) => {this.go_to_dataset(e)});
         this.shadow_root.querySelector('#fullscreen').addEventListener('click', fullscreen_cb);
         this.shadow_root.querySelector('.close.fullscreen').addEventListener('click', fullscreen_cb);
@@ -224,10 +231,46 @@ export default class BaseDatalet extends HTMLElement
     }
 
     /* LISTENER */
+    preview_resize(w = null, h = null)
+    {
+        let iframe = this.shadow_root.querySelector("#iframe_export");
+
+        if(w == '100%') {
+            this.shadow_root.querySelector("#preview_width").value = '';
+            this.shadow_root.querySelector("#preview_height").value = '';
+        } else if (w && !isNaN(w)) {
+            this.shadow_root.querySelector("#preview_width").value = w;
+            this.shadow_root.querySelector("#preview_height").value = h;
+            w += 'px';
+            h += 'px';
+        }
+        else {
+            w = this.shadow_root.querySelector("#preview_width").value;
+            h = this.shadow_root.querySelector("#preview_height").value;
+
+            if(isNaN(w) || w < 408) {
+                w = 408;
+                this.shadow_root.querySelector("#preview_width").value = w;
+            }
+
+            if(isNaN(h) || h < 408) {
+                h = 408;
+                this.shadow_root.querySelector("#preview_height").value = h;
+            }
+
+            w += 'px';
+            h += 'px';
+        }
+
+        iframe.style.width = w;
+        iframe.style.height = h;
+    }
+
     fullscreen(container)
     {
         let open = false;
         let fph = this.shadow_root.querySelector(`#${container}_placeholder`);
+        let preview = this.shadow_root.querySelector(`#${container}_placeholder .preview_container`);
 
         return () => {
 
@@ -237,10 +280,10 @@ export default class BaseDatalet extends HTMLElement
                 iframe.setAttribute("frameborder", "0");
                 iframe.setAttribute("id", `iframe_${container}`);
                 iframe.setAttribute("srcdoc", html_obj.script + html_obj.style + html_obj.datalet_definition + html_obj.component);
-                fph.appendChild(iframe);
+                preview.appendChild(iframe);
                 fph.style.display = 'block';
             } else {
-                fph.removeChild(this.shadow_root.querySelector(`#iframe_${container}`));
+                preview.removeChild(this.shadow_root.querySelector(`#iframe_${container}`));
                 fph.style.display = 'none';
             }
 

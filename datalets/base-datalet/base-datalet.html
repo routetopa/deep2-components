@@ -4,17 +4,24 @@
     <link rel="stylesheet" type="text/css" href="./static/css/base-datalet.css"/>
 
     <div id="fullscreen_placeholder">
-        <div class="cover"></div>
         <div class="close fullscreen"></div>
+        <div class="preview_container"></div>
     </div>
 
     <div id="export_placeholder">
-        <div class="cover"></div>
         <div class="close export"></div>
-        <div class="panel">
-            <input type="number" />
-            <input type="number" />
-            <input type="button" value="Export" />
+        <div class="export_container">
+            <div class="preview_container"></div>
+            <div class="export_options">
+                Width (px): <input id="preview_width" placeholder="100%" type="number" />
+                Height (px): <input id="preview_height" placeholder="100%" type="number" />
+                <button id="preview_twitter" class="twitter"></button>
+                <button id="preview_facebook" class="facebook"></button>
+                <button id="preview_googleplus" class="googleplus"></button>
+                <button id="preview_resize">Resize</button>
+                <button id="preview_reset">Reset</button>
+                <button id="preview_export">Export</button>
+            </div>
         </div>
     </div>
 
@@ -31,7 +38,7 @@
 
         <div id="base_datalet_source_link">
             <b>Source:&nbsp</b> <a id="base_datalet_source" target="_blank"></a> <span id="base_datalet_link_span">&nbsp(<a id="base_datalet_link" target="_blank">dataset</a>)</span> <span id="ajax_error"></span>
-            <div id="refresh"><img id="img_refresh" src="./static/images/refresh.svg"></div>
+            <div id="refresh"><img id="img_refresh" src="./static/images/reload.png"></div>
         </div>
 
         <div id="base_datalet_rtp">
@@ -56,10 +63,10 @@
             </div>
         </div>
 
-        <div id="social">
-            <div id="twitter"></div>
-            <div id="facebook"></div>
-            <div id="googleplus"></div>
+        <div id="social" class="social">
+            <div id="twitter" class="twitter"></div>
+            <div id="facebook" class="facebook"></div>
+            <div id="googleplus" class="googleplus"></div>
         </div>
 
     </div>
