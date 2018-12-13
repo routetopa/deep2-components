@@ -113,6 +113,7 @@ export default class BaseDatalet extends HTMLElement
                 data = JSON.parse(this.cache);
             }
 
+            this.shadow_root.querySelector('#base_datalet_loader').style.display = 'none';
             this.render(this.transformData(data, this.selected_fields));
 
         } catch (e) {
@@ -149,10 +150,10 @@ export default class BaseDatalet extends HTMLElement
 
         this.shadow_root.querySelector('#preview_resize').addEventListener('click', (e) => {this.preview_resize()});
         this.shadow_root.querySelector('#preview_reset').addEventListener('click', (e) => {this.preview_resize('100%', '100%')});
-        // this.shadow_root.querySelector('#preview_export').addEventListener('click', (e) => {this.preview_resize()});
         this.shadow_root.querySelector('#preview_twitter').addEventListener('click', (e) => {this.preview_resize(1024, 512)});
         this.shadow_root.querySelector('#preview_facebook').addEventListener('click', (e) => {this.preview_resize(1200, 630)});
         this.shadow_root.querySelector('#preview_googleplus').addEventListener('click', (e) => {this.preview_resize(544, 408)});//497 x 373
+        this.shadow_root.querySelector('#preview_export').addEventListener('click', (e) => {this.export_png()});
 
         this.shadow_root.querySelector('#base_datalet_link').addEventListener('click', (e) => {this.go_to_dataset(e)});
         this.shadow_root.querySelector('#fullscreen').addEventListener('click', fullscreen_cb);
@@ -234,28 +235,30 @@ export default class BaseDatalet extends HTMLElement
     preview_resize(w = null, h = null)
     {
         let iframe = this.shadow_root.querySelector("#iframe_export");
+        let pw     = this.shadow_root.querySelector("#preview_width");
+        let ph     = this.shadow_root.querySelector("#preview_height");
 
-        if(w == '100%') {
-            this.shadow_root.querySelector("#preview_width").value = '';
-            this.shadow_root.querySelector("#preview_height").value = '';
+        if(w === '100%') {
+            pw.value = '';
+            ph.value = '';
         } else if (w && !isNaN(w)) {
-            this.shadow_root.querySelector("#preview_width").value = w;
-            this.shadow_root.querySelector("#preview_height").value = h;
+            pw.value = w;
+            ph.value = h;
             w += 'px';
             h += 'px';
         }
         else {
-            w = this.shadow_root.querySelector("#preview_width").value;
-            h = this.shadow_root.querySelector("#preview_height").value;
+            w = +pw.value;
+            h = +ph.value;
 
-            if(isNaN(w) || w < 408) {
-                w = 408;
-                this.shadow_root.querySelector("#preview_width").value = w;
+            if(isNaN(w) || w < 400) {
+                w = 400;
+                pw.value = w;
             }
 
-            if(isNaN(h) || h < 408) {
-                h = 408;
-                this.shadow_root.querySelector("#preview_height").value = h;
+            if(isNaN(h) || h < 400) {
+                h = 400;
+                ph.value = h;
             }
 
             w += 'px';
@@ -359,7 +362,8 @@ export default class BaseDatalet extends HTMLElement
 
     async export_png()
     {
-        let png = await this.create_image();
+        let svg = this.shadow_root.querySelector('#iframe_export').contentWindow.document.querySelector(this.component).shadowRoot.querySelector('svg');
+        let png = await this.create_image(svg);
 
         let download = document.createElement('a');
         download.href = png;
@@ -369,10 +373,10 @@ export default class BaseDatalet extends HTMLElement
         document.body.removeChild(download);
     }
 
-    create_image()
+    create_image(svg)
     {
-        return new Promise((res, rej) => {
-            let svg = this.shadow_root.querySelector('svg');
+        return new Promise((res, rej) =>
+        {
             let svgData = new XMLSerializer().serializeToString(svg);
 
             let canvas = document.createElement("canvas");
@@ -394,7 +398,8 @@ export default class BaseDatalet extends HTMLElement
 
     async export_doc()
     {
-        if (this.data_url.indexOf("datastore_search?resource_id") > -1) {
+        if (this.data_url.indexOf("datastore_search?resource_id") > -1)
+        {
             let docx = await this.import_module('../lib/vendors/docx/index.js');
 
             let url = this.data_url.replace("datastore_search?resource_id", "resource_show?id");
@@ -410,7 +415,7 @@ export default class BaseDatalet extends HTMLElement
             doc.addParagraph(new Paragraph(`Dataset Last Modified : ${res.result.last_modified}`));
             doc.addParagraph(new Paragraph(`Dataset Url : ${res.result.url}`));
             doc.addParagraph(new Paragraph(`Dataset API : ${this.data_url}`));
-            doc.createImage(await this.create_image());
+            doc.createImage(await this.create_image(this.shadow_root.querySelector('svg')));
 
             const packer = new Packer();
             let blob = await packer.toBlob(doc);
@@ -598,7 +603,7 @@ export default class BaseDatalet extends HTMLElement
     get_html()
     {
         let script = `<script src="${this.baseUri}../lib/vendors/webcomponents_lite_polyfill/webcomponents-lite.js"></script>`;
-        let style = `<style>html{height: 100%;} body{height: calc(100% - 16px); margin: 8px;} ${this.component}{--base-datalet-visibility: none; --datalet-container-size:100%}</style>`;
+        let style = `<style>html,body{margin:0;padding:0;height: 100%} ${this.component}{--base-datalet-visibility: none; --datalet-container-size:100%}</style>`;
         let datalet_definition = `<link rel="import" href="${this.baseUri}${this.component}.html" />`;
         return {script: script, style: style, datalet_definition: datalet_definition, component: this.outerHTML};
     }
