@@ -32,9 +32,9 @@ class MediaSliderDatalet extends BaseDatalet
         if(!this.thereis_jQuery())
             await this.import_module('../lib/vendors/jquery/jquery.js');
 
-        await this.import_module('js/camera.min.js');
-        await this.import_module('js/jquery.easing.1.3.js');
-        await this.import_module('js/jquery.easing.compatibility.js');
+        await this.import_module('./js/camera.min.js');
+        await this.import_module('./js/jquery.easing.1.3.js');
+        await this.import_module('./js/jquery.easing.compatibility.js');
 
         if(!data || data[0] === undefined) return;
 
