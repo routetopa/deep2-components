@@ -63,8 +63,8 @@ export default class BaseDatalet extends HTMLElement
 
     disconnectedCallback()
     {
+        //todo remove event listeners ??
         this.shadow_root.innerHTML = ''; //svuota lo shadow DOM
-        //todo disconnettere tutti i listeners
     }
 
     async set_behaviours(module, config)
