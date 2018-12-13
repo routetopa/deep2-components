@@ -13,6 +13,7 @@ class DatatableDatalet extends BaseDatalet
         try {
             //{requestData:0}, {selectData:0}, {filterData:0}, {trasformData:0} -> [0, 0, 0, 0]
             this.set_behaviours([AjaxJsonAlasqlBehavior], [0, 0, 0, 0]);
+            this.export_to_img_doc = false;
         } catch (e) {
             console.log("ERROR");
             console.log(e);
