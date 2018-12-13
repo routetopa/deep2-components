@@ -187,7 +187,7 @@ class LeafletDatalet extends BaseDatalet
 
                 for(let j=2; j<l; j++) /* -1 IF CAT INDEX*/
                 {
-                    if(typeof data[j] !== 'undefined' && typeof data[j].data[i] !== 'undefined')
+                    if(typeof data[j] !== 'undefined' && typeof data[j].data[i] !== 'undefined' && data[j].data[i] !== null)
                     {
                         if (data[j].data[i].toString().match(new RegExp("(https?:\/\/.*\.(?:png|jpg|jpeg|gif))", 'i')))
                             popupText += '<image height="100" width="100" src="' + data[j].data[i] + '" /><br/>';
