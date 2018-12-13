@@ -152,7 +152,7 @@ export default class BaseDatalet extends HTMLElement
         this.shadow_root.querySelector('#preview_reset').addEventListener('click', (e) => {this.preview_resize('100%', '100%')});
         this.shadow_root.querySelector('#preview_twitter').addEventListener('click', (e) => {this.preview_resize(1024, 512)});
         this.shadow_root.querySelector('#preview_facebook').addEventListener('click', (e) => {this.preview_resize(1200, 630)});
-        this.shadow_root.querySelector('#preview_googleplus').addEventListener('click', (e) => {this.preview_resize(544, 408)});//497 x 373
+        this.shadow_root.querySelector('#preview_googleplus').addEventListener('click', (e) => {this.preview_resize(533, 400)});//497 x 373
         this.shadow_root.querySelector('#preview_export').addEventListener('click', (e) => {this.export_png()});
 
         this.shadow_root.querySelector('#base_datalet_link').addEventListener('click', (e) => {this.go_to_dataset(e)});

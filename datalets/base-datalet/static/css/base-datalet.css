@@ -16,6 +16,11 @@ a:hover {
     border-top: 2px solid #B6B6B6;
     display: var(--base-datalet-visibility, block);
 }
+
+.highcharts-container {
+    width: 100% !important;
+}
+
 #base_datalet_container > * {
     font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 14px;
@@ -372,6 +377,7 @@ span#ajax_error {
 
 #datalet_container {
     width: 100%;
+    min-width: 400px;
     min-height: 400px;
     height: var(--datalet-container-size, calc(100% - 82px));
 
