@@ -1,10 +1,13 @@
 import BaseDatalet from '../base-datalet/base-datalet.js';
+import * as AjaxJsonAlasqlBehavior from '../lib/modules/AjaxJsonAlasqlBehavior.js';
+import * as HighChartsBehavior from '../lib/modules/HighChartsBehavior.js';
+import * as builder from '../lib/modules/HighChartsBuilder.js';
 
-class PolarspiderDatalet extends BaseDatalet
+class SpiderchartDatalet extends BaseDatalet
 {
     constructor()
     {
-        super('polarspider-datalet');
+        super('spiderchart-datalet');
     }
 
     handle_behaviour()
@@ -20,128 +23,46 @@ class PolarspiderDatalet extends BaseDatalet
 
     template()
     {
-        const template = this.currentDocument.querySelector('#polarspider-datalet');
+        const template = this.currentDocument.querySelector('#spiderchart-datalet');
         return template.content.cloneNode(true);
     }
 
     async render(data)
     {
-        console.log('RENDER - polarspider-datalet');
+        console.log('RENDER - spiderchart-datalet');
 
-        // await this.import_module('../lib/vendors/highstock/highstock.js');
-        await this.import_module('https://code.highcharts.com/stock/highstock.js');
-        await this.import_module('https://code.highcharts.com/highcharts-more.js');
-        // alert("aggiorna tutte le librerie");
+        await this.import_module('../lib/vendors/highcharts/highstock.js');
+        await this.import_module('../lib/vendors/highcharts/highcharts-more.js');
 
         const builder = await this.import_module('../lib/modules/HighChartsBuilder.js');
 
-        // let options = await builder.build('polar', this, data);
-        //
-        // let suffix = this.getAttribute("suffix");
-        // let dataLabels = (this.getAttribute("data-labels") == "true");
-        // let theme = this.getAttribute("theme");
-        //
-        // options.chart = {
-        //     polar: true,
-        //     type: 'line'
-        // };
-        //
+        let options = await builder.build('spider', this, data);
+
+        options.chart = {
+            polar: true,
+            type: 'line'
+        };
+
         // options.pane = {
         //     size: '80%'
         // };
-        //
-        // options.xAxis = {
-        //     categories: data.categories,
-        //     title: {
-        //         text: this.getAttribute("x-axis-label")
-        //     },
-        //     labels: {
-        //         formatter: function () {
-        //             let value = this.value;
-        //             if (value && value.length > 10)
-        //                 value = value.substring(0, 10) + '...';
-        //             return value;
-        //         }
-        //     },
-        //     tickmarkPlacement: 'on',
-        //     lineWidth: 0
-        // };
-        //
-        // options.yAxis = {
-        //     title: {
-        //         text: this.getAttribute("y-axis-label"),
-        //     },
-        //     gridLineInterpolation: 'polygon',
-        //     lineWidth: 0,
-        //     min: 0
-        // };
-        //
-        // options.plotOptions.column = {
-        //     dataLabels: {
-        //         formatter: function() {
-        //             return this.y + ' ' + suffix;
-        //         },
-        //         enabled: dataLabels
-        //     }
-        // };
 
-        let options = {
+        options.xAxis = {
+            categories: data.categories,
+            tickmarkPlacement: 'on',
+            lineWidth: 0
+        };
 
-            chart: {
-                polar: true,
-                type: 'line'
-            },
-
-            title: {
-                text: 'Budget vs spending',
-                x: -80
-            },
-
-            pane: {
-                size: '80%'
-            },
-
-            xAxis: {
-                categories: ['Sales', 'Marketing', 'Development', 'Customer Support',
-                    'Information Technology', 'Administration'],
-                tickmarkPlacement: 'on',
-                lineWidth: 0
-            },
-
-            yAxis: {
-                gridLineInterpolation: 'polygon',
-                lineWidth: 0,
-                min: 0
-            },
-
-            tooltip: {
-                shared: true,
-                pointFormat: '<span style="color:{series.color}">{series.name}: <b>${point.y:,.0f}</b><br/>'
-            },
-
-            legend: {
-                align: 'right',
-                verticalAlign: 'top',
-                y: 70,
-                layout: 'vertical'
-            },
-
-            series: [{
-                name: 'Allocated Budget',
-                data: [43000, 19000, 60000, 35000, 17000, 10000],
-                pointPlacement: 'on'
-            }, {
-                name: 'Actual Spending',
-                data: [50000, 39000, 42000, 31000, 26000, 14000],
-                pointPlacement: 'on'
-            }]
-
-        }
+        options.yAxis = {
+            gridLineInterpolation: 'polygon',
+            lineWidth: 0,
+            min: 0
+        };
 
         Highcharts.chart(this.shadowRoot.querySelector('#datalet_container'), options);
     }
 }
 
 
-const FrozenPolarspiderDatalet = Object.freeze(PolarspiderDatalet);
-window.customElements.define('polarspider-datalet', FrozenPolarspiderDatalet);
+const FrozenSpiderchartDatalet = Object.freeze(SpiderchartDatalet);
+window.customElements.define('spiderchart-datalet', FrozenSpiderchartDatalet);

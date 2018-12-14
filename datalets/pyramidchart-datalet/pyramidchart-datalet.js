@@ -56,9 +56,6 @@ class PyramidchartDatalet extends BaseDatalet
 
         data.series = series;
 
-
-        debugger
-
         let options = await builder.build('pyramid', this, data);
 
         let suffix = this.getAttribute("suffix");
