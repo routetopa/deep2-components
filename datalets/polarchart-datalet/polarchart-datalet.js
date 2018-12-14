@@ -38,7 +38,7 @@ class PolarspiderDatalet extends BaseDatalet
         // let options = await builder.build('polar', this, data);
         //
         // let suffix = this.getAttribute("suffix");
-        // let dataLabels = this.getAttribute("data-labels");
+        // let dataLabels = (this.getAttribute("data-labels") == "true");
         // let theme = this.getAttribute("theme");
         //
         // options.chart = {

@@ -77,7 +77,7 @@ class ScatterchartDatalet extends BaseDatalet
 
         let options = await builder.build('scatter', this, data);
 
-        let dataLabels = this.getAttribute("data-labels");
+        let dataLabels = (this.getAttribute("data-labels") == "true");
 
         options.series = properties_series;
         options.plotOptions = {

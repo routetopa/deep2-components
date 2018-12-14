@@ -59,7 +59,7 @@ class FunnelchartDatalet extends BaseDatalet
         let options = await builder.build('funnel', this, data);
 
         let suffix = this.getAttribute("suffix");
-        let dataLabels = this.getAttribute("data-labels");
+        let dataLabels = (this.getAttribute("data-labels") == "true");
         let theme = this.getAttribute("theme");
 
         options.tooltip = {

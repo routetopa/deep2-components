@@ -113,7 +113,7 @@ class TreemapDatalet extends BaseDatalet
 
         let options = await builder.build('heatmap', this, data);
 
-        let dataLabels = this.getAttribute("data-labels");
+        let dataLabels = (this.getAttribute("data-labels") == "true");
 
         delete options.tooltip;
 

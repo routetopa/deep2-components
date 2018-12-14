@@ -36,7 +36,7 @@ class LinechartDatalet extends BaseDatalet
         let options = await builder.build('line', this, data);
 
         let suffix = this.getAttribute("suffix");
-        let dataLabels = this.getAttribute("data-labels");
+        let dataLabels = (this.getAttribute("data-labels") == "true");
 
         options.plotOptions.line = {
             dataLabels: {

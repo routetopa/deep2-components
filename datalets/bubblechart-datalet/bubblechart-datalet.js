@@ -79,7 +79,7 @@ class BubblechartDatalet extends BaseDatalet
 
         let options = await builder.build('bubble', this, data);
 
-        let dataLabels = this.getAttribute("data-labels");
+        let dataLabels = (this.getAttribute("data-labels") == "true");
 
         options.series = properties_series;
         options.plotOptions = {
