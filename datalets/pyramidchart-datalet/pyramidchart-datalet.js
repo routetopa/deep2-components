@@ -75,7 +75,8 @@ class PyramidchartDatalet extends BaseDatalet
                     softConnector: true
                 },
                 center: ['40%', '50%'],
-                width: '80%'
+                width: '80%',
+                showInLegend: true
             }
         };
 

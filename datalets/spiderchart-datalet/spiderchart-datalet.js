@@ -38,9 +38,21 @@ class SpiderchartDatalet extends BaseDatalet
 
         let options = await builder.build('spider', this, data);
 
+        let suffix = this.getAttribute("suffix");
+        let dataLabels = (this.getAttribute("data-labels") == "true");
+
         options.chart = {
             polar: true,
             type: 'line'
+        };
+
+        options.plotOptions.line = {
+            dataLabels: {
+                formatter: function() {
+                    return this.y + ' ' + suffix;
+                },
+                enabled: dataLabels
+            }
         };
 
         // options.pane = {

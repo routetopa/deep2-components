@@ -32,6 +32,7 @@ class PiechartDatalet extends BaseDatalet
         //console.log('RENDER - piechart-datalet');
 
         await this.import_module('../lib/vendors/highcharts/highstock.js');
+        await this.import_module('../lib/vendors/highcharts/highcharts-more.js');
 
         let series = [{"name": data.data[1].name, "data": []}];
 
@@ -76,7 +77,8 @@ class PiechartDatalet extends BaseDatalet
                 enabled: dataLabels,
                 format: '<b>{point.name}</b>: {point.percentage:.1f} %',
                 color: (Highcharts[theme] && Highcharts[theme].contrastTextColor) || 'black',
-            }
+            },
+            showInLegend: true
         };
 
         Highcharts.chart(this.shadowRoot.querySelector('#datalet_container'), options);

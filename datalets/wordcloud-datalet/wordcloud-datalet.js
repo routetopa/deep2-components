@@ -43,11 +43,13 @@ class WordcloudDatalet extends BaseDatalet
 
         data.series = series;
 
-
         options.series = [{
             type: 'wordcloud',
             data: data.series
         }];
+
+        delete options.tooltip;
+        delete options.legend;
 
         Highcharts.chart(this.shadowRoot.querySelector('#datalet_container'), options);
     }

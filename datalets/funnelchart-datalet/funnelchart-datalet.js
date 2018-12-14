@@ -77,7 +77,8 @@ class FunnelchartDatalet extends BaseDatalet
                 center: ['40%', '50%'],
                 neckWidth: '30%',
                 neckHeight: '25%',
-                width: '80%'
+                width: '80%',
+                showInLegend: true
             }
         };
 
