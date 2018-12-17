@@ -9,7 +9,7 @@ export default (function () {
     function createJsonOutput(results) {
         var recordsObj = [];
 
-        $.each(results, function (index) {
+        for (let index in results) {
             var element = results[index];
 
             var newElement = {};
@@ -22,19 +22,10 @@ export default (function () {
 
                 newElement[label] = url.substring(url.lastIndexOf("/") + 1, url.length).replace("_", " ");
                 newElement[label + ' url'] = url;
-                /*            if('url' in element[field]){
-                                if(!isImage(element[field].url))
-                                    newElement[label+' url'] = element[field].url;
-                                else
-                                    newElement[label] = element[field].url;
-                            }
-                            if('xml:lang' in element[field]){
-                                newElement[label+' lang'] = element[field]['xml:lang'];
-                            }*/
             }
 
             recordsObj.push(newElement);
-        });
+        }
 
         return recordsObj;
     }
