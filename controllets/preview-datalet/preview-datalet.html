@@ -204,32 +204,17 @@
                 return http.status != 404;
             },
 
-            getHTML: function () {
-                var component = this.attributes['datalet-type'].value;
-                var html = '';
+            getHTML: function ()
+            {
+                let component = this.attributes['datalet-type'].value;
+                let dataletLink = `<link rel="import" href="${ODE.deep_components}/datalets/${component}/${component}.html"/>`;
+                let dataletStyle = `<style>html,body{margin:0;padding:0;height: 100%} ${component}{--base-datalet-visibility: none; --datalet-container-size:100%}</style>`;
 
-                html += '<'+component;
-                for(var i=0; i<this.attributes.length; i++)
-                    html += ' '+this.attributes[i].name+'=\''+this.attributes[i].value.replace(/\'/g, "&#39;")+'\'';
-                html += '></'+component+'>';
+                let datalet = document.createElement(component);
+                for(let  i=0; i<this.attributes.length; i++)
+                    datalet.setAttribute(this.attributes[i].name, this.attributes[i].value);
 
-                var dataletImport = '\<script type="text/javascript" src="https://cdn.jsdelivr.net/webcomponentsjs/0.7.16/webcomponents-lite.min.js"\>\<\/script\>\n' +
-                        '\<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"\>\<\/script\>\n' +
-                        '<!-- REMOVE THE PREVIOUS SCRIPT TAGS IF YOUR PAGE ALREADY USES JQUERY AND POLYFILL LIBRARIES  -->\n';
-
-//                var dataletLink = '<link rel="import" href="http://172.16.15.128/Datalet-Ecosystem-Provider/COMPONENTS/datalets/'+component+'/'+component+'.html" /> \n';
-                var dataletLink = '<link rel="import" href="http://deep.routetopa.eu/deep/COMPONENTS/datalets/'+component+'/'+component+'.html" /> \n';
-
-                var div = document.createElement('div');
-                div.innerHTML = '<div class="overlay" id="overlay">' +
-                        '<div class="modal-content"><span class="button-close" onclick="document.getElementById(\'overlay\').remove(this)"></span>' +
-                        '<span>Copy to clipboard: Ctrl+C, Enter</span>' +
-                        '<textarea class="export_html_textarea">'+dataletImport+dataletLink+html+'</textarea></div></div>';
-
-//                html = '<style>html{height: 100%;} body{height: calc(100% - 16px); margin: 8px;} .export{display: none;} #fullscreen{display: none;}</style>' + html;
-                html = '<style>html{height: 100%;} body{height: calc(100% - 16px); margin: 8px;} #fullscreen{display: none;}</style>' + html;
-
-                return [dataletImport, dataletLink, html];
+                return [dataletLink, dataletStyle, datalet.outerHTML];
             }
 
         });
