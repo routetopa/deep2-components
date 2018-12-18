@@ -29,6 +29,8 @@ class MediaSliderDatalet extends BaseDatalet
     {
         //console.log('RENDER - mediaslider-datalet');
 
+        debugger
+
         if(!this.thereis_jQuery())
             await this.import_module('../lib/vendors/jquery/jquery.js');
 
@@ -63,7 +65,7 @@ class MediaSliderDatalet extends BaseDatalet
         }
 
         //random name?
-        let h = $(this.shadowRoot.querySelector('#datalet_container')).height();
+        let h = $(this.shadow_root.querySelector('#datalet_container')).height();
         h = Math.max(h, 482);
         h -= 82;
         let w = 0;
@@ -74,9 +76,9 @@ class MediaSliderDatalet extends BaseDatalet
 
 
         html = '<div id="camera_wrap" style="display:block; width: ' + w + 'px;">' + html + '</div>';
-        $(this.shadowRoot.querySelector('#datalet_container')).html(html);
+        $(this.shadow_root.querySelector('#datalet_container')).html(html);
 
-        $(this.shadowRoot).find('#camera_wrap').camera({
+        $(this.shadow_root.querySelector('#camera_wrap')).camera({
             height: '50%',
             loader: 'none',
             playPause: false,
