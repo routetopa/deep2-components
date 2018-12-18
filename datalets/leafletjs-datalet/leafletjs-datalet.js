@@ -15,6 +15,7 @@ class LeafletDatalet extends BaseDatalet
             //{requestData:0}, {selectData:0}, {filterData:0}, {trasformData:0} -> [0, 0, 0, 0]
             this.set_behaviours([AjaxJsonAlasqlBehavior]);
             this.export_to_img_doc = false;
+            this.map = null;
         } catch (e) {
             console.log(e);
         }
@@ -32,7 +33,7 @@ class LeafletDatalet extends BaseDatalet
 
         await this.import_module('./leafletjs/marker_cluster/dist/leaflet.markercluster.js');
 
-        let map;
+        //let map;
         let categories;
 
         L.Icon.Default.imagePath = `${this.baseUri}leafletjs/images/`;
@@ -119,14 +120,14 @@ class LeafletDatalet extends BaseDatalet
         }
 
         try{
-            map = L.map(this.shadowRoot.querySelector('#datalet_container')).setView([0, 0], 13, {reset:true});
+            this.map = L.map(this.shadowRoot.querySelector('#datalet_container')).setView([0, 0], 13, {reset:true});
         }catch(e){}
 
 
         L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 18,
             attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-        }).addTo(map);
+        }).addTo(this.map);
 
         let coordinates = [];
         let coordinates_index  = 0;
@@ -152,7 +153,7 @@ class LeafletDatalet extends BaseDatalet
                 try
                 {
                     data[0].data[i] = JSON.parse(data[0].data[i]);
-                    geo = L.geoJson(data[0].data[i]).addTo(map);
+                    geo = L.geoJson(data[0].data[i]).addTo(this.map);
                 }catch(e) {continue;}
             }
             else if(typeof data[0].data[i] === 'string' && data[0].data[i].indexOf(","))
@@ -217,15 +218,15 @@ class LeafletDatalet extends BaseDatalet
                 return div;
             };
 
-            legend.addTo(map);
+            legend.addTo(this.map);
         }
 
         try
         {
-            map._onResize();
-            map.invalidateSize(false);
-            map.fitBounds(coordinates);
-            map.addLayer(markers_cluster);
+            this.map._onResize();
+            this.map.invalidateSize(false);
+            this.map.fitBounds(coordinates);
+            this.map.addLayer(markers_cluster);
         }catch (e){
             console.log(e);
         }
