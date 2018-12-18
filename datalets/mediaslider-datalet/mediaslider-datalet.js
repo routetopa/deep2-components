@@ -29,8 +29,6 @@ class MediaSliderDatalet extends BaseDatalet
     {
         //console.log('RENDER - mediaslider-datalet');
 
-        debugger
-
         if(!this.thereis_jQuery())
             await this.import_module('../lib/vendors/jquery/jquery.js');
 
