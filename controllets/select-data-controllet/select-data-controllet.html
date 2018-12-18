@@ -242,7 +242,36 @@
                             that.fire('data-ready', {ready : true});
                         },
                         error: function(){
-                            that.fire('data-ready', {ready : false});
+
+                            that.dataUrl = `${parent.ODE.deep_url}cors-proxy/proxy.php?csurl=${that.dataUrl}`;
+
+                            $.ajax({
+                                url: that.dataUrl,
+                                dataType: "json",
+                                success: function(data){
+                                    that.reset();
+
+                                    var f = Object.create(providerFactory);
+                                    var provider = f.getProvider(that.dataUrl);
+                                    data = provider.selectData(data);
+
+                                    var converter = new DataTypeConverter();
+                                    var result = converter.inferJsonDataType(data, ["*"]);
+                                    result = converter.cast(result);
+                                    that.fields = utility_getFields(result.types);
+                                    data = result.dataset;
+                                    that.data = alasql_QUERY(data, that.fields, null, null, null);
+
+                                    that.$.select_fields.setFields(that.fields);
+                                    that.$.expert.setFields(that.fields);
+
+                                    that.fire('data-ready', {ready : true, url : that.dataUrl});
+                                },
+                                error: function(){
+                                    that.fire('data-ready', {ready : false});
+                                }
+                            });
+
                         }
                     });
                 }

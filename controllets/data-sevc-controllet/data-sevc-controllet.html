@@ -137,6 +137,8 @@
                 if(e.detail.ready) {
                     this.$.slider.chevronRight(true);
                     this.$.select_dataset.$.selected_url.invalid = false;
+                    if(e.detail.url)
+                        this.$.select_dataset.$.selected_url.value = e.detail.url;
                 }
                 else
                     this.$.select_dataset.$.selected_url.invalid = true;
