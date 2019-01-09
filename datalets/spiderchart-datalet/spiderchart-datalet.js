@@ -29,7 +29,7 @@ class SpiderchartDatalet extends BaseDatalet
 
     async render(data)
     {
-        console.log('RENDER - spiderchart-datalet');
+        //console.log('RENDER - spiderchart-datalet');
 
         await this.import_module('../lib/vendors/highcharts/highstock.js');
         await this.import_module('../lib/vendors/highcharts/highcharts-more.js');
