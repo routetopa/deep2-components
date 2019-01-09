@@ -1,0 +1,1065 @@
+<!--
+@license
+    The MIT License (MIT)
+
+    Copyright (c) 2015 Dipartimento di Informatica - Universit� di Salerno - Italy
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
+-->
+
+<!--
+* Developed by :
+* ROUTE-TO-PA Project - grant No 645860. - www.routetopa.eu
+*
+-->
+
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../../../bower_components/paper-spinner/paper-spinner-lite.html">
+
+<!--
+The `base-datalet` is the base component that includes datalet footer (with information about dataset domain and ROUTE-TO-PA project).
+Base datalet includes polymer.html and the BaseDataletBehaviors javascript file that define the datalet workcycle and the datalet base properties : dataUrl, fields and data.
+Every datalet must include this one in its `<template>` section.
+
+Example :
+
+    <dom-module id="every-datalet">
+        <template>
+            ...
+            <base-datalet data-url="{{dataUrl}}" fields="{{fields}}"></base-datalet>
+            ...
+        </template>
+    </dom-module>
+
+@element base-datalet
+@status v0.1
+@homepage
+@group datalets
+-->
+
+<dom-module id="base-datalet">
+    <template>
+
+        <style is="custom-style">
+            paper-spinner {
+                height: 64px;
+                width: 64px;
+
+                --paper-spinner-stroke-width: 8px;
+
+                --paper-spinner-layer-1-color: #2196F3;
+                --paper-spinner-layer-2-color: #F44336;;
+                --paper-spinner-layer-3-color: #FFEB3B;;
+                --paper-spinner-layer-4-color: #4CAF50;;
+            }
+
+            a {
+                color: #00BCD4;
+                text-decoration: none;
+            }
+            a:hover {
+                color: #00ACC1;
+                text-decoration: underline;
+            }
+
+            #base_datalet_container {
+                position: relative;
+
+                height: 72px;
+                /*background-color: red;*/
+                margin-top: 8px;
+                /*padding-top: 2px;*/
+                border-top: 2px solid #B6B6B6;
+            }
+            #base_datalet_container > * {
+                font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                font-size: 14px;
+                line-height: 24px;
+
+                color: #212121;
+
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            #base_datalet_title_description {
+                /*display: flex;*/
+                /*flex-direction: row;*/
+                /*max-height: 24px;*/
+                height: 24px;
+            }
+
+            #span_title{
+                font-weight: 700;
+                /*padding-right: 8px;*/
+            }
+
+            #span_description{
+                /*font-style: italic;*/
+                color: #424242;
+                /*padding-right: 8px;*/
+            }
+
+            /*#span_description:not(:empty):before {
+                /*content: " - ";*/
+            /*}*/
+
+            #base_datalet_source_link {
+                display: flex;
+                height: 24px;
+            }
+
+            span#ajax_error {
+                position: absolute;
+                top: -34px;
+                right: 0;
+
+                color: #F44336;
+                background-color: #E0E0E0;
+            }
+
+            #base_datalet_rtp {
+                display: flex;
+                height: 24px;
+            }
+
+            #rtp {
+                font-size: 14px;
+                line-height: 24px;
+                padding-right: 8px;
+
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            #rtpalogo {
+                height: 24px;
+                width: 24px;
+            }
+
+            #base_datalet_spinner {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                width: 100%;
+                height: 100%;
+                min-height: 400px;
+            }
+
+            #base_datalet_link {
+                cursor: pointer;
+            }
+
+            /*EXPORT*/
+            .export
+            {
+                position: absolute;
+                right: 24px;
+                top: 0;
+                height: 24px;
+                width: 24px;
+                cursor: pointer;
+
+                background: url("static/images/more.svg") no-repeat 0 0;
+            }
+
+            .export:hover {
+                /*color: #2196F3;*/
+                background: url("static/images/more_blue.svg") no-repeat 0 0;
+            }
+
+            .highcharts-contextmenu
+            {
+                position: absolute;
+                bottom: 52px;
+                right: 48px;
+                font-size: small;
+                border: solid 1px #000000;
+
+                display: none;
+
+                background-color: #FFFFFF;
+            }
+
+            .highcharts-contextmenu-container div
+            {
+                cursor: pointer;
+                padding: 0px 4px;
+                font-size: 11px;
+                line-height: 15px;
+            }
+
+            .highcharts-contextmenu-container div:hover
+            {
+                background: #00BCD4;
+            }
+            /*EXPORT*/
+
+            /* EXPORT TO HTML */
+            .export_html_textarea {
+                margin-top: 36px;
+                height: 200px;
+            }
+
+            .button-close {
+                display: inline-block;
+                width: 16px;
+                height: 16px;
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                cursor: pointer;
+                background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAAowAAAKMB8MeazgAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAB5SURBVDiNrZPRCcAwCEQfnUiySAZuF8kSWeH6Yz8KrQZMQAicJ+epAB0YwAmYJKIADLic0/GPPCbQAnLznCd/4NWUFfkgy1VjH8CryA95ApYltAiTRCZxpuoW+gz9WXE6NPeg+ra1UDIxGlWEObe4SGxY5fIxlc75Bkt9V4JS7KWJAAAAAElFTkSuQmCC59ef34356faa7edebc7ed5432ddb673d');
+            }
+
+            .overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.6);
+                z-index: 1000000;
+            }
+
+            .modal-content {
+                padding: 20px 30px;
+                width: 600px;
+                position: relative;
+                min-height: 300px;
+                margin: 5% auto 0;
+                background: #fff;
+            }
+            /* EXPORT TO HTML */
+
+            #refresh
+            {
+                position: relative;
+                left: 4px;
+                /*position: absolute;*/
+                /*right: 48px;*/
+                /*top: 0;*/
+                height: 24px;
+                width: 24px;
+                cursor: pointer;
+            }
+
+            #img_refresh {
+                height: 24px;
+                width: 24px;
+
+                /*transition-duration: 4s;*/
+
+                /*-webkit-animation: spin 1s linear infinite;*/
+                /*animation: spin 1s linear infinite;*/
+            }
+
+            #dataLoader {
+                /*display: none;*/
+                /*margin: 8px auto;*/
+                margin: 2px;
+                border: 2px solid #BDBDBD;
+                border-radius: 50%;
+                border-top: 2px solid #F44336;
+                width: 16px;
+                height: 16px;
+                -webkit-animation: spin 1s linear infinite;
+                animation: spin 1s linear infinite;
+            }
+
+            #dataLoader.live {
+                border-top: 2px solid #4CAF50;
+            }
+
+            @-webkit-keyframes spin {
+                0% { -webkit-transform: rotate(0deg); }
+                100% { -webkit-transform: rotate(360deg); }
+            }
+
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+
+            #fullscreen
+            {
+                position: absolute;
+                right: 0px;
+                top: 0;
+                height: 24px;
+                width: 24px;
+                cursor: pointer;
+
+                background: url("static/images/fullscreen.svg") no-repeat 0 0;
+            }
+
+            #fullscreen:hover {
+                /*color: #2196F3;*/
+                background: url("static/images/fullscreen_blue.svg") no-repeat 0 0;
+            }
+
+            #fullscreen_cover{
+                display: none;
+
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 9000;
+            }
+
+            #fullscreen_close {
+                display: none;
+
+                position: fixed;
+                top: 30px;
+                right: 30px;
+                height: 40px;
+                width: 40px;
+                background: url("static/images/close.svg") no-repeat 0 0;
+
+                background-color: #00BCD4;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+                transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+
+                border-radius: 50%;
+
+                line-height: 56px;
+                font-size: 32px;
+                color: #212121;
+                text-align: center;
+                cursor: pointer;
+
+                z-index: 9002;
+            }
+
+            #fullscreen_close:hover {
+                background-color: #00ACC1;
+            }
+
+            #fullscreen_container {
+                display: none;
+
+                position: fixed;
+                top: 48px;
+                left: 48px;
+                height: calc(100% - 96px);
+                width: calc(100% - 96px);
+
+                background-color: white;
+                z-index: 9001;
+            }
+
+            #datalet_container {
+                width: 100%;
+                min-height: 400px;
+                height: calc(100% - 82px);
+
+                z-index: 0;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* SOCIAL */
+
+            #social
+            {
+                display: none;
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                height: 24px;
+                width: 80px;
+                cursor: pointer;
+
+                /*display: flex;*/
+                flex-direction: row;
+
+                /*background-color: red;*/
+            }
+
+            #twitter
+            {
+                height: 24px;
+                width: 24px;
+                cursor: pointer;
+
+                background: url("static/images/twitter.svg") no-repeat 2px 2px;
+                background-size: 20px 20px;
+
+                margin-right: 4px;
+            }
+
+            #twitter:hover {
+                background: url("static/images/twitter_hover.svg") no-repeat 2px 2px;
+                background-size: 20px 20px;
+            }
+
+            #facebook
+            {
+                height: 24px;
+                width: 24px;
+                cursor: pointer;
+
+                background: url("static/images/facebook.svg") no-repeat 2px 2px;
+                background-size: 20px 20px;
+
+                margin-right: 4px;
+            }
+
+            #facebook:hover {
+                background: url("static/images/facebook_hover.svg") no-repeat 2px 2px;
+                background-size: 20px 20px;
+            }
+
+            #googleplus
+            {
+                height: 24px;
+                width: 24px;
+                cursor: pointer;
+
+                background: url("static/images/google-plus.svg") no-repeat 2px 2px;
+                background-size: 20px 20px;
+            }
+
+            #googleplus:hover {
+                background: url("static/images/google-plus_hover.svg") no-repeat 2px 2px;
+                background-size: 20px 20px;
+            }
+
+            /* SOCIAL */
+
+        </style>
+
+        <div id="fullscreen_cover"></div>
+        <div id="fullscreen_close"></div>
+        <iframe frameborder="0" id="fullscreen_container"></iframe>
+
+        <div id="datalet_container">
+            <div id="base_datalet_spinner">
+                <paper-spinner id="datalet_spinner" active></paper-spinner>
+            </div>
+        </div>
+
+        <div id="base_datalet_container">
+
+            <div id="base_datalet_title_description">
+                <span id="span_title" title="{{datalettitle}}">{{datalettitle}}</span>
+                <span id="span_description" title="{{description}}">{{description}}</span>
+            </div>
+
+            <div id="base_datalet_source_link">
+                <b>Source:&nbsp</b> <a id="base_datalet_source" target="_blank"></a> <span id="base_datalet_link_span">&nbsp(<a id="base_datalet_link" target="_blank">dataset</a>)</span> <span id="ajax_error"></span>
+                <div id="refresh"><img id="img_refresh" src="static/images/refresh.svg"></div>
+            </div>
+
+            <div id="base_datalet_rtp">
+                <div id="rtp">Powered by ROUTE-TO-PA</div>
+                <div><a href="http://www.routetopa.eu/" target="_blank"><img id="rtpalogo" src="static/images/rtpalogo.png"></a></div>
+            </div>
+
+            <!--<div id="refresh"><img id="img_refresh" src="static/images/refresh.svg"></div>-->
+
+            <div id="fullscreen"></div>
+
+            <div id="export">
+                <!--<div class="export" on-click="showHideExportMenu"></div>-->
+                <paper-icon-button class="export" on-click="showHideExportMenu" icon="more-horiz"></paper-icon-button>
+                <div class="highcharts-contextmenu" id="highcharts-contextmenu">
+                    <div class="highcharts-contextmenu-container">
+                        <div id="export_html"     on-click="exportToHTML"><span id="export_to_html"></span></div>
+                        <div id="export_png"      on-click="exportToIMG"><span id="export_to_png"></span></div>
+                        <div id="export_rtf"      on-click="exportRTF"><span id="export_to_rtf"></span></div>
+                        <div id="export_my_space" on-click="importToMySpace"><span id="import_myspace"></span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="social">
+                <div id="twitter" on-click="share_on_twitter"></div>
+                <div id="facebook" on-click="share_on_facebook"></div>
+                <div id="googleplus" on-click="share_on_gplus"></div>
+            </div>
+
+        </div>
+
+    </template>
+
+    <script src="static/js/BaseDataletBehavior.js"></script>
+    <script src="static/js/WorkcycleBehavior.js"></script>
+    <script src="../../../locales/base_datalet_ln.js"></script>
+
+
+    <script>
+        BaseDatalet = Polymer({
+            is: 'base-datalet',
+
+            /**
+             *
+             * It is called after the element's template has been stamped and all elements inside the element's local
+             * DOM have been configured (with values bound from parents, deserialized attributes, or else default values)
+             * and had their ready method called.
+             *
+             * Extract
+             *   1) the dataset domain
+             *   2) the page of a datalet
+             *   from the entire URL and set the text content of the datalet footer.
+             * @method ready
+             */
+            ready: function(){
+                this.setExportMenu();
+
+                var that = this;
+
+                /*fullscreen*/
+
+                $(this.$.fullscreen).click(function(){
+                    var datalet =that.getHTML()
+
+                    $(that.$.fullscreen_cover).show();
+                    $(that.$.fullscreen_container).show();
+                    $(that.$.fullscreen_close).show();
+
+                    $(that.$.fullscreen_container).attr('srcdoc', ''+datalet[0]+datalet[1]+datalet[2]);
+                });
+
+                $(this.$.fullscreen_cover).click(function(){
+                    $(that.$.fullscreen_close).hide();
+                    $(that.$.fullscreen_container).hide();
+                    $(that.$.fullscreen_cover).hide();
+                });
+
+                $(this.$.fullscreen_close).click(function(){
+                    $(that.$.fullscreen_close).hide();
+                    $(that.$.fullscreen_container).hide();
+                    $(that.$.fullscreen_cover).hide();
+                });
+
+                /*fullscreen*/
+
+                $(this.$.base_datalet_link).click(function() {
+                    that.goToDataset();
+                });
+
+                if(this.dataUrl != undefined) {
+
+                    var urlSource = this.dataUrl.split("/")[0] + "//" + this.dataUrl.split("/")[2];
+                    this.$.base_datalet_source.innerHTML = urlSource;
+                    this.$.base_datalet_source.setAttribute("href", urlSource);
+
+                    if(this.dataUrl.indexOf("/cocreation/") > -1 )
+                    {
+                        this.$.base_datalet_link.setAttribute("href", urlSource + "/cocreation/data-room-list");
+                    }
+                    else if(this.dataUrl.indexOf("/records/") > -1 )
+                    {
+                        var i;
+                        if(this.dataUrl.indexOf("&") > -1)
+                            i = this.dataUrl.indexOf("&");
+                        else
+                            i = this.dataUrl.length;
+
+                        this.$.base_datalet_link.setAttribute("href", urlSource + "/explore/dataset/" + this.dataUrl.substring(this.dataUrl.indexOf("=")+1, i));
+                    }
+                    // CKAN
+                    else if(this.dataUrl.indexOf("datastore_search?resource_id") > -1 )
+                    {
+//                        var comp = this;
+//                        $.ajax({
+//                            url: this.dataUrl.replace("datastore_search?resource_id", "resource_show?id"),
+//                            dataType: "json",
+//                            success: function(e){
+//                                comp.$.base_datalet_link.setAttribute("href", e.result.url.substring(0, e.result.url.indexOf("/download")));
+//                            }
+//                        });
+                    }
+                    // dkan and mysir --> ckan like
+                    else if(this.dataUrl.indexOf("datastore/search.json?resource_id") > -1 )
+                    {
+//                        var comp = this;
+//                        $.ajax({
+//                            url: this.dataUrl.replace("datastore_search?resource_id", "resource_show?id"),
+//                            dataType: "json",
+//                            success: function(e){
+//                                comp.$.base_datalet_link.setAttribute("href", e.result.url.substring(0, e.result.url.indexOf("/download")));
+//                            }
+//                        });
+                    }
+                    else
+                    {
+                        this.$.base_datalet_link_span.style.display = 'none';
+                    }
+
+                    if(this.dataUrl=="false") {//decision-tree & ...
+                        this.$.base_datalet_source_link.style.display = 'none';
+                        this.removeLoader();
+                    }
+                }
+
+                else {
+                    this.hideFooter();
+                }
+
+                if(this.datalettitle != "" && this.description != "" && this.datalettitle != undefined && this.description != undefined)
+                    this.$.span_description.innerHTML = "- " + this.description;
+            },
+
+            /**
+             * Set the domain url to show in the footer
+             */
+//            setDomain: function(url){
+//                this.$.domain.textContent = url;
+//            },
+
+            attached: function(){
+              this.translate();
+
+            try {
+                if (ODE && (ODE.pluginPreview == "newsfeed" || ODE.pluginPreview == "agora") && ODE.fb_app_id != "")
+                    $(this.$.social).css("display", "flex");
+//                else if (parent && parent.ODE && (ODE.pluginPreview == "newsfeed" || ODE.pluginPreview == "agora"))
+//                    $(this.$.social).css("display", "flex");
+            } catch (e) {}
+
+            },
+
+            goToDataset: function() {
+                debugger
+                if(this.dataUrl != undefined) {
+
+                    if(this.dataUrl.indexOf("datastore_search?resource_id") > -1)
+                    {
+                        var urlSource = this.dataUrl.split("/")[0] + "//" + this.dataUrl.split("/")[2];
+
+                        var comp = this;
+                        $.ajax({
+                            url: this.dataUrl.replace("datastore_search?resource_id", "resource_show?id"),
+                            dataType: "json",
+                            async: false,
+                            success: function(e){
+                                if(e.result.package_id) {
+                                    comp.$.base_datalet_link.setAttribute("href", urlSource + "/dataset/" + e.result.package_id + "/resource/" + e.result.id);
+                                    window.open(urlSource + "/dataset/" + e.result.package_id + "/resource/" + e.result.id, '_blank');
+                                }
+                                else {
+                                    comp.$.base_datalet_link.setAttribute("href", e.result.url.substring(0, e.result.url.indexOf("/download")));
+                                    window.open(e.result.url.substring(0, e.result.url.indexOf("/download")), '_blank');
+                                }
+                            }
+                        });
+                    }
+                    else if(this.dataUrl.indexOf("datastore/search.json?resource_id") > -1)
+                    {
+                        var urlSource = this.dataUrl.split("/")[0] + "//" + this.dataUrl.split("/")[2];
+
+                        this.$.base_datalet_link.setAttribute("href", urlSource);
+                        window.open(this.dataUrl, '_blank');
+
+                        //???????????????????????????????????
+//                        var comp = this;
+//                        $.ajax({
+//                            url: this.dataUrl.replace("datastore/search.json?resource_id", "datastore/search.json?resource_show?id"),
+//                            dataType: "json",
+//                            async: false,
+//                            success: function(e){
+//                                if(e.result.package_id) {
+//                                    comp.$.base_datalet_link.setAttribute("href", urlSource + "/dataset/" + e.result.package_id + "/resource/" + e.result.id);
+//                                    window.open(urlSource + "/dataset/" + e.result.package_id + "/resource/" + e.result.id, '_blank');
+//                                }
+//                                else {
+//                                    comp.$.base_datalet_link.setAttribute("href", e.result.url.substring(0, e.result.url.indexOf("/download")));
+//                                    window.open(e.result.url.substring(0, e.result.url.indexOf("/download")), '_blank');
+//                                }
+//                            }
+//                        });
+                    }
+                }
+            },
+
+            removeRefresh: function() {
+//                $(this.$.refresh).css({'transform': 'rotate(' + (720) + 'deg)'});
+//                $(this.$.refresh).css({'opacity': 0});
+
+                $(this.$.img_refresh).css({'-webkit-animation': 'spin 1s linear infinite'});
+                $(this.$.img_refresh).css({'animation': 'spin 1s linear infinite'});
+                $(this.$.img_refresh).delay(2000).fadeOut(1000);
+            },
+
+            removeLoader: function() {
+                this.$.base_datalet_spinner.style.display = "none";
+                this.$.datalet_spinner.active = false;
+            },
+
+            hideFooter: function() {
+                this.$.base_datalet_container.innerHTML = "";
+                this.$.base_datalet_container.style.margin = 0;
+                this.$.base_datalet_container.style.border = 0;
+                this.removeLoader();
+            },
+
+            translate: function() {
+                var ln = "en";
+
+                try {
+                    if (ODE && ODE.user_language)
+                        ln = ODE.user_language;
+                    else if (parent && parent.ODE && parent.ODE.user_language)
+                        ln = parent.ODE.user_language;
+                }catch (e){}
+
+                this.$.export_to_html.innerHTML = base_datalet_ln["export_HTML_" + ln];
+                this.$.export_to_png.innerHTML = base_datalet_ln["export_PNG_" + ln];
+                this.$.export_to_rtf.innerHTML = base_datalet_ln["export_RTF_" + ln];
+                this.$.import_myspace.innerHTML = base_datalet_ln["import_myspace_" + ln];
+
+            },
+
+            setExportMenu: function()
+            {
+                // xxxx BITMASK. FROM RIGHT : HTML, PNG, RTF, MY SPACE (eg. 1111 show all, 0000 hide all)
+                var bitmask = this.export_menu;
+
+                if(this.disable_my_space)
+                    bitmask -= 8;
+
+                var menu = ["export_html", "export_png", "export_rtf", "export_my_space"];
+
+                if(bitmask == 15) return;
+
+                if(bitmask == 0)
+                {
+                    this.$.export.style.display = "none";
+                    this.$.fullscreen.style.display = "none";/*remove from here*/
+                    this.$.refresh.style.display = "none";/*remove from here*/
+                    return;
+                }
+
+                //var max_i = Math.floor(Math.log2(this.export_menu))+1;
+                for(var i=0; i<menu.length; i++)
+                {
+                    if(bitmask % 2 == 0)
+                        this.$[menu[i]].style.display = "none";
+
+                    bitmask = Math.floor(bitmask/2);
+                }
+            },
+
+            showHideExportMenu: function()
+            {
+                if(this.$["highcharts-contextmenu"].style.display == "block")
+                    this.$["highcharts-contextmenu"].style.display = "none";
+                else
+                    this.$["highcharts-contextmenu"].style.display = "block";
+            },
+
+            exportToHTML: function () {
+                let parent = this.parentElement;
+                let html = '';
+                while(!parent.hasAttribute("data-url"))
+                    parent = parent.parentElement;
+
+                html += '<'+parent.is;
+                for(let i=0; i<parent.attributes.length; i++)
+                    if(parent.attributes[i].name != 'data')
+                        html += ' '+parent.attributes[i].name+'=\''+parent.attributes[i].value.replace(/'/g, "&#39;")+'\'';
+                        //html += ' '+parent.attributes[i].name+'=\''+parent.attributes[i].value+'\'';
+                html += '></'+parent.is+'>';
+
+                let dataletImport = '\<script type="text/javascript" src="https://cdn.jsdelivr.net/webcomponentsjs/0.7.16/webcomponents-lite.min.js"\>\<\/script\>\n' +
+                        '\<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"\>\<\/script\>\n' +
+                        '<!-- REMOVE THE PREVIOUS SCRIPT TAGS IF YOUR PAGE ALREADY USES JQUERY AND POLYFILL LIBRARIES  -->\n';
+
+                let dataletLink = '<link rel="import" href="http://deep.routetopa.eu/deep_1_25/COMPONENTS/datalets/'+parent.is+'/'+parent.is+'.html" /> \n';
+
+                let div = document.createElement('div');
+                div.innerHTML = '<div class="overlay" id="overlay">' +
+                        '<div class="modal-content"><span class="button-close" onclick="document.getElementById(\'overlay\').remove(this)"></span>' +
+                        '<span>Copy to clipboard: Ctrl+C, Enter</span>' +
+                        '<textarea class="export_html_textarea"></textarea></div></div>';
+
+                let datalet = (dataletImport+dataletLink+html).replace(new RegExp("'", 'g'), "&#39;");
+                let iframe_container = `<iframe style="width: 100%; height: 498px; padding: 0; margin: 0; border: 0;" frameborder="0" scrolling="no" srcdoc='${datalet}'></iframe>`;
+
+                Polymer.dom(this.root).appendChild(div);
+
+                $(".export_html_textarea").val(iframe_container);
+
+                //window.prompt("Copy to clipboard: Ctrl+A, Ctrl+C", dataletImport+dataletLink+html);
+            },
+
+            exportToIMG: function () {
+                var parent = this.parentElement;
+                while(!parent.hasAttribute("data-url"))
+                    parent = parent.parentElement;
+
+
+                var svg = $(parent).find(".highcharts-container");
+                svg = $(svg[0]).html();
+
+                var xhr = new XMLHttpRequest();
+
+                xhr.onreadystatechange = function(){
+                    if (this.readyState == 4 && this.status == 200){
+                        var blob = new Blob([this.response], {type:'octet/stream'});
+                        var downloadUrl = window.URL.createObjectURL(blob);
+                        var a = document.createElement("a");
+                        a.href = downloadUrl;
+                        a.download = "image.png";
+                        document.body.appendChild(a);
+                        a.click();
+                        //window.URL.revokeObjectURL(downloadUrl);
+                    }
+                };
+
+                //xhr.open('POST', 'http://172.16.15.77/DEEalerProvider/DEEP/export/export-datalet-as-img', true);
+                //xhr.open('POST', 'http://stage.routetopa.eu/deep/DEEP/export/export-datalet-as-img', true);
+                xhr.open('POST', 'http://deep.routetopa.eu/deep/DEEP/export/export-datalet-as-img', true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+                var post = 'svg_data=' + window.encodeURIComponent(svg);
+                xhr.responseType = 'blob';
+                xhr.send(post);
+            },
+
+            exportRTF: function () {
+
+                var t = this;
+                var parent = this.parentElement;
+                while(!parent.hasAttribute("data-url"))
+                    parent = parent.parentElement;
+
+                var post_id = parent.parentElement.id.match(/\d+/); post_id = post_id ? post_id[0] : "";
+                var datalet_id = $(parent).parents().eq(3).attr("datalet-id") ? $(parent).parents().eq(3).attr("datalet-id") : $(parent).attr("datalet-id");
+                var isPublicRoom = (typeof SPODPUBLICROOM != 'undefined') ? true : false;
+
+                var svg = $(parent).find(".highcharts-container");
+                svg = $(svg[0]).html();
+
+                var xhr = new XMLHttpRequest();
+
+                $.ajax({
+                    url: ODE.get_datalet_info,
+                    data: {"post_id" : post_id, "datalet_id" : datalet_id, "is_public_room" : isPublicRoom},
+                    dataType: "json",
+                    success: function(e){
+                        xhr.open('POST', 'http://deep.routetopa.eu/deep/DEEP/export/export-datalet-as-rtf', true);
+                        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+                        var post = 'svg_data=' + window.encodeURIComponent(svg) + '&datalet=' + parent.is + '&dataset=' + t.$.base_datalet_link.getAttribute("href");
+                        post += '&user=' + e.user + '&timestamp=' + e.timestamp + '&comment=' + (e.comment ? e.comment : "");
+
+                        xhr.responseType = 'blob';
+
+                        //OpenDataSoft check
+                        if(t.dataUrl.indexOf("/records/") > -1)
+                        {
+                            var urlSource = t.dataUrl.split("/")[0] + "//" + t.dataUrl.split("/")[2];
+
+                            var i;
+                            if(t.dataUrl.indexOf("&") > -1)
+                                i = t.dataUrl.indexOf("&");
+                            else
+                                i = t.dataUrl.length;
+
+                            $.ajax({
+                                url: urlSource + "/api/dataset/1.0/" + t.dataUrl.substring(t.dataUrl.indexOf("=")+1, i),
+                                dataType: "json",
+                                success: function(e){
+                                    post += '&name=' + e.metas.datalettitle + '&description=' + e.metas.description + '&created=' + e.metas.data_processed  + '&lastModified=' + e.metas.modified;
+                                    xhr.send(post);
+                                }
+                            });
+                        }
+                        else if(t.dataUrl.indexOf("datastore_search?resource_id") > -1 )
+                        {
+                            $.ajax({
+                                url: t.dataUrl.replace("datastore_search?resource_id", "resource_show?id"),
+                                dataType: "json",
+                                success: function(e){
+                                    post += '&name=' + e.result.name + '&description=' + e.result.description + '&created=' + e.result.created + '&format=' + e.result.format + '&lastModified=' + e.result.last_modified;
+                                    xhr.send(post);
+                                }
+                            });
+                        }
+                        else
+                        {
+                            xhr.send(post);
+                        }
+
+                    }
+                });
+
+                xhr.onreadystatechange = function(){
+                    if (this.readyState == 4 && this.status == 200){
+                        var blob = new Blob([this.response], {type:'octet/stream'});
+                        var downloadUrl = window.URL.createObjectURL(blob);
+                        var a = document.createElement("a");
+                        a.href = downloadUrl;
+                        a.download = "datalet.rtf";
+                        document.body.appendChild(a);
+                        a.click();
+                        //window.URL.revokeObjectURL(downloadUrl);
+                    }
+                };
+            },
+
+            importToMySpace: function() {
+                var parent = this.parentElement;
+                var html = '';
+                while(!parent.hasAttribute("data-url"))
+                    parent = parent.parentElement;
+
+                var params = {};
+//                var fields;
+                var component = parent.is;
+
+                for(var i=0; i<parent.attributes.length; i++)
+                    params[parent.attributes[i].name] = parent.attributes[i].value;
+
+                delete params["fields"];
+                var data = params["data"];
+                delete params["data"];
+
+//                fields = parent.attributes["fields"].value.replace(/\[|\]/g, "");
+                params = JSON.stringify(params);
+
+                $.ajax({
+                    type: 'post',
+                    url: ODE.ajax_private_room_datalet,
+//                    data: {"component":component, "fields":fields, "params":params, "data":""},
+                    data: {"component":component, "params":params, "data": data},
+                    dataType: 'JSON',
+                    success: function(data){
+                        if(data.status == "ok")
+                        {
+                            alert("Datalet added to Myspace");
+                        }
+                        else
+                        {
+                            alert("Error");
+                        }
+                    },
+                    error: function( XMLHttpRequest, textStatus, errorThrown ){
+                        OW.error(textStatus);
+                    },
+                    complete: function(){}
+                });
+            },
+
+            getHTML: function () {
+                var parent = this.parentElement;
+                var html = '';
+                while(!parent.hasAttribute("data-url"))
+                    parent = parent.parentElement;
+
+                html += '<'+parent.is;
+                for(var i=0; i<parent.attributes.length; i++)
+                    html += ' '+parent.attributes[i].name+'=\''+parent.attributes[i].value.replace(/\'/g, "&#39;")+'\'';
+                html += '></'+parent.is+'>';
+
+                var dataletImport = '\<script type="text/javascript" src="https://cdn.jsdelivr.net/webcomponentsjs/0.7.16/webcomponents-lite.min.js"\>\<\/script\>\n' +
+                        '\<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"\>\<\/script\>\n' +
+                        '<!-- REMOVE THE PREVIOUS SCRIPT TAGS IF YOUR PAGE ALREADY USES JQUERY AND POLYFILL LIBRARIES  -->\n';
+
+//                var dataletLink = '<link rel="import" href="http://172.16.15.128/Datalet-Ecosystem-Provider/COMPONENTS/datalets/'+parent.is+'/'+parent.is+'.html" /> \n';
+                var dataletLink = '<link rel="import" href="http://deep.routetopa.eu/deep/COMPONENTS/datalets/'+parent.is+'/'+parent.is+'.html" /> \n';
+
+                var div = document.createElement('div');
+                div.innerHTML = '<div class="overlay" id="overlay">' +
+                        '<div class="modal-content"><span class="button-close" onclick="document.getElementById(\'overlay\').remove(this)"></span>' +
+                        '<span>Copy to clipboard: Ctrl+C, Enter</span>' +
+                        '<textarea class="export_html_textarea">'+dataletImport+dataletLink+html+'</textarea></div></div>';
+
+                html = '<style>html{height: 100%;} body{height: calc(100% - 16px); margin: 8px;} .export{display: none;} #fullscreen{display: none;}</style>' + html;
+
+                return [dataletImport, dataletLink, html];
+            },
+
+            share_on_facebook: function() {
+
+                var parent = this.parentElement;
+
+                while(!parent.hasAttribute("datalet-id"))
+                    parent = parent.parentElement;
+
+                var datalet_id = parent.attributes["datalet-id"].value;
+                //var get_url = window.location;
+                //var base_url = get_url.protocol + "//" + get_url.host + "/" + get_url.pathname.split('/')[1];
+                //var base_url = get_url.protocol + "//" + get_url.host + "/" ;
+                var base_url = ODE.ow_url_home;
+
+                var facebook_url  = base_url + 'datalet/' + datalet_id;
+                //var facebook_text = encodeURI( (this.datalettitle ? (this.datalettitle + ' ') : '') + (this.description ? this.description : '') );
+                //var url = 'https://www.facebook.com/sharer.php?s=100&p[url]=' + facebook_url + '&p[title]=' + facebook_text;
+                var url = 'https://www.facebook.com/dialog/share?app_id=' + ODE.fb_app_id + '&display=popup&href=' + facebook_url + '&redirect_uri=' + facebook_url;
+                window.open(url, "", "width=800,height=300");
+
+            },
+
+            share_on_twitter: function() {
+
+                var parent = this.parentElement;
+
+                while(!parent.hasAttribute("datalet-id"))
+                    parent = parent.parentElement;
+
+                var datalet_id = parent.attributes["datalet-id"].value;
+                //var get_url = window.location;
+                //var base_url = get_url.protocol + "//" + get_url.host + "/" + get_url.pathname.split('/')[1];
+                //var base_url = get_url.protocol + "//" + get_url.host + "/" ;
+                var base_url = ODE.ow_url_home;
+
+                var twitter_url  = base_url + 'datalet/' + datalet_id;
+                var twitter_text = encodeURI( (this.datalettitle ? (this.datalettitle + ' ') : '') + (this.description ? this.description : '') );
+                var url = 'https://twitter.com/intent/tweet?text=' + twitter_text + '&via=RouteToPA&url=' + twitter_url + '&original_referer=' + base_url;
+                window.open(url, "", "width=800,height=300");
+
+            },
+
+            share_on_gplus: function() {
+
+                var parent = this.parentElement;
+
+                while(!parent.hasAttribute("datalet-id"))
+                    parent = parent.parentElement;
+
+                var datalet_id = parent.attributes["datalet-id"].value;
+                //var get_url = window.location;
+                //var base_url = get_url.protocol + "//" + get_url.host + "/" ;
+                var base_url = ODE.ow_url_home;
+
+                var twitter_url  = base_url + 'datalet/' + datalet_id;
+                var url = 'https://plus.google.com/share?url=' + twitter_url;
+                window.open(url, "", "width=350,height=500");
+
+            }
+
+        });
+    </script>
+</dom-module>
