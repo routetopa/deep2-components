@@ -1,4 +1,4 @@
-RC = {}
+RC = {};
 
 $(function () {
     RC.init();
