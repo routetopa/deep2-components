@@ -1,0 +1,33 @@
+<html>
+
+    <head>
+
+        <script type="text/javascript" src="../../deep2-components/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <script type="text/javascript" src="../../deep2-client/js/jquery-2.1.0.min.js"></script>
+        <script type="text/javascript" src="../../deep2-client/js/deepClient.js"></script>
+        <link rel="import" href="../../deep2-components/controllets/data-sevc-controllet/demo-data-sevc-controllet.html">
+
+        <script type="text/javascript" src="datasets.js"></script>
+        <script type="text/javascript" src="regione_campania.js"></script>
+        <link href="regione_campania.css" rel="stylesheet">
+
+    </head>
+
+    <body>
+
+        <button class="outside" id="copy_html">COPIA HTML</button>
+        <button class="outside" id="save_img">SALVA COME PNG</button>
+        <button class="outside" id="fullscreen_preview">TUTTO SCHERMO</button>
+
+        <demo-data-sevc-controllet
+                              id="controllet"
+                              components-url="../../deep2-components/"
+                              deep-url="../../deep2/"
+                              datalets-list-url="../../deep2/datalets-list"
+                              localization="it"
+                              datasets="{}">
+        </demo-data-sevc-controllet>
+
+    </body>
+
+</html>

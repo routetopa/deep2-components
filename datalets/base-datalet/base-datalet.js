@@ -159,6 +159,7 @@ export default class BaseDatalet extends HTMLElement
         this.shadow_root.querySelector('#fullscreen').addEventListener('click', fullscreen_cb);
         this.shadow_root.querySelector('.close.fullscreen').addEventListener('click', fullscreen_cb);
         this.shadow_root.querySelector('.close.export').addEventListener('click', export_cb);
+        // this.shadow_root.querySelector('.close.export_html').addEventListener('click', this.close_export_panel);
         this.shadow_root.querySelector('#export_menu').addEventListener('click', this.open_export_menu());
         this.shadow_root.querySelector('#link_lp').addEventListener('click', (e) => {this.create_link(e)});
         this.shadow_root.querySelector('#export_html').addEventListener('click', (e) => {this.export_html(e)});
@@ -487,12 +488,19 @@ export default class BaseDatalet extends HTMLElement
     /* TOOLS */
     show_export_panel()
     {
-        this.shadow_root.querySelector('#overlay').style.display = 'block';
+        this.shadow_root.querySelector('#export_html_placeholder').style.display = 'block';
     }
+
+    // close_export_panel()
+    // {
+    //     this.shadow_root.querySelector('#export_html_placeholder').style.display = 'none';
+    // }
 
     set_export_area(val)
     {
         this.shadow_root.querySelector('#export_area').value = val;
+        this.shadow_root.querySelector('#export_area').select();
+        document.execCommand('copy');
     }
 
     get_datalet_id()
