@@ -8,7 +8,7 @@ $(function () {
 RC.init = function() {
     $("#controllet").attr("datasets", JSON.stringify(datasets));
     $("#options")[0].innerHTML = "";
-    $(".tab-content")[0].innerHTML = "LISTA DATASET REGIONE CAMPANIA";
+    $(".tab-content")[0].innerHTML = "DATASETS";
     $("#add_button").hide();
 
     $("button.outside").prop('disabled', true);

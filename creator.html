@@ -1,0 +1,33 @@
+<html>
+
+    <head>
+
+        <script type="text/javascript" src="../COMPONENTS/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <script type="text/javascript" src="../DEEPCLIENT/js/jquery-2.1.0.min.js"></script>
+        <script type="text/javascript" src="../DEEPCLIENT/js/deepClient.js"></script>
+        <link rel="import" href="../COMPONENTS/controllets/data-sevc-controllet/demo-data-sevc-controllet.html">
+
+        <script type="text/javascript" src="creator/datasets.js"></script>
+        <script type="text/javascript" src="creator/creator.js"></script>
+        <link href="creator/creator.css" rel="stylesheet">
+
+    </head>
+
+    <body>
+
+        <button class="outside" id="copy_html">COPY HTML</button>
+        <button class="outside" id="save_img">SAVE AS PNG</button>
+        <button class="outside" id="fullscreen_preview">FULLSCREEN</button>
+
+        <demo-data-sevc-controllet
+            id="controllet"
+            components-url="../COMPONENTS/"
+            deep-url="../DEEP/"
+            datalets-list-url="../DEEP/datalets-list"
+            localization="en"
+            datasets="{}">
+        </demo-data-sevc-controllet>
+
+    </body>
+
+</html>

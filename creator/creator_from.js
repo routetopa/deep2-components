@@ -6,9 +6,16 @@ $(function () {
 });
 
 RC.init = function() {
-    $("#controllet").attr("datasets", JSON.stringify(datasets));
+    // eg. --> http://172.16.15.128/DEEP2/COMPONENTS/creator_from.html?data-url=http://ckan.routetopa.eu:8080/api/3/action/datastore_search?resource_id=e5acc3cc-06d0-4520-b1d7-fbf29da29c02
+    let url_string = window.location.href;
+    let url = new URL(url_string);
+    let dataUrl = url.searchParams.get("data-url");
+
+    $("#controllet").attr("data-url", dataUrl);
+    $("#controllet")[0].ready();
+
     $("#options")[0].innerHTML = "";
-    $(".tab-content")[0].innerHTML = "LISTA DATASET REGIONE CAMPANIA";
+    $(".tab-content")[0].innerHTML = "DATASETS";
     $("#add_button").hide();
 
     $("button.outside").prop('disabled', true);
@@ -28,20 +35,20 @@ RC.enableButtons  = function() {
 };
 
 RC.toggleButtons  = function(e) {
-    if(e.detail.selected == 2)
+    if(e.detail.selected == 1)
         $("button.outside").show();
     else
         $("button.outside").hide();
 };
 
-RC.copyHtml  = function() {
-    $("[data-url]")[0].shadow_root.querySelector('#export_to_html').click()
+RC.copyHtml  = function() {debugger
+    $("[selectedfields]")[0].shadow_root.querySelector('#export_to_html').click()
 };
 
 RC.saveImg  = function() {
-    $("[data-url]")[0].shadow_root.querySelector('#export_to_png').click()
+    $("[selectedfields]")[0].shadow_root.querySelector('#export_to_png').click()
 };
 
 RC.fullscreenPreview  = function() {
-    $("[data-url]")[0].shadow_root.querySelector('#fullscreen').click()
+    $("[selectedfields]")[0].shadow_root.querySelector('#fullscreen').click()
 };
