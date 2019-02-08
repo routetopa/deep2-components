@@ -208,7 +208,7 @@
             {
                 let component = this.attributes['datalet-type'].value;
                 let dataletLink = `<link rel="import" href="${ODE.deep_components}/datalets/${component}/${component}.html"/>`;
-                let dataletStyle = `<style>html,body{margin:0;padding:0;height: 100%} ${component}{--base-datalet-visibility: none; --datalet-container-size:100%}</style>`;
+                let dataletStyle = `<style>html{height: 100%;} body{height: calc(100% - 16px); margin: 8px;} ${component}{--fullscreen-visibility: none;}</style>`;
 
                 let datalet = document.createElement(component);
                 for(let  i=0; i<this.attributes.length; i++)
