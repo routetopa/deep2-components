@@ -1,0 +1,106 @@
+RC = {};
+
+$(function () {
+    let ln = RC.ln();
+    RC.injectHTML(ln);
+    RC.init();
+    RC.setListeners();
+});
+
+RC.ln  = function() {
+    let url_string = window.location.href;
+    let url = new URL(url_string);
+    let ln = url.searchParams.get("ln");
+
+    if(!ln)
+        ln = (navigator.language || navigator.userLanguage).split('-')[0];
+
+    if(['en', 'it', 'fr', 'nl', 'es', 'cn'].indexOf(ln) == -1)
+        ln = 'en';
+
+    if(ln == 'es')
+        ln = 'es-ES';
+
+    return ln;
+};
+
+RC.injectHTML  = function(ln, datasets) {
+    $("body").append(
+        '<demo-data-sevc-controllet'+
+        ' id="controllet"'+
+        ' components-url="../../COMPONENTS/"'+
+        ' deep-url="../../DEEP/"'+
+        ' datalets-list-url="../../DEEP/datalets-list"'+
+        ' localization="'+ ln + '">'+
+        '</demo-data-sevc-controllet>'
+    );
+};
+
+RC.init = function() {
+    $("#controllet").attr("datasets", JSON.stringify(datasets));
+    $("#options")[0].innerHTML = "";
+    $(".tab-content")[0].innerHTML = "LISTA DATASET REGIONE CAMPANIA";//todo ln
+    $("#add_button").hide();
+
+    $("button.outside").prop('disabled', true);
+};
+
+RC.setListeners = function() {
+    document.addEventListener("select-inputs_isReady", RC.enableButtons);
+    document.addEventListener("page-slider-controllet_selected", RC.toggleButtons);
+
+    $("#btn_fullscreen").on("click", RC.fullscreen);
+    $("#btn_download").on("click", RC.downloadModal);
+    $("#btn_html").on("click", RC.html);
+    $("#btn_png").on("click", RC.png);
+    $("#btn_doc").on("click", RC.doc);
+    $("#btn_share").on("click", RC.share);
+
+    $(".sm-modal-close").on("click", RC.closeModal);
+};
+
+RC.enableButtons  = function(e) {
+    if(e.detail.isReady)
+        $("button.outside").prop('disabled', false);
+};
+
+RC.toggleButtons  = function(e) {
+    if(e.detail.selected == 2)
+        $("button.outside").show();
+    else
+        $("button.outside").hide();
+};
+
+RC.closeModal = function() {
+    $(".sm-modal")[0].style.display = "none";
+};
+
+RC.fullscreen  = function() {
+    $("[data-url]")[0].shadow_root.querySelector('#fullscreen').click()
+};
+
+RC.downloadModal  = function() {
+    $("#btn_html")[0].style.display = $("[data-url]")[0].shadow_root.querySelector('#export_html').style.display;
+    $("#btn_png")[0].style.display = $("[data-url]")[0].shadow_root.querySelector('#export_png').style.display;
+    $("#btn_doc")[0].style.display = $("[data-url]")[0].shadow_root.querySelector('#export_doc').style.display;
+
+    $("#download-modal")[0].style.display = "flex";
+};
+
+RC.html  = function() {
+    $("[data-url]")[0].shadow_root.querySelector('#export_to_html').click();
+    $("#download-modal")[0].style.display = "none";
+};
+
+RC.png  = function() {
+    $("[data-url]")[0].shadow_root.querySelector('#export_to_png').click();
+    $("#download-modal")[0].style.display = "none";
+};
+
+RC.doc  = function() {
+    $("[data-url]")[0].shadow_root.querySelector('#export_to_doc').click();
+    $("#download-modal")[0].style.display = "none";
+};
+
+RC.share  = function() {
+};

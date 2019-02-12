@@ -1,0 +1,215 @@
+button.outside {
+    display: none;
+
+    position: absolute;
+    top: 16px;
+
+    height: 48px;
+    width: 72px;
+    /*padding: 6px 12px;*/
+    cursor: pointer;
+
+    border: 3px solid #0066cc !important;
+    border-radius: 25px;
+    color: #0066cc !important;
+    background-color: #fff;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-family: 'Titillium Web' !important;
+
+    background-repeat: no-repeat;
+    background-position: 21px 9px;
+
+    z-index: 1;
+}
+
+button.outside:hover {
+    background-color: #eee;
+}
+
+button.outside:disabled {
+    opacity: 0.5;
+}
+
+#btn_fullscreen {
+    right: 32px;
+    background-image: url('img/fullscreen.png');
+
+}
+
+#btn_download {
+    right: 136px;
+    background-image: url('img/download.png');
+}
+
+#btn_share {
+    right: 240px;
+    background-image: url('img/share.png');
+}
+
+/* TOOLTIP */
+
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 128px;
+    background-color: rgba(0, 0, 0, 1);
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    top: 48px;
+    right: -31px;
+    z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+/* MODAL */
+
+.sm-modal{
+    display: none; /* flex */
+    justify-content: center;
+    align-items: center;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 9000;
+
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.sm-modal-content {
+    position: relative;
+    width: 600px;
+    background-color: white;
+    border-radius: 25px;
+    border: 3px solid #0066cc !important;
+}
+
+.sm-modal-content .action {
+    height: 48px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #0066cc;
+    line-height: 48px;
+    padding: 12px 48px 12px 48px;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.sm-modal-content .action:hover {
+    background-color: #eee;
+}
+
+.sm-modal-close {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    height: 40px;
+    width: 40px;
+
+    border: 3px solid #0066cc;
+    border-radius: 50%;
+
+    line-height: 34px;
+    font-size: 32px;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+
+    /*color: #ffffff;*/
+    /*background-color: #0066cc;*/
+
+    background-color: #ffffff;
+    color: #0066cc;
+
+    z-index: 9002;
+}
+
+.sm-modal-close:hover {
+    /*background-color: #ffffff;*/
+    /*color: #0066cc;*/
+
+    background-color: #eee;
+}
+
+/* LOGO */
+
+.logo.page-slider-controllet {
+    background-image: url('logo.png');
+    background-repeat: no-repeat;
+    background-position: 0 2px;
+    background-size: 64px auto;
+}
+
+/* FONT */
+
+/* latin-ext */
+@font-face {
+    font-family: 'Titillium Web';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Titillium Web Regular'), local('TitilliumWeb-Regular'), url(https://fonts.gstatic.com/s/titilliumweb/v6/NaPecZTIAOhVxoMyOr9n_E7fdM3mDbRS.woff2) format('woff2');
+    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+    font-family: 'Titillium Web';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Titillium Web Regular'), local('TitilliumWeb-Regular'), url(https://fonts.gstatic.com/s/titilliumweb/v6/NaPecZTIAOhVxoMyOr9n_E7fdMPmDQ.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+* {
+    font-family: 'Titillium Web' !important;
+}
+
+/* COLORS */
+
+.avatar.page-slider-controllet,
+paper-tab.iron-selected.demo-select-dataset-controllet,
+#info_header,
+paper-item.iron-selected.datasets-list-controllet,
+paper-item.iron-selected.select-fields-controllet,
+#data_table_container.data-table-controllet th.data-table-controllet,
+paper-tab.iron-selected.expert-query-controllet,
+paper-button.aggregators-controllet,
+paper-button.filters-controllet,
+.arrow-up.style-scope.items-vslider-controllet,
+.arrow-down.style-scope.items-vslider-controllet,
+paper-tab.iron-selected.select-inputs-controllet,
+paper-tab.iron-selected.datalet-preview-controllet
+{
+    background-color: #0066cc !important;
+}
+
+paper-item.datasets-list-controllet:hover:not(.iron-selected) {
+    background-color: #127ae2 !important;
+}
+
+.title.page-slider-controllet,
+paper-icon-button.add.filters-controllet,
+paper-icon-button.add.aggregators-controllet
+{
+    color: #0066cc !important;
+}
+
+/*paper-icon-button.page-slider-controllet {*/
+    /*color: #ff5722 !important;*/
+/*}*/
+
+/*paper-icon-button.page-slider-controllet:hover {*/
+    /*color: #c41c00 !important;*/
+/*}*/

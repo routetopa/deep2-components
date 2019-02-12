@@ -212,6 +212,9 @@
                 dataletParams.placeHolder = this.$.preview;
 
                 ComponentService.components_url = this.componentsUrl;
+                dataletParams.params.hide_export="";
+                dataletParams.params.hide_fullscreen="";
+                dataletParams.params.hide_share="";
                 ComponentService.getComponent(dataletParams);
             },
 

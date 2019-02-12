@@ -346,6 +346,13 @@ export default class BaseDatalet extends HTMLElement
             this.shadow_root.querySelector('#export_doc').style.display = 'none';
         }
 
+        /*ddr*/
+        if(this.hasAttribute("hide_export"))
+            this.shadow_root.querySelector('#export_menu').style.visibility = 'hidden';
+        if(this.hasAttribute("hide_fullscreen"))
+            this.shadow_root.querySelector('#fullscreen').style.visibility = 'hidden';
+        if(this.hasAttribute("hide_share"))
+            this.shadow_root.querySelector('#social').style.visibility = 'hidden';
     }
 
     export_html()
@@ -411,6 +418,8 @@ export default class BaseDatalet extends HTMLElement
             const doc = new Document();
 
             doc.addParagraph(new Paragraph(`Datalet Name : ${this.component}`));
+            doc.addParagraph(new Paragraph(`Datalet Title : ${this.datalettitle}`));
+            doc.addParagraph(new Paragraph(`Datalet Description : ${this.description}`));
             doc.addParagraph(new Paragraph(`Dataset Creation Date : ${res.result.created}`));
             doc.addParagraph(new Paragraph(`Dataset Format : ${res.result.format}`));
             doc.addParagraph(new Paragraph(`Dataset Last Modified : ${res.result.last_modified}`));
@@ -499,8 +508,8 @@ export default class BaseDatalet extends HTMLElement
     set_export_area(val)
     {
         this.shadow_root.querySelector('#export_area').value = val;
-        this.shadow_root.querySelector('#export_area').select();
-        document.execCommand('copy');
+        // this.shadow_root.querySelector('#export_area').select();
+        // document.execCommand('copy');
     }
 
     get_datalet_id()

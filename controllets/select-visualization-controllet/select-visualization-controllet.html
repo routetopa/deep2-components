@@ -353,6 +353,10 @@
                 delete this.params["data"];
                 delete this.params["export_menu"];
 
+                delete this.params["hide_export"];
+                delete this.params["hide_fullscreen"];
+                delete this.params["hide_share"];
+
                 var data = {
                     dataUrl: this.dataUrl,
                     datalet: this.selectedDatalet+"-datalet",

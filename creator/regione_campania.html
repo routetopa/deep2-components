@@ -1,32 +1,48 @@
 <html>
 
     <head>
+        <link rel='shortcut icon' type='image/x-icon' href='regione_campania/favicon.ico' />
 
         <script type="text/javascript" src="../../COMPONENTS/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
         <script type="text/javascript" src="../../DEEPCLIENT/js/jquery-2.1.0.min.js"></script>
         <script type="text/javascript" src="../../DEEPCLIENT/js/deepClient.js"></script>
         <link rel="import" href="../../COMPONENTS/controllets/data-sevc-controllet/demo-data-sevc-controllet.html">
 
-        <script type="text/javascript" src="regione_campania-datasets.js"></script>
-        <script type="text/javascript" src="regione_campania.js"></script>
-        <link href="regione_campania.css" rel="stylesheet">
+        <script type="text/javascript" src="regione_campania/datasets.js"></script>
+        <script type="text/javascript" src="regione_campania/creator.js"></script>
+        <link href="regione_campania/creator.css" rel="stylesheet">
 
     </head>
 
     <body>
 
-        <button class="outside" id="copy_html">COPIA HTML</button>
-        <button class="outside" id="save_img">SALVA COME PNG</button>
-        <button class="outside" id="fullscreen_preview">TUTTO SCHERMO</button>
+        <button class="outside tooltip" id="btn_fullscreen">
+            <span class="tooltiptext">Fullscreen</span>
+        </button>
+        <button class="outside tooltip" id="btn_download">
+            <span class="tooltiptext">Download</span>
+        </button>
+        <button class="outside tooltip" id="btn_share">
+            <span class="tooltiptext">Share</span>
+        </button>
 
-        <demo-data-sevc-controllet
-            id="controllet"
-            components-url="../../COMPONENTS/"
-            deep-url="../../DEEP/"
-            datalets-list-url="../../DEEP/datalets-list"
-            localization="it"
-            datasets="{}">
-        </demo-data-sevc-controllet>
+        <div id="download-modal" class="sm-modal">
+            <div class="sm-modal-content">
+                <div class="sm-modal-close">&times;</div>
+                <div id="btn_html" class="action">Salva come HTML</div>
+                <div id="btn_png" class="action">Salva come immagine (.png)</div>
+                <div id="btn_doc" class="action">Salva come documento (.doc)</div>
+            </div>
+        </div>
+
+        <!--<demo-data-sevc-controllet-->
+            <!--id="controllet"-->
+            <!--components-url="../../COMPONENTS/"-->
+            <!--deep-url="../../DEEP/"-->
+            <!--datalets-list-url="../../DEEP/datalets-list"-->
+            <!--localization="it"-->
+            <!--datasets="{}">-->
+        <!--</demo-data-sevc-controllet>-->
 
     </body>
 
