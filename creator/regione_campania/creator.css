@@ -28,22 +28,36 @@ button.outside:hover {
 }
 
 button.outside:disabled {
-    opacity: 0.5;
+    border: 3px solid rgba(0,102,204,0.5) !important;
 }
 
 #btn_fullscreen {
     right: 32px;
+}
+#btn_fullscreen:disabled {
+    background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("img/fullscreen.png") no-repeat 21px 9px;
+}
+#btn_fullscreen:not(:disabled) {
     background-image: url('img/fullscreen.png');
-
 }
 
 #btn_download {
     right: 136px;
+}
+#btn_download:disabled {
+    background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("img/download.png") no-repeat 21px 9px;
+}
+#btn_download:not(:disabled) {
     background-image: url('img/download.png');
 }
 
 #btn_share {
     right: 240px;
+}
+#btn_share:disabled {
+    background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("img/share.png") no-repeat 21px 9px;
+}
+#btn_share:not(:disabled) {
     background-image: url('img/share.png');
 }
 
@@ -108,6 +122,10 @@ button.outside:disabled {
     cursor: pointer;
 }
 
+.sm-modal-content #btn_close.action {
+    color: #b8b8b8;
+}
+
 .sm-modal-content .action:hover {
     background-color: #eee;
 }
@@ -147,6 +165,7 @@ button.outside:disabled {
 /* LOGO */
 
 .logo.page-slider-controllet {
+    display: inline-block;
     background-image: url('logo.png');
     background-repeat: no-repeat;
     background-position: 0 2px;
@@ -174,6 +193,10 @@ button.outside:disabled {
 
 * {
     font-family: 'Titillium Web' !important;
+}
+
+div.close {
+    line-height: 36px !important;
 }
 
 /* COLORS */

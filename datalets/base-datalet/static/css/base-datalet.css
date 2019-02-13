@@ -74,8 +74,10 @@ span#ajax_error {
 }
 
 #rtpalogo {
-    height: 24px;
-    width: 24px;
+    margin-top: 4px;
+    margin-left: -4px;
+    height: 16px;
+    width: 16px;
 }
 
 #base_datalet_loader {
@@ -99,11 +101,17 @@ span#ajax_error {
     width: 24px;
     cursor: pointer;
 
-    background: url("../images/more.svg") no-repeat 0 0;
+    text-align: center;
 }
 
-#export .export:hover {
-    background: url("../images/more_blue.svg") no-repeat 0 0;
+.fas.fa-bars, .fas.fa-expand {
+    font-size: 16px;
+    line-height: 24px !important;
+    color: #212121;
+}
+
+.fas.fa-bars:hover, .fas.fa-expand:hover {
+    color: #2196F3;
 }
 
 .highcharts-contextmenu
@@ -162,12 +170,9 @@ span#ajax_error {
     width: 24px;
     cursor: pointer;
 
-    background: url("../images/fullscreen.svg") no-repeat 0 0;
-    display: var(--fullscreen-visibility, block);
-}
+    text-align: center;
 
-#fullscreen:hover {
-    background: url("../images/fullscreen_blue.svg") no-repeat 0 0;
+    display: var(--fullscreen-visibility, block);
 }
 
 #fullscreen_placeholder, #export_placeholder, #export_html_placeholder
@@ -247,7 +252,7 @@ span#ajax_error {
 {
     padding: 0 16px;
     line-height: 47px;
-    font-size: 16px;
+    font-size: 14px;
     width: calc(100% - 32px);
     height: 47px;
     border-top: 1px solid #2196F3;
@@ -256,11 +261,21 @@ span#ajax_error {
 
 .export_options input {
     margin: 0 8px;
+    width: 120px;
 }
 
 .export_options button {
     cursor: pointer;
     margin-left: 4px;
+}
+
+.export_options select {
+    font-family: 'Font Awesome 5 Brands', 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin: 0 8px;
+    /*padding: 1px 0;*/
+    background-color: #fff;
+    height: 21px;
+    width: 120px;
 }
 
 .export_options #preview_resize {
@@ -270,7 +285,7 @@ span#ajax_error {
 .export_options .twitter, .export_options .facebook, .export_options .googleplus {
     border: none;
     margin: 0;
-    padding: 8px;
+    padding: 0;
 }
 
 .close {
@@ -279,7 +294,6 @@ span#ajax_error {
     right: 30px;
     height: 40px;
     width: 40px;
-    background: url("../images/close.svg") no-repeat 0 0;
 
     background-color: #00BCD4;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
@@ -287,11 +301,14 @@ span#ajax_error {
 
     border-radius: 50%;
 
-    line-height: 56px;
+    line-height: 40px;
     font-size: 32px;
+    font-weight: 700;
     color: #212121;
     text-align: center;
     cursor: pointer;
+
+    font-family: initial !important;
 
     z-index: 9002;
 }
@@ -321,58 +338,49 @@ span#ajax_error {
     right: 0;
     bottom: 0;
     height: 24px;
-    width: 80px;
+    width: 96px;
     cursor: pointer;
 
     display: flex;
     flex-direction: row;
 }
 
-.twitter
-{
+.social .facebook, .social .twitter, .social .googleplus {
     height: 24px;
     width: 24px;
     cursor: pointer;
+    font-size: 24px;
 
-    background: url('../images/twitter.svg') no-repeat 2px 2px;
-    background-size: 20px 20px;
+    margin-left: 8px;
 
-    margin-right: 4px;
+    /*color: #BDBDBD;*/
+    opacity: 0.7;
 }
 
-.twitter:hover {
-    background: url("../images/twitter_hover.svg") no-repeat 2px 2px;
-    background-size: 20px 20px;
+.social .facebook:hover, .social .twitter:hover, .social .googleplus:hover {
+    opacity: 1;
 }
 
-.facebook
-{
-    height: 24px;
-    width: 24px;
-    cursor: pointer;
-
-    background: url("../images/facebook.svg") no-repeat 2px 2px;
-    background-size: 20px 20px;
-
-    margin-right: 4px;
+.facebook {
+    color: #4862A3;
 }
 
-.facebook:hover {
-    background: url("../images/facebook_hover.svg") no-repeat 2px 2px;
-    background-size: 20px 20px;
+.twitter {
+    color: #55ACEE;
 }
 
-.googleplus
-{
-    height: 24px;
-    width: 24px;
-    cursor: pointer;
-
-    background: url("../images/google-plus.svg") no-repeat 2px 2px;
-    background-size: 20px 20px;
+.googleplus{
+    color: #DC4E41;
 }
 
-.googleplus:hover {
-    background: url("../images/google-plus_hover.svg") no-repeat 2px 2px;
-    background-size: 20px 20px;
+.instagram {
+    color: #fb3958;
+}
+
+.pinterest {
+    color: #c8232c;
+}
+
+.linkedin {
+    color: #0077B5
 }

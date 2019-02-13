@@ -1,26 +1,34 @@
+<link rel="stylesheet" type="text/css" href="./static/css/all.min.css">
+
 <template id="base-datalet">
 
     <!-- CSS DEPENDENCY -->
     <link rel="stylesheet" type="text/css" href="./static/css/base-datalet.css"/>
+    <link rel="stylesheet" type="text/css" href="./static/css/all.min.css">
 
     <div id="fullscreen_placeholder">
-        <div class="close fullscreen"></div>
+        <div class="close fullscreen">&times;</div>
         <div class="preview_container"></div>
     </div>
 
     <div id="export_placeholder">
-        <div class="close export"></div>
+        <div class="close export">&times;</div>
         <div class="export_container">
             <div class="preview_container"></div>
             <div class="export_options">
                 Width (px): <input id="preview_width" placeholder="100%" type="number" />
                 Height (px): <input id="preview_height" placeholder="100%" type="number" />
-                <button id="preview_twitter" class="twitter"></button>
-                <button id="preview_facebook" class="facebook"></button>
-                <button id="preview_googleplus" class="googleplus"></button>
-                <button id="preview_resize">Resize</button>
-                <button id="preview_reset">Reset</button>
-                <button id="preview_export">Export</button>
+                Defaults: <select id="preview_set_default">
+                    <option value="custom">Custom</option>
+                    <option class="facebook" value="facebook">&#xf082; Facebook</option>
+                    <option class="twitter" value="twitter">&#xf081; Twitter</option>
+                    <option class="linkedin" value="linkedin">&#xf08c; LinkedIn</option>
+                    <option class="instagram" value="instagram">&#xf16d; Instagram</option>
+                    <option class="pinterest" value="pinterest">&#xf0d3; Pinterest</option>
+                </select>
+                <!--<button id="preview_resize">Resize</button>-->
+                <!--<button id="preview_reset">Reset</button>-->
+                <button id="preview_export"><i class="fas fa-download"></i> Download</button>
             </div>
         </div>
     </div>
@@ -38,18 +46,21 @@
 
         <div id="base_datalet_source_link">
             <b>Source:&nbsp</b> <a id="base_datalet_source" target="_blank"></a> <span id="base_datalet_link_span">&nbsp(<a id="base_datalet_link" target="_blank">dataset</a>)</span> <span id="ajax_error"></span>
-            <div id="refresh"><img id="img_refresh" src="./static/images/reload.png"></div>
+            <!--todo use fontawesoome and enable refresh-->
+            <div id="refresh">
+                <!--<img id="img_refresh" src="./static/images/reload.png">-->
+            </div>
         </div>
 
         <div id="base_datalet_rtp">
-            <div id="rtp">Powered by ROUTE-TO-PA</div>
+            <div id="rtp">Powered by <a href="http://www.routetopa.eu/" target="_blank">ROUTE-TO-PA</a></div>
             <div><a href="http://www.routetopa.eu/" target="_blank"><img id="rtpalogo" src="./static/images/rtpalogo.png"></a></div>
         </div>
 
-        <div id="fullscreen"></div>
+        <div id="fullscreen"><i class="fas fa-expand"></i></div>
 
         <div id="export">
-            <div class="export" id="export_menu" icon="more-horiz"></div>
+            <div class="export" id="export_menu"><i class="fas fa-bars"></i></div>
             <div class="highcharts-contextmenu" id="highcharts-contextmenu">
                 <div class="highcharts-contextmenu-container">
                     <div id="link_lp">        <span id="datalet_link">Datalet Link</span></div>
@@ -62,9 +73,9 @@
         </div>
 
         <div id="social" class="social">
-            <div id="twitter" class="twitter"></div>
-            <div id="facebook" class="facebook"></div>
-            <div id="googleplus" class="googleplus"></div>
+            <div id="facebook" class="facebook"><i class="fab fa-facebook-square"></i></div>
+            <div id="twitter" class="twitter"><i class="fab fa-twitter-square"></i></div>
+            <div id="googleplus" class="googleplus"><i class="fab fa-google-plus-square"></i></div>
         </div>
 
     </div>
@@ -76,7 +87,7 @@
     <!--</div>-->
 
     <div id="export_html_placeholder">
-        <div class="close export_html" onclick="this.parentElement.style.display = 'none'"></div>
+        <div class="close export_html" onclick="this.parentElement.style.display = 'none'">&times;</div>
         <div class="export_container export_html">
             <textarea id="export_area" class="export_area"></textarea>
         </div>

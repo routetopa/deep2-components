@@ -51,7 +51,7 @@ RC.setListeners = function() {
 
     $("#btn_fullscreen").on("click", RC.fullscreen);
     $("#btn_download").on("click", RC.downloadModal);
-    $("#btn_html").on("click", RC.html);
+    // $("#btn_html").on("click", RC.html);
     $("#btn_png").on("click", RC.png);
     $("#btn_doc").on("click", RC.doc);
     $("#btn_share").on("click", RC.share);
@@ -80,9 +80,13 @@ RC.fullscreen  = function() {
 };
 
 RC.downloadModal  = function() {
-    $("#btn_html")[0].style.display = $("[data-url]")[0].shadow_root.querySelector('#export_html').style.display;
+    // $("#btn_html")[0].style.display = $("[data-url]")[0].shadow_root.querySelector('#export_html').style.display;
     $("#btn_png")[0].style.display = $("[data-url]")[0].shadow_root.querySelector('#export_png').style.display;
     $("#btn_doc")[0].style.display = $("[data-url]")[0].shadow_root.querySelector('#export_doc').style.display;
+    $("#btn_close")[0].style.display = 'none';
+
+    if($("#btn_png")[0].style.display == 'none' && $("#btn_doc")[0].style.display == 'none')
+        $("#btn_close")[0].style.display = 'block';
 
     $("#download-modal")[0].style.display = "flex";
 };
@@ -103,4 +107,6 @@ RC.doc  = function() {
 };
 
 RC.share  = function() {
+    $("[data-url]")[0].shadow_root.querySelector('#export_to_html').click();
+    $("#download-modal")[0].style.display = "none";
 };

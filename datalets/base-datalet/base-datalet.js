@@ -148,11 +148,9 @@ export default class BaseDatalet extends HTMLElement
         let fullscreen_cb = this.fullscreen('fullscreen');
         let export_cb     = this.fullscreen('export');
 
-        this.shadow_root.querySelector('#preview_resize').addEventListener('click', (e) => {this.preview_resize()});
-        this.shadow_root.querySelector('#preview_reset').addEventListener('click', (e) => {this.preview_resize('100%', '100%')});
-        this.shadow_root.querySelector('#preview_twitter').addEventListener('click', (e) => {this.preview_resize(1024, 512)});
-        this.shadow_root.querySelector('#preview_facebook').addEventListener('click', (e) => {this.preview_resize(1200, 630)});
-        this.shadow_root.querySelector('#preview_googleplus').addEventListener('click', (e) => {this.preview_resize(533, 400)});//497 x 373
+        this.shadow_root.querySelector('#preview_width').addEventListener('change', (e) => {this.preview_resize()});
+        this.shadow_root.querySelector('#preview_height').addEventListener('change', (e) => {this.preview_resize()});
+        this.shadow_root.querySelector('#preview_set_default').addEventListener('change', (e) => {this.preview_defaults(e)});
         this.shadow_root.querySelector('#preview_export').addEventListener('click', (e) => {this.export_png()});
 
         this.shadow_root.querySelector('#base_datalet_link').addEventListener('click', (e) => {this.go_to_dataset(e)});
@@ -233,36 +231,87 @@ export default class BaseDatalet extends HTMLElement
     }
 
     /* LISTENER */
+    preview_defaults(e)
+    {
+        let t = e.currentTarget;
+        let val = t.options[t.selectedIndex].value;
+        let h, w;
+
+        switch(val) {
+            case 'facebook':
+                w = 1024;
+                h = 512;
+                break;
+            case 'twitter':
+                w = 1200;
+                h = 630;
+                break;
+            case 'linkedin':
+                w = 1200;
+                h = 1200;
+                break;
+            case 'instagram':
+                w = 1080;
+                h = 1080;
+                break;
+            case 'pinterest':
+                w = 600;
+                h = 900;
+                break;
+            // case 'custom':
+            //     w = 600;
+            //     h = 400;
+            //     break;
+            default:
+                w = '100%';
+                h = '100%';
+        }
+
+        this.preview_resize(w, h);
+    }
+
     preview_resize(w = null, h = null)
     {
         let iframe = this.shadow_root.querySelector("#iframe_export");
         let pw     = this.shadow_root.querySelector("#preview_width");
         let ph     = this.shadow_root.querySelector("#preview_height");
 
-        if(w === '100%') {
+        debugger
+
+        if(w == null) {
+            w = pw.value;
+            h = ph.value;
+        }
+
+        if(w === '100%' || w === '') {
             pw.value = '';
-            ph.value = '';
         } else if (w && !isNaN(w)) {
             pw.value = w;
-            ph.value = h;
             w += 'px';
-            h += 'px';
         }
         else {
             w = +pw.value;
-            h = +ph.value;
 
             if(isNaN(w) || w < 400) {
                 w = 400;
                 pw.value = w;
             }
+            w += 'px';
+        }
+
+        if(h === '100%' || h === '') {
+            ph.value = '';
+        } else if (h && !isNaN(h)) {
+            ph.value = h;
+            h += 'px';
+        }
+        else {
+            h = +ph.value;
 
             if(isNaN(h) || h < 400) {
                 h = 400;
                 ph.value = h;
             }
-
-            w += 'px';
             h += 'px';
         }
 
