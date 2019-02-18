@@ -104,13 +104,13 @@ span#ajax_error {
     text-align: center;
 }
 
-.fas.fa-bars, .fas.fa-expand {
+.fas.fa-download, .fas.fa-expand, .fas.fa-code {
     font-size: 16px;
     line-height: 24px !important;
     color: #212121;
 }
 
-.fas.fa-bars:hover, .fas.fa-expand:hover {
+.fas.fa-download:hover, .fas.fa-expand:hover, .fas.fa-code:hover {
     color: #2196F3;
 }
 
@@ -161,6 +161,18 @@ span#ajax_error {
     /*animation: spin 1s linear infinite;*/
 }
 
+#embed
+{
+    position: absolute;
+    right: 48px;
+    top: 0;
+    height: 24px;
+    width: 24px;
+    cursor: pointer;
+
+    text-align: center;
+}
+
 #fullscreen
 {
     position: absolute;
@@ -200,7 +212,7 @@ span#ajax_error {
 
     display: flex;
     justify-content: center;
-    align-items: center;
+    /*align-items: center;*/
 
     background-color: #efefef;
 }
@@ -217,7 +229,7 @@ span#ajax_error {
 
     display: flex;
     justify-content: center;
-    align-items: center;
+    /*align-items: center;*/
 }
 
 #iframe_fullscreen, #iframe_export {

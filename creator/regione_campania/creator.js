@@ -51,12 +51,14 @@ RC.setListeners = function() {
 
     $("#btn_fullscreen").on("click", RC.fullscreen);
     $("#btn_download").on("click", RC.downloadModal);
+    $("#btn_share").on("click", RC.shareModal);
     // $("#btn_html").on("click", RC.html);
     $("#btn_png").on("click", RC.png);
     $("#btn_doc").on("click", RC.doc);
-    $("#btn_share").on("click", RC.share);
+    $("#btn_embed").on("click", RC.embed);
 
-    $(".sm-modal-close").on("click", RC.closeModal);
+    $("#download-modal .sm-modal-close").on("click", RC.closeDownloadModal);
+    $("#share-modal .sm-modal-close").on("click", RC.closeShareModal);
 };
 
 RC.enableButtons  = function(e) {
@@ -71,9 +73,14 @@ RC.toggleButtons  = function(e) {
         $("button.outside").hide();
 };
 
-RC.closeModal = function() {
-    $(".sm-modal")[0].style.display = "none";
+RC.closeDownloadModal = function() {
+    $("#download-modal")[0].style.display = "none";
 };
+
+RC.closeShareModal = function() {
+    $("#share-modal")[0].style.display = "none";
+};
+
 
 RC.fullscreen  = function() {
     $("[data-url]")[0].shadow_root.querySelector('#fullscreen').click()
@@ -91,6 +98,10 @@ RC.downloadModal  = function() {
     $("#download-modal")[0].style.display = "flex";
 };
 
+RC.shareModal  = function() {
+    $("#share-modal")[0].style.display = "flex";
+};
+
 RC.html  = function() {
     $("[data-url]")[0].shadow_root.querySelector('#export_to_html').click();
     $("#download-modal")[0].style.display = "none";
@@ -106,7 +117,7 @@ RC.doc  = function() {
     $("#download-modal")[0].style.display = "none";
 };
 
-RC.share  = function() {
+RC.embed  = function() {
     $("[data-url]")[0].shadow_root.querySelector('#export_to_html').click();
     $("#download-modal")[0].style.display = "none";
 };

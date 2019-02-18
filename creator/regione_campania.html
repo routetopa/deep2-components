@@ -12,6 +12,8 @@
         <script type="text/javascript" src="regione_campania/creator.js"></script>
         <link href="regione_campania/creator.css" rel="stylesheet">
 
+        <!--<link rel="stylesheet" type="text/css" href="../datalets/base-datalet/static/css/all.min.css">-->
+
     </head>
 
     <body>
@@ -22,9 +24,11 @@
         <button class="outside tooltip" id="btn_download">
             <span class="tooltiptext">Download</span>
         </button>
-        <button class="outside tooltip" id="btn_share">
-            <!--<span class="tooltiptext">Share</span>-->
+        <button class="outside tooltip" id="btn_embed">
             <span class="tooltiptext">Embed Datalet</span>
+        </button>
+        <button class="outside tooltip" id="btn_share">
+            <span class="tooltiptext">Share</span>
         </button>
 
         <div id="download-modal" class="sm-modal">
@@ -35,6 +39,18 @@
                 <div id="btn_doc" class="action">Salva come documento (.doc)</div>
 
                 <div id="btn_close" class="action">Servizio non disponibile per questa Datalet</div>
+            </div>
+        </div>
+
+        <div id="share-modal" class="sm-modal">
+            <div class="sm-modal-content">
+                <div class="sm-modal-close">&times;</div>
+                <div id="btn_fb" class="action"><i class="fab fa-facebook-square"></i> Condividi su Facebook</div>
+                <div id="btn_tw" class="action"><i class="fab fa-twitter-square"></i> Condividi su Twitter</div>
+                <div id="btn_li" class="action"><i class="fab fa-linkedin"></i> Condividi su LinkedIn</div>
+                <div id="btn_in" class="action"><i class="fab fa-instagram"></i> Condividi su Instagram</div>
+                <div id="btn_pn" class="action"><i class="fab fa-pinterest-square"></i> Condividi su Pinterest</div>
+                <div id="btn_ml" class="action"><i class="fas fa-envelope-square"></i> Invia mail</div>
             </div>
         </div>
 

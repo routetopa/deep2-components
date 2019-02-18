@@ -51,8 +51,18 @@ button.outside:disabled {
     background-image: url('img/download.png');
 }
 
-#btn_share {
+#btn_embed {
     right: 240px;
+}
+#btn_embed:disabled {
+    background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("img/embed.png") no-repeat 21px 9px;
+}
+#btn_embed:not(:disabled) {
+    background-image: url('img/embed.png');
+}
+
+#btn_share {
+    right: 344px;
 }
 #btn_share:disabled {
     background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("img/share.png") no-repeat 21px 9px;
@@ -79,6 +89,8 @@ button.outside:disabled {
     top: 48px;
     right: -31px;
     z-index: 1;
+
+    font-family: 'Titillium Web';
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */
@@ -115,6 +127,7 @@ button.outside:disabled {
     height: 48px;
     font-size: 24px;
     font-weight: 700;
+    font-family: 'Titillium Web';
     color: #0066cc;
     line-height: 48px;
     padding: 12px 48px 12px 48px;
@@ -130,6 +143,36 @@ button.outside:disabled {
     background-color: #eee;
 }
 
+/*https://stackoverflow.com/questions/17309928/how-to-center-text-vertically-with-a-large-font-awesome-icon*/
+.sm-modal-content .action i {
+    font-size: 48px;
+    margin-right: 48px;
+}
+
+#btn_fb i {
+    color: #4862A3;
+}
+
+#btn_tw i {
+    color: #55ACEE;
+}
+
+#btn_li i {
+    color: #0077B5;
+}
+
+#btn_in i {
+    color: #fb3958;
+}
+
+#btn_pn i {
+    color: #c8232c;
+}
+
+#btn_ml i {
+    color: #B6B6B6; /*#D44638*/
+}
+
 .sm-modal-close {
     position: absolute;
     top: -20px;
@@ -140,7 +183,7 @@ button.outside:disabled {
     border: 3px solid #0066cc;
     border-radius: 50%;
 
-    line-height: 34px;
+    line-height: 40px;
     font-size: 32px;
     font-weight: 700;
     text-align: center;
@@ -191,7 +234,7 @@ button.outside:disabled {
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-* {
+demo-data-sevc-controllet * {
     font-family: 'Titillium Web' !important;
 }
 

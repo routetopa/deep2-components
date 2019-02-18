@@ -276,8 +276,6 @@ export default class BaseDatalet extends HTMLElement
         let pw     = this.shadow_root.querySelector("#preview_width");
         let ph     = this.shadow_root.querySelector("#preview_height");
 
-        debugger
-
         if(w == null) {
             w = pw.value;
             h = ph.value;
@@ -396,8 +394,10 @@ export default class BaseDatalet extends HTMLElement
         }
 
         /*ddr*/
-        if(this.hasAttribute("hide_export"))
+        if(this.hasAttribute("hide_export")) {
             this.shadow_root.querySelector('#export_menu').style.visibility = 'hidden';
+            this.shadow_root.querySelector('#embed').style.visibility = 'hidden';
+        }
         if(this.hasAttribute("hide_fullscreen"))
             this.shadow_root.querySelector('#fullscreen').style.visibility = 'hidden';
         if(this.hasAttribute("hide_share"))
