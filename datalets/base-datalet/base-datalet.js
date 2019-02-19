@@ -378,12 +378,12 @@ export default class BaseDatalet extends HTMLElement
 
     save_as_csv() {
         this.shadow_root.querySelector('#save_as-placeholder').style.display = 'none';
-        this.save_csv(this.CSV);
+        this.save_csv(this.CSV, 'full_dataset');
     }
 
     save_as_csv2() {
         this.shadow_root.querySelector('#save_as-placeholder').style.display = 'none';
-        this.save_csv(this.FCSV);
+        this.save_csv(this.FCSV, 'filtered_dataset');
     }
 
     async import_myspace() {
@@ -536,7 +536,7 @@ export default class BaseDatalet extends HTMLElement
         });
     }
 
-    save_csv(csv) {
+    save_csv(csv, name) {
         let csvContent = "data:text/csv;charset=utf-8,";
         csv.forEach(function(rowArray){
             let row = Object.values(rowArray).join(",");
@@ -544,7 +544,13 @@ export default class BaseDatalet extends HTMLElement
         });
 
         let encodedUri = encodeURI(csvContent);
-        window.open(encodedUri);
+        // window.open(encodedUri);
+        let link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", name+".csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 
     /* SHARE */
