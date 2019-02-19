@@ -2,8 +2,7 @@ import {importModule} from '../lib/vendors/import_polyfill/import_polyfill.js'
 
 export default class BaseDatalet extends HTMLElement
 {
-    constructor(component)
-    {
+    constructor(component) {
         // If you define a constructor, always call super() first as it is required by the CE spec.
         super();
 
@@ -16,8 +15,7 @@ export default class BaseDatalet extends HTMLElement
         this.shadow_root = this.attachShadow({mode: 'open'}); // con mode open è possibile accedere agli elementi DOM all'interno dello shadow DOM
     }
 
-    connectedCallback()
-    {
+    connectedCallback() {
         this.data_url = this.getAttribute("data-url");
         this.selected_fields = this.getAttribute("selectedfields");
         this.filters = this.getAttribute("filters");
@@ -56,19 +54,16 @@ export default class BaseDatalet extends HTMLElement
         this.set_export_menu();
     }
 
-    attributeChangedCallback()
-    {
+    attributeChangedCallback() {
         console.log('attributeChangedCallback');
     }
 
-    disconnectedCallback()
-    {
+    disconnectedCallback() {
         //todo remove event listeners ??
         this.shadow_root.innerHTML = ''; //svuota lo shadow DOM
     }
 
-    async set_behaviours(module, config)
-    {
+    async set_behaviours(module, config) {
         config = config || [0, 0, 0, 0];
         let modules = [];
 
@@ -98,8 +93,7 @@ export default class BaseDatalet extends HTMLElement
         }
     }
 
-    async work_cycle()
-    {
+    async work_cycle() {
         try
         {
             let data;
@@ -121,8 +115,7 @@ export default class BaseDatalet extends HTMLElement
         }
     }
 
-    async import_module(url)
-    {
+    async import_module(url) {
         //TODO : something better than this [exclude define]
         let define = window.define;
         window.define = undefined;
@@ -131,8 +124,11 @@ export default class BaseDatalet extends HTMLElement
         return mod;
     }
 
-    load_script(templates)
-    {
+    render() {
+        throw new Error("Render method not implemented");
+    }
+
+    load_script(templates) {
         templates.forEach((t) => {
             let scripts = t.template.querySelectorAll('link, script'); //'script, link'
 
@@ -143,34 +139,11 @@ export default class BaseDatalet extends HTMLElement
         });
     }
 
-    add_listeners()
-    {
-        let fullscreen_cb = this.fullscreen('fullscreen');
-        let export_cb     = this.fullscreen('export');
-
-        this.shadow_root.querySelector('#preview_width').addEventListener('change', (e) => {this.preview_resize()});
-        this.shadow_root.querySelector('#preview_height').addEventListener('change', (e) => {this.preview_resize()});
-        this.shadow_root.querySelector('#preview_set_default').addEventListener('change', (e) => {this.preview_defaults(e)});
-        this.shadow_root.querySelector('#preview_export').addEventListener('click', (e) => {this.export_png()});
-
-        this.shadow_root.querySelector('#base_datalet_link').addEventListener('click', (e) => {this.go_to_dataset(e)});
-        this.shadow_root.querySelector('#fullscreen').addEventListener('click', fullscreen_cb);
-        this.shadow_root.querySelector('.close.fullscreen').addEventListener('click', fullscreen_cb);
-        this.shadow_root.querySelector('.close.export').addEventListener('click', export_cb);
-        // this.shadow_root.querySelector('.close.export_html').addEventListener('click', this.close_export_panel);
-        this.shadow_root.querySelector('#export_menu').addEventListener('click', this.open_export_menu());
-        this.shadow_root.querySelector('#link_lp').addEventListener('click', (e) => {this.create_link(e)});
-        this.shadow_root.querySelector('#export_html').addEventListener('click', (e) => {this.export_html(e)});
-        this.shadow_root.querySelector('#export_png').addEventListener('click', export_cb);
-        this.shadow_root.querySelector('#export_doc').addEventListener('click', (e) => {this.export_doc(e)});
-        this.shadow_root.querySelector('#import_myspace').addEventListener('click', (e) => {this.import_myspace(e)});
-        this.shadow_root.querySelector('#facebook').addEventListener('click', (e) => {this.share_on_fb(e)});
-        this.shadow_root.querySelector('#twitter').addEventListener('click', (e) => {this.share_on_twitter(e)});
-        this.shadow_root.querySelector('#googleplus').addEventListener('click', (e) => {this.share_on_google(e)});
+    handle_behaviour() {
+        throw new Error("Render method not implemented");
     }
 
-    add_datalet_info()
-    {
+    add_datalet_info() {
         this.shadow_root.querySelector('#span_title').innerHTML = this.getAttribute("datalettitle");
         this.shadow_root.querySelector('#span_description').innerHTML = this.getAttribute("description");
 
@@ -220,59 +193,223 @@ export default class BaseDatalet extends HTMLElement
 
     }
 
-    handle_behaviour()
-    {
-        throw new Error("Render method not implemented");
+    set_export_menu() {
+        if(typeof ODE === 'undefined' && typeof parent.ODE === 'undefined')
+        {
+            this.shadow_root.querySelector('#link').style.display = 'none';
+            this.shadow_root.querySelector('#myspace-action').style.display = 'none';
+        }
+
+        if(this.hasAttribute("disable_html_export") || this.hasAttribute("disable_html")) //todo ??
+            this.shadow_root.querySelector('#embed').style.display = 'none';
+
+        if(this.hasAttribute("disable_link"))
+            this.shadow_root.querySelector('#link').style.display = 'none';
+
+        if(this.hasAttribute("disable_my_space"))
+            this.shadow_root.querySelector('#myspace-action').style.display = 'none';
+
+        if(typeof this.export_to_img_doc !== 'undefined' && !this.export_to_img_doc)
+        {
+            this.shadow_root.querySelector('#img-action').style.display = 'none';
+            this.shadow_root.querySelector('#doc-action').style.display = 'none';
+        }
+
+        if(this.hasAttribute("hide_export")) {
+            this.shadow_root.querySelector('#embed').style.visibility = 'hidden';
+            this.shadow_root.querySelector('#link').style.visibility = 'hidden';
+            this.shadow_root.querySelector('#export_menu').style.visibility = 'hidden';
+        }
+        if(this.hasAttribute("hide_fullscreen"))
+            this.shadow_root.querySelector('#fullscreen').style.visibility = 'hidden';
+        if(this.hasAttribute("hide_share"))
+            this.shadow_root.querySelector('#social').style.visibility = 'hidden';
     }
 
-    render()
-    {
-        throw new Error("Render method not implemented");
+    add_listeners() {
+        this.shadow_root.querySelector('#base_datalet_link').addEventListener('click', (e) => {this.go_to_dataset(e)});
+
+        this.shadow_root.querySelector('#fullscreen').addEventListener('click', () => {this.fullscreen()});
+        this.shadow_root.querySelector('#embed').addEventListener('click', () => {this.copy_html()});
+        this.shadow_root.querySelector('#link').addEventListener('click', () => {this.copy_link()});
+        this.shadow_root.querySelector('#export_menu').addEventListener('click', () => {this.save_as()});
+        this.shadow_root.querySelector('#img-action').addEventListener('click', () => {this.save_as_image()});
+        this.shadow_root.querySelector('#doc-action').addEventListener('click', () => {this.save_as_doc()});
+        this.shadow_root.querySelector('#csv-action').addEventListener('click', () => {this.save_as_csv()});
+        this.shadow_root.querySelector('#csv_filtered-action').addEventListener('click', () => {this.save_as_csv2()});
+        this.shadow_root.querySelector('#myspace-action').addEventListener('click', () => {this.import_myspace()});
+        this.shadow_root.querySelectorAll('.close').forEach(function(elem) {
+            elem.addEventListener('click', (e) => {this.close(e)});
+        }.bind(this));
+
+        this.shadow_root.querySelector('#preview_width').addEventListener('change', () => {this.preview_resize()});
+        this.shadow_root.querySelector('#preview_height').addEventListener('change', () => {this.preview_resize()});
+        this.shadow_root.querySelector('#preview_set_default').addEventListener('change', (e) => {this.preview_defaults(e)});
+        this.shadow_root.querySelector('#preview_export').addEventListener('click', () => {this.save_as_png()});
+
+        this.shadow_root.querySelector('#facebook').addEventListener('click', (e) => {this.share_on_fb(e)});
+        this.shadow_root.querySelector('#twitter').addEventListener('click', (e) => {this.share_on_twitter(e)});
+        this.shadow_root.querySelector('#googleplus').addEventListener('click', (e) => {this.share_on_google(e)});
     }
 
     /* LISTENER */
-    preview_defaults(e)
-    {
-        let t = e.currentTarget;
-        let val = t.options[t.selectedIndex].value;
-        let h, w;
 
-        switch(val) {
-            case 'facebook':
-                w = 1024;
-                h = 512;
-                break;
-            case 'twitter':
-                w = 1200;
-                h = 630;
-                break;
-            case 'linkedin':
-                w = 1200;
-                h = 1200;
-                break;
-            case 'instagram':
-                w = 1080;
-                h = 1080;
-                break;
-            case 'pinterest':
-                w = 600;
-                h = 900;
-                break;
-            // case 'custom':
-            //     w = 600;
-            //     h = 400;
-            //     break;
-            default:
-                w = '100%';
-                h = '100%';
+    fullscreen() {
+        this.shadow_root.querySelector('#fullscreen-placeholder').style.display = 'block';
+
+        if(!this.hasPreview) {
+            let html_obj = this.get_html();
+            let iframe = document.createElement('iframe');
+            iframe.setAttribute("frameborder", "0");
+            iframe.setAttribute("id", 'fullscreen-iframe');
+            iframe.setAttribute("srcdoc", html_obj.script + html_obj.style + html_obj.datalet_definition + html_obj.component);
+            this.shadow_root.querySelector('#fullscreen-container').appendChild(iframe);
+            this.hasPreview = true;
         }
-
-        this.preview_resize(w, h);
     }
 
-    preview_resize(w = null, h = null)
-    {
-        let iframe = this.shadow_root.querySelector("#iframe_export");
+    copy_html() {
+        let embed = this.shadow_root.querySelector('#embed');
+        embed.setAttribute("data-balloon", "Copied");
+        setTimeout(function(){ embed.setAttribute("data-balloon", "Click to Copy HTML"); }, 3000);
+
+        let html_obj = this.get_html();
+        let datalet = (html_obj.script + html_obj.datalet_definition + html_obj.component);
+        let iframe = document.createElement('iframe');
+        iframe.setAttribute("style", "width:100%;height:100%;min-height:498px;padding:0;margin:0;border:0;");
+        iframe.setAttribute("frameborder", "0");
+        iframe.setAttribute("scrolling", "no");
+        iframe.setAttribute("srcdoc", datalet);
+
+        var $temp = $("<input>");
+        $("body").append($temp);
+        $temp.val(iframe.outerHTML).select();
+        document.execCommand("copy");
+        $temp.remove();
+    }
+
+    copy_link() {
+        let link = this.shadow_root.querySelector('#link');
+        link.setAttribute("data-balloon", "Copied");
+        setTimeout(function(){link.setAttribute("data-balloon", "Click to Copy Link"); }, 3000);
+
+        let datalet_id = this.get_datalet_id();
+        let base_url = ODE.ow_url_home;
+        let landing_page_url = base_url + 'datalet/' + datalet_id;
+
+        var $temp = $("<input>");
+        $("body").append($temp);
+        $temp.val(landing_page_url).select();
+        document.execCommand("copy");
+        $temp.remove();
+    }
+
+    save_as() {
+        this.shadow_root.querySelector('#save_as-placeholder').style.display = 'block';
+    }
+
+    close(e) {
+        this.shadow_root.querySelector('#' + e.currentTarget.id.split('-')[0] + '-placeholder').style.display = 'none';
+    }
+
+    // menu
+
+    save_as_image() {
+        this.shadow_root.querySelector('#save_as-placeholder').style.display = 'none';
+        this.shadow_root.querySelector('#img-placeholder').style.display = 'block';
+
+        if(!this.hasImgPreview) {
+            let html_obj = this.get_html();
+            let iframe = document.createElement('iframe');
+            iframe.setAttribute("frameborder", "0");
+            iframe.setAttribute("id", 'img-iframe');
+            iframe.setAttribute("srcdoc", html_obj.script + html_obj.style + html_obj.datalet_definition + html_obj.component);
+            this.shadow_root.querySelector('#img-preview').appendChild(iframe);
+            this.hasImgPreview = true;
+        }
+    }
+
+    async save_as_doc() {
+        this.shadow_root.querySelector('#save_as-placeholder').style.display = 'none';
+
+        if (this.data_url.indexOf("datastore_search?resource_id") > -1)
+        {
+            let docx = await this.import_module('../lib/vendors/docx/index.js');
+
+            let url = this.data_url.replace("datastore_search?resource_id", "resource_show?id");
+
+            let res = await this.ajax_request("GET", url, 'responseText', JSON.parse,
+                [["Accept", "application/json, text/javascript, */*; q=0.01"]], null, null);
+
+            const doc = new Document();
+
+            doc.addParagraph(new Paragraph(`Datalet Name : ${this.component}`));
+            doc.addParagraph(new Paragraph(`Datalet Title : ${this.datalettitle}`));
+            doc.addParagraph(new Paragraph(`Datalet Description : ${this.description}`));
+            doc.addParagraph(new Paragraph(`Dataset Creation Date : ${res.result.created}`));
+            doc.addParagraph(new Paragraph(`Dataset Format : ${res.result.format}`));
+            doc.addParagraph(new Paragraph(`Dataset Last Modified : ${res.result.last_modified}`));
+            doc.addParagraph(new Paragraph(`Dataset Url : ${res.result.url}`));
+            doc.addParagraph(new Paragraph(`Dataset API : ${this.data_url}`));
+            doc.createImage(await this.create_image(this.shadow_root.querySelector('svg')));
+
+            const packer = new Packer();
+            let blob = await packer.toBlob(doc);
+
+            let downloadUrl = window.URL.createObjectURL(blob);
+            let download = document.createElement("a");
+            download.href = downloadUrl;
+            download.download = `${this.component}.docx`;
+            document.body.appendChild(download);
+            download.click();
+            document.body.removeChild(download);
+        }
+
+        /*const paragraph = new Paragraph(`Datalet name : ${this.component}`);
+         const dateText = new TextRun("Github is the best").tab().bold();
+         paragraph.addRun(dateText);*/
+    }
+
+    save_as_csv() {
+
+    }
+
+    save_as_csv2() {
+
+    }
+
+    async import_myspace() {
+        this.shadow_root.querySelector('#save_as-placeholder').style.display = 'none';
+
+        let params = {};
+
+        for (let i = 0; i < this.attributes.length; i++)
+            params[this.attributes[i].name] = this.attributes[i].value;
+
+        let data = params["data"];
+        delete params["fields"];
+        delete params["data"];
+
+        params = JSON.stringify(params);
+        let post = 'component=' + this.component;
+        post += '&params=' + encodeURIComponent(params);
+        post += '&data=' + encodeURIComponent(data);
+
+        let res = await this.ajax_request("POST", ODE.ajax_private_room_datalet, 'responseText', JSON.parse,
+            [["Content-type", "application/x-www-form-urlencoded; charset=UTF-8"],
+                ["Accept", "application/json, text/javascript, */*; q=0.01"],
+                ["X-Requested-With", "XMLHttpRequest"]], null, post);
+
+        if (res.status === "ok")
+            alert("Datalet added to Myspace");//todo cool panel + ln
+        else
+            alert("Error");
+    }
+
+    // sub-menu
+
+    preview_resize(w = null, h = null) {
+        let iframe = this.shadow_root.querySelector("#img-iframe");
         let pw     = this.shadow_root.querySelector("#preview_width");
         let ph     = this.shadow_root.querySelector("#preview_height");
 
@@ -317,109 +454,48 @@ export default class BaseDatalet extends HTMLElement
         iframe.style.height = h;
     }
 
-    fullscreen(container)
-    {
-        let open = false;
-        let fph = this.shadow_root.querySelector(`#${container}_placeholder`);
-        let preview = this.shadow_root.querySelector(`#${container}_placeholder .preview_container`);
+    preview_defaults(e) {
+        let t = e.currentTarget;
+        let val = t.options[t.selectedIndex].value;
+        let h, w;
 
-        return () => {
-
-            if (!open) {
-                let html_obj = this.get_html();
-                let iframe = document.createElement('iframe');
-                iframe.setAttribute("frameborder", "0");
-                iframe.setAttribute("id", `iframe_${container}`);
-                iframe.setAttribute("srcdoc", html_obj.script + html_obj.style + html_obj.datalet_definition + html_obj.component);
-                preview.appendChild(iframe);
-                fph.style.display = 'block';
-            } else {
-                preview.removeChild(this.shadow_root.querySelector(`#iframe_${container}`));
-                fph.style.display = 'none';
-            }
-
-            open = !open;
-        }
-    }
-
-    open_export_menu()
-    {
-        let open = false;
-
-        return () => {
-            if (!open)
-                this.shadow_root.querySelector('#highcharts-contextmenu').style.display = 'block';
-            else
-                this.shadow_root.querySelector('#highcharts-contextmenu').style.display = 'none';
-
-            open = !open;
-        }
-    }
-
-    create_link()
-    {
-        this.show_export_panel();
-
-        let datalet_id = this.get_datalet_id();
-        let base_url = ODE.ow_url_home;
-        let landing_page_url = base_url + 'datalet/' + datalet_id;
-
-        this.set_export_area(landing_page_url);
-    }
-
-    set_export_menu()
-    {
-        if(typeof ODE === 'undefined' && typeof parent.ODE === 'undefined')
-        {
-            this.shadow_root.querySelector('#link_lp').style.display = 'none';
-            this.shadow_root.querySelector('#export_my_space').style.display = 'none';
+        switch(val) {
+            case 'facebook':
+                w = 1024;
+                h = 512;
+                break;
+            case 'twitter':
+                w = 1200;
+                h = 630;
+                break;
+            case 'linkedin':
+                w = 1200;
+                h = 1200;
+                break;
+            case 'instagram':
+                w = 1080;
+                h = 1080;
+                break;
+            case 'pinterest':
+                w = 600;
+                h = 900;
+                break;
+            // case 'custom':
+            //     w = 600;
+            //     h = 400;
+            //     break;
+            default:
+                w = '100%';
+                h = '100%';
         }
 
-        if(this.hasAttribute("disable_my_space"))
-            this.shadow_root.querySelector('#export_my_space').style.display = 'none';
-
-        if(this.hasAttribute("disable_html_export"))
-            this.shadow_root.querySelector('#export_to_html').style.display = 'none';
-
-        if(this.hasAttribute("disable_link"))
-            this.shadow_root.querySelector('#datalet_link').style.display = 'none';
-
-        if(this.hasAttribute("disable_html"))
-            this.shadow_root.querySelector('#export_html').style.display = 'none';
-
-        if(typeof this.export_to_img_doc !== 'undefined' && !this.export_to_img_doc)
-        {
-            this.shadow_root.querySelector('#export_png').style.display = 'none';
-            this.shadow_root.querySelector('#export_doc').style.display = 'none';
-        }
-
-        /*ddr*/
-        if(this.hasAttribute("hide_export")) {
-            this.shadow_root.querySelector('#export_menu').style.visibility = 'hidden';
-            this.shadow_root.querySelector('#embed').style.visibility = 'hidden';
-        }
-        if(this.hasAttribute("hide_fullscreen"))
-            this.shadow_root.querySelector('#fullscreen').style.visibility = 'hidden';
-        if(this.hasAttribute("hide_share"))
-            this.shadow_root.querySelector('#social').style.visibility = 'hidden';
+        this.preview_resize(w, h);
     }
 
-    export_html()
-    {
-        this.show_export_panel();
-        let html_obj = this.get_html();
-        let datalet = (html_obj.script + html_obj.datalet_definition + html_obj.component);
-        let iframe = document.createElement('iframe');
-        iframe.setAttribute("style", "width:100%;height:100%;min-height:498px;padding:0;margin:0;border:0;");
-        iframe.setAttribute("frameborder", "0");
-        iframe.setAttribute("scrolling", "no");
-        iframe.setAttribute("srcdoc", datalet);
-        this.set_export_area(iframe.outerHTML);
-    }
+    async save_as_png() {
+        this.shadow_root.querySelector('#img-placeholder').style.display = 'none';
 
-    async export_png()
-    {
-        let svg = this.shadow_root.querySelector('#iframe_export').contentWindow.document.querySelector(this.component).shadowRoot.querySelector('svg');
+        let svg = this.shadow_root.querySelector('#img-iframe').contentWindow.document.querySelector(this.component).shadowRoot.querySelector('svg');
         let png = await this.create_image(svg);
 
         let download = document.createElement('a');
@@ -430,8 +506,7 @@ export default class BaseDatalet extends HTMLElement
         document.body.removeChild(download);
     }
 
-    create_image(svg)
-    {
+    create_image(svg) {
         return new Promise((res, rej) =>
         {
             let svgData = new XMLSerializer().serializeToString(svg);
@@ -453,82 +528,15 @@ export default class BaseDatalet extends HTMLElement
         });
     }
 
-    async export_doc()
-    {
-        if (this.data_url.indexOf("datastore_search?resource_id") > -1)
-        {
-            let docx = await this.import_module('../lib/vendors/docx/index.js');
+    /* SHARE */
 
-            let url = this.data_url.replace("datastore_search?resource_id", "resource_show?id");
-
-            let res = await this.ajax_request("GET", url, 'responseText', JSON.parse,
-                [["Accept", "application/json, text/javascript, */*; q=0.01"]], null, null);
-
-            const doc = new Document();
-
-            doc.addParagraph(new Paragraph(`Datalet Name : ${this.component}`));
-            doc.addParagraph(new Paragraph(`Datalet Title : ${this.datalettitle}`));
-            doc.addParagraph(new Paragraph(`Datalet Description : ${this.description}`));
-            doc.addParagraph(new Paragraph(`Dataset Creation Date : ${res.result.created}`));
-            doc.addParagraph(new Paragraph(`Dataset Format : ${res.result.format}`));
-            doc.addParagraph(new Paragraph(`Dataset Last Modified : ${res.result.last_modified}`));
-            doc.addParagraph(new Paragraph(`Dataset Url : ${res.result.url}`));
-            doc.addParagraph(new Paragraph(`Dataset API : ${this.data_url}`));
-            doc.createImage(await this.create_image(this.shadow_root.querySelector('svg')));
-
-            const packer = new Packer();
-            let blob = await packer.toBlob(doc);
-
-            let downloadUrl = window.URL.createObjectURL(blob);
-            let download = document.createElement("a");
-            download.href = downloadUrl;
-            download.download = `${this.component}.docx`;
-            document.body.appendChild(download);
-            download.click();
-            document.body.removeChild(download);
-        }
-
-        /*const paragraph = new Paragraph(`Datalet name : ${this.component}`);
-        const dateText = new TextRun("Github is the best").tab().bold();
-        paragraph.addRun(dateText);*/
-    }
-
-    async import_myspace()
-    {
-        let params = {};
-
-        for (let i = 0; i < this.attributes.length; i++)
-            params[this.attributes[i].name] = this.attributes[i].value;
-
-        let data = params["data"];
-        delete params["fields"];
-        delete params["data"];
-
-        params = JSON.stringify(params);
-        let post = 'component=' + this.component;
-        post += '&params=' + encodeURIComponent(params);
-        post += '&data=' + encodeURIComponent(data);
-
-        let res = await this.ajax_request("POST", ODE.ajax_private_room_datalet, 'responseText', JSON.parse,
-            [["Content-type", "application/x-www-form-urlencoded; charset=UTF-8"],
-                ["Accept", "application/json, text/javascript, */*; q=0.01"],
-                ["X-Requested-With", "XMLHttpRequest"]], null, post);
-
-        if (res.status === "ok")
-            alert("Datalet added to Myspace");
-        else
-            alert("Error");
-    }
-
-    share_on_fb()
-    {
+    share_on_fb() {
         let facebook_url = this.create_share_url();
         let url = 'https://www.facebook.com/dialog/share?app_id=' + ODE.fb_app_id + '&display=popup&href=' + facebook_url + '&redirect_uri=' + facebook_url;
         window.open(url, "", "width=800,height=300");
     }
 
-    share_on_twitter()
-    {
+    share_on_twitter() {
         let base_url = ODE.ow_url_home;
         let twitter_url = this.create_share_url();
         let twitter_text = encodeURI((this.datalettitle ? (this.datalettitle + ' ') : '') + (this.description ? this.description : ''));
@@ -536,33 +544,25 @@ export default class BaseDatalet extends HTMLElement
         window.open(url, "", "width=800,height=300");
     }
 
-    share_on_google()
-    {
+    share_on_google() {
         let google_url = this.create_share_url();
         let url = 'https://plus.google.com/share?url=' + google_url;
         window.open(url, "", "width=350,height=500");
     }
 
     /* TOOLS */
-    show_export_panel()
-    {
+
+    show_export_panel() {
         this.shadow_root.querySelector('#export_html_placeholder').style.display = 'block';
     }
 
-    // close_export_panel()
-    // {
-    //     this.shadow_root.querySelector('#export_html_placeholder').style.display = 'none';
-    // }
-
-    set_export_area(val)
-    {
+    set_export_area(val) {
         this.shadow_root.querySelector('#export_area').value = val;
         // this.shadow_root.querySelector('#export_area').select();
         // document.execCommand('copy');
     }
 
-    get_datalet_id()
-    {
+    get_datalet_id() {
         let parent = this.parentElement;
 
         while (!parent.hasAttribute("datalet-id"))
@@ -571,14 +571,12 @@ export default class BaseDatalet extends HTMLElement
         return parent.attributes["datalet-id"].value;
     }
 
-    get_post_id()
-    {
+    get_post_id() {
         let post_id = this.parentElement.id.match(/\d+/);
         return post_id ? post_id[0] : "";
     }
 
-    ajax_request(method, path, response_obj, handle_response, requestHeader, responseType, data)
-    {
+    ajax_request(method, path, response_obj, handle_response, requestHeader, responseType, data) {
         return new Promise((res, rej) => {
             requestHeader = requestHeader || [];
             data = data || {};
@@ -606,8 +604,7 @@ export default class BaseDatalet extends HTMLElement
         });
     }
 
-    async go_to_dataset(e)
-    {
+    async go_to_dataset(e) {
         e.preventDefault();
 
         let data_url = this.getAttribute("data-url");
@@ -634,16 +631,14 @@ export default class BaseDatalet extends HTMLElement
         }
     }
 
-    build_uri(resource, baseURI)
-    {
+    build_uri(resource, baseURI) {
         if (this.is_absolute_path(resource))
             return resource;
 
         return (baseURI || this.baseUri) + resource;
     }
 
-    replace_img_path(innerHTML, baseURI)
-    {
+    replace_img_path(innerHTML, baseURI) {
         [...innerHTML.querySelectorAll('img')].forEach((img) => {
             if (!this.is_absolute_path(img.attributes["src"].value))
                 img.src = (baseURI || this.baseUri) + img.attributes["src"].value;
@@ -652,13 +647,11 @@ export default class BaseDatalet extends HTMLElement
         return innerHTML;
     }
 
-    is_absolute_path(path)
-    {
+    is_absolute_path(path) {
         return (path.indexOf('http') >= 0);
     }
 
-    get_dynamic_import()
-    {
+    get_dynamic_import() {
         try {
             return new Function('url', 'return import(url)');
         } catch (err) {
@@ -666,8 +659,7 @@ export default class BaseDatalet extends HTMLElement
         }
     }
 
-    get_html()
-    {
+    get_html() {
         let script = `<script src="${this.baseUri}../lib/vendors/webcomponents_lite_polyfill/webcomponents-lite.js"></script>`;
         let style = `<style>html,body{margin:0;padding:0;height: 100%} ${this.component}{--base-datalet-visibility: none; --datalet-container-size:100%}</style>`;
         //let style = `<style>html{height: 100%;} body{height: calc(100% - 16px); margin: 8px;} ${this.component}{--fullscreen-visibility: none;}</style>`;
@@ -675,30 +667,25 @@ export default class BaseDatalet extends HTMLElement
         return {script: script, style: style, datalet_definition: datalet_definition, component: this.outerHTML};
     }
 
-    create_share_url()
-    {
+    create_share_url() {
         let datalet_id = this.get_datalet_id();
         let base_url = ODE.ow_url_home;
         return base_url + 'datalet/' + datalet_id;
     }
 
-    thereis_jQuery()
-    {
+    thereis_jQuery() {
         return (typeof jQuery === 'function')
     }
 
-    render_error(error_message)
-    {
+    render_error(error_message) {
         //STAMPA A VIDEO ERRORE IN QUALCHE MODO
     }
 
-    parse_error(error_message)
-    {
+    parse_error(error_message) {
         //PARSA ERRORE
     }
 
-    merge_deep(target, ...sources)
-    {
+    merge_deep(target, ...sources) {
         if (!sources.length) return target;
         const source = sources.shift();
 
@@ -715,13 +702,11 @@ export default class BaseDatalet extends HTMLElement
         return this.merge_deep(target, ...sources);
     }
 
-    is_object(item)
-    {
+    is_object(item) {
         return (item && typeof item === 'object' && !Array.isArray(item));
     }
 
-    redraw()
-    {
+    redraw() {
         window.dispatchEvent(new Event('resize'));
     }
 };
