@@ -55,6 +55,9 @@ RC.setListeners = function() {
     // $("#btn_html").on("click", RC.html);
     $("#btn_png").on("click", RC.png);
     $("#btn_doc").on("click", RC.doc);
+    $("#btn_csv").on("click", RC.fcsv);
+    // $("#btn_csv").on("click", RC.csv);
+    // $("#btn_fcsv").on("click", RC.fcsv);
     $("#btn_embed").on("click", RC.embed);
 
     $("#download-modal .sm-modal-close").on("click", RC.closeDownloadModal);
@@ -81,19 +84,18 @@ RC.closeShareModal = function() {
     $("#share-modal")[0].style.display = "none";
 };
 
-
 RC.fullscreen  = function() {
     $("[data-url]")[0].shadow_root.querySelector('#fullscreen').click()
 };
 
 RC.downloadModal  = function() {
     // $("#btn_html")[0].style.display = $("[data-url]")[0].shadow_root.querySelector('#export_html').style.display;
-    $("#btn_png")[0].style.display = $("[data-url]")[0].shadow_root.querySelector('#export_png').style.display;
-    $("#btn_doc")[0].style.display = $("[data-url]")[0].shadow_root.querySelector('#export_doc').style.display;
-    $("#btn_close")[0].style.display = 'none';
+    $("#btn_png")[0].style.display = $("[data-url]")[0].shadow_root.querySelector('#img-action').style.display;
+    $("#btn_doc")[0].style.display = $("[data-url]")[0].shadow_root.querySelector('#doc-action').style.display;
 
-    if($("#btn_png")[0].style.display == 'none' && $("#btn_doc")[0].style.display == 'none')
-        $("#btn_close")[0].style.display = 'block';
+    // $("#btn_close")[0].style.display = 'none';
+    // if($("#btn_png")[0].style.display == 'none' && $("#btn_doc")[0].style.display == 'none')
+    //     $("#btn_close")[0].style.display = 'block';
 
     $("#download-modal")[0].style.display = "flex";
 };
@@ -108,16 +110,27 @@ RC.html  = function() {
 };
 
 RC.png  = function() {
-    $("[data-url]")[0].shadow_root.querySelector('#export_to_png').click();
+    $("[data-url]")[0].shadow_root.querySelector('#img-action').click();
     $("#download-modal")[0].style.display = "none";
 };
 
 RC.doc  = function() {
-    $("[data-url]")[0].shadow_root.querySelector('#export_to_doc').click();
+    $("[data-url]")[0].shadow_root.querySelector('#doc-action').click();
+    $("#download-modal")[0].style.display = "none";
+};
+
+RC.csv  = function() {
+    $("[data-url]")[0].shadow_root.querySelector('#csv-action').click();
+    $("#download-modal")[0].style.display = "none";
+};
+
+RC.fcsv  = function() {
+    $("[data-url]")[0].shadow_root.querySelector('#csv_filtered-action').click();
     $("#download-modal")[0].style.display = "none";
 };
 
 RC.embed  = function() {
-    $("[data-url]")[0].shadow_root.querySelector('#export_to_html').click();
-    $("#download-modal")[0].style.display = "none";
+    $("[data-url]")[0].shadow_root.querySelector('#embed').click();
+    $("#btn_embed")[0].setAttribute("data-balloon", "Copiato!");
+    setTimeout(function(){ $("#btn_embed")[0].setAttribute("data-balloon", "Clicca per copiare l'HTML"); }, 3000);
 };

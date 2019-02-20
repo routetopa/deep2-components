@@ -1,44 +1,36 @@
 <html>
 
     <head>
+        <link href="../../COMPONENTS/datalets/base-datalet/static/css/baloon.min.css" rel="stylesheet">
+
         <link rel='shortcut icon' type='image/x-icon' href='regione_campania/favicon.ico' />
 
         <script type="text/javascript" src="../../COMPONENTS/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
         <script type="text/javascript" src="../../DEEPCLIENT/js/jquery-2.1.0.min.js"></script>
-        <script type="text/javascript" src="../../DEEPCLIENT/js/deepClient.js"></script>
+        <script type="text/javascript" src="../../DEEPCLIENT/js/jquery-2.1.0.min.js"></script>
         <link rel="import" href="../../COMPONENTS/controllets/data-sevc-controllet/demo-data-sevc-controllet.html">
 
         <script type="text/javascript" src="regione_campania/datasets.js"></script>
         <script type="text/javascript" src="regione_campania/creator.js"></script>
         <link href="regione_campania/creator.css" rel="stylesheet">
-
-        <!--<link rel="stylesheet" type="text/css" href="../datalets/base-datalet/static/css/all.min.css">-->
-
     </head>
 
     <body>
 
-        <button class="outside tooltip" id="btn_fullscreen">
-            <span class="tooltiptext">Fullscreen</span>
-        </button>
-        <button class="outside tooltip" id="btn_download">
-            <span class="tooltiptext">Download</span>
-        </button>
-        <button class="outside tooltip" id="btn_embed">
-            <span class="tooltiptext">Embed Datalet</span>
-        </button>
-        <button class="outside tooltip" id="btn_share">
-            <span class="tooltiptext">Share</span>
-        </button>
+        <button class="outside" id="btn_fullscreen" data-balloon="Tutto schermo" data-balloon-pos="down"></button>
+        <button class="outside" id="btn_download" data-balloon="Salva come..." data-balloon-pos="down"></button>
+        <button class="outside" id="btn_embed" data-balloon="Clicca per copiare l'HTML" data-balloon-pos="down"></button>
+        <button class="outside" id="btn_share" data-balloon="Condividi" data-balloon-pos="down"></button>
 
         <div id="download-modal" class="sm-modal">
             <div class="sm-modal-content">
                 <div class="sm-modal-close">&times;</div>
-                <!--<div id="btn_html" class="action">Salva come HTML</div>-->
                 <div id="btn_png" class="action">Salva come immagine (.png)</div>
-                <div id="btn_doc" class="action">Salva come documento (.doc)</div>
-
-                <div id="btn_close" class="action">Servizio non disponibile per questa Datalet</div>
+                <div id="btn_doc" class="action">Salva come documento (.docx)</div>
+                <div id="btn_csv" class="action">Salva dataset (.csv)</div>
+                <!--<div id="btn_csv" class="action">Salva dataset completo (.csv)</div>-->
+                <!--<div id="btn_fcsv" class="action">Salva dataset filtrato (.csv)</div>-->
+                <!--<div id="btn_close" class="action">Servizio non disponibile per questa Datalet</div>-->
             </div>
         </div>
 

@@ -42,7 +42,7 @@ button.outside:disabled {
 }
 
 #btn_download {
-    right: 136px;
+    right: 240px;
 }
 #btn_download:disabled {
     background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("img/download.png") no-repeat 21px 9px;
@@ -52,7 +52,7 @@ button.outside:disabled {
 }
 
 #btn_embed {
-    right: 240px;
+    right: 136px;
 }
 #btn_embed:disabled {
     background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("img/embed.png") no-repeat 21px 9px;
@@ -71,31 +71,8 @@ button.outside:disabled {
     background-image: url('img/share.png');
 }
 
-/* TOOLTIP */
-
-
-/* Tooltip text */
-.tooltip .tooltiptext {
-    visibility: hidden;
-    width: 128px;
-    background-color: rgba(0, 0, 0, 1);
-    color: #fff;
-    text-align: center;
-    padding: 5px 0;
-    border-radius: 6px;
-
-    /* Position the tooltip text - see examples below! */
-    position: absolute;
-    top: 48px;
-    right: -31px;
-    z-index: 1;
-
-    font-family: 'Titillium Web';
-}
-
-/* Show the tooltip text when you mouse over the tooltip container */
-.tooltip:hover .tooltiptext {
-    visibility: visible;
+.outside[data-balloon]:after {
+    font-weight: 700 !important;
 }
 
 /* MODAL */

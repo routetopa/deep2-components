@@ -513,7 +513,7 @@ export default class BaseDatalet extends HTMLElement {
     }
 
     async save_as_png() {
-        this.shadow_root.querySelector('#img-placeholder').style.display = 'none';
+        // this.shadow_root.querySelector('#img-placeholder').style.display = 'none';
 
         let svg = this.shadow_root.querySelector('#img-iframe').contentWindow.document.querySelector(this.component).shadowRoot.querySelector('svg');
         let png = await this.create_image(svg);
