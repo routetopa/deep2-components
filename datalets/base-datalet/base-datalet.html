@@ -19,36 +19,14 @@
         </div>
 
         <div id="base_datalet_source_link">
-            <b>Source:&nbsp</b> <a id="base_datalet_source" target="_blank"></a> <span id="base_datalet_link_span">&nbsp(<a id="base_datalet_link" target="_blank">dataset</a>)</span> <span id="ajax_error"></span>
-            <!--todo use fontawesoome and enable refresh-->
-            <div id="refresh">
-                <!--<img id="img_refresh" src="./static/images/reload.png">-->
-            </div>
+            <b>Source:&nbsp</b> <a id="base_datalet_source" target="_blank"></a> <span id="base_datalet_link_span">&nbsp[<a id="base_datalet_link" target="_blank">dataset</a>]</span> <span id="ajax_error"></span>
+            <div id="live" class="live" data-balloon="Data is live" data-balloon-pos="up">LIVE</div>
         </div>
 
         <div id="base_datalet_rtp">
             <div id="rtp">Powered by <a href="http://www.routetopa.eu/" target="_blank">ROUTE-TO-PA</a></div>
             <div><a href="http://www.routetopa.eu/" target="_blank"><img id="rtpalogo" src="./static/images/rtpalogo.png"></a></div>
         </div>
-
-        <!---->
-
-        <!--<div id="fullscreen"><i class="fas fa-expand"></i></div>-->
-
-        <!--&lt;!&ndash;<div id="embed"><i class="fas fa-code"></i></div>&ndash;&gt;-->
-
-        <!--<div id="export">-->
-            <!--<div class="export" id="export_menu"><i class="fas fa-download"></i></div>-->
-            <!--<div class="highcharts-contextmenu" id="highcharts-contextmenu">-->
-                <!--<div class="highcharts-contextmenu-container">-->
-                    <!--<div id="link_lp">        <span id="datalet_link">Datalet Link</span></div>-->
-                    <!--<div id="export_html">    <span id="export_to_html">Export to HTML</span></div>-->
-                    <!--<div id="export_png">     <span id="export_to_png">Export to PNG</span></div>-->
-                    <!--<div id="export_doc">     <span id="export_to_doc">Export to DOC</span></div>-->
-                    <!--<div id="export_my_space"><span id="import_myspace">Import in My Space</span></div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
 
         <div id="menu" class="menu">
             <div id="export_menu" data-balloon="Save As..." data-balloon-pos="down"><i class="fas fa-download"></i></div>
@@ -101,34 +79,5 @@
             </div>
         </div>
     </div>
-
-    <!--<div id="export_placeholder">-->
-        <!--<div class="close export">&times;</div>-->
-        <!--<div class="export_container">-->
-            <!--<div class="preview_container"></div>-->
-            <!--<div class="export_options">-->
-                <!--Width (px): <input id="preview_width" placeholder="100%" type="number" />-->
-                <!--Height (px): <input id="preview_height" placeholder="100%" type="number" />-->
-                <!--Defaults: <select id="preview_set_default">-->
-                    <!--<option value="custom">Custom</option>-->
-                    <!--<option class="facebook" value="facebook">&#xf082; Facebook</option>-->
-                    <!--<option class="twitter" value="twitter">&#xf081; Twitter</option>-->
-                    <!--<option class="linkedin" value="linkedin">&#xf08c; LinkedIn</option>-->
-                    <!--<option class="instagram" value="instagram">&#xf16d; Instagram</option>-->
-                    <!--<option class="pinterest" value="pinterest">&#xf0d3; Pinterest</option>-->
-                <!--</select>-->
-                <!--&lt;!&ndash;<button id="preview_resize">Resize</button>&ndash;&gt;-->
-                <!--&lt;!&ndash;<button id="preview_reset">Reset</button>&ndash;&gt;-->
-                <!--<button id="preview_export"><i class="fas fa-download"></i> Download</button>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-
-    <!--<div id="export_html_placeholder">-->
-        <!--<div class="close export_html" onclick="this.parentElement.style.display = 'none'">&times;</div>-->
-        <!--<div class="export_container export_html">-->
-            <!--<textarea id="export_area" class="export_area"></textarea>-->
-        <!--</div>-->
-    <!--</div>-->
 
 </template>

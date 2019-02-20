@@ -1,7 +1,7 @@
 import {importModule} from '../lib/vendors/import_polyfill/import_polyfill.js'
 
-export default class BaseDatalet extends HTMLElement
-{
+export default class BaseDatalet extends HTMLElement {
+
     constructor(component) {
         // If you define a constructor, always call super() first as it is required by the CE spec.
         super();
@@ -100,17 +100,26 @@ export default class BaseDatalet extends HTMLElement
 
             if (!this.cache)
             {
+                this.shadow_root.querySelector('#live').classList.remove("cache");
+                this.shadow_root.querySelector('#live').innerHTML = "LIVE";
+                this.shadow_root.querySelector('#live').setAttribute("data-balloon", "Data is live");
+
                 let json_results = await this.requestData(this.data_url);
                 data = this.selectData(json_results, this.data_url);
                 this.CSV = data;
                 data = this.filterData(data, this.selected_fields, this.filters, this.aggregators, this.orders);
                 this.FCSV = data;
             } else {
+                this.shadow_root.querySelector('#live').classList.add("cache");
+                this.shadow_root.querySelector('#live').innerHTML = "CACHE";
+                this.shadow_root.querySelector('#live').setAttribute("data-balloon", "Click to use live data");
+
                 data = JSON.parse(this.cache);
                 this.FCSV = data;
             }
 
-            this.shadow_root.querySelector('#base_datalet_loader').style.display = 'none';
+            if(this.shadow_root.querySelector('#base_datalet_loader'))
+                this.shadow_root.querySelector('#base_datalet_loader').style.display = 'none';
             this.render(this.transformData(data, this.selected_fields));
 
         } catch (e) {
@@ -234,6 +243,7 @@ export default class BaseDatalet extends HTMLElement
 
     add_listeners() {
         this.shadow_root.querySelector('#base_datalet_link').addEventListener('click', (e) => {this.go_to_dataset(e)});
+        this.shadow_root.querySelector('#live').addEventListener('click', () => {this.requestLiveData()});
 
         this.shadow_root.querySelector('#fullscreen').addEventListener('click', () => {this.fullscreen()});
         this.shadow_root.querySelector('#embed').addEventListener('click', () => {this.copy_html()});
@@ -287,11 +297,12 @@ export default class BaseDatalet extends HTMLElement
         iframe.setAttribute("scrolling", "no");
         iframe.setAttribute("srcdoc", datalet);
 
-        var $temp = $("<input>");
-        $("body").append($temp);
-        $temp.val(iframe.outerHTML).select();
+        let temp = document.createElement("input")
+        document.getElementsByTagName("body")[0].appendChild(temp);
+        temp.value = iframe.outerHTML;
+        temp.select();
         document.execCommand("copy");
-        $temp.remove();
+        document.getElementsByTagName("body")[0].removeChild(temp);
     }
 
     copy_link() {
@@ -303,11 +314,12 @@ export default class BaseDatalet extends HTMLElement
         let base_url = ODE.ow_url_home;
         let landing_page_url = base_url + 'datalet/' + datalet_id;
 
-        var $temp = $("<input>");
-        $("body").append($temp);
-        $temp.val(landing_page_url).select();
+        let temp = document.createElement("input")
+        document.getElementsByTagName("body")[0].appendChild(temp);
+        temp.value = landing_page_url;
+        temp.select();
         document.execCommand("copy");
-        $temp.remove();
+        document.getElementsByTagName("body")[0].removeChild(temp);
     }
 
     save_as() {
@@ -577,16 +589,6 @@ export default class BaseDatalet extends HTMLElement
 
     /* TOOLS */
 
-    show_export_panel() {
-        this.shadow_root.querySelector('#export_html_placeholder').style.display = 'block';
-    }
-
-    set_export_area(val) {
-        this.shadow_root.querySelector('#export_area').value = val;
-        // this.shadow_root.querySelector('#export_area').select();
-        // document.execCommand('copy');
-    }
-
     get_datalet_id() {
         let parent = this.parentElement;
 
@@ -654,6 +656,12 @@ export default class BaseDatalet extends HTMLElement
                 window.open(data_url, '_blank');
             }
         }
+    }
+
+    requestLiveData() {
+        this.removeAttribute("data");
+        this.cache = undefined;
+        this.work_cycle();
     }
 
     build_uri(resource, baseURI) {
@@ -734,5 +742,6 @@ export default class BaseDatalet extends HTMLElement
     redraw() {
         window.dispatchEvent(new Event('resize'));
     }
+
 };
 
