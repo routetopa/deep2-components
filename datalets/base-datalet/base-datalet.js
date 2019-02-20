@@ -350,7 +350,7 @@ export default class BaseDatalet extends HTMLElement {
     async save_as_doc() {
         this.shadow_root.querySelector('#save_as-placeholder').style.display = 'none';
 
-        if (this.data_url.indexOf("datastore_search?resource_id") > -1)
+        if (this.data_url.indexOf("datastore_search?resource_id") > -1) // todo
         {
             let docx = await this.import_module('../lib/vendors/docx/index.js');
 

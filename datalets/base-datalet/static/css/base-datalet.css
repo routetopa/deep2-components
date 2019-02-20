@@ -90,6 +90,7 @@ span#ajax_error {
 }
 
 #base_datalet_rtp {
+    visibility: hidden;
     display: flex;
     height: 24px;
 }
