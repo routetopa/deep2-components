@@ -1,5 +1,4 @@
 import BaseDatalet from '../base-datalet/base-datalet.js';
-import * as AjaxJsonAlasqlBehavior from '../lib/modules/AjaxJsonAlasqlBehavior.js';
 
 class TimelineDatalet extends BaseDatalet {
     constructor() {
@@ -23,7 +22,8 @@ class TimelineDatalet extends BaseDatalet {
 
     render(data)
     {
-        //console.log('RENDER - timeline-datalet');
+        let that = this;
+        console.log('RENDER - timeline-datalet');
 
         let _toDate = function (startDateString, endDateString)
         {
@@ -99,7 +99,7 @@ class TimelineDatalet extends BaseDatalet {
             }
             else {
                 try {
-                    if (this._component.dateFormat === "DMY") {
+                    if (that.getAttribute('date-format') === "DMY") {
                         let dateParts = dateString.split("/");
                         if (dateParts.length !== 3)
                             dateParts = dateString.split("-");
