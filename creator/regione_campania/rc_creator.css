@@ -1,26 +1,19 @@
+/* BUTTON */
+
 button.outside {
     display: none;
 
     position: absolute;
     top: 16px;
+    z-index: 1;
 
     height: 48px;
     width: 72px;
-    /*padding: 6px 12px;*/
-    cursor: pointer;
 
-    border: 3px solid #0066cc !important;
-    border-radius: 25px;
-    color: #0066cc !important;
-    background-color: #fff;
-    font-weight: 600;
-    text-transform: uppercase;
-    font-family: 'Titillium Web' !important;
-
-    background-repeat: no-repeat;
-    background-position: 21px 9px;
-
-    z-index: 1;
+    font-family: 'Titillium Web';
+    background-color: #ffffff;
+    border: 3px solid #0066cc;
+    border-radius: 24px;
 }
 
 button.outside:hover {
@@ -28,50 +21,30 @@ button.outside:hover {
 }
 
 button.outside:disabled {
-    border: 3px solid rgba(0,102,204,0.5) !important;
+    opacity: 0.5;
 }
 
-#btn_fullscreen {
-    right: 32px;
-}
-#btn_fullscreen:disabled {
-    background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("img/fullscreen.png") no-repeat 21px 9px;
-}
-#btn_fullscreen:not(:disabled) {
-    background-image: url('img/fullscreen.png');
-}
-
-#btn_download {
-    right: 240px;
-}
-#btn_download:disabled {
-    background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("img/download.png") no-repeat 21px 9px;
-}
-#btn_download:not(:disabled) {
-    background-image: url('img/download.png');
-}
-
-#btn_embed {
-    right: 136px;
-}
-#btn_embed:disabled {
-    background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("img/embed.png") no-repeat 21px 9px;
-}
-#btn_embed:not(:disabled) {
-    background-image: url('img/embed.png');
+.outside .fas {
+    font-size: 24px;
+    color: #0066cc;
 }
 
 #btn_share {
     right: 344px;
 }
-#btn_share:disabled {
-    background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("img/share.png") no-repeat 21px 9px;
+#btn_download {
+    right: 240px;
 }
-#btn_share:not(:disabled) {
-    background-image: url('img/share.png');
+#btn_embed {
+    right: 136px;
+}
+
+#btn_fullscreen {
+    right: 32px;
 }
 
 .outside[data-balloon]:after {
+    text-transform: uppercase;
     font-weight: 700 !important;
 }
 
@@ -112,15 +85,14 @@ button.outside:disabled {
     cursor: pointer;
 }
 
-.sm-modal-content #btn_close.action {
-    color: #b8b8b8;
-}
+/*.sm-modal-content #btn_close.action {*/
+    /*color: #b8b8b8;*/
+/*}*/
 
 .sm-modal-content .action:hover {
     background-color: #eee;
 }
 
-/*https://stackoverflow.com/questions/17309928/how-to-center-text-vertically-with-a-large-font-awesome-icon*/
 .sm-modal-content .action i {
     font-size: 48px;
     margin-right: 48px;
@@ -147,7 +119,7 @@ button.outside:disabled {
 }
 
 #btn_ml i {
-    color: #B6B6B6; /*#D44638*/
+    color: #B6B6B6;
 }
 
 .sm-modal-close {
@@ -156,29 +128,19 @@ button.outside:disabled {
     right: -20px;
     height: 40px;
     width: 40px;
-
     border: 3px solid #0066cc;
     border-radius: 50%;
-
     line-height: 40px;
     font-size: 32px;
     font-weight: 700;
     text-align: center;
     cursor: pointer;
-
-    /*color: #ffffff;*/
-    /*background-color: #0066cc;*/
-
-    background-color: #ffffff;
+    background-color: #fff;
     color: #0066cc;
-
     z-index: 9002;
 }
 
 .sm-modal-close:hover {
-    /*background-color: #ffffff;*/
-    /*color: #0066cc;*/
-
     background-color: #eee;
 }
 

@@ -1,45 +1,143 @@
+/* BUTTON */
+
 button.outside {
     display: none;
 
     position: absolute;
     top: 16px;
+    z-index: 1;
 
     height: 48px;
-    width: 172px;
-    padding: 12px;
+    width: 72px;
 
-    cursor: pointer;
-
-    border: none;
-    border-radius: 5px;
-
+    font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     background-color: #00BCD4;
-    color: #FFFFFF;
-
-    font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    border-radius: 24px;
+    border: none;
 }
 
 button.outside:hover {
-    background-color: #00ACC1;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    background-color: #00AABF;
 }
 
 button.outside:disabled {
     opacity: 0.5;
 }
 
-#copy_html {
-    right: 16px;
+.outside .fas {
+    font-size: 24px;
+    color: #FFFFFF;
 }
 
-#save_img {
-    right: 204px;
+#btn_share {
+    right: 344px;
+}
+#btn_download {
+    right: 240px;
+}
+#btn_embed {
+    right: 136px;
 }
 
-#fullscreen_preview {
-    right: 392px;
+#btn_fullscreen {
+    right: 32px;
+}
+
+.outside[data-balloon]:after {
+    text-transform: uppercase;
+    font-weight: 700 !important;
+}
+
+/* MODAL */
+
+.sm-modal{
+    display: none; /* flex */
+    justify-content: center;
+    align-items: center;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 9000;
+
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.sm-modal-content {
+    position: relative;
+    width: 600px;
+    background-color: white;
+    font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.sm-modal-content .action {
+    height: 48px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #212121;
+    line-height: 48px;
+    padding: 12px 48px 12px 48px;
+    cursor: pointer;
+}
+
+/*.sm-modal-content #btn_close.action {*/
+    /*color: #b8b8b8;*/
+/*}*/
+
+.sm-modal-content .action:hover {
+    background-color: #00BCD4;
+}
+
+.sm-modal-content .action i {
+    font-size: 48px;
+    margin-right: 48px;
+}
+
+#btn_fb i {
+    color: #4862A3;
+}
+
+#btn_tw i {
+    color: #55ACEE;
+}
+
+#btn_li i {
+    color: #0077B5;
+}
+
+#btn_in i {
+    color: #fb3958;
+}
+
+#btn_pn i {
+    color: #c8232c;
+}
+
+#btn_ml i {
+    color: #B6B6B6;
+}
+
+.sm-modal-close {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    height: 40px;
+    width: 40px;
+    background-color: #00BCD4;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    border-radius: 50%;
+    line-height: 40px;
+    font-size: 32px;
+    font-weight: 700;
+    color: #FFFFFF;
+    text-align: center;
+    cursor: pointer;
+    font-family: initial !important;
+}
+
+.sm-modal-close:hover {
+    background-color: #00AABF;
 }

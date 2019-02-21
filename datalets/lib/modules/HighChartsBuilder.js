@@ -80,9 +80,9 @@ export const build = async function(type, context, data) {
         exporting: {
             enabled: false
         },
-        credits: {
-            enabled: false
-        },
+        // credits: {
+            // enabled: false
+        // },
         legend: {
             enabled: false
         }

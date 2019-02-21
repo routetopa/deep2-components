@@ -213,6 +213,7 @@ export default class BaseDatalet extends HTMLElement {
         {
             this.shadow_root.querySelector('#link').style.display = 'none';
             this.shadow_root.querySelector('#myspace-action').style.display = 'none';
+            this.shadow_root.querySelector('#social').style.visibility = 'hidden';
         }
 
         if(this.hasAttribute("disable_html_export") || this.hasAttribute("disable_html")) //todo ??
