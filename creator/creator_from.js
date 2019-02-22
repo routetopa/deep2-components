@@ -4,6 +4,10 @@ CREATOR_FROM.injectHTML  = function(ln, datasets) {
     let url_string = window.location.href;
     let url = new URL(url_string);
     let dataUrl = url.searchParams.get("data-url");
+    let limit = url.searchParams.get("limit");
+
+    if(limit)
+        dataUrl += '&limit=' + limit;
 
     $("body").append(
         '<co-datalets-creator-controllet'+

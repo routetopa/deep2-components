@@ -698,7 +698,13 @@ export default class BaseDatalet extends HTMLElement {
         let style = `<style>html,body{margin:0;padding:0;height: 100%} ${this.component}{--base-datalet-visibility: none; --datalet-container-size:100%}</style>`;
         //let style = `<style>html{height: 100%;} body{height: calc(100% - 16px); margin: 8px;} ${this.component}{--fullscreen-visibility: none;}</style>`;
         let datalet_definition = `<link rel="import" href="${this.baseUri}${this.component}.html" />`;
-        return {script: script, style: style, datalet_definition: datalet_definition, component: this.outerHTML};
+
+        let temp = document.createElement('div');
+        temp.innerHTML = this.outerHTML;
+        let component = temp.firstChild;
+        component.removeAttribute("data");
+
+        return {script: script, style: style, datalet_definition: datalet_definition, component: component.outerHTML};
     }
 
     create_share_url() {

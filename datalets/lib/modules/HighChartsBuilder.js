@@ -55,7 +55,7 @@ export const build = async function(type, context, data) {
         },
         plotOptions: {
             series: {
-                stacking: context.getAttribute("stack"),
+                stacking: context.getAttribute("stack") == "true",
                 showInNavigator: true
             }
         },
