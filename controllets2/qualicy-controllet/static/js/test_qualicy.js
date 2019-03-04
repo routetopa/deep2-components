@@ -1,4 +1,4 @@
-export default class Qualicy {
+export default class Test_qualicy {
 
    constructor(ranking_table) {
        this.data = [];

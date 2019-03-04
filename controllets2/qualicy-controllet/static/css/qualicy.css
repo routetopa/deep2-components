@@ -27,3 +27,93 @@
     color: blueviolet;
     padding: 8px;
 }
+
+.focus{
+    background-color:rgb(204, 255,0);
+}
+
+td {
+    padding: 1em 3em;
+    border: 1px solid grey;
+    position: relative;
+}
+
+td::after{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-width: 7.5px;
+    border-style: solid;
+    border-color: lightgrey;
+}
+
+td.datatypeInconsistency::after{
+    border-left-color: red;
+}
+
+td.metadatatypeInconsistency::after{
+    border-top-color: blue;
+}
+
+td.typo::after{
+    border-right-color: purple;
+}
+
+td.contentPrivacyBreach::after{
+    border-bottom-color: green;
+}
+
+
+/* Style the button that is used to open and close the collapsible content */
+.collapsible {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .collapsible:hover {
+    background-color: #ccc;
+}
+
+/* Style the collapsible content. Note: hidden by default */
+.content {
+    padding: 0 18px;
+    display: none;
+    overflow: hidden;
+    background-color: #f1f1f1;
+}
+
+#qualicy-menu button .prev, button .next {
+    text-decoration: none;
+    display: inline-block;
+    padding: 8px 16px;
+}
+
+#qualicy-menu button .prev, button .next:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+#qualicy-menu .prev {
+    background-color: #f1f1f1;
+    color: black;
+}
+
+#qualicy-menu .next {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#qualicy-menu .round {
+    border-radius: 50%;
+}
