@@ -13,22 +13,35 @@
             <table id="ranking-list-datatable" class="table table-striped table-bordered dataTable" width="100%"></table>
         </div>
         <div id="qualicy-menu">
-            <button class="collapsible">Datatype</button>
-            <div id="datatypeDiv" class="content">sdfdfs</div>
 
-            <button class="collapsible">Metadatatype</button>
-            <div id="metadatatypeDiv" class="content">shfjsxdf</div>
-
-            <button class="collapsible">Typo</button>
-            <div id="typoDiv" class="content">
-                <!--<div id="numTypos"></div>-->
-                <button class="prev round" id="prevTypo">&#8249;</button>
-                <span id="currentTypo"></span>
-                <button class="next round" id="nextTypo">&#8250;</button>
+            <div id="type-menu" class="tab-menu"> TYPE </div>
+            <div id="type-container" class="collapsible-container">
+                <span id="" class="fas fa-chevron-circle-left"></span>
+                <span id="" class="counter">1 / 10</span>
+                <span id="" class="fas fa-chevron-circle-right"></span>
             </div>
 
-            <button class="collapsible">Content privacy breach</button>
-            <div id="contentPrivacyBreachDiv" class="content">sdfsfd</div>
+            <div id="metatype-menu" class="tab-menu"> METATYPE </div>
+            <div id="metatype-container" class="collapsible-container">
+                <span id="" class="fas fa-chevron-circle-left disabled"></span>
+                <span id="" class="counter"> all </span>
+                <span id="" class="fas fa-chevron-circle-right disabled"></span>
+            </div>
+
+            <div id="privacy-menu" class="tab-menu"> PRIVACY </div>
+            <div id="privacy-container" class="collapsible-container">
+                <span id="" class="fas fa-chevron-circle-left"></span>
+                <span id="" class="counter">1 / 10</span>
+                <span id="" class="fas fa-chevron-circle-right"></span>
+            </div>
+
+            <div id="typo-menu" class="tab-menu"> TYPO </div>
+            <div id="typo-container" class="collapsible-container">
+                <span id="prevTypo" class="fas fa-chevron-circle-left"></span>
+                <span id="currentTypo" class="counter"></span>
+                <span id="nextTypo" class="fas fa-chevron-circle-right"></span>
+            </div>
+
         </div>
     </div>
 

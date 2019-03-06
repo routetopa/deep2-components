@@ -46,9 +46,8 @@ export default class TableManager {
 
         this.currentTypos.innerText = '1 / ' + typos.length;
 
-
         $(this.menu.querySelector('#prevTypo')).on( 'click', function () {
-
+            //todo
         } );
 
         $(this.menu.querySelector('#nextTypo')).on( 'click', function () {

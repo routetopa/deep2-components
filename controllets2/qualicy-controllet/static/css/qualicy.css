@@ -15,8 +15,7 @@
     height: 100%;
 
     padding: 8px;
-    border-right: 2px solid #9e9e9e;
-    /*border: 10px solid #9e9e9e;*/
+    border-right: 8px solid #9e9e9e;
 
     overflow-y: auto;
     overflow-x: hidden;
@@ -26,7 +25,7 @@
     width: 25%;
     height: 100%;
 
-    background-color: #9e9e9e;
+    /*background-color: #FFFFFF;*/
 }
 
 #qualicy-menu i {
@@ -64,12 +63,12 @@ td::after{
     border-radius: 50%;
 }
 
-td.metadatatypeInconsistency::after{
+td.datatypeInconsistency::after{
     border-color: #e0e0e0;
     border-top-color: #2196f3 !important;
 }
 
-td.typo::after{
+td.metadatatypeInconsistency::after{
     border-color: #e0e0e0;
     border-right-color: #9c27b0 !important;
 }
@@ -79,7 +78,7 @@ td.contentPrivacyBreach::after{
     border-bottom-color: #ff9800 !important;
 }
 
-td.datatypeInconsistency::after{
+td.typo::after{
     border-color: #e0e0e0;
     border-left-color: #4caf50 !important;
 }
@@ -90,54 +89,83 @@ td.focus{
 
 /* END TABLE */
 
-/* Style the button that is used to open and close the collapsible content */
-.collapsible {
-    background-color: #eee;
-    color: #444;
-    cursor: pointer;
-    padding: 18px;
+.tab-menu {
+    position: relative;
     width: 100%;
-    border: none;
-    text-align: left;
-    outline: none;
-    font-size: 15px;
+    height: 43px;
+    line-height: 18px;
+    padding: 12px;
+    text-align: center;
+    font-weight: 700;
+    background-color: #f2f2f2;
+    border-bottom: 1px solid #dee2e6;
+    /*cursor: pointer;*/
 }
 
-/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
-.active, .collapsible:hover {
-    background-color: #ccc;
-}
-
-/* Style the collapsible content. Note: hidden by default */
-.content {
-    min-height: 100px;
-    padding: 0 18px;
-    display: none;
-    overflow: hidden;
-    background-color: white;
-}
-
-#qualicy-menu button .prev, button .next {
-    text-decoration: none;
-    display: inline-block;
-    padding: 8px 16px;
-}
-
-#qualicy-menu button .prev, button .next:hover {
-    background-color: #ddd;
-    color: black;
-}
-
-#qualicy-menu .prev {
-    background-color: #f1f1f1;
-    color: black;
-}
-
-#qualicy-menu .next {
-    background-color: #4CAF50;
-    color: white;
-}
-
-#qualicy-menu .round {
+.tab-menu:after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 0;
+    height: 0;
+    border: 16px solid #e0e0e0;
     border-radius: 50%;
+}
+
+#type-menu:after {
+    border-top-color: #2196f3 !important;
+}
+
+#metatype-menu:after {
+    border-right-color: #9c27b0 !important;
+}
+
+#privacy-menu:after {
+    border-bottom-color: #ff9800 !important;
+}
+
+#typo-menu:after {
+    border-left-color: #4caf50 !important;
+}
+
+.collapsible-container {
+    width: 100%;
+    height: 85px;
+    padding: 30px 0;
+    text-align: center;
+    font-size: 24px;
+    line-height: 24px;
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.collapsible-container span.counter {
+    display: inline-block;
+    width: 84px;
+}
+
+.collapsible-container .fas {
+    cursor: pointer;
+}
+
+.collapsible-container .fas.disabled {
+    cursor: auto;
+    opacity: 0.5;
+}
+
+#type-container .fas {
+    color: #2196f3;
+}
+
+#metatype-container .fas {
+    color: #9c27b0;
+}
+
+#privacy-container .fas {
+    color: #ff9800;
+}
+
+#typo-container .fas {
+    color: #4caf50;
 }
