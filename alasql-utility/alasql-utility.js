@@ -167,8 +167,14 @@ function _addParenthesis (fields) {
 }
 
 function _normalizeField (field) {
+    if(field.indexOf('\\') > -1)
+        field = field.replace(/(\\)/g, '\\\\');
+    if(field.indexOf("'") > -1)
+        field = field.replace(/(\')/g, "\\'");
+    if(field.indexOf('"') > -1)
+        field = field.replace(/(\")/g, '\\"');
     return "`" + field + "`";
-    //return "[" + field + "]";
+    // return "[" + field + "]";
 }
 
 function alasql_transformData (data, fields, round) {

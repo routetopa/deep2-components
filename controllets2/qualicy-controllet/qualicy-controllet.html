@@ -3,17 +3,16 @@
 <template id="qualicy-controllet">
 
     <!-- CSS DEPENDENCY -->
-    <link rel="stylesheet" type="text/css" href="../shared/fontawesome/css/all.min.css">
-    <link rel="stylesheet" type="text/css" href="../shared/datatable/datatables.min.css">
     <link rel="stylesheet" type="text/css" href="./static/css/qualicy.css">
+    <link rel="stylesheet" type="text/css" href="../shared/fontawesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="../shared/DataTables/Bootstrap-4-4.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../shared/DataTables/DataTables-1.10.18/css/dataTables.bootstrap4.min.css">
 
     <div id="qualicy-container">
         <div id="qualicy-table">
-            <table id="ranking-list-datatable" class="display cell-border order-column dataTable" width="100%"></table>
+            <table id="ranking-list-datatable" class="table table-striped table-bordered dataTable" width="100%"></table>
         </div>
         <div id="qualicy-menu">
-            <!--<i class="far fa-grin-wink"></i>-->
-
             <button class="collapsible">Datatype</button>
             <div id="datatypeDiv" class="content">sdfdfs</div>
 
@@ -22,7 +21,7 @@
 
             <button class="collapsible">Typo</button>
             <div id="typoDiv" class="content">
-                <div id="numTypos"></div>
+                <!--<div id="numTypos"></div>-->
                 <button class="prev round" id="prevTypo">&#8249;</button>
                 <span id="currentTypo"></span>
                 <button class="next round" id="nextTypo">&#8250;</button>

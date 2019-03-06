@@ -28,12 +28,18 @@ a:hover {
     position: relative;
 
     height: 72px;
-    margin-top: 8px;
-    border-top: 2px solid #B6B6B6;
+    /*margin-top: 8px;*/
+    /*border-top: 2px solid #B6B6B6;*/
 
     background-color: #ffffff;
 
     display: var(--base-datalet-visibility, block);
+}
+
+#clearfix {
+    height: 8px;
+    border-bottom: 2px solid #B6B6B6;
+    background-color: #ffffff;
 }
 
 #base_datalet_container > * {
@@ -65,6 +71,10 @@ a:hover {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+#span_minus {
+    display: none;
 }
 
 #base_datalet_source_link {

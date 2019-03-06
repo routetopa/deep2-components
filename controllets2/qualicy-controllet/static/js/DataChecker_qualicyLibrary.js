@@ -118,7 +118,7 @@ export default class DataChecker {
     }//EndFunction.
 
     askForEvaluation(dataset, fieldKeys, options) {
-        debugger
+        // debugger
         let evaLog = []; //Stack with all the issues found in the dataset.
         let annotateInputDataset = false;
 

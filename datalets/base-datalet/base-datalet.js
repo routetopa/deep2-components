@@ -156,8 +156,13 @@ export default class BaseDatalet extends HTMLElement {
     }
 
     add_datalet_info() {
-        this.shadow_root.querySelector('#span_title').innerHTML = this.getAttribute("datalettitle");
-        this.shadow_root.querySelector('#span_description').innerHTML = this.getAttribute("description");
+        let datalettitle = this.getAttribute("datalettitle");
+        let description = this.getAttribute("description");
+        this.shadow_root.querySelector('#span_title').innerHTML = datalettitle;
+        this.shadow_root.querySelector('#span_description').innerHTML = description;
+
+        if(datalettitle && datalettitle != "" && description && description != "")
+            this.shadow_root.querySelector('#span_minus').style.display = 'inline';
 
         if (this.data_url) {
             let base_datalet_source = this.shadow_root.querySelector('#base_datalet_source');

@@ -1,11 +1,10 @@
 import '../shared/jquery/jquery-3.3.1.min.js'
-import '../shared/datatable/datatables.js'
+import '../shared/DataTables/DataTables-1.10.18/js/jquery.dataTables.min.js'
+import '../shared/DataTables/DataTables-1.10.18/js/dataTables.bootstrap4.min.js'
 import TypeAndMetatypeConfigFactory from './static/js/TypeAndMetatypeConfigFactory_qualicyLibrary.js'
 import DataChecker from './static/js/DataChecker_qualicyLibrary.js'
 import PrivacyReportViewBuilder from './static/js/PrivacyReportViewBuilder_qualicyLibrary.js'
-import Test_qualicy from './static/js/test_qualicy.js'
 import TableManager from './static/js/tableManager.js'
-import Test_qualicy2 from './static/js/test_qualicy2.js'
 
 export default class QualicyControllet extends HTMLElement {
 
@@ -54,6 +53,10 @@ export default class QualicyControllet extends HTMLElement {
         this.tableManager = new TableManager(ranking_table, menu);
 
         this.tableManager.initDataTable(this.data, this.data_url);
+
+        window.onload = function() {
+            this.tableManager.redrawDataTable();
+        }.bind(this);
 
         this.computeStatistics();
         this.renderStatistics();

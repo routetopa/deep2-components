@@ -6,20 +6,27 @@
 
     display: flex;
     flex-direction: row;
+
+    background-color: #FFFFFF;
 }
 
 #qualicy-table {
     width: 75%;
     height: 100%;
 
-    background-color: #E0E0E0;
+    padding: 8px;
+    border-right: 2px solid #9e9e9e;
+    /*border: 10px solid #9e9e9e;*/
+
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 #qualicy-menu {
     width: 25%;
     height: 100%;
 
-    background-color: #BDBDBD;
+    background-color: #9e9e9e;
 }
 
 #qualicy-menu i {
@@ -28,44 +35,60 @@
     padding: 8px;
 }
 
-.focus{
-    background-color:rgb(204, 255,0);
+/* TABLE */
+
+td, th {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 300px;
 }
 
 td {
-    padding: 1em 3em;
-    border: 1px solid grey;
     position: relative;
+}
+
+td.metadatatypeInconsistency, td.typo, td.contentPrivacyBreach,td.datatypeInconsistency {
+    transition: background-color 0.5s linear;
 }
 
 td::after{
     content: '';
     position: absolute;
-    bottom: 0;
-    right: 0;
+    top: 2px;
+    right: 2px;
     width: 0;
     height: 0;
-    border-width: 7.5px;
-    border-style: solid;
-    border-color: lightgrey;
-}
-
-td.datatypeInconsistency::after{
-    border-left-color: red;
+    border: 8px solid transparent;
+    /*border-color: #2196f3 #9c27b0 #ff9800 #4caf50;*/
+    border-radius: 50%;
 }
 
 td.metadatatypeInconsistency::after{
-    border-top-color: blue;
+    border-color: #e0e0e0;
+    border-top-color: #2196f3 !important;
 }
 
 td.typo::after{
-    border-right-color: purple;
+    border-color: #e0e0e0;
+    border-right-color: #9c27b0 !important;
 }
 
 td.contentPrivacyBreach::after{
-    border-bottom-color: green;
+    border-color: #e0e0e0;
+    border-bottom-color: #ff9800 !important;
 }
 
+td.datatypeInconsistency::after{
+    border-color: #e0e0e0;
+    border-left-color: #4caf50 !important;
+}
+
+td.focus{
+    background-color: #ffff00;
+}
+
+/* END TABLE */
 
 /* Style the button that is used to open and close the collapsible content */
 .collapsible {
@@ -87,10 +110,11 @@ td.contentPrivacyBreach::after{
 
 /* Style the collapsible content. Note: hidden by default */
 .content {
+    min-height: 100px;
     padding: 0 18px;
     display: none;
     overflow: hidden;
-    background-color: #f1f1f1;
+    background-color: white;
 }
 
 #qualicy-menu button .prev, button .next {

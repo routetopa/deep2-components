@@ -203,8 +203,14 @@ let _addParenthesis = function(fields)
 
 let _normalizeField = function(field)
 {
+    if(field.indexOf('\\') > -1)
+        field = field.replace(/(\\)/g, '\\\\');
+    if(field.indexOf("'") > -1)
+        field = field.replace(/(\')/g, "\\'");
+    if(field.indexOf('"') > -1)
+        field = field.replace(/(\")/g, '\\"');
     return "`" + field + "`";
-    //return "[" + field + "]";
+    // return "[" + field + "]";
 };
 
 let _copy = function(o)
