@@ -57,6 +57,7 @@ export default class PrivacyReportViewBuilder {
     }//EndFunction.
 
     buildColumnStats(evaLogs){
+        //initialization
         let COLUMN_DATATYPES={};
         let COLUMN_METADATATYPES={};
         let COLUMN_VALUES={};
@@ -78,53 +79,56 @@ export default class PrivacyReportViewBuilder {
             warningsTextual:''
         };
 
+        //
         for (let ilog=0; ilog<evaLogs.length; ilog++) {
             let slog = evaLogs[ilog];
             let _sdatatype = slog.datatype.name;
             let _smetadatatype = slog.metatype.name;
-            let _scolIndex = slog.key + "";
+            let _scolKey = slog.key + "";
             let _srowIndex = slog.i;
+            let _scolIndex = slog.j;
             let _scolValue = slog.value;
 
-            if (typeof COLUMN_DATATYPES[_scolIndex] === 'undefined')
-                COLUMN_DATATYPES[_scolIndex] = {};
+            if (typeof COLUMN_DATATYPES[_scolKey] === 'undefined')
+                COLUMN_DATATYPES[_scolKey] = {};
 
-            if (typeof COLUMN_DATATYPES[_scolIndex][_sdatatype] === 'undefined')
-                COLUMN_DATATYPES[_scolIndex][_sdatatype] = 0;
+            if (typeof COLUMN_DATATYPES[_scolKey][_sdatatype] === 'undefined')
+                COLUMN_DATATYPES[_scolKey][_sdatatype] = 0;
 
-            COLUMN_DATATYPES[_scolIndex][_sdatatype] += 1;
+            COLUMN_DATATYPES[_scolKey][_sdatatype] += 1;
 
-            if (typeof COLUMN_METADATATYPES[_scolIndex] === 'undefined')
-                COLUMN_METADATATYPES[_scolIndex] = {};
+            if (typeof COLUMN_METADATATYPES[_scolKey] === 'undefined')
+                COLUMN_METADATATYPES[_scolKey] = {};
 
-            if (typeof COLUMN_METADATATYPES[_scolIndex][_smetadatatype] === 'undefined')
-                COLUMN_METADATATYPES[_scolIndex][_smetadatatype] = 0;
+            if (typeof COLUMN_METADATATYPES[_scolKey][_smetadatatype] === 'undefined')
+                COLUMN_METADATATYPES[_scolKey][_smetadatatype] = 0;
 
-            COLUMN_METADATATYPES[_scolIndex][_smetadatatype] += 1;
+            COLUMN_METADATATYPES[_scolKey][_smetadatatype] += 1;
 
-            if (typeof COLUMN_VALUES[_scolIndex] === 'undefined')
-                COLUMN_VALUES[_scolIndex] = {};
+            if (typeof COLUMN_VALUES[_scolKey] === 'undefined')
+                COLUMN_VALUES[_scolKey] = {};
 
-            if (typeof COLUMN_VALUES[_scolIndex][_scolValue] === 'undefined')
-                COLUMN_VALUES[_scolIndex][_scolValue] = 0;
+            if (typeof COLUMN_VALUES[_scolKey][_scolValue] === 'undefined')
+                COLUMN_VALUES[_scolKey][_scolValue] = 0;
 
-            COLUMN_VALUES[_scolIndex][_scolValue] += 1;
+            COLUMN_VALUES[_scolKey][_scolValue] += 1;
 
-            reportView.types[_scolIndex] = {
-                label:_scolIndex,
-                name:_scolIndex,
-                _inferredTypes:COLUMN_DATATYPES[_scolIndex],
-                _inferredSubTypes:COLUMN_METADATATYPES[_scolIndex],
-                _inferredValues:COLUMN_VALUES[_scolIndex]
+            reportView.types[_scolKey] = {
+                label:_scolKey,
+                name:_scolKey,
+                index:_scolIndex,
+                _inferredTypes:COLUMN_DATATYPES[_scolKey],
+                _inferredSubTypes:COLUMN_METADATATYPES[_scolKey],
+                _inferredValues:COLUMN_VALUES[_scolKey]
             }
 
-            if (typeof reportView.types[_scolIndex]._inferredTypes[_sdatatype + "_cells"] == 'undefined')
-                reportView.types[_scolIndex]._inferredTypes[_sdatatype + "_cells"] = [];
-            reportView.types[_scolIndex]._inferredTypes[_sdatatype + "_cells"].push({ columnKey: _scolIndex, rowIndex: _srowIndex });
+            if (typeof reportView.types[_scolKey]._inferredTypes[_sdatatype + "_cells"] == 'undefined')
+                reportView.types[_scolKey]._inferredTypes[_sdatatype + "_cells"] = [];
+            reportView.types[_scolKey]._inferredTypes[_sdatatype + "_cells"].push({ columnKey: _scolKey, columnIndex: _scolIndex, rowIndex: _srowIndex });
 
-            if (typeof reportView.types[_scolIndex]._inferredSubTypes[_smetadatatype + "_cells"] == 'undefined')
-                reportView.types[_scolIndex]._inferredSubTypes[_smetadatatype + "_cells"] = [];
-            reportView.types[_scolIndex]._inferredSubTypes[_smetadatatype + "_cells"].push({ columnKey: _scolIndex, rowIndex: _srowIndex });
+            if (typeof reportView.types[_scolKey]._inferredSubTypes[_smetadatatype + "_cells"] == 'undefined')
+                reportView.types[_scolKey]._inferredSubTypes[_smetadatatype + "_cells"] = [];
+            reportView.types[_scolKey]._inferredSubTypes[_smetadatatype + "_cells"].push({ columnKey: _scolKey, columnIndex: _scolIndex, rowIndex: _srowIndex });
         }
 
 
@@ -150,6 +154,7 @@ export default class PrivacyReportViewBuilder {
             if (column_datatypes.hasOwnProperty('NULL')) {
                 reportView.COLUMN_STATS[column_index].null_values = column_datatypes['NULL'];
                 reportView.TOTAL_NULL += column_datatypes['NULL'];
+                reportView.COLUMN_STATS[column_index].completeness = (num_of_rows-column_datatypes['NULL'])/num_of_rows;
             }
             
             reportView.TOTAL_VALUES += num_of_rows;
@@ -176,7 +181,7 @@ export default class PrivacyReportViewBuilder {
 
             var mdtkey = max.first.key;
             if ((mdtkey === 'NULL' || mdtkey === 'UNKNOWN') &&
-                max.second != null && typeof max.second !== 'undefined')
+                max.second != null && max.second.key !='NULL' && typeof max.second !== 'undefined')
                 mdtkey = max.second.key;
 
             reportView.COLUMN_STATS[column_index].metadatatype = mdtkey;

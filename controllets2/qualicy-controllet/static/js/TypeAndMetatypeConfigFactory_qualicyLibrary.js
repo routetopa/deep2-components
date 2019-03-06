@@ -109,6 +109,7 @@ const BASIC_DATATYPES = {
 
 const META_DATATYPES = {
     DT_UNKNOWN: { name: "UNKNOWN" },
+    //DT_NULL:    { name: "NULL" },
 
     DT_EMAIL:   { name: "EMAIL" },
     DT_URL : {name:"URL"},
@@ -155,6 +156,7 @@ BASIC_DATATYPES.DT_NULL.evaluate = function(value) {
 
     return { datatype: BASIC_DATATYPES.DT_UNKNOWN, value: value };
 };
+//META_DATATYPES.DT_NULL = BASIC_DATATYPES.DT_NULL;
 /*
 BASIC_DATATYPES.DT_OBJECT.evaluate = function(value) {
     if (value === 'object')
@@ -2066,6 +2068,7 @@ export default class TypeAndMetatypeConfigFactory {
             _inferredMetaDataTypeObj = {
                 value : _inferredDataType.value,
                 datatype : _inferredDataType.datatype,
+                metatype : _inferredDataType.datatype,
             };
             return _inferredMetaDataTypeObj;
         }

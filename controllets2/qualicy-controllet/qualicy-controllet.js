@@ -14,8 +14,7 @@ export default class QualicyControllet extends HTMLElement {
         this.shadow_root = this.attachShadow({mode: 'open'});
     }
 
-    template()
-    {
+    template() {
         const template = this.currentDocument.querySelector('#qualicy-controllet');
         return template.content.cloneNode(true);
     }
@@ -59,6 +58,10 @@ export default class QualicyControllet extends HTMLElement {
         }.bind(this);
 
         this.computeStatistics();
+        this.extractNullCells();
+        this.extractDatatypeMismatches();
+        this.extractMetaDatatypeMismatches();
+        this.extractMissingMetaDatatypes();
         this.renderStatistics();
 
     }
@@ -152,19 +155,20 @@ export default class QualicyControllet extends HTMLElement {
         console.log(this.contentPrivacyBreaches)
 
         //structuralprivacybreaches
-        let reportColumnStats= viewBuilder.buildColumnStats(evaLogs);
+        this.reportColumnStats= viewBuilder.buildColumnStats(evaLogs);
+        console.log(this.reportColumnStats);
 
         let schema = {};
-        for(let column_name in reportColumnStats.types){
-            if(reportColumnStats.types[column_name].subtype!==null){
-                if(!schema.hasOwnProperty(reportColumnStats.types[column_name].subtype))
-                    schema[reportColumnStats.types[column_name].subtype] = [];
-                schema[reportColumnStats.types[column_name].subtype].push(column_name);
+        for(let column_name in this.reportColumnStats.types){
+            if(this.reportColumnStats.types[column_name].subtype!==null){
+                if(!schema.hasOwnProperty(this.reportColumnStats.types[column_name].subtype))
+                    schema[this.reportColumnStats.types[column_name].subtype] = [];
+                schema[this.reportColumnStats.types[column_name].subtype].push(column_name);
             }
-            else if(reportColumnStats.types[column_name].type!==null){
-                if(!schema.hasOwnProperty(reportColumnStats.types[column_name].type))
-                    schema[reportColumnStats.types[column_name].type] = [];
-                schema[reportColumnStats.types[column_name].type].push(column_name);
+            else if(this.reportColumnStats.types[column_name].type!==null){
+                if(!schema.hasOwnProperty(this.reportColumnStats.types[column_name].type))
+                    schema[this.reportColumnStats.types[column_name].type] = [];
+                schema[this.reportColumnStats.types[column_name].type].push(column_name);
             }
         }
         this.structuralPrivacyBreaches = datachecker.testStructuralPrivacyBreaches(schema);
@@ -172,8 +176,87 @@ export default class QualicyControllet extends HTMLElement {
 
     }
 
+    extractNullCells(){
+        this.nullCells = [];
+        for(let column in this.reportColumnStats.types) {
+            let columnTypes = this.reportColumnStats.types[column]._inferredTypes;
+
+            if ("NULL_cells" in columnTypes) {
+                this.nullCells = this.nullCells.concat(columnTypes["NULL_cells"]);
+            }
+        }
+    }
+
+    extractDatatypeMismatches(){
+
+        this.datatypeMismatches = [];
+        for(let column in this.reportColumnStats.COLUMN_STATS) {
+
+            let columnInfo = this.reportColumnStats.COLUMN_STATS[column];
+
+            if(columnInfo.datatypeConfidence < 1){
+
+                let mismatchDatatypes = [];
+                for (let typeName in this.reportColumnStats.types[column]._inferredTypes) {
+                    if(typeName != columnInfo.datatype && !typeName.endsWith("_cells")){
+                        mismatchDatatypes.push(typeName);
+                    }
+                }
+
+                for (let typeIndex in mismatchDatatypes){
+                    let typeName = mismatchDatatypes[typeIndex];
+                    this.datatypeMismatches = this.datatypeMismatches.concat(this.reportColumnStats.types[column]._inferredTypes[typeName+"_cells"]);
+                }
+            }
+        }
+    }
+
+    extractMetaDatatypeMismatches(){
+
+        this.metadatatypeMismatches = [];
+        for(let column in this.reportColumnStats.COLUMN_STATS) {
+
+            let columnInfo = this.reportColumnStats.COLUMN_STATS[column];
+
+            if(columnInfo.metadatatypeConfidence < 1){
+
+                let mismatchMetaDatatypes = [];
+                for (let typeName in this.reportColumnStats.types[column]._inferredSubTypes) {
+                    if(typeName != columnInfo.metadatatype
+                        && typeName != 'NULL'
+                        && !typeName.endsWith("_cells")){
+                            mismatchMetaDatatypes.push(typeName);
+                    }
+                }
+
+                for (let typeIndex in mismatchMetaDatatypes){
+                    let typeName = mismatchMetaDatatypes[typeIndex];
+                    this.metadatatypeMismatches = this.metadatatypeMismatches.concat(this.reportColumnStats.types[column]._inferredSubTypes[typeName+"_cells"]);
+                }
+            }
+        }
+        console.log(this.metadatatypeMismatches);
+    }
+
+    extractMissingMetaDatatypes(){
+        debugger
+        this.missingMetadatatypes = [];
+        for(let column in this.reportColumnStats.COLUMN_STATS) {
+            debugger
+            let columnInfo = this.reportColumnStats.COLUMN_STATS[column];
+
+            if(columnInfo.metadatatype == "UNKNOWN"){
+                this.missingMetadatatypes = this.missingMetadatatypes.concat(this.reportColumnStats.types[column]._inferredSubTypes["UNKNOWN_cells"]);
+            }
+        }
+        console.log(this.missingMetadatatypes);
+    }
+
     renderStatistics(){
         this.tableManager.fillInTypoStats(this.typos);
+        this.tableManager.fillInDatatypeStats(this.nullCells, this.datatypeMismatches);
+        this.tableManager.fillInMetaDatatypeStats(this.metadatatypeMismatches, this.missingMetadatatypes);
+        this.tableManager.fillInContentPrivacyBreachesStats(this.contentPrivacyBreaches);
     }
 };
 
