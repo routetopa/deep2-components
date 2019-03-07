@@ -10,6 +10,7 @@ export default class TableManager {
         this.currentMismatchMetadatatypes = menu.querySelector('#currentMismatchMetadatatypes');
         this.currentMissingMetadatatypes = menu.querySelector('#currentMissingMetadatatypes');
         this.currentContentPrivacyBreach = menu.querySelector('#currentContentPrivacyBreach');
+        this.currentStructuralPrivacyBreach = menu.querySelector('#qualicy-tab-2');
         this.pageLength = 10;
     }
 
@@ -53,7 +54,7 @@ export default class TableManager {
             $(this.dataTable.cell(row, column).node()).addClass('typo');
         }
 
-        this.currentTypos.innerText = '... / ' + typos.length;
+        this.currentTypos.innerText = '0 / ' + typos.length;
 
         $(this.menu.querySelector('#prevTypo')).on( 'click', function () {
             if(this.counterTypo<0)
@@ -117,10 +118,10 @@ export default class TableManager {
             $(this.dataTable.cell(row, column).node()).addClass('datatypeInconsistency');
         }
 
-        this.currentNullCell.innerText = '... / ' + nullCells.length;
+        this.currentNullCell.innerText = '0 / ' + nullCells.length;
 
         $(this.menu.querySelector('#prevNull')).on( 'click', function () {
-            debugger
+             
             if(this.counterNullCells<0)
                 this.counterNullCells = nullCells.length-1;
             else
@@ -140,7 +141,7 @@ export default class TableManager {
         }.bind(this) );
 
         $(this.menu.querySelector('#nextNull')).on( 'click', function () {
-            debugger
+             
             if(this.counterNullCells<0)
                 this.counterNullCells = 0;
             else
@@ -177,10 +178,10 @@ export default class TableManager {
             $(this.dataTable.cell(row, column).node()).addClass('datatypeInconsistency');
         }
 
-        this.currentMismatchDatatypes.innerText = '... / ' + mismatchDatatypes.length;
+        this.currentMismatchDatatypes.innerText = '0 / ' + mismatchDatatypes.length;
 
         $(this.menu.querySelector('#prevMismatchDatatypes')).on( 'click', function () {
-            debugger
+             
             if(this.counterMismatchDatatypes<0)
                 this.counterMismatchDatatypes = mismatchDatatypes.length-1;
             else
@@ -200,7 +201,7 @@ export default class TableManager {
         }.bind(this) );
 
         $(this.menu.querySelector('#nextMismatchDatatypes')).on( 'click', function () {
-            debugger
+             
             if(this.counterMismatchDatatypes<0)
                 this.counterMismatchDatatypes = 0;
             else
@@ -242,10 +243,10 @@ export default class TableManager {
             $(this.dataTable.cell(row, column).node()).addClass('metadatatypeInconsistency');
         }
 
-        this.currentMismatchMetadatatypes.innerText = '... / ' + mismatchMetadatatypes.length;
+        this.currentMismatchMetadatatypes.innerText = '0 / ' + mismatchMetadatatypes.length;
 
         $(this.menu.querySelector('#prevMismatchMetadatatypes')).on( 'click', function () {
-            debugger
+             
             if(this.counterMismatchMetadatatypes<0)
                 this.counterMismatchMetadatatypes = mismatchMetadatatypes.length-1;
             else
@@ -265,7 +266,7 @@ export default class TableManager {
         }.bind(this) );
 
         $(this.menu.querySelector('#nextMismatchMetadatatypes')).on( 'click', function () {
-            debugger
+             
             if(this.counterMismatchMetadatatypes<0)
                 this.counterMismatchMetadatatypes = 0;
             else
@@ -302,10 +303,10 @@ export default class TableManager {
             $(this.dataTable.cell(row, column).node()).addClass('metadatatypeInconsistency');
         }
 
-        this.currentMissingMetadatatypes.innerText = '... / ' + missingMetadatatypes.length;
+        this.currentMissingMetadatatypes.innerText = '0 / ' + missingMetadatatypes.length;
 
         $(this.menu.querySelector('#prevMissingMetadatatypes')).on( 'click', function () {
-            debugger
+             
             if(this.counterMissingMetadatatypes<0)
                 this.counterMissingMetadatatypes = missingMetadatatypes.length-1;
             else
@@ -325,7 +326,7 @@ export default class TableManager {
         }.bind(this) );
 
         $(this.menu.querySelector('#nextMissingMetadatatypes')).on( 'click', function () {
-            debugger
+             
             if(this.counterMissingMetadatatypes<0)
                 this.counterMissingMetadatatypes = 0;
             else
@@ -362,10 +363,10 @@ export default class TableManager {
             $(this.dataTable.cell(row, column).node()).addClass('contentPrivacyBreach');
         }
 
-        this.currentContentPrivacyBreach.innerText = '... / ' + contentPrivacyBreachStats.length;
+        this.currentContentPrivacyBreach.innerText = '0 / ' + contentPrivacyBreachStats.length;
 
         $(this.menu.querySelector('#prevContentPrivacyBreach')).on( 'click', function () {
-            debugger
+             
             if(this.counterContentPrivacyBreach<0)
                 this.counterContentPrivacyBreach = contentPrivacyBreachStats.length-1;
             else
@@ -385,7 +386,7 @@ export default class TableManager {
         }.bind(this) );
 
         $(this.menu.querySelector('#nextContentPrivacyBreach')).on( 'click', function () {
-            debugger
+             
             if(this.counterContentPrivacyBreach<0)
                 this.counterContentPrivacyBreach = 0;
             else
@@ -406,6 +407,60 @@ export default class TableManager {
     }
 
     fillInStructuralPrivacyBreachesStats = function(structuralPrivacyBreachStats){
-        //todo
+        for(let index in structuralPrivacyBreachStats){
+            let structuralPrivacyBreach = structuralPrivacyBreachStats[index];
+            debugger
+            let div = document.createElement("DIV");
+            let textnode = document.createTextNode(Object.keys(structuralPrivacyBreach).join(' '));
+
+            div.appendChild(textnode);
+
+            let list_of_arrays = [];
+            for(let key in structuralPrivacyBreach){
+                let value = structuralPrivacyBreach[key];
+                list_of_arrays.push(value.columnKey);
+            }
+
+            let list_of_all_the_combinations = this.cartesianProduct(list_of_arrays);
+
+            console.log(list_of_arrays)
+            console.log(list_of_all_the_combinations)
+
+            let ul = document.createElement("UL");
+            for(let i=0; i<list_of_all_the_combinations.length; i++) {
+                let li = document.createElement("LI");
+                let textnode = document.createTextNode(list_of_all_the_combinations[i].join(' '));
+
+                li.appendChild(textnode);
+                ul.appendChild(li);
+
+            }
+            div.appendChild(ul);
+
+            this.currentStructuralPrivacyBreach.appendChild(div);
+        }
+    }
+
+    cartesianProductOf = function() {
+        return Array.prototype.reduce.call(arguments, function(a, b) {
+            let ret = [];
+            a.forEach(function(a) {
+                b.forEach(function(b) {
+                    ret.push(a.concat([b]));
+                });
+            });
+            return ret;
+        }, [[]]);
+    }
+
+    cartesianProduct = function(arr)
+    {
+        return arr.reduce(function(a,b){
+            return a.map(function(x){
+                return b.map(function(y){
+                    return x.concat(y);
+                })
+            }).reduce(function(a,b){ return a.concat(b) },[])
+        }, [[]])
     }
 }
