@@ -170,12 +170,7 @@ td.focus{
     color: #4caf50;
 }
 
-.collapsible-container span.counter{
-    display:inline-block;
-    width:100px;
-    //word-wrap:break-word;
 
-}
 
 #qualicy-menu .title{
     float:left;

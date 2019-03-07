@@ -404,4 +404,8 @@ export default class TableManager {
             this.currentContentPrivacyBreach.innerText = (this.counterContentPrivacyBreach + 1) + ' / ' + contentPrivacyBreachStats.length;
         }.bind(this) );
     }
+
+    fillInStructuralPrivacyBreachesStats = function(structuralPrivacyBreachStats){
+        //todo
+    }
 }

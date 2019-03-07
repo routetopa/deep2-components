@@ -23,6 +23,8 @@ export default class QualicyControllet extends HTMLElement {
         let template = this.template();
         this.shadow_root.appendChild(template);
 
+        // this.shadow_root.querySelector('#qualicy-menu').tab(); //it does not work
+
         let coll = this.shadow_root.querySelectorAll('.collapsible');
         let i;
 
@@ -257,6 +259,7 @@ export default class QualicyControllet extends HTMLElement {
         this.tableManager.fillInDatatypeStats(this.nullCells, this.datatypeMismatches);
         this.tableManager.fillInMetaDatatypeStats(this.metadatatypeMismatches, this.missingMetadatatypes);
         this.tableManager.fillInContentPrivacyBreachesStats(this.contentPrivacyBreaches);
+        this.tableManager.fillInStructuralPrivacyBreachesStats(this.structuralPrivacyBreaches);
     }
 };
 
