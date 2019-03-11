@@ -24,6 +24,7 @@ export default class QualicyControllet extends HTMLElement {
         this.shadow_root.appendChild(template);
 
         this.manageTabs();
+        this.modalInitialization();
 
         //data initialization
         this.data = JSON.parse(this.getAttribute("data"));
@@ -36,7 +37,8 @@ export default class QualicyControllet extends HTMLElement {
         //datatable inizialization
         let ranking_table = this.shadow_root.querySelector('#ranking-list-datatable');
         let menu = this.shadow_root.querySelector('#qualicy-menu');
-        this.tableManager = new TableManager(ranking_table, menu);
+        this.modal = this.shadow_root.querySelector('#qualicy-modal');
+        this.tableManager = new TableManager(ranking_table, menu, this.modal);
 
         this.tableManager.initDataTable(this.data, this.data_url);
 
@@ -96,6 +98,16 @@ export default class QualicyControllet extends HTMLElement {
         evt.currentTarget.className += " active";
     }
 
+    modalInitialization(){
+        let _self = this;
+
+        this.shadow_root.querySelector('.close-button').addEventListener('click', function(){
+            $(_self.modal).removeClass('qualicy-modal-open');
+            $(_self.modal).addClass('qualicy-modal-close');
+        });
+    }
+
+
     /* LOGIC */
 
     initializeData(){
@@ -143,27 +155,33 @@ export default class QualicyControllet extends HTMLElement {
                 if(value.metatype === typeAndMetatypeFactory.DATATYPES.DT_UNKNOWN){
                     if(value.datatype === typeAndMetatypeFactory.DATATYPES.DT_TEXT){
                         //check if a type is unrecognized because of a typo
-                        var corrections = datachecker.detectTyposErrorsCorrections(value.value);
+                        let corrections = datachecker.detectTyposErrorsCorrections(value.value);
                         if(corrections.length>0){
+                            /*
                             value.style = "border: 1px solid #FF0000; padding: 3px 12px;";
+
                             var message = "";
                             for(var i in corrections){
                                 message += corrections[i].correction + "->" + corrections[i].datatype.name + "<br>";
                             }
                             value.tooltiptext = message;
+                             */
 
+                            value.typosCorrection = corrections;
                             this.typos.push(value);
                         }else{
-                            var contentPrivacyBreaches = datachecker.testContentPrivacyBreaches(value.value);
+                            let contentPrivacyBreaches = datachecker.testContentPrivacyBreaches(value.value);
                             if(contentPrivacyBreaches.length>0){
-
+                                /*
                                 value.style = "border: 1px solid #00FF00; padding: 3px 12px;";
                                 var message = "";
                                 for(var i in contentPrivacyBreaches){
                                     message += contentPrivacyBreaches[i].datatype.name + ": "+ contentPrivacyBreaches[i].match + "<br>";
                                 }
                                 value.tooltiptext = message;
+                                 */
 
+                                value.contentPrivacyBreaches = contentPrivacyBreaches;
                                 this.contentPrivacyBreaches.push(value);
                             }
                         }
@@ -171,6 +189,9 @@ export default class QualicyControllet extends HTMLElement {
                 }
             });
         });
+
+        console.log(reportView.DATASET);
+        this.annotatedDataset = reportView.DATASET;
 
         console.log(this.typos);
         console.log(this.contentPrivacyBreaches)
@@ -277,6 +298,8 @@ export default class QualicyControllet extends HTMLElement {
         this.tableManager.fillInMetaDatatypeStats(this.metadatatypeMismatches, this.missingMetadatatypes);
         this.tableManager.fillInContentPrivacyBreachesStats(this.contentPrivacyBreaches);
         this.tableManager.fillInStructuralPrivacyBreachesStats(this.structuralPrivacyBreaches);
+        this.tableManager.fillInCellStats(this.annotatedDataset);
+        this.tableManager.fillInColumnStats(this.reportColumnStats);
     }
 };
 

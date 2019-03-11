@@ -1,8 +1,9 @@
 export default class TableManager {
 
-    constructor(ranking_table, menu) {
+    constructor(ranking_table, menu, modal) {
         this.data = [];
         this.ranking_table = ranking_table;
+        this.modal = modal;
         this.menu = menu;
         this.currentTypos = menu.querySelector('#currentTypo');
         this.currentNullCell = menu.querySelector('#currentNull');
@@ -23,7 +24,7 @@ export default class TableManager {
 
         let columns = [];
         for(let columnName in data[0]){
-            columns.push({data:columnName, title:columnName});
+            columns.push({data:columnName, title:columnName, name:columnName});
         }
 
         this.dataTable = $(this.ranking_table).DataTable( {
@@ -39,7 +40,7 @@ export default class TableManager {
 
         this.dataTable.on( 'length.dt', function ( e, settings, len ) {
             this.pageLength = len;
-        } );
+        });
 
         //console.log($.fn.dataTable.KeyTable);
     };
@@ -409,7 +410,7 @@ export default class TableManager {
     fillInStructuralPrivacyBreachesStats = function(structuralPrivacyBreachStats){
         for(let index in structuralPrivacyBreachStats){
             let structuralPrivacyBreach = structuralPrivacyBreachStats[index];
-            debugger
+
             let div = document.createElement("DIV");
             let textnode = document.createTextNode(Object.keys(structuralPrivacyBreach).join(' '));
 
@@ -423,9 +424,6 @@ export default class TableManager {
 
             let list_of_all_the_combinations = this.cartesianProduct(list_of_arrays);
 
-            console.log(list_of_arrays)
-            console.log(list_of_all_the_combinations)
-
             let ul = document.createElement("UL");
             for(let i=0; i<list_of_all_the_combinations.length; i++) {
                 let li = document.createElement("LI");
@@ -438,6 +436,81 @@ export default class TableManager {
             div.appendChild(ul);
 
             this.currentStructuralPrivacyBreach.appendChild(div);
+        }
+    }
+
+    fillInCellStats = function(annotatedDataset){
+        this.annotatedDataset = annotatedDataset;
+
+        let _self = this;
+        this.dataTable.on('click', 'tbody td', function(){
+            $(_self.modal).removeClass('qualicy-modal-close');
+            $(_self.modal).addClass('qualicy-modal-open');
+
+            let row = _self.dataTable.cell(this).index().row;
+            let column = _self.dataTable.cell(this).index().column;
+
+            let cellAnnotations = _self.annotatedDataset[row][column];
+
+            _self.modal.querySelector('#modal-value').innerText = cellAnnotations.value;
+            _self.modal.querySelector('#modal-datatype').innerText = cellAnnotations.datatype.name;
+            _self.modal.querySelector('#modal-metadatatype').innerText = cellAnnotations.metatype.name;
+
+            if('typosCorrection' in cellAnnotations){
+                let ul = document.createElement("UL");
+                for(let i=0; i<cellAnnotations.typosCorrection.length; i++){
+                    let li = document.createElement("LI");
+
+                    let span1 = document.createTextNode(cellAnnotations.typosCorrection[i].correction);
+                    let span2 = document.createTextNode(" [" + cellAnnotations.typosCorrection[i].datatype.name + "]");
+
+                    li.appendChild(span1);
+                    li.appendChild(span2);
+
+                    ul.appendChild(li);
+
+                }
+                _self.modal.querySelector('#modal-typos').appendChild(ul);
+            }
+            else
+                _self.modal.querySelector('#modal-typos').innerHTML = '<i class="fas fa-check"></i>';
+
+            if('contentPrivacyBreaches' in cellAnnotations){
+                let ul = document.createElement("UL");
+                for(let i=0; i<cellAnnotations.contentPrivacyBreaches.length; i++){
+                    let li = document.createElement("LI");
+
+                    let span1 = document.createTextNode(cellAnnotations.contentPrivacyBreaches[i].match);
+                    let span2 = document.createTextNode(" [" + cellAnnotations.contentPrivacyBreaches[i].datatype.name + "]");
+
+                    li.appendChild(span1);
+                    li.appendChild(span2);
+
+                    ul.appendChild(li);
+
+                }
+                _self.modal.querySelector('#modal-contentPrivacyBreach').appendChild(ul);
+            }
+            else
+                _self.modal.querySelector('#modal-contentPrivacyBreach').innerHTML = '<i class="fas fa-check"></i>';
+
+        });
+    }
+
+    fillInColumnStats = function(columnStats){
+        this.columnStats = columnStats;
+
+        for(let columnName in this.columnStats.COLUMN_STATS){
+            let columnData = this.columnStats.COLUMN_STATS[columnName];
+            debugger
+            if(columnData.datatypeConfidence<1 || columnData.completeness<1){
+                $(this.dataTable.column(columnName+":name").header()).addClass('datatypeInconsistency');
+                console.log("I " + columnName)
+            }
+            if(columnData.metadatatypeConfidence<1){
+                $(this.dataTable.column(columnName+":name").header()).addClass('metadatatypeInconsistency');
+                console.log("II " + columnName)
+            }
         }
     }
 
