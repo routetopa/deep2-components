@@ -20,11 +20,24 @@ export default class TableManager {
     };
 
     initDataTable = function (data, data_url) {
+        let _self = this;
         this.data = data || data_url; //todo data_url
 
         let columns = [];
+        // let columnsDef = [];
         for(let columnName in data[0]){
             columns.push({data:columnName, title:columnName, name:columnName});
+            // columnsDef.push({
+            //     "targets": [columnName],
+            //     "render": function (data, type, row, meta) {
+            //         debugger
+            //         //let title = _self.dataTable.columns( meta.col ).header();
+            //         //let columnName = $(title).html();
+            //         //var url = 'tom.html?office='+row[2]+'?filter='+columnName.toLowerCase();
+            //         //return '<a href="'+url.trim()+'">'+data+'</a>';
+            //         return '<div class="columns_warnings"></div>'+data;
+            //     }
+            // })
         }
 
         this.dataTable = $(this.ranking_table).DataTable( {
@@ -35,7 +48,8 @@ export default class TableManager {
             order: [],
             rowId: '_id',
             pageLength: this.pageLength,
-            keys: true //?
+            keys: true ,//?
+            // columnDefs: columnsDef
         });
 
         this.dataTable.on( 'length.dt', function ( e, settings, len ) {
@@ -470,6 +484,7 @@ export default class TableManager {
                     ul.appendChild(li);
 
                 }
+                _self.modal.querySelector('#modal-typos').innerHTML = "";
                 _self.modal.querySelector('#modal-typos').appendChild(ul);
             }
             else
@@ -489,6 +504,7 @@ export default class TableManager {
                     ul.appendChild(li);
 
                 }
+                _self.modal.querySelector('#modal-contentPrivacyBreach').innerHTML = "";
                 _self.modal.querySelector('#modal-contentPrivacyBreach').appendChild(ul);
             }
             else
@@ -501,15 +517,21 @@ export default class TableManager {
         this.columnStats = columnStats;
 
         for(let columnName in this.columnStats.COLUMN_STATS){
+            let className = "";
+
+
             let columnData = this.columnStats.COLUMN_STATS[columnName];
-            debugger
             if(columnData.datatypeConfidence<1 || columnData.completeness<1){
-                $(this.dataTable.column(columnName+":name").header()).addClass('datatypeInconsistency');
-                console.log("I " + columnName)
+                className += ' datatypeInconsistency';
             }
             if(columnData.metadatatypeConfidence<1){
-                $(this.dataTable.column(columnName+":name").header()).addClass('metadatatypeInconsistency');
-                console.log("II " + columnName)
+                className += ' metadatatypeInconsistency';
+            }
+
+            if(className!==""){
+                $(this.dataTable.column(columnName+":name").header()).html(
+                    $(this.dataTable.column(columnName+":name").header()).html()+
+                    '<span class="columns_warnings'+className+'"></span>');
             }
         }
     }

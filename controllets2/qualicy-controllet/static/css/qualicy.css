@@ -51,7 +51,7 @@ td.metadatatypeInconsistency, td.typo, td.contentPrivacyBreach,td.datatypeIncons
     transition: background-color 0.5s linear;
 }
 
-th::after, td::after{
+th .columns_warnings, td::after{
     content: '';
     position: absolute;
     top: 2px;
@@ -66,16 +66,16 @@ td::after{
     right: 2px;
 }
 
-th::after{
-    right: 12px;
+th .columns_warnings{
+    right: 25px;
 }
 
-th.datatypeInconsistency::after, td.datatypeInconsistency::after{
+th .datatypeInconsistency, td.datatypeInconsistency::after{
     border-color: #e0e0e0;
     border-top-color: #2196f3 !important;
 }
 
-th.metadatatypeInconsistency::after, td.metadatatypeInconsistency::after{
+th .metadatatypeInconsistency, td.metadatatypeInconsistency::after{
     border-color: #e0e0e0;
     border-right-color: #9c27b0 !important;
 }
