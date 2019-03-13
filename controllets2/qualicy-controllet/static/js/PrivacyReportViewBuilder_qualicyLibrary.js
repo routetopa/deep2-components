@@ -154,7 +154,7 @@ export default class PrivacyReportViewBuilder {
             if (column_datatypes.hasOwnProperty('NULL')) {
                 reportView.COLUMN_STATS[column_index].null_values = column_datatypes['NULL'];
                 reportView.TOTAL_NULL += column_datatypes['NULL'];
-                reportView.COLUMN_STATS[column_index].completeness = (num_of_rows-column_datatypes['NULL'])/num_of_rows;
+                reportView.COLUMN_STATS[column_index].completeness = Math.round( (num_of_rows-column_datatypes['NULL'])/num_of_rows * 100) / 100;
             }
             
             reportView.TOTAL_VALUES += num_of_rows;
@@ -171,7 +171,7 @@ export default class PrivacyReportViewBuilder {
                 dtkey = max.second.key;
 
             reportView.COLUMN_STATS[column_index].datatype = dtkey;
-            reportView.COLUMN_STATS[column_index].datatypeConfidence = column_datatypes[dtkey] / num_of_rows;
+            reportView.COLUMN_STATS[column_index].datatypeConfidence = Math.round( column_datatypes[dtkey] / num_of_rows * 100) / 100;
 
             reportView.DATATYPE_HOMOGENEITY *= reportView.COLUMN_STATS[column_index].datatypeConfidence;
 
@@ -188,7 +188,7 @@ export default class PrivacyReportViewBuilder {
 
             var subType;
             if(mdtkey !== 'NULL' && mdtkey !== 'UNKNOWN'){
-                reportView.COLUMN_STATS[column_index].metadatatypeConfidence = column_metadatatypes[mdtkey] / num_of_rows;
+                reportView.COLUMN_STATS[column_index].metadatatypeConfidence = Math.round( column_metadatatypes[mdtkey] / num_of_rows * 100) / 100;
                 reportView.METADATATYPE_HOMOGENEITY *= reportView.COLUMN_STATS[column_index].metadatatypeConfidence;
 
                 subType = mdtkey;

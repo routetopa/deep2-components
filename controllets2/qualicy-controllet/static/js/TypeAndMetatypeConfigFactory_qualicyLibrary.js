@@ -9,6 +9,8 @@ import {
     genders
 } from './initialization_Italy.js';
 
+import {messages} from './Italian_messages.js';
+
 class TDS {
 
     constructor(rootnode) {
@@ -1210,127 +1212,155 @@ export default class TypeAndMetatypeConfigFactory {
 
         if(schema.hasOwnProperty(META_DATATYPES.DT_CF.name)){
             let privacyBreach = {};
-            privacyBreach[META_DATATYPES.DT_CF.name] = {};
-            privacyBreach[META_DATATYPES.DT_CF.name].columnKey = schema[META_DATATYPES.DT_CF.name];
+            privacyBreach.breach = {};
+            privacyBreach.breach[META_DATATYPES.DT_CF.name] = {};
+            privacyBreach.breach[META_DATATYPES.DT_CF.name].columnKey = schema[META_DATATYPES.DT_CF.name];
+            privacyBreach.warning = messages['contentPrivacyBreach_CF'];
             report.push(privacyBreach);
         }
         if(schema.hasOwnProperty(META_DATATYPES.DT_EMAIL.name)){
             let privacyBreach = {};
-            privacyBreach[META_DATATYPES.DT_EMAIL.name] = {};
-            privacyBreach[META_DATATYPES.DT_EMAIL.name].columnKey = schema[META_DATATYPES.DT_EMAIL.name];
+            privacyBreach.breach = {};
+            privacyBreach.breach[META_DATATYPES.DT_EMAIL.name] = {};
+            privacyBreach.breach[META_DATATYPES.DT_EMAIL.name].columnKey = schema[META_DATATYPES.DT_EMAIL.name];
+            privacyBreach.warning = messages['contentPrivacyBreach_EMAIL'];
             report.push(privacyBreach);
         }
         if(schema.hasOwnProperty(META_DATATYPES.DT_IBAN.name)){
             let privacyBreach = {};
-            privacyBreach[META_DATATYPES.DT_IBAN.name] = {};
-            privacyBreach[META_DATATYPES.DT_IBAN.name].columnKey = schema[META_DATATYPES.DT_IBAN.name];
+            privacyBreach.breach = {};
+            privacyBreach.breach[META_DATATYPES.DT_IBAN.name] = {};
+            privacyBreach.breach[META_DATATYPES.DT_IBAN.name].columnKey = schema[META_DATATYPES.DT_IBAN.name];
+            privacyBreach.warning = messages['contentPrivacyBreach_IBAN'];
             report.push(privacyBreach);
         }
         if(schema.hasOwnProperty(META_DATATYPES.DT_PHONE.name)){
             let privacyBreach = {};
-            privacyBreach[META_DATATYPES.DT_PHONE.name] = {};
-            privacyBreach[META_DATATYPES.DT_PHONE.name].columnKey = schema[META_DATATYPES.DT_PHONE.name];
+            privacyBreach.breach = {};
+            privacyBreach.breach[META_DATATYPES.DT_PHONE.name] = {};
+            privacyBreach.breach[META_DATATYPES.DT_PHONE.name].columnKey = schema[META_DATATYPES.DT_PHONE.name];
+            privacyBreach.warning = messages['contentPrivacyBreach_PHONE'];
             report.push(privacyBreach);
         }
         if(schema.hasOwnProperty(META_DATATYPES.DT_MOBILEPHONE.name)){
             let privacyBreach = {};
-            privacyBreach[META_DATATYPES.DT_MOBILEPHONE.name] = {};
-            privacyBreach[META_DATATYPES.DT_MOBILEPHONE.name].columnKey = schema[META_DATATYPES.DT_MOBILEPHONE.name];
+            privacyBreach.breach = {};
+            privacyBreach.breach[META_DATATYPES.DT_MOBILEPHONE.name] = {};
+            privacyBreach.breach[META_DATATYPES.DT_MOBILEPHONE.name].columnKey = schema[META_DATATYPES.DT_MOBILEPHONE.name];
+            privacyBreach.warning = messages['contentPrivacyBreach_MOBILEPHONE'];
             report.push(privacyBreach);
         }
         if(schema.hasOwnProperty(META_DATATYPES.DT_ZIPCODE.name) && schema.hasOwnProperty(META_DATATYPES.DT_GENDER.name) && schema.hasOwnProperty(DATATYPES.DT_DATE.name)){
             let privacyBreach = {};
-            privacyBreach[META_DATATYPES.DT_ZIPCODE.name] = {};
-            privacyBreach[META_DATATYPES.DT_ZIPCODE.name].columnKey = schema[META_DATATYPES.DT_ZIPCODE.name];
-            privacyBreach[META_DATATYPES.DT_GENDER.name] = {};
-            privacyBreach[META_DATATYPES.DT_GENDER.name].columnKey = schema[META_DATATYPES.DT_GENDER.name];
-            privacyBreach[DATATYPES.DT_DATE.name] = {};
-            privacyBreach[DATATYPES.DT_DATE.name].columnKey = schema[DATATYPES.DT_DATE.name];
+            privacyBreach.breach = {};
+            privacyBreach.breach[META_DATATYPES.DT_ZIPCODE.name] = {};
+            privacyBreach.breach[META_DATATYPES.DT_ZIPCODE.name].columnKey = schema[META_DATATYPES.DT_ZIPCODE.name];
+            privacyBreach.breach[META_DATATYPES.DT_GENDER.name] = {};
+            privacyBreach.breach[META_DATATYPES.DT_GENDER.name].columnKey = schema[META_DATATYPES.DT_GENDER.name];
+            privacyBreach.breach[DATATYPES.DT_DATE.name] = {};
+            privacyBreach.breach[DATATYPES.DT_DATE.name].columnKey = schema[DATATYPES.DT_DATE.name];
+            privacyBreach.warning = messages['contentPrivacyBreach_ZIPCODE_DATE_GENDER'];
             report.push(privacyBreach);
         }
         if(schema.hasOwnProperty(META_DATATYPES.DT_NAME.name) && schema.hasOwnProperty(META_DATATYPES.DT_SURNAME.name) && schema.hasOwnProperty(DATATYPES.DT_LAT_LONG.name)){
             let privacyBreach = {};
-            privacyBreach[META_DATATYPES.DT_NAME.name] = {};
-            privacyBreach[META_DATATYPES.DT_NAME.name].columnKey = schema[META_DATATYPES.DT_NAME.name];
-            privacyBreach[META_DATATYPES.DT_SURNAME.name] = {};
-            privacyBreach[META_DATATYPES.DT_SURNAME.name].columnKey = schema[META_DATATYPES.DT_SURNAME.name];
-            privacyBreach[META_DATATYPES.DT_LAT_LONG.name] = {};
-            privacyBreach[META_DATATYPES.DT_LAT_LONG.name].columnKey = schema[META_DATATYPES.DT_LAT_LONG.name];
+            privacyBreach.breach = {};
+            privacyBreach.breach[META_DATATYPES.DT_NAME.name] = {};
+            privacyBreach.breach[META_DATATYPES.DT_NAME.name].columnKey = schema[META_DATATYPES.DT_NAME.name];
+            privacyBreach.breach[META_DATATYPES.DT_SURNAME.name] = {};
+            privacyBreach.breach[META_DATATYPES.DT_SURNAME.name].columnKey = schema[META_DATATYPES.DT_SURNAME.name];
+            privacyBreach.breach[META_DATATYPES.DT_LAT_LONG.name] = {};
+            privacyBreach.breach[META_DATATYPES.DT_LAT_LONG.name].columnKey = schema[META_DATATYPES.DT_LAT_LONG.name];
+            privacyBreach.warning = messages['contentPrivacyBreach_NAME_SURNAME_LAT_LONG'];
             report.push(privacyBreach);
         }
         if(schema.hasOwnProperty(META_DATATYPES.DT_NAME.name) && schema.hasOwnProperty(META_DATATYPES.DT_SURNAME.name) &&
             schema.hasOwnProperty(DATATYPES.DT_LATITUDE.name) && schema.hasOwnProperty(DATATYPES.DT_LONGITUDE.name)){
                 let privacyBreach = {};
-                privacyBreach[META_DATATYPES.DT_NAME.name] = {};
-                privacyBreach[META_DATATYPES.DT_SURNAME.name] = {};
-                privacyBreach[META_DATATYPES.DT_LATITUDE.name] = {};
-                privacyBreach[META_DATATYPES.DT_LONGITUDE.name] = {};
+                privacyBreach.breach = {};
+                privacyBreach.breach[META_DATATYPES.DT_NAME.name] = {};
+                privacyBreach.breach[META_DATATYPES.DT_SURNAME.name] = {};
+                privacyBreach.breach[META_DATATYPES.DT_LATITUDE.name] = {};
+                privacyBreach.breach[META_DATATYPES.DT_LONGITUDE.name] = {};
 
-                privacyBreach[META_DATATYPES.DT_NAME.name].columnKey = schema[META_DATATYPES.DT_NAME.name];
-                privacyBreach[META_DATATYPES.DT_SURNAME.name].columnKey = schema[META_DATATYPES.DT_SURNAME.name];
-                privacyBreach[META_DATATYPES.DT_LATITUDE.name].columnKey = schema[META_DATATYPES.DT_LATITUDE.name];
-                privacyBreach[META_DATATYPES.DT_LONGITUDE.name].columnKey = schema[META_DATATYPES.DT_LONGITUDE.name];
+                privacyBreach.breach[META_DATATYPES.DT_NAME.name].columnKey = schema[META_DATATYPES.DT_NAME.name];
+                privacyBreach.breach[META_DATATYPES.DT_SURNAME.name].columnKey = schema[META_DATATYPES.DT_SURNAME.name];
+                privacyBreach.breach[META_DATATYPES.DT_LATITUDE.name].columnKey = schema[META_DATATYPES.DT_LATITUDE.name];
+                privacyBreach.breach[META_DATATYPES.DT_LONGITUDE.name].columnKey = schema[META_DATATYPES.DT_LONGITUDE.name];
+                privacyBreach.warning = messages['contentPrivacyBreach_NAME_SURNAME_LAT_LONG'];
                 report.push(privacyBreach);
         }
         if(schema.hasOwnProperty(META_DATATYPES.DT_NAME.name) && schema.hasOwnProperty(META_DATATYPES.DT_SURNAME.name) && schema.hasOwnProperty(DATATYPES.DT_ADDRESS.name)){
             let privacyBreach = {};
-            privacyBreach[META_DATATYPES.DT_NAME.name] = {};
-            privacyBreach[META_DATATYPES.DT_SURNAME.name] = {};
-            privacyBreach[META_DATATYPES.DT_ADDRESS.name] = {};
+            privacyBreach.breach = {};
+            privacyBreach.breach[META_DATATYPES.DT_NAME.name] = {};
+            privacyBreach.breach[META_DATATYPES.DT_SURNAME.name] = {};
+            privacyBreach.breach[META_DATATYPES.DT_ADDRESS.name] = {};
 
-            privacyBreach[META_DATATYPES.DT_NAME.name].columnKey = schema[META_DATATYPES.DT_NAME.name];
-            privacyBreach[META_DATATYPES.DT_SURNAME.name].columnKey = schema[META_DATATYPES.DT_SURNAME.name];
-            privacyBreach[META_DATATYPES.DT_ADDRESS.name].columnKey = schema[META_DATATYPES.DT_ADDRESS.name];
+            privacyBreach.breach[META_DATATYPES.DT_NAME.name].columnKey = schema[META_DATATYPES.DT_NAME.name];
+            privacyBreach.breach[META_DATATYPES.DT_SURNAME.name].columnKey = schema[META_DATATYPES.DT_SURNAME.name];
+            privacyBreach.breach[META_DATATYPES.DT_ADDRESS.name].columnKey = schema[META_DATATYPES.DT_ADDRESS.name];
+            privacyBreach.warning = messages['contentPrivacyBreach_NAME_SURNAME_ADDRESS'];
             report.push(privacyBreach);
         }
         if(schema.hasOwnProperty(META_DATATYPES.DT_NAME.name) && schema.hasOwnProperty(META_DATATYPES.DT_SURNAME.name) && schema.hasOwnProperty(DATATYPES.DT_RELIGION.name)){
             let privacyBreach = {};
-            privacyBreach[META_DATATYPES.DT_NAME.name] = {};
-            privacyBreach[META_DATATYPES.DT_SURNAME.name]  = {};
-            privacyBreach[META_DATATYPES.DT_RELIGION.name]  = {};
+            privacyBreach.breach = {};
+            privacyBreach.breach[META_DATATYPES.DT_NAME.name] = {};
+            privacyBreach.breach[META_DATATYPES.DT_SURNAME.name]  = {};
+            privacyBreach.breach[META_DATATYPES.DT_RELIGION.name]  = {};
 
-            privacyBreach[META_DATATYPES.DT_NAME.name].columnKey = schema[META_DATATYPES.DT_NAME.name];
-            privacyBreach[META_DATATYPES.DT_SURNAME.name].columnKey = schema[META_DATATYPES.DT_SURNAME.name];
-            privacyBreach[META_DATATYPES.DT_RELIGION.name].columnKey = schema[META_DATATYPES.DT_RELIGION.name];
+            privacyBreach.breach[META_DATATYPES.DT_NAME.name].columnKey = schema[META_DATATYPES.DT_NAME.name];
+            privacyBreach.breach[META_DATATYPES.DT_SURNAME.name].columnKey = schema[META_DATATYPES.DT_SURNAME.name];
+            privacyBreach.breach[META_DATATYPES.DT_RELIGION.name].columnKey = schema[META_DATATYPES.DT_RELIGION.name];
+            privacyBreach.warning = messages['contentPrivacyBreach_NAME_SURNAME_RELIGION'];
             report.push(privacyBreach);
         }
         if(schema.hasOwnProperty(META_DATATYPES.DT_CF.name) && schema.hasOwnProperty(DATATYPES.DT_ADDRESS.name)){
             let privacyBreach = {};
-            privacyBreach[META_DATATYPES.DT_CF.name] = {};
-            privacyBreach[META_DATATYPES.DT_ADDRESS.name] = {};
+            privacyBreach.breach = {};
+            privacyBreach.breach[META_DATATYPES.DT_CF.name] = {};
+            privacyBreach.breach[META_DATATYPES.DT_ADDRESS.name] = {};
 
-            privacyBreach[META_DATATYPES.DT_CF.name].columnKey = schema[META_DATATYPES.DT_CF.name];
-            privacyBreach[META_DATATYPES.DT_ADDRESS.name].columnKey = schema[META_DATATYPES.DT_ADDRESS.name];
+            privacyBreach.breach[META_DATATYPES.DT_CF.name].columnKey = schema[META_DATATYPES.DT_CF.name];
+            privacyBreach.breach[META_DATATYPES.DT_ADDRESS.name].columnKey = schema[META_DATATYPES.DT_ADDRESS.name];
+            privacyBreach.warning = messages['contentPrivacyBreach_CF_ADDRESS'];
             report.push(privacyBreach);
         }
         if(schema.hasOwnProperty(META_DATATYPES.DT_CF.name) && schema.hasOwnProperty(DATATYPES.DT_RELIGION.name)){
             let privacyBreach = {};
-            privacyBreach[META_DATATYPES.DT_CF.name] = {};
-            privacyBreach[META_DATATYPES.DT_RELIGION.name] = {};
+            privacyBreach.breach = {};
+            privacyBreach.breach[META_DATATYPES.DT_CF.name] = {};
+            privacyBreach.breach[META_DATATYPES.DT_RELIGION.name] = {};
 
-            privacyBreach[META_DATATYPES.DT_CF.name].columnKey = schema[META_DATATYPES.DT_CF.name];
-            privacyBreach[META_DATATYPES.DT_RELIGION.name].columnKey = schema[META_DATATYPES.DT_RELIGION.name];
+            privacyBreach.breach[META_DATATYPES.DT_CF.name].columnKey = schema[META_DATATYPES.DT_CF.name];
+            privacyBreach.breach[META_DATATYPES.DT_RELIGION.name].columnKey = schema[META_DATATYPES.DT_RELIGION.name];
+            privacyBreach.warning = messages['contentPrivacyBreach_CF_RELIGION'];
             report.push(privacyBreach);
         }
         if(schema.hasOwnProperty(META_DATATYPES.DT_CF.name) && schema.hasOwnProperty(DATATYPES.DT_LAT_LONG.name)){
             let privacyBreach = {};
-            privacyBreach[META_DATATYPES.DT_CF.name] = {};
-            privacyBreach[META_DATATYPES.DT_LAT_LONG.name] = {};
+            privacyBreach.breach = {};
+            privacyBreach.breach[META_DATATYPES.DT_CF.name] = {};
+            privacyBreach.breach[META_DATATYPES.DT_LAT_LONG.name] = {};
 
-            privacyBreach[META_DATATYPES.DT_CF.name].columnKey = schema[META_DATATYPES.DT_CF.name];
-            privacyBreach[META_DATATYPES.DT_LAT_LONG.name].columnKey = schema[META_DATATYPES.DT_LAT_LONG.name];
+            privacyBreach.breach[META_DATATYPES.DT_CF.name].columnKey = schema[META_DATATYPES.DT_CF.name];
+            privacyBreach.breach[META_DATATYPES.DT_LAT_LONG.name].columnKey = schema[META_DATATYPES.DT_LAT_LONG.name];
+            privacyBreach.warning = messages['contentPrivacyBreach_CF_LAT_LONG'];
             report.push(privacyBreach);
         }
         if(schema.hasOwnProperty(META_DATATYPES.DT_CF.name) &&
             schema.hasOwnProperty(DATATYPES.DT_LATITUDE.name) && schema.hasOwnProperty(DATATYPES.DT_LONGITUDE.name)){
                 let privacyBreach = {};
-                privacyBreach[META_DATATYPES.DT_CF.name] = {};
-                privacyBreach[META_DATATYPES.DT_LATITUDE.name] = {};
-                privacyBreach[META_DATATYPES.DT_LONGITUDE.name] = {};
+                privacyBreach.breach = {};
+                privacyBreach.breach[META_DATATYPES.DT_CF.name] = {};
+                privacyBreach.breach[META_DATATYPES.DT_LATITUDE.name] = {};
+                privacyBreach.breach[META_DATATYPES.DT_LONGITUDE.name] = {};
 
-                privacyBreach[META_DATATYPES.DT_CF.name].columnKey = schema[META_DATATYPES.DT_CF.name];
-                privacyBreach[META_DATATYPES.DT_LATITUDE.name].columnKey = schema[META_DATATYPES.DT_LATITUDE.name];
-                privacyBreach[META_DATATYPES.DT_LONGITUDE.name].columnKey = schema[META_DATATYPES.DT_LONGITUDE.name];
+                privacyBreach.breach[META_DATATYPES.DT_CF.name].columnKey = schema[META_DATATYPES.DT_CF.name];
+                privacyBreach.breach[META_DATATYPES.DT_LATITUDE.name].columnKey = schema[META_DATATYPES.DT_LATITUDE.name];
+                privacyBreach.breach[META_DATATYPES.DT_LONGITUDE.name].columnKey = schema[META_DATATYPES.DT_LONGITUDE.name];
+                privacyBreach.warning = messages['contentPrivacyBreach_CF_LAT_LONG'];
                 report.push(privacyBreach);
         }
 

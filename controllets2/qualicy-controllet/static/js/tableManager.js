@@ -1,9 +1,10 @@
 export default class TableManager {
 
-    constructor(ranking_table, menu, modal) {
+    constructor(ranking_table, menu, qualicyModal, columnModal) {
         this.data = [];
         this.ranking_table = ranking_table;
-        this.modal = modal;
+        this.qualicyModal = qualicyModal;
+        this.columnStatsModal = columnModal;
         this.menu = menu;
         this.currentTypos = menu.querySelector('#currentTypo');
         this.currentNullCell = menu.querySelector('#currentNull');
@@ -426,13 +427,12 @@ export default class TableManager {
             let structuralPrivacyBreach = structuralPrivacyBreachStats[index];
 
             let div = document.createElement("DIV");
-            let textnode = document.createTextNode(Object.keys(structuralPrivacyBreach).join(' '));
-
+            let textnode = document.createTextNode(Object.keys(structuralPrivacyBreach.breach).join(' '));
             div.appendChild(textnode);
 
             let list_of_arrays = [];
-            for(let key in structuralPrivacyBreach){
-                let value = structuralPrivacyBreach[key];
+            for(let key in structuralPrivacyBreach.breach){
+                let value = structuralPrivacyBreach.breach[key];
                 list_of_arrays.push(value.columnKey);
             }
 
@@ -449,8 +449,12 @@ export default class TableManager {
             }
             div.appendChild(ul);
 
+            textnode = document.createTextNode(structuralPrivacyBreach.warning);
+            div.appendChild(textnode);
+
             this.currentStructuralPrivacyBreach.appendChild(div);
         }
+
     }
 
     fillInCellStats = function(annotatedDataset){
@@ -458,17 +462,17 @@ export default class TableManager {
 
         let _self = this;
         this.dataTable.on('click', 'tbody td', function(){
-            $(_self.modal).removeClass('qualicy-modal-close');
-            $(_self.modal).addClass('qualicy-modal-open');
+            $(_self.qualicyModal).removeClass('modal-close');
+            $(_self.qualicyModal).addClass('modal-open');
 
             let row = _self.dataTable.cell(this).index().row;
             let column = _self.dataTable.cell(this).index().column;
 
             let cellAnnotations = _self.annotatedDataset[row][column];
 
-            _self.modal.querySelector('#modal-value').innerText = cellAnnotations.value;
-            _self.modal.querySelector('#modal-datatype').innerText = cellAnnotations.datatype.name;
-            _self.modal.querySelector('#modal-metadatatype').innerText = cellAnnotations.metatype.name;
+            _self.qualicyModal.querySelector('#modal-value').innerText = cellAnnotations.value;
+            _self.qualicyModal.querySelector('#modal-datatype').innerText = cellAnnotations.datatype.name;
+            _self.qualicyModal.querySelector('#modal-metadatatype').innerText = cellAnnotations.metatype.name;
 
             if('typosCorrection' in cellAnnotations){
                 let ul = document.createElement("UL");
@@ -484,11 +488,11 @@ export default class TableManager {
                     ul.appendChild(li);
 
                 }
-                _self.modal.querySelector('#modal-typos').innerHTML = "";
-                _self.modal.querySelector('#modal-typos').appendChild(ul);
+                _self.qualicyModal.querySelector('#modal-typos').innerHTML = "";
+                _self.qualicyModal.querySelector('#modal-typos').appendChild(ul);
             }
             else
-                _self.modal.querySelector('#modal-typos').innerHTML = '<i class="fas fa-check"></i>';
+                _self.qualicyModal.querySelector('#modal-typos').innerHTML = '<i class="fas fa-check"></i>';
 
             if('contentPrivacyBreaches' in cellAnnotations){
                 let ul = document.createElement("UL");
@@ -504,23 +508,26 @@ export default class TableManager {
                     ul.appendChild(li);
 
                 }
-                _self.modal.querySelector('#modal-contentPrivacyBreach').innerHTML = "";
-                _self.modal.querySelector('#modal-contentPrivacyBreach').appendChild(ul);
+                _self.qualicyModal.querySelector('#modal-contentPrivacyBreach').innerHTML = "";
+                _self.qualicyModal.querySelector('#modal-contentPrivacyBreach').appendChild(ul);
             }
             else
-                _self.modal.querySelector('#modal-contentPrivacyBreach').innerHTML = '<i class="fas fa-check"></i>';
+                _self.qualicyModal.querySelector('#modal-contentPrivacyBreach').innerHTML = '<i class="fas fa-check"></i>';
 
         });
     }
 
-    fillInColumnStats = function(columnStats){
+    fillInColumnStats = function(columnStats, structuralPrivacyBreaches){
         this.columnStats = columnStats;
 
         for(let columnName in this.columnStats.COLUMN_STATS){
             let className = "";
 
-
             let columnData = this.columnStats.COLUMN_STATS[columnName];
+
+            if(this.isColumnInvolvedInStructuralPrivacyBreach(columnData.metadatatype, structuralPrivacyBreaches))
+                className += " structuralPrivacyBreach";
+
             if(columnData.datatypeConfidence<1 || columnData.completeness<1){
                 className += ' datatypeInconsistency';
             }
@@ -533,19 +540,24 @@ export default class TableManager {
                     $(this.dataTable.column(columnName+":name").header()).html()+
                     '<span class="columns_warnings'+className+'"></span>');
             }
-        }
-    }
 
-    cartesianProductOf = function() {
-        return Array.prototype.reduce.call(arguments, function(a, b) {
-            let ret = [];
-            a.forEach(function(a) {
-                b.forEach(function(b) {
-                    ret.push(a.concat([b]));
-                });
+            let _self = this;
+
+            $(this.dataTable.column(columnName+":name").header()).on('click', function(){
+                $(_self.columnStatsModal).removeClass('modal-close');
+                $(_self.columnStatsModal).addClass('modal-open');
+
+                _self.columnStatsModal.querySelector('#modal-column-title').innerText = columnName;
+                _self.columnStatsModal.querySelector('#modal-column-datatype').innerText = columnData.datatype;
+                _self.columnStatsModal.querySelector('#modal-column-type-homogeneity').innerText = columnData.datatypeConfidence;
+
+                _self.columnStatsModal.querySelector('#modal-column-metadatatype').innerText = columnData.metadatatype;
+                _self.columnStatsModal.querySelector('#modal-column-metadatatype-homogeneity').innerText = columnData.metadatatypeConfidence;
+
+                _self.columnStatsModal.querySelector('#modal-column-completeness').innerText = columnData.completeness;
+                _self.columnStatsModal.querySelector('#modal-column-null').innerText = columnData.null_values;
             });
-            return ret;
-        }, [[]]);
+        }
     }
 
     cartesianProduct = function(arr)
@@ -557,5 +569,15 @@ export default class TableManager {
                 })
             }).reduce(function(a,b){ return a.concat(b) },[])
         }, [[]])
+    }
+
+    isColumnInvolvedInStructuralPrivacyBreach(columnMetadatatype, structuralPrivacyBreaches){
+        debugger
+        for(let i=0; i<structuralPrivacyBreaches.length; i++){
+            let breach = structuralPrivacyBreaches[i].breach;
+            if(columnMetadatatype in breach)
+                return true;
+        }
+        return false;
     }
 }

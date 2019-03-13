@@ -37,8 +37,9 @@ export default class QualicyControllet extends HTMLElement {
         //datatable inizialization
         let ranking_table = this.shadow_root.querySelector('#ranking-list-datatable');
         let menu = this.shadow_root.querySelector('#qualicy-menu');
-        this.modal = this.shadow_root.querySelector('#qualicy-modal');
-        this.tableManager = new TableManager(ranking_table, menu, this.modal);
+        this.qualicyModal= this.shadow_root.querySelector('#qualicy-modal');
+        this.columnStatsModal= this.shadow_root.querySelector('#columnStats-modal');
+        this.tableManager = new TableManager(ranking_table, menu, this.qualicyModal, this.columnStatsModal);
 
         this.tableManager.initDataTable(this.data, this.data_url);
 
@@ -101,9 +102,14 @@ export default class QualicyControllet extends HTMLElement {
     modalInitialization(){
         let _self = this;
 
-        this.shadow_root.querySelector('.close-button').addEventListener('click', function(){
-            $(_self.modal).removeClass('qualicy-modal-open');
-            $(_self.modal).addClass('qualicy-modal-close');
+        this.shadow_root.querySelector('#qualicy-close-button').addEventListener('click', function(){
+            $(_self.qualicyModal).removeClass('modal-open');
+            $(_self.qualicyModal).addClass('modal-close');
+        });
+
+        this.shadow_root.querySelector('#columnStats-close-button').addEventListener('click', function(){
+            $(_self.columnStatsModal).removeClass('modal-open');
+            $(_self.columnStatsModal).addClass('modal-close');
         });
     }
 
@@ -299,7 +305,7 @@ export default class QualicyControllet extends HTMLElement {
         this.tableManager.fillInContentPrivacyBreachesStats(this.contentPrivacyBreaches);
         this.tableManager.fillInStructuralPrivacyBreachesStats(this.structuralPrivacyBreaches);
         this.tableManager.fillInCellStats(this.annotatedDataset);
-        this.tableManager.fillInColumnStats(this.reportColumnStats);
+        this.tableManager.fillInColumnStats(this.reportColumnStats, this.structuralPrivacyBreaches);
     }
 };
 

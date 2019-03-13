@@ -80,7 +80,7 @@ th .metadatatypeInconsistency, td.metadatatypeInconsistency::after{
     border-right-color: #9c27b0 !important;
 }
 
-td.contentPrivacyBreach::after{
+th .structuralPrivacyBreach, td.contentPrivacyBreach::after{
     border-color: #e0e0e0;
     border-bottom-color: #ff9800 !important;
 }
@@ -259,10 +259,10 @@ td.focus{
     to {opacity: 1;}
 }
 
-.qualicy-modal-open{
+.modal-open{
     display:block !important;
 }
 
-.qualicy-modal-close{
+.modal-close{
     display:none;
 }
