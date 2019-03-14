@@ -433,7 +433,7 @@ export default class TableManager {
             let list_of_arrays = [];
             for(let key in structuralPrivacyBreach.breach){
                 let value = structuralPrivacyBreach.breach[key];
-                list_of_arrays.push(value.columnKey);
+                list_of_arrays.push(value);
             }
 
             let list_of_all_the_combinations = this.cartesianProduct(list_of_arrays);
@@ -556,6 +556,34 @@ export default class TableManager {
 
                 _self.columnStatsModal.querySelector('#modal-column-completeness').innerText = columnData.completeness;
                 _self.columnStatsModal.querySelector('#modal-column-null').innerText = columnData.null_values;
+
+                let div = _self.columnStatsModal.querySelector('#modal-structuralPrivacyBreach');
+                div.innerHTML = "";
+                for(let i=0; i<structuralPrivacyBreaches.length; i++){
+                    let breach = structuralPrivacyBreaches[i].breach;
+                    if(columnData.metadatatype in breach){
+                        debugger
+                        let list_of_contentBreaches = [];
+
+                        for(let key in breach){
+                            let value = breach[key];
+                            if(value.includes(columnName)){
+                                list_of_contentBreaches.push(Object.keys(breach));
+                            }
+                        }
+
+                        let ul = document.createElement("UL");
+                        for(let i=0; i<list_of_contentBreaches.length; i++) {
+                            let li = document.createElement("LI");
+                            let textnode = document.createTextNode(list_of_contentBreaches[i].join(' '));
+
+                            li.appendChild(textnode);
+                            ul.appendChild(li);
+
+                        }
+                        div.appendChild(ul);
+                    }
+                }
             });
         }
     }
@@ -572,7 +600,6 @@ export default class TableManager {
     }
 
     isColumnInvolvedInStructuralPrivacyBreach(columnMetadatatype, structuralPrivacyBreaches){
-        debugger
         for(let i=0; i<structuralPrivacyBreaches.length; i++){
             let breach = structuralPrivacyBreaches[i].breach;
             if(columnMetadatatype in breach)
