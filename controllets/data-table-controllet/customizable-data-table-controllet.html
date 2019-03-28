@@ -362,28 +362,41 @@
                     var allData = this.data;
                     this.data = allData[0];
                     this.addictionalInfo = allData[1];
-                    if(this.data.length>0)
-                      this.oldsetData(this.data);
-                    else if(this.addictionalInfo != null && this.addictionalInfo.length>0)
+                    if(this.addictionalInfo != null)
                         this.setData(this.addictionalInfo);
+                    else if(this.data.length>0)
+                        this.oldsetData(this.data);
+
                 }
 
 
             },
 
             _translate : function(){
-                this.$.selected_data.innerHTML = ln["selectedData_" + ln["localization"]];
+                /*this.$.selected_data.innerHTML = ln["selectedData_" + ln["localization"]];
 
                 this.$.showing.innerHTML = ln["showing_" + ln["localization"]];
                 this.$.to.innerHTML = ln["to_" + ln["localization"]];
                 this.$.of.innerHTML = ln["of_" + ln["localization"]];
                 this.$.rows.innerHTML = ln["rows_" + ln["localization"]];
 
-                this.$.filter.setAttribute("label", ln["search_" + ln["localization"]]);
+                this.$.filter.setAttribute("label", ln["search_" + ln["localization"]]);*/
+
+                this.$.selected_data.innerHTML = ln["selectedData_" + parent.ODE.user_language];
+
+                this.$.showing.innerHTML = ln["showing_" + parent.ODE.user_language];
+                this.$.to.innerHTML = ln["to_" + parent.ODE.user_language];
+                this.$.of.innerHTML = ln["of_" + parent.ODE.user_language];
+                this.$.rows.innerHTML = ln["rows_" + parent.ODE.user_language];
+
+                this.$.filter.setAttribute("label", ln["search_" + parent.ODE.user_language]);
             },
 
-            _type : function() {return ln["type_" + ln["localization"]];},
-            _warning : function() {return ln["warning_" + ln["localization"]];},
+            //_type : function() {return ln["type_" + ln["localization"]];},
+            //_warning : function() {return ln["warning_" + ln["localization"]];},
+
+            _type : function() {return ln["type_" + parent.ODE.user_language];},
+            _warning : function() {return ln["warning_" + parent.ODE.user_language];},
 
             setData : function(reportView) {
 
@@ -427,7 +440,7 @@
             oldsetData : function(data) {
                 var converter = new DataTypeConverter();
 
-                var result = converter.inferJsonDataType(data, ["*"], { language: ln["localization"] } );
+                var result = converter.inferJsonDataType(data, ["*"], { language: parent.ODE.user_language } );
                 result = converter.cast(result);
                 this.fields = ArrayUtils.toFieldsArray(result.types);
                 this.data = result.dataset;
