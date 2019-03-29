@@ -45,7 +45,7 @@ ln["last_version_it"] = "Ultima versione";
 ln["open_it"] = "Apri";
 ln["download_csv_it"] = "Scarica CSV";
 ln["copy_link_it"] = "Copia link";
-ln["download_docs_it"] = "Download documento";
+ln["download_docs_it"] = "Scaraica note";
 
 /******** fr ********/
 
