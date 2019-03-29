@@ -167,13 +167,13 @@ span#ajax_error {
     right: 0;
     bottom: 0;
     height: 24px;
-    width: 96px;
+    width: 64px;
 
     display: flex;
     flex-direction: row;
 }
 
-.social .facebook, .social .twitter, .social .googleplus {
+.social .facebook, .social .twitter {
     height: 24px;
     width: 24px;
     cursor: pointer;
@@ -186,7 +186,7 @@ span#ajax_error {
     cursor: pointer;
 }
 
-.social .facebook:hover, .social .twitter:hover, .social .googleplus:hover {
+.social .facebook:hover, .social .twitter:hover {
     opacity: 1;
 }
 
@@ -196,10 +196,6 @@ span#ajax_error {
 
 .twitter {
     color: #55ACEE;
-}
-
-.googleplus{
-    color: #DC4E41;
 }
 
 .instagram {
@@ -336,7 +332,7 @@ span#ajax_error {
     text-align: center;
 }
 
-#save_as-container .action span {
+#save_as-container .action span#myspace {
     font-style: italic;
 }
 
@@ -410,7 +406,7 @@ span#ajax_error {
     margin-left: 8px;
 }
 
-.export_options .twitter, .export_options .facebook, .export_options .googleplus {
+.export_options .twitter, .export_options .facebook {
     border: none;
     margin: 0;
     padding: 0;
