@@ -1,4 +1,5 @@
-import {importModule} from '../lib/vendors/import_polyfill/import_polyfill.js'
+import {base_datalet_ln} from '../../locales/base_datalet_ln.js';
+import {importModule} from '../lib/vendors/import_polyfill/import_polyfill.js';
 
 export default class BaseDatalet extends HTMLElement {
 
@@ -13,6 +14,7 @@ export default class BaseDatalet extends HTMLElement {
 
         // Create a Shadow DOM using our template
         this.shadow_root = this.attachShadow({mode: 'open'}); // con mode open è possibile accedere agli elementi DOM all'interno dello shadow DOM
+
     }
 
     connectedCallback() {
@@ -52,6 +54,9 @@ export default class BaseDatalet extends HTMLElement {
 
         //SET EXPORT MENU
         this.set_export_menu();
+
+        this.translate();
+
     }
 
     attributeChangedCallback() {
@@ -101,8 +106,6 @@ export default class BaseDatalet extends HTMLElement {
             if (!this.cache)
             {
                 this.shadow_root.querySelector('#live').classList.remove("cache");
-                this.shadow_root.querySelector('#live').innerHTML = "LIVE";
-                this.shadow_root.querySelector('#live').setAttribute("data-balloon", "Data is live");
 
                 let json_results = await this.requestData(this.data_url);
                 data = this.selectData(json_results, this.data_url);
@@ -271,7 +274,7 @@ export default class BaseDatalet extends HTMLElement {
 
         this.shadow_root.querySelector('#facebook').addEventListener('click', (e) => {this.share_on_fb(e)});
         this.shadow_root.querySelector('#twitter').addEventListener('click', (e) => {this.share_on_twitter(e)});
-        this.shadow_root.querySelector('#googleplus').addEventListener('click', (e) => {this.share_on_google(e)});
+        //this.shadow_root.querySelector('#googleplus').addEventListener('click', (e) => {this.share_on_google(e)});
     }
 
     /* LISTENER */
@@ -291,9 +294,6 @@ export default class BaseDatalet extends HTMLElement {
     }
 
     copy_html() {
-        let embed = this.shadow_root.querySelector('#embed');
-        embed.setAttribute("data-balloon", "Copied");
-        setTimeout(function(){ embed.setAttribute("data-balloon", "Click to Copy HTML"); }, 3000);
 
         let html_obj = this.get_html();
         let datalet = (html_obj.script + html_obj.datalet_definition + html_obj.component);
@@ -312,10 +312,6 @@ export default class BaseDatalet extends HTMLElement {
     }
 
     copy_link() {
-        let link = this.shadow_root.querySelector('#link');
-        link.setAttribute("data-balloon", "Copied");
-        setTimeout(function(){link.setAttribute("data-balloon", "Click to Copy Link"); }, 3000);
-
         let datalet_id = this.get_datalet_id();
         let base_url = ODE.ow_url_home;
         let landing_page_url = base_url + 'datalet/' + datalet_id;
@@ -755,5 +751,80 @@ export default class BaseDatalet extends HTMLElement {
         window.dispatchEvent(new Event('resize'));
     }
 
-};
+    translate() {
+        let ln = "en";
 
+        try {
+            if(typeof (ODE) === 'undefined') //in Agora
+                ln = (navigator.language || navigator.userLanguage).split('-')[0];
+
+            if (ODE && ODE.user_language)
+                ln = ODE.user_language;
+            else if (parent && parent.ODE && parent.ODE.user_language)
+                ln = parent.ODE.user_language;
+            else
+                ln = (navigator.language || navigator.userLanguage).split('-')[0];
+
+            if(['en', 'it', 'fr', 'nl', 'es', 'cn'].indexOf(ln) == -1)
+                ln = 'en';
+
+            if(ln == 'es')
+                ln = 'es-ES';
+        }catch (e){}
+
+        //String Internationalization
+        let save_as = this.shadow_root.querySelector('#export_menu');
+        save_as.setAttribute("data-balloon", base_datalet_ln["export_SaveAs_" + ln]);
+
+
+        let copy_link = this.shadow_root.querySelector('#link');
+        copy_link.setAttribute("data-balloon", base_datalet_ln["export_Click_to_Copy_Link_" + ln]);
+        copy_link.setAttribute("data-balloon-pos", "down");
+
+        let embed = this.shadow_root.querySelector('#embed');
+        embed.setAttribute("data-balloon", base_datalet_ln["export_Click_to_Copy_HTML_" + ln]);
+        embed.setAttribute("data-balloon-pos", "down");
+
+        let fullscreen = this.shadow_root.querySelector('#fullscreen');
+        fullscreen.setAttribute("data-balloon", base_datalet_ln["export_Fullscreen_" + ln]);
+        fullscreen.setAttribute("data-balloon-pos", "down");
+
+        let save_as_image = this.shadow_root.querySelector('#save_as_image');
+        save_as_image.innerHTML = base_datalet_ln["export_Save_As_Image_" + ln];
+
+        let save_as_doc = this.shadow_root.querySelector('#save_as_doc');
+        save_as_doc.innerHTML = base_datalet_ln["export_Save_as_Document_" + ln];
+
+        let save_as_full_dataset = this.shadow_root.querySelector('#save_as_full_dataset');
+        save_as_full_dataset.innerHTML = base_datalet_ln["export_Save_Full_Dataset_" + ln];
+
+        let save_as_filtered_dataset = this.shadow_root.querySelector('#save_as_filtered_dataset');
+        save_as_filtered_dataset.innerHTML = base_datalet_ln["export_Save_Filtered_Dataset_" + ln];
+
+        let save_in = this.shadow_root.querySelector('#save_in');
+        save_in.innerHTML = base_datalet_ln["export_Save_in_" + ln];
+        let myspace = this.shadow_root.querySelector('#myspace');
+        myspace.innerHTML = base_datalet_ln["export_My_Space_" + ln];
+
+
+        let preview_width = this.shadow_root.querySelector("#Width_text_id");
+        preview_width.innerHTML = base_datalet_ln["export_preview_width_" + ln];
+
+        let preview_height = this.shadow_root.querySelector("#Height_text_id");
+        preview_height.innerHTML = base_datalet_ln["export_preview_height_" +ln];
+
+        let preview_custom = this.shadow_root.querySelector("#Custom_text_id");
+        preview_custom.innerHTML = base_datalet_ln["export_custom_" + ln];
+
+        this.shadow_root.querySelector('#live').innerHTML =  base_datalet_ln["live_" + ln];
+        this.shadow_root.querySelector('#live').setAttribute("data-balloon", base_datalet_ln["data_is_live_" + ln]);
+
+        let link = this.shadow_root.querySelector('#link');
+        link.setAttribute("data-balloon", base_datalet_ln["export_copied_" +ln]);
+
+        setTimeout(function(){link.setAttribute("data-balloon", base_datalet_ln["export_Click_to_Copy_Link_" + ln]); }, 3000);
+
+        embed.setAttribute("data-balloon", base_datalet_ln["export_copied_" + ln]);
+
+    }
+};
