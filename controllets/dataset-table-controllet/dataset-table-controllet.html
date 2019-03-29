@@ -498,7 +498,7 @@
                     data: {room_id : e.target.parentElement.attributes["room_id"].value, version : e.target.parentElement.attributes["version"].value},
                     dataType: "json",
                     success: function(e){
-                        var arrData = e;
+                        var arrData = e.records;
                         var row = "";
                         var CSV = "";
 
