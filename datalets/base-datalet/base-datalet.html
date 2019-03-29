@@ -1,5 +1,6 @@
 <link rel="stylesheet" type="text/css" href="./static/css/all.min.css">
 
+
 <template id="base-datalet">
 
     <!-- CSS DEPENDENCY -->
@@ -30,26 +31,26 @@
         </div>
 
         <div id="menu" class="menu">
-            <div id="export_menu" data-balloon="Save As..." data-balloon-pos="down"><i class="fas fa-download"></i></div>
-            <div id="link" data-balloon="Click to Copy Link" data-balloon-pos="down"><i class="fas fa-link"></i></div>
-            <div id="embed" data-balloon="Click to Copy HTML" data-balloon-pos="down"><i class="fas fa-code"></i></div>
-            <div id="fullscreen" data-balloon="Fullscreen" data-balloon-pos="down"><i class="fas fa-expand"></i></div>
+            <div id="export_menu"  data-balloon-pos="down"><i class="fas fa-download"></i></div>
+            <div id="link" data-ballono-pos="down"><i class="fas fa-link"></i></div>
+            <div id="embed" data-balloon-pos="down"><i class="fas fa-code"></i></div>
+            <div id="fullscreen"  data-balloon-pos="down"><i class="fas fa-expand"></i></div>
         </div>
 
         <div id="social" class="social">
             <div id="facebook" class="facebook"><i class="fab fa-facebook-square"></i></div>
             <div id="twitter" class="twitter"><i class="fab fa-twitter-square"></i></div>
-            <div id="googleplus" class="googleplus"><i class="fab fa-google-plus-square"></i></div>
+            <!--div id="googleplus" class="googleplus"><i class="fab fa-google-plus-square"></i></div-->
         </div>
 
         <div id="save_as-placeholder" class="placeholder">
             <div id="save_as-container" class="container">
                 <div id="save_as-close" class="close">&times;</div>
-                <div class="action" id="img-action"><i class="fas fa-file-image"></i> Save as Image (.png)</div>
-                <div class="action" id="doc-action"><i class="fas fa-file-alt"></i> Save as Document (.docx)</div>
-                <div class="action" id="csv-action"><i class="fas fa-file-csv"></i> Save Full Dataset (.csv)</div>
-                <div class="action" id="csv_filtered-action"><i class="fas fa-filter"></i> Save Filtered Dataset (.csv)</div>
-                <div class="action" id="myspace-action"><i class="fas fa-space-shuttle"></i> Save in <span>My Space</span></div><!--fa-user-astronaut-->
+                <div class="action" id="img-action"><i class="fas fa-file-image"></i><span id="save_as_image"></span> </div>
+                <div class="action" id="doc-action"><i class="fas fa-file-alt"></i> <span id="save_as_doc"></span> </div>
+                <div class="action" id="csv-action"><i class="fas fa-file-csv"></i> <span id="save_as_full_dataset"></span></div>
+                <div class="action" id="csv_filtered-action"><i class="fas fa-filter"></i> <span id="save_as_filtered_dataset"></span></div>
+                <div class="action" id="myspace-action"><i class="fas fa-space-shuttle"></i> <span id="save_in"></span> <span id="myspace"></span></div><!--fa-user-astronaut-->
             </div>
         </div>
 
@@ -66,10 +67,10 @@
             <div id="img-close" class="close">&times;</div>
             <div id="img-preview"></div>
             <div class="export_options">
-                Width (px): <input id="preview_width" placeholder="100%" type="number" />
-                Height (px): <input id="preview_height" placeholder="100%" type="number" />
+                <span id="Width_text_id"> </span>  <input id="preview_width" placeholder="100%" type="number" />
+                <span id="Height_text_id"> </span> <input id="preview_height" placeholder="100%" type="number" />
                 Defaults: <select id="preview_set_default">
-                    <option value="custom">Custom</option>
+                <option value="custom" id="Custom_text_id"></option>
                     <option class="facebook" value="facebook">&#xf082; Facebook</option>
                     <option class="twitter" value="twitter">&#xf081; Twitter</option>
                     <option class="linkedin" value="linkedin">&#xf08c; LinkedIn</option>
@@ -77,6 +78,7 @@
                     <option class="pinterest" value="pinterest">&#xf0d3; Pinterest</option>
                 </select>
                 <button id="preview_export"><i class="fas fa-download"></i> Download</button>
+
             </div>
         </div>
     </div>
