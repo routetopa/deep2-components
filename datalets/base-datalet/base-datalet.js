@@ -1,4 +1,4 @@
-import {base_datalet_ln} from '../../locales/base_datalet_ln.js';
+import {base_datalet_ln} from './static/ln/base-datalet-ln.js';
 import {importModule} from '../lib/vendors/import_polyfill/import_polyfill.js';
 
 export default class BaseDatalet extends HTMLElement {
@@ -56,7 +56,6 @@ export default class BaseDatalet extends HTMLElement {
         this.set_export_menu();
 
         this.translate();
-
     }
 
     attributeChangedCallback() {
@@ -274,7 +273,6 @@ export default class BaseDatalet extends HTMLElement {
 
         this.shadow_root.querySelector('#facebook').addEventListener('click', (e) => {this.share_on_fb(e)});
         this.shadow_root.querySelector('#twitter').addEventListener('click', (e) => {this.share_on_twitter(e)});
-        //this.shadow_root.querySelector('#googleplus').addEventListener('click', (e) => {this.share_on_google(e)});
     }
 
     /* LISTENER */
@@ -294,6 +292,10 @@ export default class BaseDatalet extends HTMLElement {
     }
 
     copy_html() {
+        let that = this;
+        let embed = this.shadow_root.querySelector('#embed');
+        embed.setAttribute("data-balloon", base_datalet_ln["copied_" + this.lang]);
+        setTimeout(function(){ embed.setAttribute("data-balloon", base_datalet_ln["copy_html_" + that.lang]); }, 3000);
 
         let html_obj = this.get_html();
         let datalet = (html_obj.script + html_obj.datalet_definition + html_obj.component);
@@ -312,6 +314,11 @@ export default class BaseDatalet extends HTMLElement {
     }
 
     copy_link() {
+        let that = this;
+        let link = this.shadow_root.querySelector('#link');
+        link.setAttribute("data-balloon", base_datalet_ln["copied_" + this.lang]);
+        setTimeout(function(){link.setAttribute("data-balloon", base_datalet_ln["copy_link_" + that.lang]); }, 3000);
+
         let datalet_id = this.get_datalet_id();
         let base_url = ODE.ow_url_home;
         let landing_page_url = base_url + 'datalet/' + datalet_id;
@@ -583,12 +590,6 @@ export default class BaseDatalet extends HTMLElement {
         window.open(url, "", "width=800,height=300");
     }
 
-    share_on_google() {
-        let google_url = this.create_share_url();
-        let url = 'https://plus.google.com/share?url=' + google_url;
-        window.open(url, "", "width=350,height=500");
-    }
-
     /* TOOLS */
 
     get_datalet_id() {
@@ -755,76 +756,71 @@ export default class BaseDatalet extends HTMLElement {
         let ln = "en";
 
         try {
-            if(typeof (ODE) === 'undefined') //in Agora
-                ln = (navigator.language || navigator.userLanguage).split('-')[0];
-
-            if (ODE && ODE.user_language)
+            if (typeof ODE !== 'undefined' && ODE && ODE.user_language)
                 ln = ODE.user_language;
-            else if (parent && parent.ODE && parent.ODE.user_language)
+            else if (parent && typeof parent.ODE !== 'undefined' && parent.ODE && parent.ODE.user_language)
                 ln = parent.ODE.user_language;
             else
                 ln = (navigator.language || navigator.userLanguage).split('-')[0];
 
-            if(['en', 'it', 'fr', 'nl', 'es', 'cn'].indexOf(ln) == -1)
+            // if(['en', 'it', 'fr', 'nl', 'es', 'cn'].indexOf(ln) == -1) //todo --> add when they are available!
+            if(['en', 'it'].indexOf(ln) == -1)
                 ln = 'en';
 
-            if(ln == 'es')
-                ln = 'es-ES';
-        }catch (e){}
+        }catch (e) {
+            console.log(e);
+        }
 
-        //String Internationalization
+        this.lang = ln;
+
         let save_as = this.shadow_root.querySelector('#export_menu');
-        save_as.setAttribute("data-balloon", base_datalet_ln["export_SaveAs_" + ln]);
-
+        save_as.setAttribute("data-balloon", base_datalet_ln["save_as_" + ln]);
 
         let copy_link = this.shadow_root.querySelector('#link');
-        copy_link.setAttribute("data-balloon", base_datalet_ln["export_Click_to_Copy_Link_" + ln]);
-        copy_link.setAttribute("data-balloon-pos", "down");
+        copy_link.setAttribute("data-balloon", base_datalet_ln["copy_link_" + ln]);
 
         let embed = this.shadow_root.querySelector('#embed');
-        embed.setAttribute("data-balloon", base_datalet_ln["export_Click_to_Copy_HTML_" + ln]);
-        embed.setAttribute("data-balloon-pos", "down");
+        embed.setAttribute("data-balloon", base_datalet_ln["copy_html_" + ln]);
 
         let fullscreen = this.shadow_root.querySelector('#fullscreen');
-        fullscreen.setAttribute("data-balloon", base_datalet_ln["export_Fullscreen_" + ln]);
-        fullscreen.setAttribute("data-balloon-pos", "down");
+        fullscreen.setAttribute("data-balloon", base_datalet_ln["fullscreen_" + ln]);
+
+
 
         let save_as_image = this.shadow_root.querySelector('#save_as_image');
-        save_as_image.innerHTML = base_datalet_ln["export_Save_As_Image_" + ln];
+        save_as_image.innerHTML = base_datalet_ln["image_" + ln];
 
         let save_as_doc = this.shadow_root.querySelector('#save_as_doc');
-        save_as_doc.innerHTML = base_datalet_ln["export_Save_as_Document_" + ln];
+        save_as_doc.innerHTML = base_datalet_ln["document_" + ln];
 
         let save_as_full_dataset = this.shadow_root.querySelector('#save_as_full_dataset');
-        save_as_full_dataset.innerHTML = base_datalet_ln["export_Save_Full_Dataset_" + ln];
+        save_as_full_dataset.innerHTML = base_datalet_ln["full_csv_" + ln];
 
         let save_as_filtered_dataset = this.shadow_root.querySelector('#save_as_filtered_dataset');
-        save_as_filtered_dataset.innerHTML = base_datalet_ln["export_Save_Filtered_Dataset_" + ln];
+        save_as_filtered_dataset.innerHTML = base_datalet_ln["filtered_csv_" + ln];
 
         let save_in = this.shadow_root.querySelector('#save_in');
-        save_in.innerHTML = base_datalet_ln["export_Save_in_" + ln];
+        save_in.innerHTML = base_datalet_ln["save_in_" + ln];
         let myspace = this.shadow_root.querySelector('#myspace');
-        myspace.innerHTML = base_datalet_ln["export_My_Space_" + ln];
+        myspace.innerHTML = base_datalet_ln["my_space_" + ln];
 
 
-        let preview_width = this.shadow_root.querySelector("#Width_text_id");
-        preview_width.innerHTML = base_datalet_ln["export_preview_width_" + ln];
 
-        let preview_height = this.shadow_root.querySelector("#Height_text_id");
-        preview_height.innerHTML = base_datalet_ln["export_preview_height_" +ln];
+        let preview_width = this.shadow_root.querySelector("#label_width");
+        preview_width.innerHTML = base_datalet_ln["width_" + ln];
 
-        let preview_custom = this.shadow_root.querySelector("#Custom_text_id");
-        preview_custom.innerHTML = base_datalet_ln["export_custom_" + ln];
+        let preview_height = this.shadow_root.querySelector("#label_height");
+        preview_height.innerHTML = base_datalet_ln["height_" +ln];
+
+        let preview_presets = this.shadow_root.querySelector("#label_presets");
+        preview_presets.innerHTML = base_datalet_ln["presets_" + ln];
+
+        let preview_download = this.shadow_root.querySelector("#label_download");
+        preview_download.innerHTML = base_datalet_ln["download_" + ln];
+
+
 
         this.shadow_root.querySelector('#live').innerHTML =  base_datalet_ln["live_" + ln];
         this.shadow_root.querySelector('#live').setAttribute("data-balloon", base_datalet_ln["data_is_live_" + ln]);
-
-        let link = this.shadow_root.querySelector('#link');
-        link.setAttribute("data-balloon", base_datalet_ln["export_copied_" +ln]);
-
-        setTimeout(function(){link.setAttribute("data-balloon", base_datalet_ln["export_Click_to_Copy_Link_" + ln]); }, 3000);
-
-        embed.setAttribute("data-balloon", base_datalet_ln["export_copied_" + ln]);
-
     }
 };
