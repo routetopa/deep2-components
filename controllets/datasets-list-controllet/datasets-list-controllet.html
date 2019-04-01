@@ -616,6 +616,7 @@
                         {
                             let resourceUrl = provider.getResourceUrl(p.url, dataset, resourceIndex, datasetId);
                             that.fire("datasets-list-controllet_dataset", { dataset: { url: resourceUrl } });
+                            that.fire("datasets-list-controllet_metadata", { meta: dataset.result });
 
                             var html = provider.getHTMLFormattedMetadata(dataset, resourceIndex, datasetId);
                             that._show_info(html);

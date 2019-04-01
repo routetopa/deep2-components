@@ -148,7 +148,8 @@
                 'filters-controllet_filters': '_allowThirdStep',
                 'aggregators-controllet_aggregators': '_allowThirdStep',
                 'data-ready': '_dataReady',
-                'btnImportFromSPOD.tap': '_importFromSPODAction'
+                'btnImportFromSPOD.tap': '_importFromSPODAction',
+                'datasets-list-controllet_metadata': '_importMetadata'
             },
 
             properties : {
@@ -259,6 +260,10 @@
                     this.$.slider.chevronRight(true);*/
                 }
             },
+
+            _importMetadata : function(e){
+                this.metadata = e.detail.meta;
+            },
             
             _importFromSPODAction: function (event) {
                 var selectedFields = this.$.select_data.getSelectedFields();
@@ -272,7 +277,8 @@
 
                 var dataset = {
                     fields: selectedFields,
-                    data: data
+                    data: data,
+                    metadata: this.metadata
                 };
 
                 this.fire('import-dataset-controllet.doPublish', { dataset: dataset });
