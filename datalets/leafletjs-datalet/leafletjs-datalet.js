@@ -129,13 +129,11 @@ class LeafletDatalet extends BaseDatalet
         //     attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
         // }).addTo(this.map);
 
-        // L.tileLayer.provider('Esri.WorldImagery').addTo(this.map);
-
         let layer = this.getAttribute("layer");
         if(!layer || layer == "")
             layer = "OpenStreetMap";
 
-        L.tileLayer.provider(this.getAttribute("layer")).addTo(this.map);
+        L.tileLayer.provider(layer).addTo(this.map);
 
         let coordinates = [];
         let coordinates_index  = 0;

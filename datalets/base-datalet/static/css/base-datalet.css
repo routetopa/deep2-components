@@ -112,7 +112,7 @@ a:hover {
 span#ajax_error {
     position: absolute;
     top: -34px;
-    right: 0;
+    right: 4px;
 
     padding: 0 4px;
 
