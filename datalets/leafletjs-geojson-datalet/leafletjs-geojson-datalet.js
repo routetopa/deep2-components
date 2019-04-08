@@ -33,16 +33,10 @@ class LeafletGeoJsonDatalet extends BaseDatalet
         {
             let map = L.map(this.shadowRoot.querySelector('#datalet_container')).setView([0, 0], 13, {reset: true});
 
-            // L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            //     maxZoom: 18,
-            //     attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-            // }).addTo(map);
-
-            let layer = this.getAttribute("layer");
-            if(!layer || layer == "")
-                layer = "OpenStreetMap";
-
-            L.tileLayer.provider(layer).addTo(this.map);
+            L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+            }).addTo(map);
 
             L.Icon.Default.imagePath = `${this.baseUri}leafletjs/images/`;
 
