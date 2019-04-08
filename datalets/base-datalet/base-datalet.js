@@ -113,8 +113,6 @@ export default class BaseDatalet extends HTMLElement {
                 this.FCSV = data;
             } else {
                 this.shadow_root.querySelector('#live').classList.add("cache");
-                this.shadow_root.querySelector('#live').innerHTML = "CACHE";
-                this.shadow_root.querySelector('#live').setAttribute("data-balloon", "Click to use live data");
 
                 data = JSON.parse(this.cache);
                 this.FCSV = data;
@@ -160,11 +158,13 @@ export default class BaseDatalet extends HTMLElement {
     add_datalet_info() {
         let datalettitle = this.getAttribute("datalettitle");
         let description = this.getAttribute("description");
-        this.shadow_root.querySelector('#span_title').innerHTML = datalettitle;
-        this.shadow_root.querySelector('#span_description').innerHTML = description;
+        this.shadow_root.querySelector('#datalet_title').innerHTML = datalettitle;
+        this.shadow_root.querySelector('#datalet_title').setAttribute("title", datalettitle);
+        this.shadow_root.querySelector('#datalet_description').innerHTML = description;
+        this.shadow_root.querySelector('#datalet_description').setAttribute("title", description);
 
-        if(datalettitle && datalettitle != "" && description && description != "")
-            this.shadow_root.querySelector('#span_minus').style.display = 'inline';
+        // if(datalettitle && datalettitle != "" && description && description != "")
+        //     this.shadow_root.querySelector('#span_minus').style.display = 'inline';
 
         if (this.data_url) {
             let base_datalet_source = this.shadow_root.querySelector('#base_datalet_source');
@@ -767,7 +767,7 @@ export default class BaseDatalet extends HTMLElement {
             if(['en', 'it'].indexOf(ln) == -1)
                 ln = 'en';
 
-        }catch (e) {
+        } catch (e) {
             console.log(e);
         }
 
@@ -819,8 +819,12 @@ export default class BaseDatalet extends HTMLElement {
         preview_download.innerHTML = base_datalet_ln["download_" + ln];
 
 
-
-        this.shadow_root.querySelector('#live').innerHTML =  base_datalet_ln["live_" + ln];
-        this.shadow_root.querySelector('#live').setAttribute("data-balloon", base_datalet_ln["data_is_live_" + ln]);
+        if(!this.cache) {
+            this.shadow_root.querySelector('#live').innerHTML = base_datalet_ln["live_" + ln];
+            this.shadow_root.querySelector('#live').setAttribute("data-balloon", base_datalet_ln["data_is_live_" + ln]);
+        } else {
+            this.shadow_root.querySelector('#live').innerHTML = base_datalet_ln["cache_" + ln];
+            this.shadow_root.querySelector('#live').setAttribute("data-balloon", base_datalet_ln["disable_cache_" + ln]);
+        }
     }
 };

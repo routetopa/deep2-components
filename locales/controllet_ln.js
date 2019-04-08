@@ -1,4 +1,36 @@
-var ln = [];
+LN = {
+    userLanguage: 'en'
+};
+
+LN.init = function() {
+    try {
+        if (typeof ODE !== 'undefined' && ODE && ODE.user_language)
+            LN.userLanguage = ODE.user_language;
+        else if (parent && typeof parent.ODE !== 'undefined' && parent.ODE && parent.ODE.user_language)
+            LN.userLanguage = parent.ODE.user_language;
+        else
+            LN.userLanguage = (navigator.language || navigator.userLanguage).split('-')[0];
+
+        if(['en', 'it', 'fr', 'nl', 'es', 'cn'].indexOf(LN.userLanguage) == -1)
+            LN.userLanguage = 'en';
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+LN.setUserLanguage = function(ln) {
+    LN.userLanguage = ln;
+};
+
+LN.translate = function(text, ul = LN.userLanguage) {
+    return ln[text+"_"+ul] ? ln[text+"_"+ul] : text+"_"+ul;
+};
+
+(function() {
+    LN.init();
+})();
+
+let ln = [];
 
 ln["localization"] = "en";
 

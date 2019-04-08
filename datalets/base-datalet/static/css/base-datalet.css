@@ -40,6 +40,8 @@ a:hover {
     height: 8px;
     border-bottom: 2px solid #B6B6B6;
     background-color: #ffffff;
+
+    display: var(--base-datalet-visibility, block);
 }
 
 #base_datalet_container > * {
@@ -50,28 +52,45 @@ a:hover {
     color: #212121;
 }
 
-#base_datalet_title_description {
-    width: calc(100% - 104px);
+/*#base_datalet_title_description {*/
+    /**/
+    /*height: 24px;*/
+
+    /*white-space: nowrap;*/
+    /*overflow: hidden;*/
+    /*text-overflow: ellipsis;*/
+/*}*/
+
+#datalet_title, #datalet_description, #datalet_source {
+    width: calc(100% - 108px);
     height: 24px;
 
+    padding-left: 4px;
+}
+
+#datalet_title, #datalet_description {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-#span_title{
+#datalet_title {
     font-weight: 700;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
-#span_description{
-    color: #424242;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+/*#span_title{*/
+    /*font-weight: 700;*/
+    /*white-space: nowrap;*/
+    /*overflow: hidden;*/
+    /*text-overflow: ellipsis;*/
+/*}*/
+
+/*#span_description{*/
+    /*color: #424242;*/
+    /*white-space: nowrap;*/
+    /*overflow: hidden;*/
+    /*text-overflow: ellipsis;*/
+/*}*/
 
 #span_minus {
     display: none;
@@ -100,7 +119,7 @@ span#ajax_error {
 }
 
 #base_datalet_rtp {
-    /*visibility: hidden;*/
+    visibility: hidden;
     display: flex;
     height: 24px;
 }
@@ -136,8 +155,9 @@ span#ajax_error {
 /* cache */
 
 .live {
+    display: inline-block;
     position: relative;
-    top: 5px;
+    /*top: 5px;*/
     left: 8px;
     height: 16px;
     width: 64px;
@@ -159,18 +179,94 @@ span#ajax_error {
     background-color: #9e9e9e;
 }
 
+/* ROUTE-TO-PA */
+
+.routetopa {
+    position: absolute;
+    right: 4px;
+    bottom: 24px;
+
+    height: 24px;
+    line-height: 24px;
+}
+
+.routetopa a {
+    font-size: 10px;
+    color: #9E9E9E;
+}
+
+.routetopa a:hover {
+    color: #00ACC1;
+}
+
+/* MENU */
+
+.menu
+{
+    position: absolute;
+    right: 4px;
+    top: 0;
+    height: 24px;
+
+    display: flex;
+    flex-direction: row;
+
+    width: 104px;
+    /*justify-content: space-between;*/
+    justify-content: flex-end;
+}
+
+.menu i {
+    float: right;
+}
+
+.menu #fullscreen, .menu #export_menu, .menu #embed, .menu #link {
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 20px;
+    padding: 2px;
+    text-align: center;
+
+    margin-left: 2px;
+
+    color: #212121;
+    cursor: pointer;
+}
+
+.menu #embed {
+    font-size: 16px;
+}
+
+.menu #link {
+    font-size: 16px;
+}
+
+.menu #export_menu {
+    font-size: 18px;
+}
+
+.menu #fullscreen:hover, .menu #export_menu:hover, .menu #embed:hover, .menu #link:hover {
+    color: #2196F3;
+}
+
 /* SOCIAL */
 
 .social
 {
     position: absolute;
-    right: 0;
+    right: 4px;
     bottom: 0;
     height: 24px;
     width: 64px;
 
     display: flex;
     flex-direction: row;
+}
+
+.social i {
+    float: right;
 }
 
 .social .facebook, .social .twitter {
@@ -208,53 +304,6 @@ span#ajax_error {
 
 .linkedin {
     color: #0077B5
-}
-
-/* MENU */
-
-.menu
-{
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 24px;
-
-    display: flex;
-    flex-direction: row;
-
-    width: 104px;
-    justify-content: space-between;
-}
-
-.menu #fullscreen, .menu #export_menu, .menu #embed, .menu #link {
-    height: 20px;
-    width: 20px;
-    cursor: pointer;
-    font-size: 20px;
-    line-height: 20px;
-    padding: 2px;
-    text-align: center;
-
-    margin-left: 2px;
-
-    color: #212121;
-    cursor: pointer;
-}
-
-.menu #embed {
-    font-size: 16px;
-}
-
-.menu #link {
-    font-size: 16px;
-}
-
-.menu #export_menu {
-    font-size: 18px;
-}
-
-.menu #fullscreen:hover, .menu #export_menu:hover, .menu #embed:hover, .menu #link:hover {
-    color: #2196F3;
 }
 
 /* FULLSCREEN */

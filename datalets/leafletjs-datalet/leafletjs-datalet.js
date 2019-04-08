@@ -32,6 +32,7 @@ class LeafletDatalet extends BaseDatalet
         //console.log('RENDER - leafletjs-datalet');
 
         await this.import_module('./leafletjs/marker_cluster/dist/leaflet.markercluster.js');
+        await this.import_module('./leafletjs/providers/leaflet-providers.js');
 
         //let map;
         let categories;
@@ -123,11 +124,18 @@ class LeafletDatalet extends BaseDatalet
             this.map = L.map(this.shadowRoot.querySelector('#datalet_container')).setView([0, 0], 13, {reset:true});
         }catch(e){}
 
+        // L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        //     maxZoom: 18,
+        //     attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+        // }).addTo(this.map);
 
-        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-        }).addTo(this.map);
+        // L.tileLayer.provider('Esri.WorldImagery').addTo(this.map);
+
+        let layer = this.getAttribute("layer");
+        if(!layer || layer == "")
+            layer = "OpenStreetMap";
+
+        L.tileLayer.provider(this.getAttribute("layer")).addTo(this.map);
 
         let coordinates = [];
         let coordinates_index  = 0;

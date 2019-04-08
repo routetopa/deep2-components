@@ -23,6 +23,9 @@ base_datalet_ln["download_en"]      = "Download";
 base_datalet_ln["live_en"]          = "LIVE";
 base_datalet_ln["data_is_live_en"]  = "Data is live";
 
+base_datalet_ln["cache_en"]         = "CACHE";
+base_datalet_ln["disable_cache_en"] = "Click to use live data";
+
 /** IT **/
 
 base_datalet_ln["save_as_it"]       = "Salva come...";
@@ -45,6 +48,9 @@ base_datalet_ln["download_it"]      = "Scarica";
 
 base_datalet_ln["live_it"]          = "LIVE";
 base_datalet_ln["data_is_live_it"]  = "I dati sono live";
+
+base_datalet_ln["cache_it"]         = "CACHE";
+base_datalet_ln["disable_cache_it"] = "Clicca per usare i dati live";
 
 /** FR **/
 

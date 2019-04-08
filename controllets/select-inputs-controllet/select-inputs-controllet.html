@@ -611,7 +611,8 @@
             },
 
             _getInputRichName : function(item) {
-                var name =  ln[item.name + "_" +ln["localization"]];
+                var name =  LN.translate(item.name, ln["localization"]);
+//                var name =  ln[item.name + "_" +ln["localization"]];
                 if(item.type != "TEXT")
                     name += " [" + item.type + "]";
                 if(item.selection == "?")
@@ -620,13 +621,13 @@
             },
 
             _getInputName : function(name) {
-//                console.log('Test tooltip=' + name);
-                return ln[name + "_" +ln["localization"]];
+                return LN.translate(name, ln["localization"]);
+//                return ln[name + "_" +ln["localization"]];
             },
 
             _getInputDescription : function(name) {
-//                console.log('Descriptione -tooltip=' + name + ' ' + ln["localization"]);
-                return ln[name + "Description_" +ln["localization"]];
+                return LN.translate(name+"Description", ln["localization"]);
+//                return ln[name + "Description_" +ln["localization"]];
             },
 
             _getInputInfoId : function(index) {
