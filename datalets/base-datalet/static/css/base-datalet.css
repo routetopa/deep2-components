@@ -114,8 +114,14 @@ span#ajax_error {
     top: -34px;
     right: 0;
 
+    padding: 0 4px;
+
     color: #F44336;
     background-color: #E0E0E0;
+}
+
+span#ajax_error i {
+    padding-left: 4px;
 }
 
 #base_datalet_rtp {

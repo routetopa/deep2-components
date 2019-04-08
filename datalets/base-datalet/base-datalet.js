@@ -123,6 +123,7 @@ export default class BaseDatalet extends HTMLElement {
             this.render(this.transformData(data, this.selected_fields));
 
         } catch (e) {
+            this.shadow_root.querySelector("#ajax_error").innerHTML = "Sorry, something didn't work right.<i class='fas fa-bug'></i>";
             console.log(e);
         }
     }
