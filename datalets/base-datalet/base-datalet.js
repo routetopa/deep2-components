@@ -685,7 +685,7 @@ export default class BaseDatalet extends HTMLElement {
         return (typeof jQuery === 'function')
     }
 
-    render_error(e) {
+    render_error() {
         this.shadow_root.querySelector("#ajax_error").innerHTML = LN.translate("error")+"<i class='fas fa-bug'></i>";
     }
 

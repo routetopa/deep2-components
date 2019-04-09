@@ -25,13 +25,6 @@ a:hover {
     background: url("../images/loader.gif") no-repeat 0 0;
 }
 
-#clearfix {
-    display: var(--base-datalet-visibility, block);
-    height: 8px;
-    border-bottom: 2px solid #B6B6B6;
-    background-color: #ffffff;
-}
-
 #base_datalet_container {
     display: var(--base-datalet-visibility, block);
     position: relative;
@@ -39,6 +32,8 @@ a:hover {
     background-color: #ffffff;
     font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     color: #212121;
+    border-top: 2px solid #9e9e9e;
+    padding: 4px 0;
 }
 
 #datalet_title, #datalet_description, #datalet_source {
@@ -85,7 +80,7 @@ a:hover {
 
 span#ajax_error {
     position: absolute;
-    top: -34px;
+    top: -30px;
     right: 4px;
     padding: 0 4px;
     color: #F44336;
@@ -102,7 +97,7 @@ span#ajax_error i {
 {
     position: absolute;
     right: 4px;
-    top: 0;
+    top: 4px;
     height: 24px;
     display: flex;
     flex-direction: row;
@@ -147,7 +142,7 @@ span#ajax_error i {
 .routetopa {
     position: absolute;
     right: 4px;
-    bottom: 24px;
+    top: 28px;
 
     height: 24px;
     line-height: 24px;
@@ -168,7 +163,7 @@ span#ajax_error i {
 {
     position: absolute;
     right: 4px;
-    bottom: 0;
+    bottom: 4px;
     height: 24px;
     width: 64px;
     display: flex;
@@ -249,7 +244,7 @@ span#ajax_error i {
 #save_as-placeholder {
     position: absolute;
     top: 0;
-    left: -104px;
+    left: -108px;
     height: inherit;
     background-color: transparent;
 }
@@ -257,7 +252,7 @@ span#ajax_error i {
 #save_as-container {
     position: absolute;
     top: initial;
-    bottom: 60px;
+    bottom: 56px;
     left: calc(100% - 222px);
     width: 220px;
     height: initial;
