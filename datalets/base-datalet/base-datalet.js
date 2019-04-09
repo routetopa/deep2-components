@@ -719,6 +719,8 @@ export default class BaseDatalet extends HTMLElement {
     }
 
     translate() {
+        LN.init();
+
         let save_as = this.shadow_root.querySelector('#export_menu');
         save_as.setAttribute("data-balloon", LN.translate("save_as"));
 

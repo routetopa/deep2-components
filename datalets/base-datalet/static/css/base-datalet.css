@@ -53,8 +53,13 @@ a:hover {
     text-overflow: ellipsis;
 }
 
-#datalet_title, #data_source_span, #data_link_span {
+#datalet_title {
     font-weight: 700;
+}
+
+#data_source_span, #data_link_span {
+    font-weight: 700;
+    text-align: center;
 }
 
 #data_source, #data_link {

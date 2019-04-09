@@ -31,10 +31,6 @@ LN.translate = function(text, ul = LN.userLanguage) {
         return text+"_"+ul;
 };
 
-(function() {
-    LN.init();
-})();
-
 let base_datalet_ln = [];
 
 /** EN **/
