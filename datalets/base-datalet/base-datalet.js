@@ -123,8 +123,8 @@ export default class BaseDatalet extends HTMLElement {
             this.render(this.transformData(data, this.selected_fields));
 
         } catch (e) {
-            this.shadow_root.querySelector("#ajax_error").innerHTML = LN.translate("error")+"<i class='fas fa-bug'></i>";
-            console.log(e);
+            this.parse_error(e);
+            this.render_error(e);
         }
     }
 
@@ -267,7 +267,7 @@ export default class BaseDatalet extends HTMLElement {
         this.shadow_root.querySelector('#twitter').addEventListener('click', (e) => {this.share_on_twitter(e)});
     }
 
-    /* LISTENER */
+    // LISTENER
 
     fullscreen() {
         this.shadow_root.querySelector('#fullscreen-placeholder').style.display = 'block';
@@ -329,7 +329,7 @@ export default class BaseDatalet extends HTMLElement {
         this.shadow_root.querySelector('#' + e.currentTarget.id.split('-')[0] + '-placeholder').style.display = 'none';
     }
 
-    // menu
+    // MENU
 
     save_as_image() {
         this.shadow_root.querySelector('#save_as-placeholder').style.display = 'none';
@@ -425,7 +425,7 @@ export default class BaseDatalet extends HTMLElement {
             alert("Error");
     }
 
-    // sub-menu
+    // SUB-MENU
 
     preview_resize(w = null, h = null) {
         let iframe = this.shadow_root.querySelector("#img-iframe");
@@ -564,7 +564,7 @@ export default class BaseDatalet extends HTMLElement {
         document.body.removeChild(link);
     }
 
-    /* SHARE */
+    // SHARE
 
     share_on_fb() {
         let facebook_url = this.create_share_url();
@@ -580,7 +580,7 @@ export default class BaseDatalet extends HTMLElement {
         window.open(url, "", "width=800,height=300");
     }
 
-    /* TOOLS */
+    // TOOLS
 
     get_datalet_id() {
         let parent = this.parentElement;
@@ -685,12 +685,13 @@ export default class BaseDatalet extends HTMLElement {
         return (typeof jQuery === 'function')
     }
 
-    render_error(error_message) {
-        //STAMPA A VIDEO ERRORE IN QUALCHE MODO
+    render_error(e) {
+        this.shadow_root.querySelector("#ajax_error").innerHTML = LN.translate("error")+"<i class='fas fa-bug'></i>";
     }
 
-    parse_error(error_message) {
-        //PARSA ERRORE
+    parse_error(e) {
+        // todo
+        console.log(e);
     }
 
     merge_deep(target, ...sources) {
