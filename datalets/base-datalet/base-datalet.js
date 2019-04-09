@@ -157,10 +157,14 @@ export default class BaseDatalet extends HTMLElement {
     }
 
     async add_datalet_info() {
-        this.shadow_root.querySelector('#datalet_title').innerHTML = this.getAttribute("datalettitle");
-        this.shadow_root.querySelector('#datalet_title').setAttribute("title", this.getAttribute("datalettitle"));
-        this.shadow_root.querySelector('#datalet_description').innerHTML = this.getAttribute("description");
-        this.shadow_root.querySelector('#datalet_description').setAttribute("title", this.getAttribute("description"));
+        this.shadow_root.querySelector('#datalet_title').innerHTML = this.datalettitle;
+        this.shadow_root.querySelector('#datalet_title').setAttribute("title", this.datalettitle);
+        if(this.description) {
+            this.shadow_root.querySelector('#datalet_description').innerHTML = this.description;
+            this.shadow_root.querySelector('#datalet_description').setAttribute("title", this.description);
+        }
+        else
+            this.shadow_root.querySelector('#datalet_description').style.display = "none";
 
         if (this.data_url) {
             let data_source = this.shadow_root.querySelector('#data_source');
