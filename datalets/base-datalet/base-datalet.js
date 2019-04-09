@@ -1,4 +1,4 @@
-import {base_datalet_ln} from './static/ln/base-datalet-ln.js';
+import {LN} from './static/ln/base-datalet-ln.js';
 import {importModule} from '../lib/vendors/import_polyfill/import_polyfill.js';
 
 export default class BaseDatalet extends HTMLElement {
@@ -123,7 +123,7 @@ export default class BaseDatalet extends HTMLElement {
             this.render(this.transformData(data, this.selected_fields));
 
         } catch (e) {
-            this.shadow_root.querySelector("#ajax_error").innerHTML = "Sorry, something didn't work right.<i class='fas fa-bug'></i>";
+            this.shadow_root.querySelector("#ajax_error").innerHTML = LN.translate("error")+"<i class='fas fa-bug'></i>";
             console.log(e);
         }
     }
@@ -156,32 +156,28 @@ export default class BaseDatalet extends HTMLElement {
         throw new Error("Render method not implemented");
     }
 
-    add_datalet_info() {
-        let datalettitle = this.getAttribute("datalettitle");
-        let description = this.getAttribute("description");
-        this.shadow_root.querySelector('#datalet_title').innerHTML = datalettitle;
-        this.shadow_root.querySelector('#datalet_title').setAttribute("title", datalettitle);
-        this.shadow_root.querySelector('#datalet_description').innerHTML = description;
-        this.shadow_root.querySelector('#datalet_description').setAttribute("title", description);
-
-        // if(datalettitle && datalettitle != "" && description && description != "")
-        //     this.shadow_root.querySelector('#span_minus').style.display = 'inline';
+    async add_datalet_info() {
+        this.shadow_root.querySelector('#datalet_title').innerHTML = this.getAttribute("datalettitle");
+        this.shadow_root.querySelector('#datalet_title').setAttribute("title", this.getAttribute("datalettitle"));
+        this.shadow_root.querySelector('#datalet_description').innerHTML = this.getAttribute("description");
+        this.shadow_root.querySelector('#datalet_description').setAttribute("title", this.getAttribute("description"));
 
         if (this.data_url) {
-            let base_datalet_source = this.shadow_root.querySelector('#base_datalet_source');
-            let base_datalet_link = this.shadow_root.querySelector('#base_datalet_link');
-            let base_datalet_link_span = this.shadow_root.querySelector('#base_datalet_link_span');
-            let base_datalet_source_link = this.shadow_root.querySelector('#base_datalet_source_link');
+            let data_source = this.shadow_root.querySelector('#data_source');
+            let data_link = this.shadow_root.querySelector('#data_link');
 
-            let data_url_split = this.data_url.split("/");
-            let urlSource = data_url_split[0] + "//" + data_url_split[2];
+            let urlSource = this.data_url.split("/")[0] + "//" + this.data_url.split("/")[2];
 
-            base_datalet_source.innerHTML = urlSource;
-            base_datalet_source.setAttribute("href", urlSource);
+            data_source.innerHTML = urlSource;
+            data_source.setAttribute("href", urlSource);
 
+            // INFER DATASET URL
+
+            // COCREATION
             if (this.data_url.indexOf("/cocreation/") > -1) {
-                base_datalet_link.setAttribute("href", urlSource + "/cocreation/data-room-list");
+                data_link.setAttribute("href", urlSource + "/cocreation/data-room-list");
             }
+            // ?
             else if (this.data_url.indexOf("/records/") > -1) {
                 let i;
                 if (this.data_url.indexOf("&") > -1)
@@ -189,28 +185,24 @@ export default class BaseDatalet extends HTMLElement {
                 else
                     i = this.data_url.length;
 
-                base_datalet_link.setAttribute("href", urlSource + "/explore/dataset/" + this.data_url.substring(this.data_url.indexOf("=") + 1, i));
+                data_link.setAttribute("href", urlSource + "/explore/dataset/" + this.data_url.substring(this.data_url.indexOf("=") + 1, i));
             }
             // CKAN
             else if (this.data_url.indexOf("datastore_search?resource_id") > -1) {
-            }
-            // dkan and mysir --> ckan like
-            else if (this.data_url.indexOf("datastore/search.json?resource_id") > -1) {
+                let response = await this.ajax_request("POST", this.data_url.replace("datastore_search?resource_id", "resource_show?id"), 'responseText', JSON.parse);
+
+                if (response.package_id)
+                    data_link.setAttribute("href", urlSource + "/dataset/" + response.result.package_id + "/resource/" + response.result.id);
+                else
+                    data_link.setAttribute("href", response.result.url.substring(0, response.result.url.indexOf("/download")));
             }
             else {
-                base_datalet_link_span.style.display = 'none';
+                data_link.setAttribute("href", this.data_url);
             }
-
-            if (this.data_url === "false")//decision-tree & ...
-            {
-                //this.hideFooter();
-                base_datalet_source_link.style.display = 'none';
-            }
-
-        } else {
-            //this.removeLoader();
         }
-
+        else {
+            this.shadow_root.querySelector('#datalet_source').style.display = "none";
+        }
     }
 
     set_export_menu() {
@@ -251,7 +243,6 @@ export default class BaseDatalet extends HTMLElement {
     }
 
     add_listeners() {
-        this.shadow_root.querySelector('#base_datalet_link').addEventListener('click', (e) => {this.go_to_dataset(e)});
         this.shadow_root.querySelector('#live').addEventListener('click', () => {this.requestLiveData()});
 
         this.shadow_root.querySelector('#fullscreen').addEventListener('click', () => {this.fullscreen()});
@@ -293,10 +284,9 @@ export default class BaseDatalet extends HTMLElement {
     }
 
     copy_html() {
-        let that = this;
         let embed = this.shadow_root.querySelector('#embed');
-        embed.setAttribute("data-balloon", base_datalet_ln["copied_" + this.lang]);
-        setTimeout(function(){ embed.setAttribute("data-balloon", base_datalet_ln["copy_html_" + that.lang]); }, 3000);
+        embed.setAttribute("data-balloon", LN.translate("copied"));
+        setTimeout(function(){ embed.setAttribute("data-balloon", LN.translate("copy_html")); }, 3000);
 
         let html_obj = this.get_html();
         let datalet = (html_obj.script + html_obj.datalet_definition + html_obj.component);
@@ -315,10 +305,9 @@ export default class BaseDatalet extends HTMLElement {
     }
 
     copy_link() {
-        let that = this;
         let link = this.shadow_root.querySelector('#link');
-        link.setAttribute("data-balloon", base_datalet_ln["copied_" + this.lang]);
-        setTimeout(function(){link.setAttribute("data-balloon", base_datalet_ln["copy_link_" + that.lang]); }, 3000);
+        link.setAttribute("data-balloon", LN.translate("copied"));
+        setTimeout(function(){link.setAttribute("data-balloon", LN.translate("copy_link")); }, 3000);
 
         let datalet_id = this.get_datalet_id();
         let base_url = ODE.ow_url_home;
@@ -635,37 +624,13 @@ export default class BaseDatalet extends HTMLElement {
         });
     }
 
-    async go_to_dataset(e) {
-        e.preventDefault();
-
-        let data_url = this.getAttribute("data-url");
-        let base_datalet_link = this.shadow_root.querySelector('#base_datalet_link');
-
-        if (data_url) {
-            let urlSource = data_url.split("/")[0] + "//" + data_url.split("/")[2];
-
-            if (data_url.indexOf("datastore_search?resource_id") > -1) {
-                let response = await this.ajax_request("POST", data_url.replace("datastore_search?resource_id", "resource_show?id"), 'responseText', JSON.parse);
-
-                if (response.package_id) {
-                    base_datalet_link.setAttribute("href", urlSource + "/dataset/" + response.result.package_id + "/resource/" + response.result.id);
-                    window.open(urlSource + "/dataset/" + response.result.package_id + "/resource/" + response.result.id, '_blank');
-                } else {
-                    base_datalet_link.setAttribute("href", response.result.url.substring(0, response.result.url.indexOf("/download")));
-                    window.open(response.result.url.substring(0, response.result.url.indexOf("/download")), '_blank');
-                }
-            }
-            else if (data_url.indexOf("datastore/search.json?resource_id") > -1) {
-                base_datalet_link.setAttribute("href", urlSource);
-                window.open(data_url, '_blank');
-            }
-        }
-    }
-
     requestLiveData() {
         this.removeAttribute("data");
         this.cache = undefined;
         this.work_cycle();
+
+        this.shadow_root.querySelector('#live').innerHTML =  LN.translate("live");
+        this.shadow_root.querySelector('#live').setAttribute("data-balloon", LN.translate("data_is_live"));
     }
 
     build_uri(resource, baseURI) {
@@ -754,78 +719,65 @@ export default class BaseDatalet extends HTMLElement {
     }
 
     translate() {
-        let ln = "en";
-
-        try {
-            if (typeof ODE !== 'undefined' && ODE && ODE.user_language)
-                ln = ODE.user_language;
-            else if (parent && typeof parent.ODE !== 'undefined' && parent.ODE && parent.ODE.user_language)
-                ln = parent.ODE.user_language;
-            else
-                ln = (navigator.language || navigator.userLanguage).split('-')[0];
-
-            // if(['en', 'it', 'fr', 'nl', 'es', 'cn'].indexOf(ln) == -1) //todo --> add when they are available!
-            if(['en', 'it'].indexOf(ln) == -1)
-                ln = 'en';
-
-        } catch (e) {
-            console.log(e);
-        }
-
-        this.lang = ln;
-
         let save_as = this.shadow_root.querySelector('#export_menu');
-        save_as.setAttribute("data-balloon", base_datalet_ln["save_as_" + ln]);
+        save_as.setAttribute("data-balloon", LN.translate("save_as"));
 
         let copy_link = this.shadow_root.querySelector('#link');
-        copy_link.setAttribute("data-balloon", base_datalet_ln["copy_link_" + ln]);
+        copy_link.setAttribute("data-balloon", LN.translate("copy_link"));
 
         let embed = this.shadow_root.querySelector('#embed');
-        embed.setAttribute("data-balloon", base_datalet_ln["copy_html_" + ln]);
+        embed.setAttribute("data-balloon", LN.translate("copy_html"));
 
         let fullscreen = this.shadow_root.querySelector('#fullscreen');
-        fullscreen.setAttribute("data-balloon", base_datalet_ln["fullscreen_" + ln]);
-
+        fullscreen.setAttribute("data-balloon", LN.translate("fullscreen"));
 
 
         let save_as_image = this.shadow_root.querySelector('#save_as_image');
-        save_as_image.innerHTML = base_datalet_ln["image_" + ln];
+        save_as_image.innerHTML = LN.translate("image");
 
         let save_as_doc = this.shadow_root.querySelector('#save_as_doc');
-        save_as_doc.innerHTML = base_datalet_ln["document_" + ln];
+        save_as_doc.innerHTML =LN.translate("document");
 
         let save_as_full_dataset = this.shadow_root.querySelector('#save_as_full_dataset');
-        save_as_full_dataset.innerHTML = base_datalet_ln["full_csv_" + ln];
+        save_as_full_dataset.innerHTML = LN.translate("full_csv");
 
         let save_as_filtered_dataset = this.shadow_root.querySelector('#save_as_filtered_dataset');
-        save_as_filtered_dataset.innerHTML = base_datalet_ln["filtered_csv_" + ln];
+        save_as_filtered_dataset.innerHTML = LN.translate("filtered_csv");
 
         let save_in = this.shadow_root.querySelector('#save_in');
-        save_in.innerHTML = base_datalet_ln["save_in_" + ln];
+        save_in.innerHTML = LN.translate("save_in");
         let myspace = this.shadow_root.querySelector('#myspace');
-        myspace.innerHTML = base_datalet_ln["my_space_" + ln];
-
+        myspace.innerHTML = LN.translate("my_space");
 
 
         let preview_width = this.shadow_root.querySelector("#label_width");
-        preview_width.innerHTML = base_datalet_ln["width_" + ln];
+        preview_width.innerHTML = LN.translate("width");
 
         let preview_height = this.shadow_root.querySelector("#label_height");
-        preview_height.innerHTML = base_datalet_ln["height_" +ln];
+        preview_height.innerHTML = LN.translate("height");
 
         let preview_presets = this.shadow_root.querySelector("#label_presets");
-        preview_presets.innerHTML = base_datalet_ln["presets_" + ln];
+        preview_presets.innerHTML = LN.translate("presets");
 
         let preview_download = this.shadow_root.querySelector("#label_download");
-        preview_download.innerHTML = base_datalet_ln["download_" + ln];
+        preview_download.innerHTML = LN.translate("download");
+
+
+        let data_source_span = this.shadow_root.querySelector("#data_source_span");
+        data_source_span.innerHTML = LN.translate("data_source");
+        data_source_span.setAttribute("data-balloon", LN.translate("data_source_b"));
+
+        let data_link_span = this.shadow_root.querySelector("#data_link_span");
+        data_link_span.innerHTML = LN.translate("data");
+        data_link_span.setAttribute("data-balloon", LN.translate("data_b"));
 
 
         if(!this.cache) {
-            this.shadow_root.querySelector('#live').innerHTML = base_datalet_ln["live_" + ln];
-            this.shadow_root.querySelector('#live').setAttribute("data-balloon", base_datalet_ln["data_is_live_" + ln]);
+            this.shadow_root.querySelector('#live').innerHTML =  LN.translate("live");
+            this.shadow_root.querySelector('#live').setAttribute("data-balloon", LN.translate("data_is_live"));
         } else {
-            this.shadow_root.querySelector('#live').innerHTML = base_datalet_ln["cache_" + ln];
-            this.shadow_root.querySelector('#live').setAttribute("data-balloon", base_datalet_ln["disable_cache_" + ln]);
+            this.shadow_root.querySelector('#live').innerHTML =  LN.translate("cache");
+            this.shadow_root.querySelector('#live').setAttribute("data-balloon", LN.translate("disable_cache"));
         }
     }
 };

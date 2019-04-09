@@ -1,4 +1,41 @@
-export const base_datalet_ln = [];
+export const LN = {
+    userLanguage: 'en'
+};
+
+LN.init = function() {
+    try {
+        if (typeof ODE !== 'undefined' && ODE && ODE.user_language)
+            LN.userLanguage = ODE.user_language;
+        else if (parent && typeof parent.ODE !== 'undefined' && parent.ODE && parent.ODE.user_language)
+            LN.userLanguage = parent.ODE.user_language;
+        else
+            LN.userLanguage = (navigator.language || navigator.userLanguage).split('-')[0];
+
+        if(['en', 'it', 'fr', 'nl', 'es', 'cn'].indexOf(LN.userLanguage) == -1)
+            LN.userLanguage = 'en';
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+LN.setUserLanguage = function(ln) {
+    LN.userLanguage = ln;
+};
+
+LN.translate = function(text, ul = LN.userLanguage) {
+    if(base_datalet_ln[text+"_"+ul])
+        return base_datalet_ln[text+"_"+ul];
+    else if (base_datalet_ln[text+"_en"])
+        return base_datalet_ln[text+"_en"];
+    else
+        return text+"_"+ul;
+};
+
+(function() {
+    LN.init();
+})();
+
+let base_datalet_ln = [];
 
 /** EN **/
 
@@ -20,11 +57,18 @@ base_datalet_ln["height_en"]        = "Height (px):";
 base_datalet_ln["presets_en"]       = "Presets:";
 base_datalet_ln["download_en"]      = "Download";
 
+base_datalet_ln["data_source_en"]   = "Data Source:";
+base_datalet_ln["data_source_b_en"] = "The visualization takes the data from the provider at the following link";
+base_datalet_ln["data_en"]          = "Data:";
+base_datalet_ln["data_b_en"]        = "The visualization is based on the data at the following link";
+
 base_datalet_ln["live_en"]          = "LIVE";
 base_datalet_ln["data_is_live_en"]  = "Data is live";
 
 base_datalet_ln["cache_en"]         = "CACHE";
 base_datalet_ln["disable_cache_en"] = "Click to use live data";
+
+base_datalet_ln["error_en"]         = "Sorry, something didn't work right";
 
 /** IT **/
 
@@ -46,11 +90,18 @@ base_datalet_ln["height_it"]        = "Altezza (px):";
 base_datalet_ln["presets_it"]       = "Preset:";
 base_datalet_ln["download_it"]      = "Scarica";
 
+base_datalet_ln["data_source_it"]   = "Fonte dei dati:";
+base_datalet_ln["data_source_b_it"] = "La visualizzazione prende i dati dal provider al seguente link";
+base_datalet_ln["data_it"]          = "Dati:";
+base_datalet_ln["data_b_it"]        = "La visualizzazione è basata sui dati al seguente link";
+
 base_datalet_ln["live_it"]          = "LIVE";
 base_datalet_ln["data_is_live_it"]  = "I dati sono live";
 
 base_datalet_ln["cache_it"]         = "CACHE";
 base_datalet_ln["disable_cache_it"] = "Clicca per usare i dati live";
+
+base_datalet_ln["error_it"]         = "Siamo spiacenti, qualcosa non ha funzionato correttamente";
 
 /** FR **/
 

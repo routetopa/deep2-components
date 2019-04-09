@@ -11,35 +11,19 @@
     <div id="datalet_container">
         <div id="base_datalet_loader"></div>
     </div>
+
     <div id="clearfix"></div>
+
     <div id="base_datalet_container">
 
-        <!--todo add balloon content-->
         <div id="datalet_title"></div>
         <div id="datalet_description"></div>
         <div id="datalet_source">
-            <b>Source:&nbsp</b>
-            <a id="base_datalet_source" target="_blank"></a>
-            <span id="base_datalet_link_span">&nbsp[<a id="base_datalet_link" target="_blank">dataset</a>]</span>
+            <span id="data_source_span" data-balloon-pos="up">Fonte dei dati:</span> <a id="data_source" target="_blank"></a>
+            <span id="data_link_span" data-balloon-pos="up">Dati:</span> <a id="data_link" target="_blank">dataset</a>
             <span id="live" class="live" data-balloon-pos="up">LIVE</span>
             <span id="ajax_error"></span>
         </div>
-
-        <!--<div id="base_datalet_title_description">-->
-            <!--<span id="span_title" title="{{datalettitle}}">{{title}}</span>-->
-            <!--<span id="span_minus"> - </span>-->
-            <!--<span id="span_description" title="{{description}}">{{description}}</span>-->
-        <!--</div>-->
-
-        <!--<div id="base_datalet_source_link">-->
-            <!--<b>Source:&nbsp</b> <a id="base_datalet_source" target="_blank"></a> <span id="base_datalet_link_span">&nbsp[<a id="base_datalet_link" target="_blank">dataset</a>]</span> <span id="ajax_error"></span>-->
-            <!--<div id="live" class="live" data-balloon="Data is live" data-balloon-pos="up">LIVE</div>-->
-        <!--</div>-->
-
-        <!--<div id="base_datalet_rtp">-->
-            <!--<div id="rtp">Powered by <a href="http://www.routetopa.eu/" target="_blank">ROUTE-TO-PA</a></div>-->
-            <!--<div><a href="http://www.routetopa.eu/" target="_blank"><img id="rtpalogo" src="./static/images/rtpalogo.png"></a></div>-->
-        <!--</div>-->
 
         <div id="menu" class="menu">
             <div id="export_menu" data-balloon-pos="down"><i class="fas fa-download"></i></div>
@@ -50,6 +34,7 @@
 
         <div id="routetopa" class="routetopa">
             <a href="http://www.routetopa.eu/" target="_blank">ROUTE-TO-PA</a>
+            <!--<a href="http://www.routetopa.eu/" target="_blank"><img id="rtpalogo" src="./static/images/rtpalogo.png">-->
         </div>
 
         <div id="social" class="social">
