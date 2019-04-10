@@ -772,11 +772,15 @@ export default class BaseDatalet extends HTMLElement {
 
         let data_source_span = this.shadow_root.querySelector("#data_source_span");
         data_source_span.innerHTML = LN.translate("data_source");
-        data_source_span.setAttribute("data-balloon", LN.translate("data_source_b"));
+
+        let data_source = this.shadow_root.querySelector("#data_source");
+        data_source.setAttribute("data-balloon", LN.translate("data_source_b"));
 
         let data_link_span = this.shadow_root.querySelector("#data_link_span");
         data_link_span.innerHTML = LN.translate("data");
-        data_link_span.setAttribute("data-balloon", LN.translate("data_b"));
+
+        let data_link = this.shadow_root.querySelector("#data_link");
+        data_link.setAttribute("data-balloon", LN.translate("data_b"));
 
 
         if(!this.cache) {
