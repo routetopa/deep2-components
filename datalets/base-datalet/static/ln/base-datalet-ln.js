@@ -59,10 +59,10 @@ base_datalet_ln["data_en"]          = "Data:";
 base_datalet_ln["data_b_en"]        = "The visualization is based on the data at this link";
 
 base_datalet_ln["live_en"]          = "LIVE";
-base_datalet_ln["data_is_live_en"]  = "Data is live";
+base_datalet_ln["data_is_live_en"]  = "Data is live, click to use cached data";
 
 base_datalet_ln["cache_en"]         = "CACHE";
-base_datalet_ln["disable_cache_en"] = "Click to use live data";
+base_datalet_ln["disable_cache_en"] = "Data is cached, click to use live data";
 
 base_datalet_ln["error_en"]         = "Sorry, something didn't work right";
 
@@ -92,10 +92,10 @@ base_datalet_ln["data_it"]          = "Dati:";
 base_datalet_ln["data_b_it"]        = "La visualizzazione è basata sui dati a questo link";
 
 base_datalet_ln["live_it"]          = "LIVE";
-base_datalet_ln["data_is_live_it"]  = "I dati sono live";
+base_datalet_ln["data_is_live_it"]  = "I dati sono live, clicca per usare i dati cached";
 
 base_datalet_ln["cache_it"]         = "CACHE";
-base_datalet_ln["disable_cache_it"] = "Clicca per usare i dati live";
+base_datalet_ln["disable_cache_it"] = "I dati sono cached, clicca per usare i dati live";
 
 base_datalet_ln["error_it"]         = "Siamo spiacenti, qualcosa non ha funzionato correttamente";
 

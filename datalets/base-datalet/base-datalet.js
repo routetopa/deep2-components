@@ -98,30 +98,35 @@ export default class BaseDatalet extends HTMLElement {
     }
 
     async work_cycle() {
-        try
-        {
-            let data;
+        if (!this.cache || (typeof ODE === 'undefined' && typeof parent.ODE === 'undefined'))
+            this.use_live_data();
+        else
+            this.use_cache();
+    }
 
-            if (!this.cache)
-            {
-                this.shadow_root.querySelector('#live').classList.remove("cache");
+    async use_live_data() {
+        try {
+            this.live = true;
+            let json_results = await this.requestData(this.data_url);
+            this.data = this.selectData(json_results, this.data_url);
+            this.filtered_data = this.filterData(this.data, this.selected_fields, this.filters, this.aggregators, this.orders);
 
-                let json_results = await this.requestData(this.data_url);
-                data = this.selectData(json_results, this.data_url);
-                this.CSV = data;
-                data = this.filterData(data, this.selected_fields, this.filters, this.aggregators, this.orders);
-                this.FCSV = data;
-            } else {
-                this.shadow_root.querySelector('#live').classList.add("cache");
+            this.hide_loader();
+            this.render(this.transformData(this.filtered_data, this.selected_fields));
+        } catch (e) {
+            this.parse_error(e);
+            this.render_error(e);
+            this.use_cache();
+        }
+    }
 
-                data = JSON.parse(this.cache);
-                this.FCSV = data;
-            }
+    use_cache() {
+        try {
+            this.live = false;
+            this.filtered_data = JSON.parse(this.cache);
 
-            if(this.shadow_root.querySelector('#base_datalet_loader'))
-                this.shadow_root.querySelector('#base_datalet_loader').style.display = 'none';
-            this.render(this.transformData(data, this.selected_fields));
-
+            this.hide_loader();
+            this.render(this.transformData(this.filtered_data, this.selected_fields));
         } catch (e) {
             this.parse_error(e);
             this.render_error(e);
@@ -177,32 +182,38 @@ export default class BaseDatalet extends HTMLElement {
 
             // INFER DATASET URL
 
-            // COCREATION
-            if (this.data_url.indexOf("/cocreation/") > -1) {
-                data_link.setAttribute("href", urlSource + "/cocreation/data-room-list");
-            }
-            // ?
-            else if (this.data_url.indexOf("/records/") > -1) {
-                let i;
-                if (this.data_url.indexOf("&") > -1)
-                    i = this.data_url.indexOf("&");
-                else
-                    i = this.data_url.length;
+            try {
+                // COCREATION
+                if (this.data_url.indexOf("/cocreation/") > -1) {
+                    data_link.setAttribute("href", urlSource + "/cocreation/data-room-list");
+                }
+                // ?
+                else if (this.data_url.indexOf("/records/") > -1) {
+                    let i;
+                    if (this.data_url.indexOf("&") > -1)
+                        i = this.data_url.indexOf("&");
+                    else
+                        i = this.data_url.length;
 
-                data_link.setAttribute("href", urlSource + "/explore/dataset/" + this.data_url.substring(this.data_url.indexOf("=") + 1, i));
-            }
-            // CKAN
-            else if (this.data_url.indexOf("datastore_search?resource_id") > -1) {
-                let response = await this.ajax_request("POST", this.data_url.replace("datastore_search?resource_id", "resource_show?id"), 'responseText', JSON.parse);
+                    data_link.setAttribute("href", urlSource + "/explore/dataset/" + this.data_url.substring(this.data_url.indexOf("=") + 1, i));
+                }
+                // CKAN
+                else if (this.data_url.indexOf("datastore_search?resource_id") > -1) {
+                    let response = await this.ajax_request("POST", this.data_url.replace("datastore_search?resource_id", "resource_show?id"), 'responseText', JSON.parse);
 
-                if (response.package_id)
-                    data_link.setAttribute("href", urlSource + "/dataset/" + response.result.package_id + "/resource/" + response.result.id);
-                else
-                    data_link.setAttribute("href", response.result.url.substring(0, response.result.url.indexOf("/download")));
-            }
-            else {
+                    if (response.package_id)
+                        data_link.setAttribute("href", urlSource + "/dataset/" + response.result.package_id + "/resource/" + response.result.id);
+                    else
+                        data_link.setAttribute("href", response.result.url.substring(0, response.result.url.indexOf("/download")));
+                }
+                else {
+                    data_link.setAttribute("href", this.data_url);
+                }
+            } catch (e) {
+                console.log("Failed to infer dataset url", e);
                 data_link.setAttribute("href", this.data_url);
             }
+
         }
         else {
             this.shadow_root.querySelector('#datalet_source').style.display = "none";
@@ -210,9 +221,6 @@ export default class BaseDatalet extends HTMLElement {
     }
 
     set_export_menu() {
-        if(this.cache)
-            this.shadow_root.querySelector('#csv-action').style.display = 'none';
-
         if(typeof ODE === 'undefined' && typeof parent.ODE === 'undefined')
         {
             this.shadow_root.querySelector('#link').style.display = 'none';
@@ -247,7 +255,7 @@ export default class BaseDatalet extends HTMLElement {
     }
 
     add_listeners() {
-        this.shadow_root.querySelector('#live').addEventListener('click', () => {this.requestLiveData()});
+        this.shadow_root.querySelector('#live').addEventListener('click', () => {this.switchLiveCacheData()});
 
         this.shadow_root.querySelector('#fullscreen').addEventListener('click', () => {this.fullscreen()});
         this.shadow_root.querySelector('#embed').addEventListener('click', () => {this.copy_html()});
@@ -391,14 +399,19 @@ export default class BaseDatalet extends HTMLElement {
          paragraph.addRun(dateText);*/
     }
 
-    save_as_csv() {
+    async save_as_csv() {
+        if(!this.data) {
+            let json_results = await this.requestData(this.data_url);
+            this.data = this.selectData(json_results, this.data_url);
+        }
+
         this.shadow_root.querySelector('#save_as-placeholder').style.display = 'none';
-        this.save_csv(this.CSV, 'full_dataset');
+        this.save_csv(this.data, 'full_dataset');
     }
 
     save_as_csv2() {
         this.shadow_root.querySelector('#save_as-placeholder').style.display = 'none';
-        this.save_csv(this.FCSV, 'filtered_dataset');
+        this.save_csv(this.filtered_data, 'filtered_dataset');
     }
 
     async import_myspace() {
@@ -608,11 +621,15 @@ export default class BaseDatalet extends HTMLElement {
             let xhr = new XMLHttpRequest();
 
             xhr.onreadystatechange = function () {
-                if (this.readyState === 4 && this.status === 200) {
-                    if (handle_response)
-                        res(handle_response(this[response_obj]));
-                    else
-                        res(this[response_obj]);
+                if (this.readyState === XMLHttpRequest.DONE) {
+                    if(this.status === 200) {
+                        if (handle_response)
+                            res(handle_response(this[response_obj]));
+                        else
+                            res(this[response_obj]);
+                    } else {
+                        rej();
+                    }
                 }
             };
 
@@ -628,13 +645,18 @@ export default class BaseDatalet extends HTMLElement {
         });
     }
 
-    requestLiveData() {
-        this.removeAttribute("data");
-        this.cache = undefined;
-        this.work_cycle();
-
-        this.shadow_root.querySelector('#live').innerHTML =  LN.translate("live");
-        this.shadow_root.querySelector('#live').setAttribute("data-balloon", LN.translate("data_is_live"));
+    switchLiveCacheData() {
+        if(!this.live) {
+            this.use_live_data();
+            this.shadow_root.querySelector('#live').className = "live";
+            this.shadow_root.querySelector('#live').innerHTML =  LN.translate("live");
+            this.shadow_root.querySelector('#live').setAttribute("data-balloon", LN.translate("data_is_live"));
+        } else {
+            this.use_cache();
+            this.shadow_root.querySelector('#live').className = "cache";
+            this.shadow_root.querySelector('#live').innerHTML =  LN.translate("cache");
+            this.shadow_root.querySelector('#live').setAttribute("data-balloon", LN.translate("disable_cache"));
+        }
     }
 
     build_uri(resource, baseURI) {
@@ -674,7 +696,9 @@ export default class BaseDatalet extends HTMLElement {
         let temp = document.createElement('div');
         temp.innerHTML = this.outerHTML;
         let component = temp.firstChild;
-        component.removeAttribute("data");
+
+        if(!component.getAttribute("data"))
+            component.setAttribute("data", JSON.stringify(this.filtered_data));
 
         return {script: script, style: style, datalet_definition: datalet_definition, component: component.outerHTML};
     }
@@ -721,6 +745,11 @@ export default class BaseDatalet extends HTMLElement {
 
     redraw() {
         window.dispatchEvent(new Event('resize'));
+    }
+
+    hide_loader() {
+        if(this.shadow_root.querySelector('#base_datalet_loader'))
+            this.shadow_root.querySelector('#base_datalet_loader').style.display = 'none';
     }
 
     translate() {
@@ -783,10 +812,12 @@ export default class BaseDatalet extends HTMLElement {
         data_link.setAttribute("data-balloon", LN.translate("data_b"));
 
 
-        if(!this.cache) {
+        if(this.live) {
+            this.shadow_root.querySelector('#live').className = "live";
             this.shadow_root.querySelector('#live').innerHTML =  LN.translate("live");
             this.shadow_root.querySelector('#live').setAttribute("data-balloon", LN.translate("data_is_live"));
         } else {
+            this.shadow_root.querySelector('#live').className = "cache";
             this.shadow_root.querySelector('#live').innerHTML =  LN.translate("cache");
             this.shadow_root.querySelector('#live').setAttribute("data-balloon", LN.translate("disable_cache"));
         }

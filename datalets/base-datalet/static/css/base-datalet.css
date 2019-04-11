@@ -64,16 +64,19 @@ a:hover {
     text-align: center;
 }
 
-.live {
+.live, .cache {
     height: 16px;
     padding: 1px 12px;
     border-radius: 8px;
-    background-color: #4caf50;
     color: white;
     font-size: 14px;
     font-weight: 700;
     text-align: center;
     cursor: pointer;
+}
+
+.live {
+    background-color: #4caf50;
 }
 
 .cache {
