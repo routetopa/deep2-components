@@ -94,7 +94,7 @@ export default class BaseDatalet extends HTMLElement {
             this.work_cycle();
 
         } catch (e) {
-            console.log(e);
+            console.log('base-datalet ERROR', e);
         }
     }
 
@@ -109,7 +109,7 @@ export default class BaseDatalet extends HTMLElement {
         try {
             this.live = true;
 
-            if(window.location.protocol.startsWith("https") && !this.data_url.startsWith("https"))
+            if(this.isProxyRequired())
                 this.data_url = `${this.deepUri}/DEEP/cors-proxy/proxy.php?csurl=${this.data_url}`;
 
             let json_results = await this.requestData(this.data_url);
@@ -730,7 +730,7 @@ export default class BaseDatalet extends HTMLElement {
 
     parse_error(e) {
         // todo
-        console.log(e);
+        console.log('base-datalet ERROR', e);
     }
 
     merge_deep(target, ...sources) {
@@ -761,6 +761,20 @@ export default class BaseDatalet extends HTMLElement {
     hide_loader() {
         if(this.shadow_root.querySelector('#base_datalet_loader'))
             this.shadow_root.querySelector('#base_datalet_loader').style.display = 'none';
+    }
+
+    isProxyRequired() {
+        try {
+            if (this.data_url.startsWith("https"))
+                return false;
+            if (window.location.protocol.startsWith("https"))
+                return true;
+            if (window.location.protocol.startsWith("about") && parent.window.location.protocol.startsWith("https"))
+                return true;
+        } catch(e) {
+            console.log('base-datalet ERROR', e);
+            return true;
+        }
     }
 
     translate() {
