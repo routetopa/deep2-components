@@ -10,6 +10,7 @@ export default class BaseDatalet extends HTMLElement {
         this.component = component;
         this.currentDocument = document.querySelector(`link[href*="${this.component}"]`).import;
         this.baseUri = this.currentDocument.baseURI.substring(0, this.currentDocument.baseURI.lastIndexOf("/") + 1);
+        this.deepUri = this.currentDocument.baseURI.split('/')[0] + '//' + this.currentDocument.baseURI.split('/')[2] + '/' + this.currentDocument.baseURI.split('/')[3];
         this.dynamic_import_support = this.get_dynamic_import();
 
         // Create a Shadow DOM using our template
@@ -107,6 +108,10 @@ export default class BaseDatalet extends HTMLElement {
     async use_live_data() {
         try {
             this.live = true;
+
+            if(window.location.protocol.startsWith("https") && !this.data_url.startsWith("https"))
+                this.data_url = `${this.deepUri}/DEEP/cors-proxy/proxy.php?csurl=${this.data_url}`;
+
             let json_results = await this.requestData(this.data_url);
             this.data = this.selectData(json_results, this.data_url);
             this.filtered_data = this.filterData(this.data, this.selected_fields, this.filters, this.aggregators, this.orders);
