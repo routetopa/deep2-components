@@ -218,6 +218,9 @@
 
                     var that = this;
 
+                    if(window.location.protocol.startsWith("https") && !this.dataUrl.startsWith("https"))
+                        this.dataUrl = `${parent.ODE.deep_url}cors-proxy/proxy.php?csurl=${that.dataUrl}`;
+
                     $.ajax({
                         url: this.dataUrl,
                         dataType: "json",
@@ -239,9 +242,14 @@
                             that.$.expert.setFields(that.fields);
 //                            that.$.expert.setSelectedFields(that.selectedFields);
 
-                            that.fire('data-ready', {ready : true});
+                            that.fire('data-ready', {ready : true, url : that.dataUrl});
                         },
                         error: function(){
+
+                            if(that.dataUrl.indexOf("cors-proxy") > -1) {
+                                that.fire('data-ready', {ready : false});
+                                return;
+                            }
 
                             that.dataUrl = `${parent.ODE.deep_url}cors-proxy/proxy.php?csurl=${that.dataUrl}`;
 

@@ -652,6 +652,10 @@ export default class BaseDatalet extends HTMLElement {
             this.shadow_root.querySelector('#live').innerHTML =  LN.translate("live");
             this.shadow_root.querySelector('#live').setAttribute("data-balloon", LN.translate("data_is_live"));
         } else {
+            if(!this.cache || this.cache.trim() == "") {
+                alert("Cache not available.");
+                return;
+            }
             this.use_cache();
             this.shadow_root.querySelector('#live').className = "cache";
             this.shadow_root.querySelector('#live').innerHTML =  LN.translate("cache");
