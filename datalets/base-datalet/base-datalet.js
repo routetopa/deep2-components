@@ -59,9 +59,7 @@ export default class BaseDatalet extends HTMLElement {
         this.translate();
     }
 
-    attributeChangedCallback() {
-        console.log('attributeChangedCallback');
-    }
+    attributeChangedCallback() {}
 
     disconnectedCallback() {
         //todo remove event listeners ??
@@ -94,7 +92,7 @@ export default class BaseDatalet extends HTMLElement {
             this.work_cycle();
 
         } catch (e) {
-            console.log('base-datalet ERROR', e);
+            this.parse_error(e);
         }
     }
 
@@ -120,7 +118,7 @@ export default class BaseDatalet extends HTMLElement {
             this.render(this.transformData(this.filtered_data, this.selected_fields));
         } catch (e) {
             this.parse_error(e);
-            this.render_error(e);
+            // this.render_error(e); --> try cache
             this.use_cache();
         }
     }
@@ -215,7 +213,8 @@ export default class BaseDatalet extends HTMLElement {
                     data_link.setAttribute("href", this.data_url);
                 }
             } catch (e) {
-                console.log("Failed to infer dataset url", e);
+                console.log("Failed to infer dataset url");
+                this.parse_error(e);
                 data_link.setAttribute("href", this.data_url);
             }
 
@@ -729,8 +728,8 @@ export default class BaseDatalet extends HTMLElement {
     }
 
     parse_error(e) {
-        // todo
-        console.log('base-datalet ERROR', e);
+        //todo
+        console.log(e);
     }
 
     merge_deep(target, ...sources) {
@@ -772,7 +771,7 @@ export default class BaseDatalet extends HTMLElement {
             if (window.location.protocol.startsWith("about") && parent.window.location.protocol.startsWith("https"))
                 return true;
         } catch(e) {
-            console.log('base-datalet ERROR', e);
+            this.parse_error(e);
             return true;
         }
     }
