@@ -53,7 +53,7 @@ base_datalet_ln["height_en"]        = "Height (px):";
 base_datalet_ln["presets_en"]       = "Presets:";
 base_datalet_ln["download_en"]      = "Download";
 
-base_datalet_ln["data_source_en"]   = "Data Source:";
+base_datalet_ln["data_source_en"]   = "Provider:";
 base_datalet_ln["data_source_b_en"] = "The visualization takes the data from the provider at this link";
 base_datalet_ln["data_en"]          = "Data:";
 base_datalet_ln["data_b_en"]        = "The visualization is based on the data at this link";
@@ -86,7 +86,7 @@ base_datalet_ln["height_it"]        = "Altezza (px):";
 base_datalet_ln["presets_it"]       = "Preset:";
 base_datalet_ln["download_it"]      = "Scarica";
 
-base_datalet_ln["data_source_it"]   = "Fonte dei dati:";
+base_datalet_ln["data_source_it"]   = "Provider:";
 base_datalet_ln["data_source_b_it"] = "La visualizzazione prende i dati dal provider a questo link";
 base_datalet_ln["data_it"]          = "Dati:";
 base_datalet_ln["data_b_it"]        = "La visualizzazione è basata sui dati a questo link";

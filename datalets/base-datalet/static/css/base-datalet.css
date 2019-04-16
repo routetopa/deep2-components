@@ -41,6 +41,7 @@ a:hover {
     height: 16px;
     line-height: 16px;
     font-size: 14px;
+    font-weight: normal;
     padding: 4px;
 }
 
@@ -50,9 +51,12 @@ a:hover {
     text-overflow: ellipsis;
 }
 
+#datalet_source {
+    width: calc(100% - 64px - 8px);
+}
+
 #datalet_title {
     font-weight: 700;
-    font-size: 16px;
 }
 
 #data_source_span, #data_link_span {
@@ -147,10 +151,10 @@ span#ajax_error i {
 .routetopa {
     position: absolute;
     right: 4px;
-    top: 28px;
+    bottom: 4px;
 
-    height: 24px;
-    line-height: 24px;
+    height: 16px;
+    line-height: 16px;
 }
 
 .routetopa a {
@@ -168,7 +172,7 @@ span#ajax_error i {
 {
     position: absolute;
     right: 4px;
-    bottom: 4px;
+    top: 32px;
     height: 24px;
     width: 64px;
     display: flex;
