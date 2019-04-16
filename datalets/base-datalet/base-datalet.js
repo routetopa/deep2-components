@@ -204,6 +204,12 @@ export default class BaseDatalet extends HTMLElement {
                 else if (this.data_url.indexOf("datastore_search?resource_id") > -1) {
                     let response = await this.ajax_request("POST", this.data_url.replace("datastore_search?resource_id", "resource_show?id"), 'responseText', JSON.parse);
 
+                    //temp?
+                    if (this.data_url.indexOf("regione.campania") > -1) {
+                        data_link.setAttribute("href", urlSource + "/catalogo/datasetdetail/" + response.result.package_id);
+                        return;
+                    }
+
                     if (response.package_id)
                         data_link.setAttribute("href", urlSource + "/dataset/" + response.result.package_id + "/resource/" + response.result.id);
                     else
@@ -305,9 +311,10 @@ export default class BaseDatalet extends HTMLElement {
         setTimeout(function(){ embed.setAttribute("data-balloon", LN.translate("copy_html")); }, 3000);
 
         let html_obj = this.get_html();
-        let datalet = (html_obj.script + html_obj.datalet_definition + html_obj.component);
+        let style = `<style>html,body{margin:0;padding:0;height: 100%}</style>`;
+        let datalet = (html_obj.script + style + html_obj.datalet_definition + html_obj.component);
         let iframe = document.createElement('iframe');
-        iframe.setAttribute("style", "width:100%;height:100%;min-height:498px;padding:0;margin:0;border:0;");
+        iframe.setAttribute("style", "width:100%;height:100%;min-height:482px;padding:0;margin:0;border:0;");
         iframe.setAttribute("frameborder", "0");
         iframe.setAttribute("scrolling", "no");
         iframe.setAttribute("srcdoc", datalet);

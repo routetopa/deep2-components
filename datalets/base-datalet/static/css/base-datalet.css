@@ -38,7 +38,7 @@ a:hover {
 
 #datalet_title, #datalet_description, #datalet_source {
     width: calc(100% - 104px - 8px);
-    height: 14px;
+    height: 16px;
     line-height: 16px;
     font-size: 14px;
     padding: 4px;
