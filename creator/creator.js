@@ -52,6 +52,8 @@ CREATOR.setListeners = function() {
     // $("#btn_fcsv").on("click", CREATOR.fcsv);
     $("#btn_embed").on("click", CREATOR.embed);
 
+    $("#btn_fb").on("click", CREATOR.share_fb);
+
     $("#download-modal .sm-modal-close").on("click", CREATOR.closeDownloadModal);
     $("#share-modal .sm-modal-close").on("click", CREATOR.closeShareModal);
 };
@@ -125,4 +127,23 @@ CREATOR.embed  = function() {
     $("[selectedfields]")[0].shadow_root.querySelector('#embed').click();
     $("#btn_embed")[0].setAttribute("data-balloon", "Copied"); /*Copiato!*/
     setTimeout(function(){ $("#btn_embed")[0].setAttribute("data-balloon", "Click to Copy HTML"); }, 3000);
+};
+
+CREATOR.share_fb = async function() {
+    let svg = $("[selectedfields]")[0].shadow_root.querySelector('svg');
+
+    if(!svg) {
+        alert('Questo tipo di datalet non supporta ancora la condivisione su Facebook');
+        return;
+    }
+
+    let png = await $("[selectedfields]")[0].create_image(svg);
+
+    let download = document.createElement('a');
+    download.href = png;
+    download.download = `facebook_upload.png`;
+    document.body.appendChild(download);
+    download.click();
+    document.body.removeChild(download);
+    window.open("https://m.facebook.com/", "", "top=540,left=540,width=720,height=540");
 };

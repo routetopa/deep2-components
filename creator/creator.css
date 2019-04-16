@@ -141,3 +141,11 @@ button.outside:disabled {
 .sm-modal-close:hover {
     background-color: #00AABF;
 }
+
+#share-modal .action {
+    opacity: 0.3;
+}
+
+#share-modal #btn_fb{
+    opacity: 1;
+}

@@ -42,6 +42,8 @@ CREATOR_FROM.setListeners = function() {
     // $("#btn_fcsv").on("click", CREATOR.fcsv);
     $("#btn_embed").on("click", CREATOR.embed);
 
+    $("#btn_fb").on("click", CREATOR.share_fb);
+
     $("#download-modal .sm-modal-close").on("click", CREATOR.closeDownloadModal);
     $("#share-modal .sm-modal-close").on("click", CREATOR.closeShareModal);
 };
