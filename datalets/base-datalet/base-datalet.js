@@ -208,7 +208,7 @@ export default class BaseDatalet extends HTMLElement {
                 }
                 // CKAN
                 else if (data_url.indexOf("datastore_search?resource_id") > -1) {
-                    let response = await this.ajax_request("POST", data_url.replace("datastore_search?resource_id", "resource_show?id"), 'responseText', JSON.parse);
+                    let response = await this.ajax_request("POST", this.data_url.replace("datastore_search?resource_id", "resource_show?id"), 'responseText', JSON.parse);
 
                     // RC temp?
                     if (data_url.indexOf("regione.campania") > -1) {
