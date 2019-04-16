@@ -175,10 +175,16 @@ export default class BaseDatalet extends HTMLElement {
             this.shadow_root.querySelector('#datalet_description').style.display = "none";
 
         if (this.data_url) {
+            let data_url = this.data_url;
             let data_source = this.shadow_root.querySelector('#data_source');
             let data_link = this.shadow_root.querySelector('#data_link');
 
-            let urlSource = this.data_url.split("/")[0] + "//" + this.data_url.split("/")[2];
+            if(data_url.indexOf("cors-proxy/proxy.php?csurl=") > -1) { //use proxy
+                let url = new URL(data_url);
+                data_url = url.searchParams.get("csurl");
+            }
+
+            let urlSource = data_url.split("/")[0] + "//" + data_url.split("/")[2];
 
             data_source.innerHTML = urlSource;
             data_source.setAttribute("href", urlSource);
@@ -187,25 +193,25 @@ export default class BaseDatalet extends HTMLElement {
 
             try {
                 // COCREATION
-                if (this.data_url.indexOf("/cocreation/") > -1) {
+                if (data_url.indexOf("/cocreation/") > -1) {
                     data_link.setAttribute("href", urlSource + "/cocreation/data-room-list");
                 }
                 // ?
-                else if (this.data_url.indexOf("/records/") > -1) {
+                else if (data_url.indexOf("/records/") > -1) {
                     let i;
-                    if (this.data_url.indexOf("&") > -1)
-                        i = this.data_url.indexOf("&");
+                    if (data_url.indexOf("&") > -1)
+                        i = data_url.indexOf("&");
                     else
-                        i = this.data_url.length;
+                        i = data_url.length;
 
-                    data_link.setAttribute("href", urlSource + "/explore/dataset/" + this.data_url.substring(this.data_url.indexOf("=") + 1, i));
+                    data_link.setAttribute("href", urlSource + "/explore/dataset/" + data_url.substring(data_url.indexOf("=") + 1, i));
                 }
                 // CKAN
-                else if (this.data_url.indexOf("datastore_search?resource_id") > -1) {
-                    let response = await this.ajax_request("POST", this.data_url.replace("datastore_search?resource_id", "resource_show?id"), 'responseText', JSON.parse);
+                else if (data_url.indexOf("datastore_search?resource_id") > -1) {
+                    let response = await this.ajax_request("POST", data_url.replace("datastore_search?resource_id", "resource_show?id"), 'responseText', JSON.parse);
 
-                    //temp?
-                    if (this.data_url.indexOf("regione.campania") > -1) {
+                    // RC temp?
+                    if (data_url.indexOf("regione.campania") > -1) {
                         data_link.setAttribute("href", urlSource + "/catalogo/datasetdetail/" + response.result.package_id);
                         return;
                     }
@@ -216,12 +222,12 @@ export default class BaseDatalet extends HTMLElement {
                         data_link.setAttribute("href", response.result.url.substring(0, response.result.url.indexOf("/download")));
                 }
                 else {
-                    data_link.setAttribute("href", this.data_url);
+                    data_link.setAttribute("href", data_url);
                 }
             } catch (e) {
                 console.log("Failed to infer dataset url");
                 this.parse_error(e);
-                data_link.setAttribute("href", this.data_url);
+                data_link.setAttribute("href", data_url);
             }
 
         }
