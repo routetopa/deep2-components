@@ -389,13 +389,10 @@ a:hover {
     bottom: 8px;
     height: 16px;
     line-height: 16px;
-    font-size: 10px;
-
-    background-color: red;
+    font-size: 9px;
 }
 
 .routetopa a {
-    /*font-size: 10px;*/
     color: #9E9E9E;
 }
 
