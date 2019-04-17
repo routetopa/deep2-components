@@ -31,6 +31,11 @@ class ItalymapDatalet extends BaseDatalet
     {
         //console.log('RENDER - italymap-datalet');
 
+        for(let i=0; i<data.series.length; i++) {
+            data.series[i][0] = _calculateRegion(data.series[i][0]);
+            data.data[0].data[i] = _calculateRegion(data.data[0].data[i]);
+        }
+
         await this.import_module('../lib/vendors/highcharts/highstock.js');
         await this.import_module('../lib/vendors/highmaps/js/map.js');
         await this.import_module('../lib/vendors/highmaps/themes/themes.js');
@@ -78,13 +83,12 @@ class ItalymapDatalet extends BaseDatalet
 
         let stops = false;
         if (min < 0) {
-
             min = -Math.max(Math.abs(min), Math.abs(max));
             max = Math.max(Math.abs(min), Math.abs(max));
+            // stops = [[0, '#F44336'], [1, '#2196F3']];
         }
-        else
-            stops = [[0, '#FFFFFF'], [1, Highcharts.getOptions().colors[0]]];
-        //stops = [[0, '#F44336'], [1, '#2196F3']];
+        // else
+        //     stops = [[0, '#FFFFFF'], [1, Highcharts.getOptions().colors[0]]];
 
         let options = await builder.build('map', this, data);
 
@@ -115,10 +119,17 @@ class ItalymapDatalet extends BaseDatalet
             }
         }];
 
+        // options.colorAxis = {
+        //     stops: stops,
+        //     min: min,
+        //     max: max
+        // };
+
         options.colorAxis = {
-            stops: stops,
             min: min,
             max: max,
+            minColor: "#FFFFFF",
+            maxColor: options.colors ? options.colors[0] : Highcharts.getOptions().colors[0]
         };
 
         options.tooltip = {
@@ -140,9 +151,364 @@ class ItalymapDatalet extends BaseDatalet
         };
 
         Highcharts.mapChart(this.shadowRoot.querySelector('#datalet_container'), options);
+
+        this.shadowRoot.querySelector('svg').children[2].setAttribute('fill', 'none');
+
+        function _calculateRegion(sigla) {
+            for (let i in campania_labels)
+                for (let j in campania_labels[i])
+                    if(campania_labels[i][j].sigla == sigla)
+                        return campania_labels[i][j].nome;
+
+            return sigla;
+        }
     }
 }
 
+const campania_labels = {
+    "regioni": ["Sicilia", "Piemonte", "Marche", "Valle d'Aosta", "Toscana", "Campania", "Puglia", "Veneto", "Lombardia", "Emilia-Romagna", "Trentino-Alto Adige", "Sardegna", "Molise", "Calabria", "Abruzzo", "Lazio", "Liguria", "Friuli-Venezia Giulia", "Basilicata", "Umbria"],
+    "Sicilia": [{
+        "nome": "Agrigento ",
+        "sigla": "AG"
+    }, {
+        "nome": "Caltanissetta ",
+        "sigla": "CL"
+    }, {
+        "nome": "Catania ",
+        "sigla": "CT"
+    }, {
+        "nome": "Enna ",
+        "sigla": "EN"
+    }, {
+        "nome": "Messina ",
+        "sigla": "ME"
+    }, {
+        "nome": "Palermo ",
+        "sigla": "PA"
+    }, {
+        "nome": "Ragusa ",
+        "sigla": "RG"
+    }, {
+        "nome": "Siracusa ",
+        "sigla": "SR"
+    }, {
+        "nome": "Trapani ",
+        "sigla": "TP"
+    }],
+    "Piemonte": [{
+        "nome": "Alessandria ",
+        "sigla": "AL"
+    }, {
+        "nome": "Asti ",
+        "sigla": "AT"
+    }, {
+        "nome": "Biella ",
+        "sigla": "BI"
+    }, {
+        "nome": "Cuneo ",
+        "sigla": "CN"
+    }, {
+        "nome": "Novara ",
+        "sigla": "NO"
+    }, {
+        "nome": "Torino ",
+        "sigla": "TO"
+    }, {
+        "nome": "Verbano-Cusio-Ossola ",
+        "sigla": "VB"
+    }, {
+        "nome": "Vercelli ",
+        "sigla": "VC"
+    }],
+    "Marche": [{
+        "nome": "Ancona ",
+        "sigla": "AN"
+    }, {
+        "nome": "Ascoli Piceno ",
+        "sigla": "AP"
+    }, {
+        "nome": "Macerata ",
+        "sigla": "MC"
+    }, {
+        "nome": "Pesaro e Urbino ",
+        "sigla": "PU"
+    }],
+    "Valle d'Aosta": [{
+        "nome": "Aosta ",
+        "sigla": "AO"
+    }],
+    "Toscana": [{
+        "nome": "Arezzo ",
+        "sigla": "AR"
+    }, {
+        "nome": "Firenze ",
+        "sigla": "FI"
+    }, {
+        "nome": "Grosseto ",
+        "sigla": "GR"
+    }, {
+        "nome": "Livorno ",
+        "sigla": "LI"
+    }, {
+        "nome": "Lucca ",
+        "sigla": "LU"
+    }, {
+        "nome": "Massa-Carrara ",
+        "sigla": "MS"
+    }, {
+        "nome": "Pisa ",
+        "sigla": "PI"
+    }, {
+        "nome": "Pistoia ",
+        "sigla": "PT"
+    }, {
+        "nome": "Prato ",
+        "sigla": "PO"
+    }, {
+        "nome": "Siena ",
+        "sigla": "SI"
+    }],
+    "Campania": [{
+        "nome": "Avellino ",
+        "sigla": "AV"
+    }, {
+        "nome": "Benevento ",
+        "sigla": "BN"
+    }, {
+        "nome": "Caserta ",
+        "sigla": "CE"
+    }, {
+        "nome": "Napoli ",
+        "sigla": "NA"
+    }, {
+        "nome": "Salerno ",
+        "sigla": "SA"
+    }],
+    "Puglia": [{
+        "nome": "Bari ",
+        "sigla": "BA"
+    }, {
+        "nome": "Brindisi ",
+        "sigla": "BR"
+    }, {
+        "nome": "Foggia ",
+        "sigla": "FG"
+    }, {
+        "nome": "Lecce ",
+        "sigla": "LE"
+    }, {
+        "nome": "Taranto ",
+        "sigla": "TA"
+    }],
+    "Veneto": [{
+        "nome": "Belluno ",
+        "sigla": "BL"
+    }, {
+        "nome": "Padova ",
+        "sigla": "PD"
+    }, {
+        "nome": "Rovigo ",
+        "sigla": "RO"
+    }, {
+        "nome": "Treviso ",
+        "sigla": "TV"
+    }, {
+        "nome": "Venezia ",
+        "sigla": "VE"
+    }, {
+        "nome": "Verona ",
+        "sigla": "VR"
+    }, {
+        "nome": "Vicenza ",
+        "sigla": "VI"
+    }],
+    "Lombardia": [{
+        "nome": "Bergamo ",
+        "sigla": "BG"
+    }, {
+        "nome": "Brescia ",
+        "sigla": "BS"
+    }, {
+        "nome": "Como ",
+        "sigla": "CO"
+    }, {
+        "nome": "Cremona ",
+        "sigla": "CR"
+    }, {
+        "nome": "Lecco ",
+        "sigla": "LC"
+    }, {
+        "nome": "Lodi ",
+        "sigla": "LO"
+    }, {
+        "nome": "Mantova ",
+        "sigla": "MN"
+    }, {
+        "nome": "Milano ",
+        "sigla": "MI"
+    }, {
+        "nome": "Pavia ",
+        "sigla": "PV"
+    }, {
+        "nome": "Sondrio ",
+        "sigla": "SO"
+    }, {
+        "nome": "Varese ",
+        "sigla": "VA"
+    }],
+    "Emilia-Romagna": [{
+        "nome": "Bologna ",
+        "sigla": "BO"
+    }, {
+        "nome": "Ferrara ",
+        "sigla": "FE"
+    }, {
+        "nome": "Forl\u002d0043esena ",
+        "sigla": "FC"
+    }, {
+        "nome": "Modena ",
+        "sigla": "MO"
+    }, {
+        "nome": "Parma ",
+        "sigla": "PR"
+    }, {
+        "nome": "Piacenza ",
+        "sigla": "PC"
+    }, {
+        "nome": "Ravenna ",
+        "sigla": "RA"
+    }, {
+        "nome": "Reggio Emilia ",
+        "sigla": "RE"
+    }, {
+        "nome": "Rimini ",
+        "sigla": "RN"
+    }],
+    "Trentino-Alto Adige": [{
+        "nome": "Bolzano ",
+        "sigla": "BZ"
+    }, {
+        "nome": "Trento ",
+        "sigla": "TN"
+    }],
+    "Sardegna": [{
+        "nome": "Cagliari ",
+        "sigla": "CA"
+    }, {
+        "nome": "Carbonia-Iglesias ",
+        "sigla": "CI"
+    }, {
+        "nome": "Nuoro ",
+        "sigla": "NU"
+    }, {
+        "nome": "Olbia-Tempio ",
+        "sigla": "OT"
+    }, {
+        "nome": "Oristano ",
+        "sigla": "OR"
+    }, {
+        "nome": "Medio Campidano ",
+        "sigla": "VS"
+    }, {
+        "nome": "Sassari ",
+        "sigla": "SS"
+    }, {
+        "nome": "Ogliastra ",
+        "sigla": "OG"
+    }],
+    "Molise": [{
+        "nome": "Campobasso ",
+        "sigla": "CB"
+    }, {
+        "nome": "Isernia ",
+        "sigla": "IS"
+    }],
+    "Calabria": [{
+        "nome": "Catanzaro ",
+        "sigla": "CZ"
+    }, {
+        "nome": "Cosenza ",
+        "sigla": "CS"
+    }, {
+        "nome": "Crotone ",
+        "sigla": "KR"
+    }, {
+        "nome": "Reggio Calabria ",
+        "sigla": "RC"
+    }, {
+        "nome": "Vibo Valentia ",
+        "sigla": "VV"
+    }],
+    "Abruzzo": [{
+        "nome": "Chieti ",
+        "sigla": "CH"
+    }, {
+        "nome": "L'Aquila ",
+        "sigla": "AQ"
+    }, {
+        "nome": "Pescara ",
+        "sigla": "PE"
+    }, {
+        "nome": "Teramo ",
+        "sigla": "TE"
+    }],
+    "Lazio": [{
+        "nome": "Frosinone ",
+        "sigla": "FR"
+    }, {
+        "nome": "Latina ",
+        "sigla": "LT"
+    }, {
+        "nome": "Rieti ",
+        "sigla": "RI"
+    }, {
+        "nome": "Roma ",
+        "sigla": "RM"
+    }, {
+        "nome": "Viterbo ",
+        "sigla": "VT"
+    }],
+    "Liguria": [{
+        "nome": "Genova ",
+        "sigla": "GE"
+    }, {
+        "nome": "Imperia ",
+        "sigla": "IM"
+    }, {
+        "nome": "La Spezia ",
+        "sigla": "SP"
+    }, {
+        "nome": "Savona ",
+        "sigla": "SV"
+    }],
+    "Friuli-Venezia Giulia": [{
+        "nome": "Gorizia ",
+        "sigla": "GO"
+    }, {
+        "nome": "Pordenone ",
+        "sigla": "PN"
+    }, {
+        "nome": "Trieste ",
+        "sigla": "TS"
+    }, {
+        "nome": "Udine ",
+        "sigla": "UD"
+    }],
+    "Basilicata": [{
+        "nome": "Matera ",
+        "sigla": "MT"
+    }, {
+        "nome": "Potenza ",
+        "sigla": "PZ"
+    }],
+    "Umbria": [{
+        "nome": "Perugia ",
+        "sigla": "PG"
+    }, {
+        "nome": "Terni ",
+        "sigla": "TR"
+    }]
+}
 
 const FrozenItalymapDatalet = Object.freeze(ItalymapDatalet);
 window.customElements.define('italymap-datalet', FrozenItalymapDatalet);

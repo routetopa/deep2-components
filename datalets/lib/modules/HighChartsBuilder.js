@@ -139,7 +139,24 @@ export const build = async function(type, context, data) {
                 return s;
             },
             shared: true
-        }
+        };
+
+        options.navigator.xAxis = {
+            tickWidth: 0,
+                lineWidth: 0,
+                gridLineWidth: 1,
+                tickPixelInterval: 200,
+                labels: {
+                    align: 'left',
+                        style: {
+                        color: '#888'
+                    },
+                    x: 3,
+                    y: -4
+                },
+            showFirstLabel: false,
+                showLastLabel: false
+        };
     }
 
     // LEGEND
