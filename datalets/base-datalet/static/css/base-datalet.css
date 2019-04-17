@@ -386,14 +386,16 @@ a:hover {
 .routetopa {
     position: absolute;
     right: 4px;
-    bottom: 4px;
+    bottom: 8px;
+    height: 16px;
+    line-height: 16px;
+    font-size: 10px;
 
-    height: 24px;
-    line-height: 24px;
+    background-color: red;
 }
 
 .routetopa a {
-    font-size: 10px;
+    /*font-size: 10px;*/
     color: #9E9E9E;
 }
 
