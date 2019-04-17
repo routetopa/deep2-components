@@ -14,30 +14,35 @@
 
     <div id="base_datalet_container">
 
-        <div id="datalet_title"></div>
-        <div id="datalet_description"></div>
-        <div id="datalet_source">
-            <span id="data_source_span"></span> <a id="data_source" target="_blank" data-balloon-pos="up" data-balloon-length="medium"></a>
-            <span id="data_link_span"></span> <a id="data_link" target="_blank" data-balloon-pos="up" data-balloon-length="medium">dataset</a>
-            <span id="live" class="" data-balloon-pos="up"></span>
-            <span id="ajax_error"></span>
+        <div class="base_row">
+            <div id="datalet_title"></div>
+            <div id="menu" class="menu">
+                <div id="export_menu" data-balloon-pos="up"><i class="fas fa-download"></i></div>
+                <div id="link" data-balloon-pos="up"><i class="fas fa-link"></i></div>
+                <div id="embed" data-balloon-pos="up"><i class="fas fa-code"></i></div>
+                <div id="fullscreen" data-balloon-pos="up"><i class="fas fa-expand"></i></div>
+            </div>
         </div>
-
-        <div id="menu" class="menu">
-            <div id="export_menu" data-balloon-pos="down"><i class="fas fa-download"></i></div>
-            <div id="link" data-balloon-pos="down"><i class="fas fa-link"></i></div>
-            <div id="embed" data-balloon-pos="down"><i class="fas fa-code"></i></div>
-            <div id="fullscreen" data-balloon-pos="down"><i class="fas fa-expand"></i></div>
+        <div class="base_row">
+            <div id="datalet_description"></div>
+            <div id="social" class="social">
+                <div id="facebook" class="facebook"><i class="fab fa-facebook-square"></i></div>
+                <div id="twitter" class="twitter"><i class="fab fa-twitter-square"></i></div>
+            </div>
+        </div>
+        <div class="base_row">
+            <div id="datalet_source">
+                <div id="data_source_container"><span id="data_source_span"></span> <a id="data_source" target="_blank" data-balloon-pos="up" data-balloon-length="medium"></a></div>
+                <div id="data_link_container"><span id="data_link_span"></span> <a id="data_link" target="_blank" data-balloon-pos="up" data-balloon-length="medium">dataset</a></div>
+                <div id="live" class="" data-balloon-pos="up"></div>
+                <div id="proxy" class="proxy" data-balloon-pos="up">PROXY</div>
+                <div id="ajax_error"></div>
+            </div>
         </div>
 
         <div id="routetopa" class="routetopa">
             <a href="http://www.routetopa.eu/" target="_blank">ROUTE-TO-PA</a>
             <!--<a href="http://www.routetopa.eu/" target="_blank"><img id="rtpalogo" src="./static/images/rtpalogo.png">-->
-        </div>
-
-        <div id="social" class="social">
-            <div id="facebook" class="facebook"><i class="fab fa-facebook-square"></i></div>
-            <div id="twitter" class="twitter"><i class="fab fa-twitter-square"></i></div>
         </div>
 
         <div id="save_as-placeholder" class="placeholder">

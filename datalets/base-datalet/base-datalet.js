@@ -171,8 +171,8 @@ export default class BaseDatalet extends HTMLElement {
             this.shadow_root.querySelector('#datalet_description').innerHTML = this.description;
             this.shadow_root.querySelector('#datalet_description').setAttribute("title", this.description);
         }
-        else
-            this.shadow_root.querySelector('#datalet_description').style.display = "none";
+        // else
+        //     this.shadow_root.querySelector('#datalet_description').style.display = "none";
 
         if (this.data_url) {
             let data_url = this.data_url;
@@ -186,8 +186,14 @@ export default class BaseDatalet extends HTMLElement {
 
             let urlSource = data_url.split("/")[0] + "//" + data_url.split("/")[2];
 
-            data_source.innerHTML = urlSource;
+            data_source.innerHTML = (data_url.split("/")[2]).split(':')[0];
             data_source.setAttribute("href", urlSource);
+
+            // css
+            let row = this.shadow_root.querySelector('#datalet_source');
+            let container = this.shadow_root.querySelector('#data_source_container');
+            if(row.offsetWidth < 400)
+                container.style.display = 'none';
 
             // INFER DATASET URL
 
@@ -241,7 +247,7 @@ export default class BaseDatalet extends HTMLElement {
         {
             this.shadow_root.querySelector('#link').style.display = 'none';
             this.shadow_root.querySelector('#myspace-action').style.display = 'none';
-            this.shadow_root.querySelector('#social').style.visibility = 'hidden';
+            this.shadow_root.querySelector('#social').style.display = 'none';
         }
 
         if(this.hasAttribute("disable_html_export") || this.hasAttribute("disable_html")) //todo ??
@@ -260,14 +266,14 @@ export default class BaseDatalet extends HTMLElement {
         }
 
         if(this.hasAttribute("hide_export")) {
-            this.shadow_root.querySelector('#embed').style.visibility = 'hidden';
-            this.shadow_root.querySelector('#link').style.visibility = 'hidden';
-            this.shadow_root.querySelector('#export_menu').style.visibility = 'hidden';
+            this.shadow_root.querySelector('#embed').style.display = 'none';
+            this.shadow_root.querySelector('#link').style.display = 'none';
+            this.shadow_root.querySelector('#export_menu').style.display = 'none';
         }
         if(this.hasAttribute("hide_fullscreen"))
-            this.shadow_root.querySelector('#fullscreen').style.visibility = 'hidden';
+            this.shadow_root.querySelector('#fullscreen').style.display = 'none';
         if(this.hasAttribute("hide_share"))
-            this.shadow_root.querySelector('#social').style.visibility = 'hidden';
+            this.shadow_root.querySelector('#social').style.display = 'none';
     }
 
     add_listeners() {
@@ -857,6 +863,14 @@ export default class BaseDatalet extends HTMLElement {
             this.shadow_root.querySelector('#live').className = "cache";
             this.shadow_root.querySelector('#live').innerHTML =  LN.translate("cache");
             this.shadow_root.querySelector('#live').setAttribute("data-balloon", LN.translate("disable_cache"));
+        }
+
+        if(this.isProxyRequired()) {
+            let proxy_label = this.shadow_root.querySelector('#proxy');
+            proxy_label.style.display = 'block';
+            proxy_label.innerHTML = LN.translate("proxy");
+            proxy_label.setAttribute("data-balloon", LN.translate("proxied") + (this.data_url.split("/")[2]).split(':')[0]);
+            proxy_label.addEventListener('click', () => {window.open(this.data_url.split("/")[0] + "//" + this.data_url.split("/")[2], '_blank');});
         }
     }
 };

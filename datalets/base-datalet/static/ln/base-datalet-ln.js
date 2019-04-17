@@ -64,6 +64,9 @@ base_datalet_ln["data_is_live_en"]  = "Data is live, click to use cached data";
 base_datalet_ln["cache_en"]         = "CACHE";
 base_datalet_ln["disable_cache_en"] = "Data is cached, click to use live data";
 
+base_datalet_ln["proxy_en"]         = "PROXY";
+base_datalet_ln["proxied_en"]       = "Data is proxied by ";
+
 base_datalet_ln["error_en"]         = "Sorry, something didn't work right";
 
 /** IT **/
@@ -96,6 +99,9 @@ base_datalet_ln["data_is_live_it"]  = "I dati sono live, clicca per usare i dati
 
 base_datalet_ln["cache_it"]         = "CACHE";
 base_datalet_ln["disable_cache_it"] = "I dati sono cached, clicca per usare i dati live";
+
+base_datalet_ln["proxy_it"]         = "PROXY";
+base_datalet_ln["proxied_it"]       = "I dati sono inoltrati da ";
 
 base_datalet_ln["error_it"]         = "Siamo spiacenti, qualcosa non ha funzionato correttamente";
 
