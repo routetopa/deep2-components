@@ -1,4 +1,4 @@
-export const transformData = function (data)
+export const transformData = function (data, selectedFields)
 {
     if(data.length === 0)
         return;
@@ -11,5 +11,24 @@ export const transformData = function (data)
         series.push(arr);
     }
 
-    return {data:data, series:series};
+    selectedFields = JSON.parse(selectedFields);
+
+    let inputs = [];
+    for (let i = 0; i < selectedFields.length; i++)
+        if (selectedFields[i])
+            inputs.push(selectedFields[i].field);
+
+    let categories = null;
+    let cat_index = inputs.indexOf("Categories");
+
+    if (cat_index != -1)
+    {
+        categories =  data[cat_index].data;
+
+        categories = categories.filter(function(value, index) {
+            return categories.indexOf(value) === index
+        });
+    }
+
+    return {data:data, categories:categories, series:series};
 };

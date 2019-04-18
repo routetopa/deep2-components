@@ -31,11 +31,6 @@ class ItalymapDatalet extends BaseDatalet
     {
         //console.log('RENDER - italymap-datalet');
 
-        for(let i=0; i<data.series.length; i++) {
-            data.series[i][0] = _calculateRegion(data.series[i][0]);
-            data.data[0].data[i] = _calculateRegion(data.data[0].data[i]);
-        }
-
         await this.import_module('../lib/vendors/highcharts/highstock.js');
         await this.import_module('../lib/vendors/highmaps/js/map.js');
         await this.import_module('../lib/vendors/highmaps/themes/themes.js');
@@ -62,6 +57,11 @@ class ItalymapDatalet extends BaseDatalet
                 break;
         }
 
+        for(let i=0; i<data.series.length; i++) {
+            data.series[i][0] = _calculateRegion(data.series[i][0]);
+            data.data[0].data[i] = _calculateRegion(data.data[0].data[i]);
+        }
+
         let arrayMap = Highcharts.maps[map].features;
         let obj;
         for (let i=0; i < data.series.length; i++) {
@@ -75,34 +75,17 @@ class ItalymapDatalet extends BaseDatalet
         data.series = data.series.filter(function(n){ return n !== undefined });
         const pointsInfo = JSON.parse(JSON.stringify(data.data));
 
-        let min = 0, max = 0;
-        for (let i in data.series) {
-            min = Math.min(data.series[i][1], min);
-            max = Math.max(data.series[i][1], max);
-        }
-
-        let stops = false;
-        if (min < 0) {
-            min = -Math.max(Math.abs(min), Math.abs(max));
-            max = Math.max(Math.abs(min), Math.abs(max));
-            // stops = [[0, '#F44336'], [1, '#2196F3']];
-        }
-        // else
-        //     stops = [[0, '#FFFFFF'], [1, Highcharts.getOptions().colors[0]]];
-
         let options = await builder.build('map', this, data);
 
         let suffix = this.getAttribute("suffix");
 
-        delete options.chart;
+        // delete options.chart;
         delete options.xAxis;
         delete options.yAxis;
         delete options.plotOptions;
         delete options.navigator;
 
-        options.chart = {
-            map: map
-        };
+        options.chart.map = map;
 
         options.mapNavigation = {
             enabled: true,
@@ -111,26 +94,55 @@ class ItalymapDatalet extends BaseDatalet
             }
         };
 
-        options.series = [{
-            data: data.series,
-            dataLabels: {
-                enabled:  this.getAttribute("dataLabels"),
-                format: '{point.name}'
+        if(data.categories != null) {
+
+            //todo BUG : with "transparent trick" only last serie tooltips works
+
+            options.series = [];
+            for(let i=0; i<data.categories.length; i++)
+            {
+                options.series.push(
+                    {
+                        name: data.categories[i],
+                        data: data.series.filter(function(value) {return value[1] === data.categories[i]}),
+                        nullColor: 'transparent',
+                        dataLabels: {
+                            enabled:  this.getAttribute("dataLabels"),
+                            format: '{point.name}'
+                        }
+                    }
+                );
             }
-        }];
 
-        // options.colorAxis = {
-        //     stops: stops,
-        //     min: min,
-        //     max: max
-        // };
+        } else {
 
-        options.colorAxis = {
-            min: min,
-            max: max,
-            minColor: "#FFFFFF",
-            maxColor: options.colors ? options.colors[0] : Highcharts.getOptions().colors[0]
-        };
+            let min = 0, max = 0;
+            for (let i in data.series) {
+                min = Math.min(data.series[i][1], min);
+                max = Math.max(data.series[i][1], max);
+            }
+
+            if (min < 0) {
+                min = -Math.max(Math.abs(min), Math.abs(max));
+                max = Math.max(Math.abs(min), Math.abs(max));
+            }
+
+            options.series = [{
+                data: data.series,
+                dataLabels: {
+                    enabled:  this.getAttribute("dataLabels"),
+                    format: '{point.name}'
+                }
+            }];
+
+            options.colorAxis = {
+                // stops
+                min: min,
+                max: max,
+                minColor: "#FFFFFF",
+                maxColor: options.colors ? options.colors[0] : Highcharts.getOptions().colors[0]
+            };
+        }
 
         options.tooltip = {
             useHTML: true,
@@ -152,9 +164,32 @@ class ItalymapDatalet extends BaseDatalet
 
         Highcharts.mapChart(this.shadowRoot.querySelector('#datalet_container'), options);
 
-        this.shadowRoot.querySelector('svg').children[2].setAttribute('fill', 'none');
+        //todo
+        // colorAxis: {
+        //     dataClasses: [{
+        //         to: 3
+        //     }, {
+        //         from: 3,
+        //         to: 10
+        //     }, {
+        //         from: 10,
+        //         to: 30
+        //     }, {
+        //         from: 30,
+        //         to: 100
+        //     }, {
+        //         from: 100,
+        //         to: 300
+        //     }, {
+        //         from: 300,
+        //         to: 1000
+        //     }, {
+        //         from: 1000
+        //     }]
+        // },
 
         function _calculateRegion(sigla) {
+            sigla = sigla.toUpperCase();
             for (let i in campania_labels)
                 for (let j in campania_labels[i])
                     if(campania_labels[i][j].sigla == sigla)

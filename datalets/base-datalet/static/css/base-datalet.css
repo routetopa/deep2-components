@@ -29,7 +29,7 @@ a:hover {
     display: var(--base-datalet-visibility, block);
     position: relative;
     height: 72px;
-    background-color: #ffffff;
+    background-color: #fafafa;
     font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-weight: normal;
     color: #212121;
