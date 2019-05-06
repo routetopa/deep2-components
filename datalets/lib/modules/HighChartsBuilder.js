@@ -154,8 +154,9 @@ export const build = async function(type, context, data) {
                     x: 3,
                     y: -4
                 },
-            showFirstLabel: false,
-                showLastLabel: false
+            // showFirstLabel: false,
+            // showLastLabel: false,
+            labels: false
         };
     }
 
