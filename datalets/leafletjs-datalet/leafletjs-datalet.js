@@ -14,7 +14,7 @@ class LeafletDatalet extends BaseDatalet
         try {
             //{requestData:0}, {selectData:0}, {filterData:0}, {trasformData:0} -> [0, 0, 0, 0]
             this.set_behaviours([AjaxJsonAlasqlBehavior]);
-            this.export_to_img_doc = false;
+            // this.export_to_img_doc = false;
             this.map = null;
         } catch (e) {
             console.log(e);
@@ -32,6 +32,7 @@ class LeafletDatalet extends BaseDatalet
         //console.log('RENDER - leafletjs-datalet');
 
         await this.import_module('./leafletjs/marker_cluster/dist/leaflet.markercluster.js');
+        await this.import_module('./leafletjs/easy_print/dist/bundle.js');
         await this.import_module('./leafletjs/providers/leaflet-providers.js');
 
         //let map;
@@ -133,13 +134,22 @@ class LeafletDatalet extends BaseDatalet
         if(!layer || layer == "")
             layer = "OpenStreetMap";
 
-        L.tileLayer.provider(layer).addTo(this.map);
+        let tiles = L.tileLayer.provider(layer).addTo(this.map);
 
         let coordinates = [];
         let coordinates_index  = 0;
         let isArray = data[0].data[0] ? data[0].data[0].constructor === Array : false;
         let geo;
         let markers_cluster = L.markerClusterGroup({ disableClusteringAtZoom: 17 });
+
+        this.printer = L.easyPrint({
+            tileLayer: tiles,
+            // sizeModes: ['Current', 'A4Landscape', 'A4Portrait'],
+            // filename: 'myMap',
+            exportOnly: true,
+            hideControlContainer: false,
+            hidden: true
+        }).addTo(this.map);
 
         for(let i=0; i<data[0].data.length; i++)
         {
@@ -236,6 +246,18 @@ class LeafletDatalet extends BaseDatalet
         }catch (e){
             console.log(e);
         }
+    }
+
+    save_as_png() {
+        let container = this.shadow_root.querySelector('#img-iframe').contentWindow.document.querySelector(this.component).shadowRoot.querySelector('#datalet_container');
+
+        container.style.width = container.clientWidth + 'px';
+        container.style.height = container.clientHeight + 'px';
+
+        this.shadow_root.querySelector('#img-iframe').contentWindow.document.querySelector(this.component).printer.printMap('CurrentSize', `${this.component}.png`);
+
+        container.style.width = '100%';
+        container.style.height = '100%';
     }
 }
 
