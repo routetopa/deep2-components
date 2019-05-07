@@ -37,6 +37,23 @@ CREATOR.init = function() {
     $("button.outside").prop('disabled', true);
 };
 
+CREATOR.translate = function() {
+    $('#btn_share').attr("data-balloon", LN.translate("btn_share"));
+    $('#btn_download').attr("data-balloon", LN.translate("btn_download"));
+    $('#btn_embed').attr("data-balloon", LN.translate("btn_embed"));
+    $('#btn_fullscreen').attr("data-balloon", LN.translate("btn_fullscreen"));
+
+    $('#btn_png').text(LN.translate("btn_png"));
+    $('#btn_doc').text(LN.translate("btn_doc"));
+    $('#btn_csv').text(LN.translate("btn_csv"));
+
+    $('#label_fb').text(LN.translate("label_fb"));
+    $('#label_tw').text(LN.translate("label_tw"));
+    $('#label_li').text(LN.translate("label_li"));
+    $('#label_pn').text(LN.translate("label_pn"));
+    $('#label_ml').text(LN.translate("label_ml"));
+};
+
 CREATOR.setListeners = function() {
     document.addEventListener("select-inputs_isReady", CREATOR.enableButtons);
     document.addEventListener("page-slider-controllet_selected", CREATOR.toggleButtons);

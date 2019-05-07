@@ -23,7 +23,13 @@ LN.setUserLanguage = function(ln) {
 };
 
 LN.translate = function(text, ul = LN.userLanguage) {
-    return ln[text+"_"+ul] ? ln[text+"_"+ul] : text+"_"+ul;
+    // return ln[text+"_"+ul] ? ln[text+"_"+ul] : text+"_"+ul;
+    if(ln[text+"_"+ul])
+        return ln[text+"_"+ul];
+    else if (ln[text+"_en"])
+        return ln[text+"_en"];
+    else
+        return text+"_"+ul;
 };
 
 (function() {
@@ -2008,3 +2014,39 @@ ln["themeDescription_cn"]="主题影响图表的外观和颜色";
 ln["stackDescription_cn"]="堆栈种类";
 ln["donutDescription_cn"]="饼状图将会变成圆环图！（反之亦然）";
 ln["mapDescription_cn"]="";
+
+/**** CREATOR ****/
+
+/** EN **/
+
+ln["btn_share_en"] = "Share";
+ln["btn_download_en"] = "Save As...";
+ln["btn_embed_en"] = "Click to Copy HTML";
+ln["btn_fullscreen_en"] = "Fullscreen";
+
+ln["btn_png_en"] = "Save as Image (.png)";
+ln["btn_doc_en"] = "Save as Document (.docx)";
+ln["btn_csv_en"] = "Save Dataset (.csv)";
+
+ln["label_fb_en"] = "Share on Facebook";
+ln["label_tw_en"] = "Share on Twitter";
+ln["label_li_en"] = "Share on LinkedIn";
+ln["label_pn_en"] = "Share on Pinterest";
+ln["label_ml_en"] = "Send Mail";
+
+/** IT **/
+
+ln["btn_share_it"] = "Condividi";
+ln["btn_download_it"] = "Salva come...";
+ln["btn_embed_it"] = "Clicca per copiare l'HTML";
+ln["btn_fullscreen_it"] = "Tutto schermo";
+
+ln["btn_png_it"] = "Salva come immagine (.png)";
+ln["btn_doc_it"] = "Salva come documento (.docx)";
+ln["btn_csv_it"] = "Salva dataset (.csv)";
+
+ln["label_fb_it"] = "Condividi su Facebook";
+ln["label_tw_it"] = "Condividi su Twitter";
+ln["label_li_it"] = "Condividi su LinkedIn";
+ln["label_pn_it"] = "Condividi suShare on Pinterest";
+ln["label_ml_it"] = "Invia Mail";
