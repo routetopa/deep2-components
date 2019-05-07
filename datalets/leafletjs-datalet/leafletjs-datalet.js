@@ -254,7 +254,7 @@ class LeafletDatalet extends BaseDatalet
         container.style.width = container.clientWidth + 'px';
         container.style.height = container.clientHeight + 'px';
 
-        this.shadow_root.querySelector('#img-iframe').contentWindow.document.querySelector(this.component).printer.printMap('CurrentSize', `${this.component}.png`);
+        this.shadow_root.querySelector('#img-iframe').contentWindow.document.querySelector(this.component).printer.printMap('CurrentSize', `${this.component}`);
 
         container.style.width = '100%';
         container.style.height = '100%';
