@@ -384,42 +384,38 @@ export default class BaseDatalet extends HTMLElement {
     async save_as_doc() {
         this.shadow_root.querySelector('#save_as-placeholder').style.display = 'none';
 
+        let docx = await this.import_module('../lib/vendors/docx/index.js');
+        const doc = new Document();
+
+        doc.addParagraph(new Paragraph(`Datalet Name : ${this.component}`));
+        doc.addParagraph(new Paragraph(`Datalet Title : ${this.datalettitle}`));
+        doc.addParagraph(new Paragraph(`Datalet Description : ${this.description}`));
+        doc.addParagraph(new Paragraph(`Dataset API : ${this.data_url}`));
+
         if (this.data_url.indexOf("datastore_search?resource_id") > -1) // todo
         {
-            let docx = await this.import_module('../lib/vendors/docx/index.js');
-
             let url = this.data_url.replace("datastore_search?resource_id", "resource_show?id");
-
             let res = await this.ajax_request("GET", url, 'responseText', JSON.parse,
                 [["Accept", "application/json, text/javascript, */*; q=0.01"]], null, null);
 
-            const doc = new Document();
-
-            doc.addParagraph(new Paragraph(`Datalet Name : ${this.component}`));
-            doc.addParagraph(new Paragraph(`Datalet Title : ${this.datalettitle}`));
-            doc.addParagraph(new Paragraph(`Datalet Description : ${this.description}`));
             doc.addParagraph(new Paragraph(`Dataset Creation Date : ${res.result.created}`));
             doc.addParagraph(new Paragraph(`Dataset Format : ${res.result.format}`));
             doc.addParagraph(new Paragraph(`Dataset Last Modified : ${res.result.last_modified}`));
             doc.addParagraph(new Paragraph(`Dataset Url : ${res.result.url}`));
-            doc.addParagraph(new Paragraph(`Dataset API : ${this.data_url}`));
-            doc.createImage(await this.create_image(this.shadow_root.querySelector('svg')));
-
-            const packer = new Packer();
-            let blob = await packer.toBlob(doc);
-
-            let downloadUrl = window.URL.createObjectURL(blob);
-            let download = document.createElement("a");
-            download.href = downloadUrl;
-            download.download = `${this.component}.docx`;
-            document.body.appendChild(download);
-            download.click();
-            document.body.removeChild(download);
         }
 
-        /*const paragraph = new Paragraph(`Datalet name : ${this.component}`);
-         const dateText = new TextRun("Github is the best").tab().bold();
-         paragraph.addRun(dateText);*/
+        doc.createImage(await this.create_image(this.shadow_root.querySelector('svg')));
+
+        const packer = new Packer();
+        let blob = await packer.toBlob(doc);
+
+        let downloadUrl = window.URL.createObjectURL(blob);
+        let download = document.createElement("a");
+        download.href = downloadUrl;
+        download.download = `${this.component}.docx`;
+        document.body.appendChild(download);
+        download.click();
+        document.body.removeChild(download);
     }
 
     async save_as_csv() {
