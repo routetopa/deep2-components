@@ -149,18 +149,33 @@ CREATOR.embed  = function() {
 CREATOR.share_fb = async function() {
     let svg = $("[selectedfields]")[0].shadow_root.querySelector('svg');
 
-    if(!svg && $("[selectedfields]")[0].tagName !== "LEAFLETJS-DATALET") {
-        alert('Questo tipo di datalet non supporta ancora la condivisione su Facebook');
+    if (!svg && $("[selectedfields]")[0].tagName !== "LEAFLETJS-DATALET") {
+        alert(LN.translate("fb1"));
         return;
     }
 
+    alert(LN.translate("fb2"));
+
     let png = await $("[selectedfields]")[0].create_image(svg);
 
-    let download = document.createElement('a');
-    download.href = png;
-    download.download = `facebook_upload.png`;
-    document.body.appendChild(download);
-    download.click();
-    document.body.removeChild(download);
+    if ($("[selectedfields]")[0].tagName !== "LEAFLETJS-DATALET") {
+        let download = document.createElement('a');
+        download.href = png;
+        download.download = `facebook_upload.png`;
+        document.body.appendChild(download);
+        download.click();
+        document.body.removeChild(download);
+    }
+
+    let temp = document.createElement("textarea")
+    document.getElementsByTagName("body")[0].appendChild(temp);
+    temp.value =
+        $("[selectedfields]")[0].datalettitle+'\n' +
+        $("[selectedfields]")[0].description+'\n' +
+        "Visualizzazione '" + $("[selectedfields]")[0].tagName + "' costruita sui dati provenienti da " + ($("[selectedfields]").attr('data-url').split("/")[2]).split(':')[0];
+    temp.select();
+    document.execCommand("copy");
+    document.getElementsByTagName("body")[0].removeChild(temp);
+
     window.open("https://m.facebook.com/", "", "top=540,left=540,width=720,height=540");
 };

@@ -2036,6 +2036,9 @@ ln["label_li_en"] = "Share on LinkedIn";
 ln["label_pn_en"] = "Share on Pinterest";
 ln["label_ml_en"] = "Send Mail";
 
+ln["fb1_en"] = "This visualization does not yet support sharing on Facebook.";
+ln["fb2_en"] = "The image of the visualization will be downloaded and descriptive text will be copied in clipboard to speed up and simplify publication on Facebook.";
+
 /** IT **/
 
 ln["btn_share_it"] = "Condividi";
@@ -2052,3 +2055,6 @@ ln["label_tw_it"] = "Condividi su Twitter";
 ln["label_li_it"] = "Condividi su LinkedIn";
 ln["label_pn_it"] = "Condividi suShare on Pinterest";
 ln["label_ml_it"] = "Invia Mail";
+
+ln["fb1_it"] = "Questa visualizzazione non supporta ancora la condivisione su Facebook.";
+ln["fb2_it"] = "Verr\u00e0 scaricata l'immagine della visualizzazione e sar\u00e0 copiato del testo descrittivo negli appunti per velocizzare e semplificare la pubblicazione su Facebook.";
