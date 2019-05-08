@@ -375,6 +375,8 @@ ln["stackDescription_en"] = "The stack type.";
 ln["donutDescription_en"] = "Pie will become Donut! :) (or viceversa).";
 ln["mapDescription_en"] = "";
 
+ln["layer_en"] = "Layer";
+ln["layerDescription_en"] = "Choose a layer";
 
 /******** IT ********/
 
@@ -705,6 +707,10 @@ ln["stackDescription_it"] = "Tipologia di pila";
 ln["donutDescription_it"] = "La torta si trasforma in ciambella! :) (o viceversa).";
 ln["mapDescription_it"] = "";
 
+ln["layer_it"] = "Layer";
+ln["layerDescription_it"] = "Scegli un tipo di layer";
+
+
 /******** FR ********/
 
 //PAGE SLIDER
@@ -974,6 +980,9 @@ ln["1_italyRegion_fr"] = "Italy - Regions";
 ln["2_italyProvince_fr"] = "Italy - Province";
 ln["3_campaniaProvince_fr"] = "Campania - Province";
 ln["4_campaniaMunicipality_fr"] = "Campania - Municipality";
+
+ln["layer_fr"] = "Layer";
+ln["layerDescription_fr"] = "Choose a layer";
 
 ln["true_fr"] = "Oui";
 ln["false_fr"] = "Non";
@@ -1302,6 +1311,9 @@ ln["2_italyProvince_nl"] = "Italy - Province";
 ln["3_campaniaProvince_nl"] = "Campania - Province";
 ln["4_campaniaMunicipality_nl"] = "Campania - Municipality";
 
+ln["layer_nl"] = "Layer";
+ln["layerDescription_nl"] = "Choose a layer";
+
 ln["true_nl"] = "Yes";
 ln["false_nl"] = "No";
 ln["bottom_nl"] = "Yes: Bottom";
@@ -1624,6 +1636,9 @@ ln["1_italyRegion_es-ES"] = "Italy - Regions";
 ln["2_italyProvince_es-ES"] = "Italy - Province";
 ln["3_campaniaProvince_es-ES"] = "Campania - Province";
 ln["4_campaniaMunicipality_es-ES"] = "Campania - Municipality";
+
+ln["layer_es-ES"] = "Layer";
+ln["layerDescription_es-ES"] = "Choose a layer";
 
 ln["true_es-ES"] = "Sí";
 ln["false_es-ES"] = "No";
@@ -1959,6 +1974,9 @@ ln["1_italyRegion_cn"]="意大利地区";
 ln["2_italyProvince_cn"]="意大利省";
 ln["3_campaniaProvince_cn"]="坎帕尼亚省";
 ln["4_campaniaMunicipality_cn"]="坎帕尼亚市";
+
+ln["layer_cn"] = "Layer";
+ln["layerDescription_cn"] = "Choose a layer";
 
 ln["true_cn"]="是";
 ln["false_cn"]="否";
