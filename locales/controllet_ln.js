@@ -984,6 +984,7 @@ ln["4_campaniaMunicipality_fr"] = "Campania - Municipality";
 ln["layer_fr"] = "Layer";
 ln["layerDescription_fr"] = "Choose a layer";
 
+
 ln["true_fr"] = "Oui";
 ln["false_fr"] = "Non";
 ln["bottom_fr"] = "Oui: En Bas";
