@@ -249,15 +249,41 @@ class LeafletDatalet extends BaseDatalet
     }
 
     save_as_png() {
-        let container = this.shadow_root.querySelector('#img-iframe').contentWindow.document.querySelector(this.component).shadowRoot.querySelector('#datalet_container');
+        let component = this.shadow_root.querySelector('#img-iframe').contentWindow.document.querySelector(this.component);
+        this._save_as_png(component);
+    }
+
+    _save_as_png(component) {
+        let container = component.shadowRoot.querySelector('#datalet_container');
+        let controlContainer = container.getElementsByClassName("leaflet-control-container")[0];
+
+        component.map.on("easyPrint-finished", ()=>{
+            container.style.width = '100%';
+            container.style.height = '100%';
+            controlContainer.style.display = 'block';
+        });
 
         container.style.width = container.clientWidth + 'px';
         container.style.height = container.clientHeight + 'px';
+        controlContainer.style.display = 'none';
 
-        this.shadow_root.querySelector('#img-iframe').contentWindow.document.querySelector(this.component).printer.printMap('CurrentSize', `${this.component}`);
+        component.printer.printMap('CurrentSize', `${this.component}`);
+    }
 
-        container.style.width = '100%';
-        container.style.height = '100%';
+    create_image() {
+        return new Promise((res, rej) =>
+        {
+            this.map.on("easyPrint-finished", (e)=>{
+                var reader = new FileReader();
+                reader.readAsDataURL(e.blob);
+                reader.onloadend = function() {
+                    let base64data = reader.result;
+                    res(base64data);
+                }
+            });
+
+            this._save_as_png(this);
+        });
     }
 }
 

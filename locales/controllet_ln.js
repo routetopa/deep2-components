@@ -1,4 +1,4 @@
-LN = {
+var LN = {
     userLanguage: 'en'
 };
 

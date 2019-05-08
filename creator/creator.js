@@ -149,7 +149,7 @@ CREATOR.embed  = function() {
 CREATOR.share_fb = async function() {
     let svg = $("[selectedfields]")[0].shadow_root.querySelector('svg');
 
-    if(!svg) {
+    if(!svg && $("[selectedfields]")[0].tagName !== "LEAFLETJS-DATALET") {
         alert('Questo tipo di datalet non supporta ancora la condivisione su Facebook');
         return;
     }
