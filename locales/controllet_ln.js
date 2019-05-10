@@ -215,11 +215,11 @@ ln["bubblechartDescription_en"] = "A bubble chart is a type of chart that displa
 ln["treemapDescription_en"] = "A tree map is a chart for displaying hierarchical data by using nested rectangles.";
 ln["timelineDescription_en"] = "The timeline is an interactive visualization chart to visualize data in time. The data items can take place on a single date, or have a start and end date (a range). You can freely move and zoom in the timeline. The time scale on the axis is adjusted automatically, and supports scales ranging from milliseconds to years.";
 ln["mediasliderDescription_en"] = "The mediaslider is a slider of media.";
-ln["leafletjsDescription_en"] = "";
-ln["leafletjs-geojsonDescription_en"] = "";
-ln["italymapDescription_en"] = "";
-ln["audiosliderDescription_en"] = "";
-ln["italymapDescription_en"] = "";
+ln["leafletjsDescription_en"] = " ";
+ln["leafletjs-geojsonDescription_en"] = " ";
+ln["italymapDescription_en"] = " ";
+ln["audiosliderDescription_en"] = " ";
+ln["italymapDescription_en"] = " ";
 
 //inputs
 ln["title_en"] = "Title"
@@ -292,13 +292,13 @@ ln["GEOJSONContentDescription_en"] = "The content of GeoJSON.";
 ln["BubbleContentDescription_en"] = "The content of bubbles.";
 ln["BubbleSizeDescription_en"] = "The size of bubbles.";
 ln["CategoriesDescription_en"] = "The category that splits the y-axis values. If selected only the first selected y-axis will be considered.";
-ln["AudioUrlDescription_en"] = "";
-ln["AudioTimingDescription_en"] = "";
+ln["AudioUrlDescription_en"] = " ";
+ln["AudioTimingDescription_en"] = " ";
 ln["ImageUrlDescription_en"] = "";
-ln["AudioDescriptionDescription_en"] = "";
-ln["AreaDescription_en"] = "";
-ln["ValueDescription_en"] = "";
-ln["TooltipContentDescription_en"] = "";
+ln["AudioDescriptionDescription_en"] = " ";
+ln["AreaDescription_en"] = " ";
+ln["ValueDescription_en"] = " ";
+ln["TooltipContentDescription_en"] = " ";
 
 //options
 ln["x-axis-label_en"] = "X Axis Label";
@@ -311,6 +311,7 @@ ln["theme_en"] = "Theme";
 ln["donut_en"] = "Donut";
 ln["date-format_en"] = "Date Format";
 ln["animation_en"] = "Animation";
+ln["animationDescription_en"]= "Choose an animation for the catalog.";
 
 ln["map_en"] = "Map";
 ln["1_italyRegion_en"] = "Italy - Regions";
@@ -358,7 +359,7 @@ ln["mosaicSpiralReverse_en"] = "Mosaic Spiral Reverse";
 ln["topLeftBottomRight_en"] = "Top Left Bottom Right";
 ln["bottomRightTopLeft_en"] = "Bottom Right Top Left";
 ln["bottomLeftTopRight_en"] = "Bottom Left Top Right";
-ln["bottomLeftTopRight_en"] = "Bottom Left Top Right";
+//ln["bottomLeftTopRight_en"] = "Bottom Left Top Right";
 ln["scrollLeft_en"] = "Scroll Left";
 ln["scrollRight_en"] = "Scroll Right";
 ln["scrollHorz_en"] = "Scroll Horz";
@@ -373,11 +374,22 @@ ln["data-labelsDescription_en"] = "Show/hide data labels.";
 ln["themeDescription_en"] = "The theme affects the appearance and colors of the chart.";
 ln["stackDescription_en"] = "The stack type.";
 ln["donutDescription_en"] = "Pie will become Donut! :) (or viceversa).";
-ln["mapDescription_en"] = "";
+ln["mapDescription_en"] = "Maps for provinces and regions of Italy and Maps for provinces and municipalities in the Campania Region.";
 
 ln["layer_en"] = "Layer";
 ln["layerDescription_en"] = "Choose a layer";
 
+ln["OpenStreetMap_en"] = "OpenStreetMap";
+ln["OpenTopoMap_en"] = "Topographic Map";
+ln["Esri.WorldImagery_en"] = "Imagery Map";
+ln["Esri.WorldStreetMap_en"] = "World Street Map";
+ln["Esri.DeLorme_en"] = "DeLorme Topographic Map";
+ln["Esri.WorldTopoMap_en"] = "Topographic Map";
+ln["Esri.OceanBasemap_en"] = "Ocean Base Map";
+ln["Esri.NatGeoWorldMap_en"] = "National Geographic Map";
+ln["Esri.WorldGrayCanvas_en"] = "Gray Map";
+ln["Stamen.Watercolor_en"] = "Watercolor Map";
+ln["NASAGIBS.ViirsEarthAtNight2012_en"] = "View of the night lights";
 /******** IT ********/
 
 //PAGE SLIDER
@@ -385,7 +397,7 @@ ln["layerDescription_en"] = "Choose a layer";
 ln["slide1Title_it"] = "SELEZIONA UN DATASET";
 ln["slide1Subtitle_it"] = "Seleziona un dataset dall'elenco oppure copia-incolla l'url di un dataset.";
 ln["slide2Title_it"] = "SELEZIONA I DATI";
-ln["slide2Subtitle_it"] = "Seleziona i campi sulla sinistra. La tabella mostrerà i valori relativi ai campi selezionati";
+ln["slide2Subtitle_it"] = "Seleziona i campi sulla sinistra. La tabella mostrer\u00e0 i valori relativi ai campi selezionati";
 ln["slide3Title_it"] = "SELEZIONA LA VISUALIZZAZIONE";
 ln["slide3Subtitle_it"] = "Seleziona una visualizzazione, compila i campi e le opzioni.";
 ln["back_it"] = "INDIETRO";
@@ -476,8 +488,8 @@ ln["start_it"] = "inizia con";
 ln["notStart_it"] = "non inizia con";
 ln["ends_it"] = "termina con";
 ln["notEnds_it"] = "non termina con";
-ln["isNotNull_it"] = "non è nullo";
-ln["isNull_it"] = "è nullo";
+ln["isNotNull_it"] = "non \u00e8 nullo";
+ln["isNull_it"] = "\u00e8 nullo";
 
 //aggregators
 ln["GROUP BY_it"] = "RAGGRUPPA PER";
@@ -490,7 +502,7 @@ ln["enableGroupBy_it"] = "ABILITA RAGGRUPPAMENTO";
 
 ln["COUNT_it"] = "CONTA";
 ln["SUM_it"] = "SOMMA di";
-ln["MIN_it"] = "MINORE di";
+ln["MIN_it"] = "MINIMO di";
 ln["MAX_it"] = "MASSIMO di";
 ln["AVG_it"] = "MEDIA di";
 ln["FIRST_it"] = "PRIMO di";
@@ -535,21 +547,21 @@ ln["leafletjs-geojson_it"] = "Mappa Geojson";
 ln["audioslider_it"] = "Audio Slider";
 ln["italymap_it"] = "Mappa Italia";
 
-ln["datatableDescription_it"] = "Una tabella è un mezzo per organizzare i dati in righe e colonne.";
-ln["barchartDescription_it"] = "Un grafico a barre è un grafico che presenta dati raggruppati in barre rettangolari impostate orizzontalmente con la lunghezza proporzionale al valore rappresentato.";
-ln["columnchartDescription_it"] = "Un istogramma è un grafico raffigurante dati raggruppati in barre rettangolari impostate verticalmente con lunghezza proporzionale al valore rappresentato.";
-ln["areachartDescription_it"] = "Un grafico ad area è un grafico che mostra graficamente dati quantitativi. L'area tra le assi e la linea sono enfatizzate con colori e texture. Usualmente si compara il grafico ad area con due o più quantità.";
-ln["linechartDescription_it"] = "Un grafico a linee è un grafico che mostra le informazioni sottoforma di una serie di dati puntuali definiti 'markers' e collegati tra loro con segmenti di linee dritte. Il grafico a linee è spesso utilizzato per visualizzare trend lungo un intervallo temporale.";
-ln["heatmapDescription_it"] = "Una heat map è una rappresentazione grafica di dati in cui i valori individuali contenuti in una matrice sono rappresentati con colori.";
-ln["piechartDescription_it"] = "Un grafico a torta è un grafico statistico e circolare che è diviso in fette che mostrano la proporzione numerica. Nel grafico a torta la lunghezza dell'arco di ogni fetta, e di conseguenza il suo angolo al centro e l'area, è proporzionato alla quantita che rappresenta.";
-ln["scatterchartDescription_it"] = "Un grafico a dispersione è un tipo di grafico o diagramma matematico che utilizza coordinate cartesiane per mostrare valori tipicamente per due variabili per un set di dati. I dati sono mostrati come un insieme di punti, ciascuno avente il valore di una variabile che ne determina la posizione sull'asse orizzontale e il valore dell'altra variabile ne determina la posizione sull'asse verticale.";
-ln["bubblechartDescription_it"] = " Un diagramma a bolle è un tipo di diagramma che mostra tre dimensioni dei dati. Ciascuna entità con la sua tripletta (v1,v2,v3) di dati associati viene impostata come un disco che esprime due dei valori di vi attraverso la localizzazione dell'xy del disco mentre la terza vi è la dimensione del disco stessa.";
-ln["treemapDescription_it"] = " Una mappa ad albero è un diagramma per rappresentare dati gerarchicamente utilizzando rettangoli nidificati.";
-ln["timelineDescription_it"] = "La linea del tempo è una visualizzazione interattiva e permette di rappresentare i dati in ordine cronologico. Gli eventi possono avere luogo in una singola data oppure hanno una data di inizio e di fine (un intervallo). Puoi muovere e zoomare liberamente la timeline. La scala temporale sull'asse viene regolata automaticamente e supporta scale che vanno da millisecondi ad anni.";
-ln["mediasliderDescription_it"] = "Il mediaslider è un catalogo di immagini con titolo e descrizione.";
+ln["datatableDescription_it"] = "Una tabella \u00e8 un mezzo per organizzare i dati in righe e colonne.";
+ln["barchartDescription_it"] = "Un grafico a barre \u00e8 un grafico che presenta dati raggruppati in barre rettangolari impostate orizzontalmente con la lunghezza proporzionale al valore rappresentato.";
+ln["columnchartDescription_it"] = "Un istogramma \u00e8 un grafico raffigurante dati raggruppati in barre rettangolari impostate verticalmente con lunghezza proporzionale al valore rappresentato.";
+ln["areachartDescription_it"] = "Un grafico ad area \u00e8 un grafico che mostra graficamente dati quantitativi. L'area tra le assi e la linea sono enfatizzate con colori e texture. Usualmente si compara il grafico ad area con due o pi\u00f9 quantit\u00e0.";
+ln["linechartDescription_it"] = "Un grafico a linee \u00e8 un grafico che mostra le informazioni sottoforma di una serie di dati puntuali definiti 'markers' e collegati tra loro con segmenti di linee dritte. Il grafico a linee \u00e8 spesso utilizzato per visualizzare trend lungo un intervallo temporale.";
+ln["heatmapDescription_it"] = "Una heat map \u00e8 una rappresentazione grafica di dati in cui i valori individuali contenuti in una matrice sono rappresentati con colori.";
+ln["piechartDescription_it"] = "Un grafico a torta \u00e8 un grafico statistico e circolare che \u00e8 diviso in fette che mostrano la proporzione numerica. Nel grafico a torta la lunghezza dell'arco di ogni fetta, e di conseguenza il suo angolo al centro e l'area, \u00e8 proporzionato alla quantita che rappresenta.";
+ln["scatterchartDescription_it"] = "Un grafico a dispersione \u00e8 un tipo di grafico o diagramma matematico che utilizza coordinate cartesiane per mostrare valori tipicamente per due variabili per un set di dati. I dati sono mostrati come un insieme di punti, ciascuno avente il valore di una variabile che ne determina la posizione sull'asse orizzontale e il valore dell'altra variabile ne determina la posizione sull'asse verticale.";
+ln["bubblechartDescription_it"] = " Un diagramma a bolle \u00e8 un tipo di diagramma che mostra tre dimensioni dei dati. Ciascuna entit\u00e0 con la sua tripletta (v1,v2,v3) di dati associati viene impostata come un disco che esprime due dei valori di vi attraverso la localizzazione dell'xy del disco mentre la terza vi \u00e8 la dimensione del disco stessa.";
+ln["treemapDescription_it"] = " Una mappa ad albero \u00e8 un diagramma per rappresentare dati gerarchicamente utilizzando rettangoli nidificati.";
+ln["timelineDescription_it"] = "La linea del tempo \u00e8 una visualizzazione interattiva e permette di rappresentare i dati in ordine cronologico. Gli eventi possono avere luogo in una singola data oppure hanno una data di inizio e di fine (un intervallo). Puoi muovere e zoomare liberamente la timeline. La scala temporale sull'asse viene regolata automaticamente e supporta scale che vanno da millisecondi ad anni.";
+ln["mediasliderDescription_it"] = "Il mediaslider \u00e8 un catalogo di immagini con titolo e descrizione.";
 ln["leafletjsDescription_it"] = "Una mappa geografica interattiva che permette di inserire oltre alle coordinate geografiche, ulteriori informazioni (ad esempio, indirizzi, immagini etc.).";
 ln["leafletjs-geojsonDescription_it"] = "Una mappa geografica interattiva che permette di inserire oltre alle coordinate geografiche, ulteriori informazioni (ad esempio, indirizzi, immagini etc.).";
-ln["audiosliderDescription_it"] = "L'Audio Slider rappresenta un catalogo di dati in formato audio (mp3) che immagini.";
+ln["audiosliderDescription_it"] = "L'Audio Slider rappresenta un catalogo di dati in formato audio (mp3) e immagini.";
 ln["italymapDescription_it"] = "La mappa Italia rappresenta una mappa colorata per province o regioni sia dell'Italia che della Regione Campania.";
 
 //inputs
@@ -576,7 +588,7 @@ ln["StartDate_it"] = "DATA D'INIZIO";
 ln["EndDate_it"] = "DATA DI FINE";
 ln["EventTitle_it"] = "TITOLO EVENTO";
 ln["EventDescription_it"] = "DESCRIZIONE EVENTO";
-ln["MediaUrl_it"] = "MEDIA URL";
+ln["MediaUrl_it"] = "INDIRIZZO MEDIA";
 ln["Background_it"] = "BACKGROUND";
 ln["MediaTitle_it"] = "TITOLO MEDIA";
 ln["MediaDescription_it"] = "DESCRIZIONE MEDIA";
@@ -606,14 +618,14 @@ ln["ColumnDescription_it"] = "Colonna della tabella";
 ln["LevelDescription_it"] = "Livello della mappa ad albero";
 ln["SliceLabelsDescription_it"] = "Etichette delle fette";
 ln["SliceSizesDescription_it"] = "Dimensione delle fette";
-ln["StartDateDescription_it"] ="La data di inizio dell'evento: una stringa che rappresenta una data nel formato RFC2822 o ISO 8601 (ad esempio 2015-03-25, 25/03/2015, 25 marzo 2015, 25 marzo 2015, mercoledì 25 marzo 2015) o un numero singolo che rappresenta anno (per esempio 2017, 7, -150) o un numero romano che rappresenta secoli usando 'bc', 'b.c', 'b.c.e' o 'bce' per distinguire prima di Cristo / Prima dell'Era Comune (ad esempio IV, X bce, III b.c). Altri formati possono essere usati, ma i risultati possono essere inaspettati.";
+ln["StartDateDescription_it"] ="La data di inizio dell'evento: una stringa che rappresenta una data nel formato RFC2822 o ISO 8601 (ad esempio 2015-03-25, 25/03/2015, 25 marzo 2015, 25 marzo 2015, mercoled\u00ec 25 marzo 2015) o un numero singolo che rappresenta anno (per esempio 2017, 7, -150) o un numero romano che rappresenta secoli usando 'bc', 'b.c', 'b.c.e' o 'bce' per distinguire prima di Cristo / Prima dell'Era Comune (ad esempio IV, X bce, III b.c). Altri formati possono essere usati, ma i risultati possono essere inaspettati.";
 ln["EndDateDescription_it"] = "La data di fine dell'evento (vedi data di inizio).";
 
 ln["EndDateDescription_it"] = "La data di fine dell'evento (vedi data di inzio).";
 ln["EventTitleDescription_it"] = "Il titolo dell'evento.";
 ln["EventDescriptionDescription_it"] = "La descrizione dell'evento.";
-ln["MediaUrlDescription_it"] = "L'indirizzo del media.";
-ln["BackgroundDescription_it"] ="L'indirizzo (URL) completo che punta a un'immagine che verrà utilizzata come sfondo o un colore gestito con le regole CSS (acronimo di Cascading Style Sheets, in italiano fogli di stile a cascata) (ad esempio red,aqua etc. ), nel formato  esadecimale (ad es. # 0f9bd1) o una parola chiave valida del colore gestito con CSS.";
+ln["MediaUrlDescription_it"] = "L'indirizzo dell'immagine.";
+ln["BackgroundDescription_it"] ="L'indirizzo (URL) completo che punta a un'immagine che verr\u00e0 utilizzata come sfondo o un colore gestito con le regole CSS (acronimo di Cascading Style Sheets, in italiano fogli di stile a cascata) (ad esempio red,aqua etc. ), nel formato  esadecimale (ad es. # 0f9bd1) o una parola chiave valida del colore gestito con CSS.";
 ln["MediaTitleDescription_it"] = "Il titolo del media.";
 ln["MediaDescriptionDescription_it"] = "La descrizione del media.";
 ln["LatitudeDescription_it"] = "Latitudine della posizione";
@@ -623,14 +635,14 @@ ln["GEOJSONDescription_it"] = "Dati GeoJSON.";
 ln["GEOJSONContentDescription_it"] = "Contenuto del GeoJSON.";
 ln["BubbleContentDescription_it"] = "Contenuto delle bolle.";
 ln["BubbleSizeDescription_it"] = "Dimensione delle bolle.";
-ln["CategoriesDescription_it"] = "Categoria che separa l'asse y. Se selezionata, solo l'asse y scelta per prima sarà considerata.";
-ln["AudioUrlDescription_it"] = "";
-ln["AudioTimingDescription_it"] = "";
-ln["ImageUrlDescription_it"] = "";
-ln["AudioDescriptionDescription_it"] = "";
-ln["AreaDescription_it"] = "";
-ln["ValueDescription_it"] = "";
-ln["TooltipContentDescription_it"] = "";
+ln["CategoriesDescription_it"] = "Categoria che separa l'asse y. Se selezionata, solo l'asse y scelta per prima sar\u00e0 considerata.";
+ln["AudioUrlDescription_it"] = "Indirizzo audio (in formato mp3).";
+ln["AudioTimingDescription_it"] = " ";
+ln["ImageUrlDescription_it"] = " ";
+ln["AudioDescriptionDescription_it"] = " ";
+ln["AreaDescription_it"] = " ";
+ln["ValueDescription_it"] = " ";
+ln["TooltipContentDescription_it"] = " ";
 
 //options
 ln["x-axis-label_it"] = "Etichetta";
@@ -643,12 +655,13 @@ ln["theme_it"] = "Tema";
 ln["donut_it"] = "Ciambella";
 ln["date-format_it"] = "Formato data";
 ln["animation_it"] = "Animazione";
+ln["animationDescription_it"]= "Elenco di animazione per il catalogo.";
 
 ln["map_it"] = "Mappa";
 ln["1_italyRegion_it"] = "Italia - Regioni";
 ln["2_italyProvince_it"] = "Italia - Province";
 ln["3_campaniaProvince_it"] = "Campania - Province";
-ln["4_campaniaMunicipality_it"] = "Campania - Municipalità";
+ln["4_campaniaMunicipality_it"] = "Campania - Municipalit\u00e0";
 
 ln["true_it"] = "Si";
 ln["false_it"] = "No";
@@ -668,34 +681,34 @@ ln["themeSkies_it"] = "Cielo";
 ln["MDY_it"] = "Mese-Giorno-Anno";
 ln["DMY_it"] = "Giorno-Mese-Anno";
 ln["random_it"] = "Random";
-ln["simpleFade_it"] = "Simple Fade";
-ln["curtainTopLeft_it"] = "Curtain Top Left";
-ln["curtainTopRight_it"] = "Curtain Top Right";
-ln["curtainBottomLeft_it"] = "Curtain Bottom Left";
-ln["curtainBottomRight_it"] = "Curtain Bottom Right";
-ln["curtainSliceLeft_it"] = "Curtain Slice Left";
-ln["curtainSliceRight_it"] = "Curtain Slice Right";
-ln["blindCurtainTopLeft_it"] = "Blind Curtain Top Left";
-ln["blindCurtainTopRight_it"] = "Blind Curtain Top Right";
-ln["blindCurtainBottomLeft_it"] = "Blind Curtain Bottom Left";
-ln["blindCurtainBottomRight_it"] = "Blind Curtain Bottom Right";
-ln["blindCurtainSliceBottom_it"] = "Blind Curtain Slice Bottom";
-ln["blindCurtainSliceTop_it"] = "Blind Curtain Slice Top";
-ln["stampede_it"] = "Stampede";
-ln["mosaic_it"] = "Mosaic";
-ln["mosaicReverse_it"] = "Mosaic Reverse";
-ln["mosaicRandom_it"] = "Mosaic Random";
-ln["mosaicSpiral_it"] = "Mosaic Spiral";
-ln["mosaicSpiralReverse_it"] = "Mosaic Spiral Reverse";
-ln["topLeftBottomRight_it"] = "Top Left Bottom Right";
-ln["bottomRightTopLeft_it"] = "Bottom Right Top Left";
-ln["bottomLeftTopRight_it"] = "Bottom Left Top Right";
-ln["bottomLeftTopRight_it"] = "Bottom Left Top Right";
-ln["scrollLeft_it"] = "Scroll Left";
-ln["scrollRight_it"] = "Scroll Right";
-ln["scrollHorz_it"] = "Scroll Horz";
-ln["scrollBottom_it"] = "Scroll Bottom";
-ln["scrollTop_it"] = "Scroll Top";
+ln["simpleFade_it"] = "Dissolvenza semplice";
+ln["curtainTopLeft_it"] = "Tendina a Sinistra in Alto";
+ln["curtainTopRight_it"] = "Tendina a Destra in Alto";
+ln["curtainBottomLeft_it"] = "Tendina in Basso a Sinistra";
+ln["curtainBottomRight_it"] = "Tendina in Basso a Destra";
+ln["curtainSliceLeft_it"] =  "Tendina a fetta a Sinistra";
+ln["curtainSliceRight_it"] = "Tendina a fetta a Destra";
+ln["blindCurtainTopLeft_it"] = "Veneziana a Sinistra in Alto";
+ln["blindCurtainTopRight_it"] = "Veneziana a Destra in Alto";
+ln["blindCurtainBottomLeft_it"] = "Veneziana in Basso a Sinistra";
+ln["blindCurtainBottomRight_it"] = "Veneziana in Basso a Destra";
+ln["blindCurtainSliceBottom_it"] = "Veneziana a fette in Basso";
+ln["blindCurtainSliceTop_it"] = "Veneziana a fette in Alto";
+ln["stampede_it"] = "Veloce";
+ln["mosaic_it"] =  "Mosaico";
+ln["mosaicReverse_it"] = "Mosaico al Contrario";
+ln["mosaicRandom_it"] =  "Mosiaco Casuale";
+ln["mosaicSpiral_it"] =  "Mosaico a Spirale";
+ln["mosaicSpiralReverse_it"] = "Mosaico a Spirale inverso";
+ln["topLeftBottomRight_it"] = "In Alto a Sinistra in Basso a Destra";
+ln["bottomRightTopLeft_it"] = "In Basso a Destra in Alto a Sinistra";
+ln["bottomLeftTopRight_it"] = "In Basso a Sinistra in Alto a Destra";
+//ln["bottomLeftTopRight_it"] = "Bottom Left Top Right";
+ln["scrollLeft_it"] = "Scorrere a Sinistra";
+ln["scrollRight_it"] = "Scorrere a Destra";
+ln["scrollHorz_it"] =  "Scorrere in Orizzontale";
+ln["scrollBottom_it"] = "Scorrere in Basso";
+ln["scrollTop_it"] = "Scorrere in Alto";
 
 ln["x-axis-labelDescription_it"] = "Etichetta";
 ln["y-axis-labelDescription_it"] = "Dato";
@@ -705,11 +718,22 @@ ln["data-labelsDescription_it"] = "Mostra/Nascondi etichette dati";
 ln["themeDescription_it"] = "Il tema influenza l'aspetto e i colori del grafico.";
 ln["stackDescription_it"] = "Tipologia di pila";
 ln["donutDescription_it"] = "La torta si trasforma in ciambella! :) (o viceversa).";
-ln["mapDescription_it"] = "";
+ln["mapDescription_it"] = "Mappe per province e regioni dell'Italia e Mappe per province e municipalit\u00e0 della Regione Campania.";
 
 ln["layer_it"] = "Layer";
-ln["layerDescription_it"] = "Scegli un tipo di layer";
+ln["layerDescription_it"] = "Elenco di layer disponibili";
 
+ln["OpenStreetMap_it"] = "OpenStreetMap";
+ln["OpenTopoMap_it"] = "Mappa Topografica";
+ln["Esri.WorldImagery_it"] = "Mappa Satellitare";
+ln["Esri.WorldStreetMap_it"] = "Mappa Stradale";
+ln["Esri.DeLorme_it"] =  "Mappa Topografica DeLorme";
+ln["Esri.WorldTopoMap_it"] = "Mappa Topografica";
+ln["Esri.OceanBasemap_it"] =  "Mappa Base Oceano";
+ln["Esri.NatGeoWorldMap_it"] = "Mappa Geografica Nazionale";
+ln["Esri.WorldGrayCanvas_it"] = "Mappa Grigia";
+ln["Stamen.Watercolor_it"] =  "Mappa Acquerello";
+ln["NASAGIBS.ViirsEarthAtNight2012_it"] = "Mappa con Luci Notturne";
 
 /******** FR ********/
 
@@ -740,8 +764,8 @@ ln["datasets_fr"] = "LISTE DE DATASET";
 ln["provider_fr"] = "Fournisseur";
 ln["all_fr"] = "Montre tout";
 ln["allDescription_fr"] = "Présentation de toutes les versions du jeu de données.";
-ln["providerName_fr"] = "Montre la dernière ";
-ln["providerNameDescription_fr"] = "Dernière version du jeu de données.";
+ln["providerName_fr"] = "Montre la derni\u00e8re ";
+ln["providerNameDescription_fr"] = "Derni\u00e8re version du jeu de données.";
 
 ln["search_fr"] = "Rechercher";
 ln["standard_fr"] = "Standard";
@@ -750,15 +774,15 @@ ln["extended_fr"] = "Extended [NON DISPONIBLE]";
 ln["extendedDescription_fr"] = "La fonction de recherche fonctionne tout le contenu des ensembles de données.";
 
 ln["version_fr"] = "Version";
-ln["showLast_fr"] = "Montre la dernière";
-ln["showLastDescription_fr"] = "Indique que la dernière version des ensembles de données.";
+ln["showLast_fr"] = "Montre la derni\u00e8re";
+ln["showLastDescription_fr"] = "Indique que la derni\u00e8re version des ensembles de données.";
 ln["showAll_fr"] = "Montre tout";
 ln["showAllDescription_fr"] = "Montre toutes les versions des ensembles de données.";
 
 //select-dataset-controllet
 ln["datasetsInfo_fr"] = "INFORMATIONS SUR LE JEU DE DONNÉES";
 ln["showing_fr"] = "Aperçu";
-ln["to_fr"] = "à";
+ln["to_fr"] = "\u00e0";
 ln["of_fr"] = "de";
 ln["datasetsRows_fr"] = "dataset";
 ln["search_fr"] = "Rechercher";
@@ -777,7 +801,7 @@ ln["fields_fr"] = "CHAMPS";
 //data-table
 ln["selectedData_fr"] = "DONNÉES SÉLECTIONNÉES";
 ln["showing_fr"] = "Aperçu";
-ln["to_fr"] = "à";
+ln["to_fr"] = "\u00e0";
 ln["of_fr"] = "de";
 ln["rows_fr"] = "rangées";
 ln["type_fr"] = "TYPE";
@@ -847,7 +871,7 @@ ln["options_fr"] = "OPTIONS";
 ln["search_fr"] = "Rechercher";
 
 ln["datatable_fr"] = "Tableau";
-ln["barchart_fr"] = "Diagramme à barres";
+ln["barchart_fr"] = "Diagramme 00e0 barres";
 ln["columnchart_fr"] = "Histogramme";
 ln["areachart_fr"] = "Diagramme de zone";
 ln["linechart_fr"] = "Diagramme linéaire";
@@ -859,7 +883,7 @@ ln["wordcloud_fr"] = "Word Cloud";
 ln["spiderchart_fr"] = "Spider Chart";
 ln["polarchart_fr"] = "Polar Chart";
 ln["scatterchart_fr"] = "Diagramme de dispersion";
-ln["bubblechart_fr"] = "Diagramme à bulles";
+ln["bubblechart_fr"] = "Diagramme 00e0 bulles";
 ln["treemap_fr"] = "Carte d'arborescence";
 ln["timeline_fr"] = "Timeline";
 ln["mediaslider_fr"] = "Media Slider";
@@ -869,15 +893,15 @@ ln["audioslider_fr"] = "Audio Slider";
 ln["italymap_fr"] = "Italy Map";
 
 ln["datatableDescription_fr"] = "Un tableau est un moyen d'organiser les données dans des rangées et des colonnes.";
-ln["barchartDescription_fr"] = "Un diagramme à barres est un graphique qui représente des données groupées au moyen de barres rectangulaires disposées horizontallement avec des longueurs proportionnelles aux valeurs qu'elles représentent.";
+ln["barchartDescription_fr"] = "Un diagramme 00e0 barres est un graphique qui représente des données groupées au moyen de barres rectangulaires disposées horizontallement avec des longueurs proportionnelles aux valeurs qu'elles représentent.";
 ln["columnchartDescription_fr"] = "Un histogramme est un graphique qui représente des données groupées au moyen de barres rectangulaires disposées verticallement avec des longueurs proportionnelles aux valeurs qu'elles représentent.";
-ln["areachartDescription_fr"] = "Un diagramme de zone est un graphique qui propose des données quantitatives de manière graphique. La zone entre l'axe et la ligne est accentuée par des couleurs et des textures. En général, minimum deux données quantitatives sont utilisées pour être comparées dans ce genre de graphique.";
-ln["linechartDescription_fr"] = "Un diagramme linéaire est un graphique qui propose des informations sous forme d'une série de points de données appelés des 'marqueurs', reliés entre eux pour former des lignes continues. Un diagramme linéaire est souvent utilisé pour visualiser une tendance dans les données en parallèle avec des périodes de temps données.";
-ln["heatmapDescription_fr"] = "Une carte thermique est une représentation graphique de données dans laquelle les valeurs individuelles contenues dans une matrice sont représentées à l'aide de couleurs.";
-ln["piechartDescription_fr"] = "Un diagramme circulaire est un graphique statistique qui est séparé en deux pour illustrer des proportions numériques. Dans un diagramme circulaire, la longueur de l'arc de chaque parties, et par conséquent son angle central et sa superficie, est proportionnelle à la quantité qu'elle représente.";
+ln["areachartDescription_fr"] = "Un diagramme de zone est un graphique qui propose des données quantitatives de mani\u00e8re graphique. La zone entre l'axe et la ligne est accentuée par des couleurs et des textures. En général, minimum deux données quantitatives sont utilisées pour être comparées dans ce genre de graphique.";
+ln["linechartDescription_fr"] = "Un diagramme linéaire est un graphique qui propose des informations sous forme d'une série de points de données appelés des 'marqueurs', reliés entre eux pour former des lignes continues. Un diagramme linéaire est souvent utilisé pour visualiser une tendance dans les données en parall\u00e8le avec des périodes de temps données.";
+ln["heatmapDescription_fr"] = "Une carte thermique est une représentation graphique de données dans laquelle les valeurs individuelles contenues dans une matrice sont représentées 00e0 l'aide de couleurs.";
+ln["piechartDescription_fr"] = "Un diagramme circulaire est un graphique statistique qui est séparé en deux pour illustrer des proportions numériques. Dans un diagramme circulaire, la longueur de l'arc de chaque parties, et par conséquent son angle central et sa superficie, est proportionnelle 00e0 la quantité qu'elle représente.";
 ln["scatterchartDescription_fr"] = "Un diagramme de dispersion est un type de graphique ou de diagramme mathématque qui utilise des coordonnées cartésiennes pour mettre en évidence des valeurs pour deux variables d'un jeu de données. Les données sont mises se traduisent par un regroupement de points, chacun ayant la valeur d'une variable déterminant la position sur l'axe horizontal et la valeur de l'autre variable qui détermine la position sur l'axe vertical.";
-ln["bubblechartDescription_fr"] = "Un diagramme à bulles est un graphique qui propose des données à trois dimensions. Chaque entité avec ses triplets (v1, v2, v3) de données associées est agencée comme un disque qui exprime deux des valeurs vi au moyen de l'emplacement xy du disque ainsi que de la taille du troisième.";
-ln["treemapDescription_fr"] = "Une arte d'arborescence est un graphique qui permet de visualiser les données hiérarchiques à l'aide de rectangles imbriqués.";
+ln["bubblechartDescription_fr"] = "Un diagramme 00e0 bulles est un graphique qui propose des données 00e0 trois dimensions. Chaque entité avec ses triplets (v1, v2, v3) de données associées est agencée comme un disque qui exprime deux des valeurs vi au moyen de l'emplacement xy du disque ainsi que de la taille du troisi\u00e8me.";
+ln["treemapDescription_fr"] = "Une arte d'arborescence est un graphique qui permet de visualiser les données hiérarchiques \u00e0 l'aide de rectangles imbriqués.";
 ln["timelineDescription_fr"] = "The timeline is an interactive visualization chart to visualize data in time. The data items can take place on a single date, or have a start and end date (a range). You can freely move and zoom in the timeline. The time scale on the axis is adjusted automatically, and supports scales ranging from milliseconds to years.";
 ln["mediasliderDescription_fr"] = "The mediaslider is a slider of media.";
 ln["leafletjsDescription_fr"] = "";
@@ -955,13 +979,13 @@ ln["GEOJSONContentDescription_fr"] = "Le contenu de GeoJSON.";
 ln["BubbleContentDescription_fr"] = "Le contenu des bulles.";
 ln["BubbleSizeDescription_fr"] = "La taille des bulles.";
 ln["CategoriesDescription_fr"] = "La catégorie qui sépare les valeurs de l'axe des x. Si sélectionné, seulement le premier axe des y sera considéré.";
-ln["AudioUrlDescription_fr"] = "";
-ln["AudioTimingDescription_fr"] = "";
-ln["ImageUrlDescription_fr"] = "";
-ln["AudioDescriptionDescription_fr"] = "";
-ln["AreaDescription_fr"] = "";
-ln["ValueDescription_fr"] = "";
-ln["TooltipContentDescription_fr"] = "";
+ln["AudioUrlDescription_fr"] = " ";
+ln["AudioTimingDescription_fr"] = " ";
+ln["ImageUrlDescription_fr"] = " ";
+ln["AudioDescriptionDescription_fr"] = " ";
+ln["AreaDescription_fr"] = " ";
+ln["ValueDescription_fr"] = " ";
+ln["TooltipContentDescription_fr"] = " ";
 
 //options
 ln["x-axis-label_fr"] = "Label de l'Axe des X";
@@ -970,10 +994,11 @@ ln["suffix_fr"] = "Suffixe d'aide";
 ln["legend_fr"] = "Légende";
 ln["data-labels_fr"] = "Montrer les labels de données";
 ln["stack_fr"] = "Empiler";
-ln["theme_fr"] = "Thème";
+ln["theme_fr"] = "Th\u00e8me";
 ln["donut_fr"] = "Donut";
 ln["date-format_fr"] = "DATE FORMAT";
 ln["animation_fr"] = "Animation";
+ln["animationDescription_fr"]= "Choose animation for the catalog.";
 
 ln["map_fr"] = "Map";
 ln["1_italyRegion_fr"] = "Italy - Regions";
@@ -985,10 +1010,12 @@ ln["layer_fr"] = "Layer";
 ln["layerDescription_fr"] = "Choose a layer";
 
 
+
+
 ln["true_fr"] = "Oui";
 ln["false_fr"] = "Non";
 ln["bottom_fr"] = "Oui: En Bas";
-ln["topRight_fr"] = "Oui: En Haut à Droite";
+ln["topRight_fr"] = "Oui: En Haut \u00e0 Droite";
 ln["normal_fr"] = "Oui: Normal";
 ln["percent_fr"] = "Oui: Pourcentage";
 ln["themeBase_fr"] = "Base";
@@ -1025,7 +1052,7 @@ ln["mosaicSpiralReverse_fr"] = "Mosaic Spiral Reverse";
 ln["topLeftBottomRight_fr"] = "Top Left Bottom Right";
 ln["bottomRightTopLeft_fr"] = "Bottom Right Top Left";
 ln["bottomLeftTopRight_fr"] = "Bottom Left Top Right";
-ln["bottomLeftTopRight_fr"] = "Bottom Left Top Right";
+//ln["bottomLeftTopRight_fr"] = "Bottom Left Top Right";
 ln["scrollLeft_fr"] = "Scroll Left";
 ln["scrollRight_fr"] = "Scroll Right";
 ln["scrollHorz_fr"] = "Scroll Horz";
@@ -1037,10 +1064,22 @@ ln["y-axis-labelDescription_fr"] = "Le label de l'axe des y.";
 ln["suffixDescription_fr"] = "Le suffixe ajouté aux labels des données dans l'aide.";
 ln["legendDescription_fr"] = "La position de la légende.";
 ln["data-labelsDescription_fr"] = "Montrer/cacher les labels de données.";
-ln["themeDescription_fr"] = "Le thème affecte l'apparence des couleurs du graphique.";
+ln["themeDescription_fr"] = "Le th\u00e8me affecte l'apparence des couleurs du graphique.";
 ln["stackDescription_fr"] = "Le type de regroupement.";
 ln["donutDescription_fr"] = "La Tarte va devenir un Donut! :) (ou vice versa).";
-ln["mapDescription_fr"] = "";
+ln["mapDescription_fr"] = "Maps for provinces and regions of Italy and Maps for provinces and municipalities in the Campania Region.";
+
+ln["OpenStreetMap_fr"] = "OpenStreetMap";
+ln["OpenTopoMap_fr"] = "Topographic Map";
+ln["Esri.WorldImagery_fr"] = "Imagery Map";
+ln["Esri.WorldStreetMap_fr"] = "World Street Map";
+ln["Esri.DeLorme_fr"] = "DeLorme Topographic Map";
+ln["Esri.WorldTopoMap_fr"] = "Topographic Map";
+ln["Esri.OceanBasemap_fr"] = "Ocean Base Map";
+ln["Esri.NatGeoWorldMap_fr"] = "National Geographic Map";
+ln["Esri.WorldGrayCanvas_fr"] = "Gray Map";
+ln["Stamen.Watercolor_fr"] = "Watercolor Map";
+ln["NASAGIBS.ViirsEarthAtNight2012_fr"] = "View of the night lights";
 
 /******** NL ********/
 
@@ -1286,13 +1325,13 @@ ln["GEOJSONContentDescription_nl"] = "The content of GeoJSON.";
 ln["BubbleContentDescription_nl"] = "The content of bubbles.";
 ln["BubbleSizeDescription_nl"] = "The size of bubbles.";
 ln["CategoriesDescription_nl"] = "The category that splits the y-axis values. If selected only the first selected y-axis will be considered.";
-ln["AudioUrlDescription_nl"] = "";
-ln["AudioTimingDescription_nl"] = "";
-ln["ImageUrlDescription_nl"] = "";
-ln["AudioDescriptionDescription_nl"] = "";
-ln["AreaDescription_nl"] = "";
-ln["ValueDescription_nl"] = "";
-ln["TooltipContentDescription_nl"] = "";
+ln["AudioUrlDescription_nl"] = " ";
+ln["AudioTimingDescription_nl"] = " ";
+ln["ImageUrlDescription_nl"] = " ";
+ln["AudioDescriptionDescription_nl"] = " ";
+ln["AreaDescription_nl"] = " ";
+ln["ValueDescription_nl"] = " ";
+ln["TooltipContentDescription_nl"] = " ";
 
 //options
 ln["x-axis-label_nl"] = "X Axis Label";
@@ -1305,6 +1344,7 @@ ln["theme_nl"] = "Theme";
 ln["donut_nl"] = "Donut";
 ln["date-format_nl"] = "DATE FORMAT";
 ln["animation_nl"] = "Animatie";
+ln["animationDescription_nl"]= "Choose animation for the catalog.";
 
 ln["map_nl"] = "Map";
 ln["1_italyRegion_nl"] = "Italy - Regions";
@@ -1355,7 +1395,7 @@ ln["mosaicSpiralReverse_nl"] = "Mosaic Spiral Reverse";
 ln["topLeftBottomRight_nl"] = "Top Left Bottom Right";
 ln["bottomRightTopLeft_nl"] = "Bottom Right Top Left";
 ln["bottomLeftTopRight_nl"] = "Bottom Left Top Right";
-ln["bottomLeftTopRight_nl"] = "Bottom Left Top Right";
+//ln["bottomLeftTopRight_nl"] = "Bottom Left Top Right";
 ln["scrollLeft_nl"] = "Scroll Left";
 ln["scrollRight_nl"] = "Scroll Right";
 ln["scrollHorz_nl"] = "Scroll Horz";
@@ -1370,8 +1410,19 @@ ln["data-labelsDescription_nl"] = "Show/hide data labels.";
 ln["themeDescription_nl"] = "The theme affects the appearance and colors of the chart.";
 ln["stackDescription_nl"] = "The stack type.";
 ln["donutDescription_nl"] = "Pie will become Donut! :) (or viceversa).";
-ln["mapDescription_nl"] = "";
+ln["mapDescription_nl"] = "Maps for provinces and regions of Italy and Maps for provinces and municipalities in the Campania Region.";
 
+ln["OpenStreetMap_nl"] = "OpenStreetMap";
+ln["OpenTopoMap_nl"] = "Topographic Map";
+ln["Esri.WorldImagery_nl"] = "Imagery Map";
+ln["Esri.WorldStreetMap_nl"] = "World Street Map";
+ln["Esri.DeLorme_nl"] = "DeLorme Topographic Map";
+ln["Esri.WorldTopoMap_nl"] = "Topographic Map";
+ln["Esri.OceanBasemap_nl"] = "Ocean Base Map";
+ln["Esri.NatGeoWorldMap_nl"] = "National Geographic Map";
+ln["Esri.WorldGrayCanvas_nl"] = "Gray Map";
+ln["Stamen.Watercolor_nl"] = "Watercolor Map";
+ln["NASAGIBS.ViirsEarthAtNight2012_nl"] = "View of the night lights";
 /******** ES-es ********/
 
 //PAGE SLIDER
@@ -1612,13 +1663,13 @@ ln["GEOJSONContentDescription_es-ES"] = "El contenido de GeoJSON.";
 ln["BubbleContentDescription_es-ES"] = "El contenido de las burbujas.";
 ln["BubbleSizeDescription_es-ES"] = "El tamaño de las burbujas.";
 ln["CategoriesDescription_es-ES"] = "Categoría que divide los valores del eje-x. Si es seleccionado, sólo el primer eje-y elejido será considerado..";
-ln["AudioUrlDescription_es-ES"] = "";
-ln["AudioTimingDescription_es-ES"] = "";
-ln["ImageUrlDescription_es-ES"] = "";
-ln["AudioDescriptionDescription_es-ES"] = "";
-ln["AreaDescription_es-ES"] = "";
-ln["ValueDescription_es-ES"] = "";
-ln["TooltipContentDescription_es-ES"] = "";
+ln["AudioUrlDescription_es-ES"] = " ";
+ln["AudioTimingDescription_es-ES"] = " ";
+ln["ImageUrlDescription_es-ES"] = " ";
+ln["AudioDescriptionDescription_es-ES"] = " ";
+ln["AreaDescription_es-ES"] = " ";
+ln["ValueDescription_es-ES"] = " ";
+ln["TooltipContentDescription_es-ES"] = " ";
 
 //options
 ln["x-axis-label_es-ES"] = "Etiqueta del eje-x";
@@ -1631,6 +1682,7 @@ ln["theme_es-ES"] = "Tema";
 ln["donut_es-ES"] = "Dona";
 ln["date-format_es-ES"] = "DATE FORMAT";
 ln["animation_es-ES"] = "Animación";
+ln["animationDescription_es-ES"]= "Choose animation for the catalog.";
 
 ln["map_es-ES"] = "Map";
 ln["1_italyRegion_es-ES"] = "Italy - Regions";
@@ -1681,7 +1733,7 @@ ln["mosaicSpiralReverse_es-ES"] = "Mosaico Espiral Invertido";
 ln["topLeftBottomRight_es-ES"] = "Arriba a la Izquierda, Abajo a la Derecha";
 ln["bottomRightTopLeft_es-ES"] = "Abajo a la Derecha, Arriba a la Izquierda";
 ln["bottomLeftTopRight_es-ES"] = "Abajo a la Izquierda, Arriba a la Derecha";
-ln["bottomLeftTopRight_es-ES"] = "Abajo a la Izquierda, Arriba a la Derecha";
+//ln["bottomLeftTopRight_es-ES"] = "Abajo a la Izquierda, Arriba a la Derecha";
 ln["scrollLeft_es-ES"] = "Desplazamiento hacia la Izquierda";
 ln["scrollRight_es-ES"] = "Desplazamiento hacia la Derecha";
 ln["scrollHorz_es-ES"] = "Desplazamiento Horz";
@@ -1696,7 +1748,19 @@ ln["data-labelsDescription_es-ES"] = "Mostrar/ocultar etiquetas de datos.";
 ln["themeDescription_es-ES"] = "El tema afecta la apariencia y los colores del gráfico.";
 ln["stackDescription_es-ES"] = "El tipo de pila.";
 ln["donutDescription_es-ES"] = "¡El pay se convertirá en dona! :) (o viceversa).";
-ln["mapDescription_es-ES"] = "";
+ln["mapDescription_es-ES"] = "Maps for provinces and regions of Italy and Maps for provinces and municipalities in the Campania Region.";
+
+ln["OpenStreetMap_es-ES"] = "OpenStreetMap";
+ln["OpenTopoMap_es-ES"] = "Topographic Map";
+ln["Esri.WorldImagery_es-ES"] = "Imagery Map";
+ln["Esri.WorldStreetMap_es-ES"] = "World Street Map";
+ln["Esri.DeLorme_es-ES"] = "DeLorme Topographic Map";
+ln["Esri.WorldTopoMap_es-ES"] = "Topographic Map";
+ln["Esri.OceanBasemap_es-ES"] = "Ocean Base Map";
+ln["Esri.NatGeoWorldMap_es-ES"] = "National Geographic Map";
+ln["Esri.WorldGrayCanvas_es-ES"] = "Gray Map";
+ln["Stamen.Watercolor_es-ES"] = "Watercolor Map";
+ln["NASAGIBS.ViirsEarthAtNight2012_es-ES"] = "View of the night lights";
 
 /** (Simplified) CN**/
 //PAGE SLIDER - controllet
@@ -1950,13 +2014,13 @@ ln["GEOJSONContentDescription_cn"]="GeoJSON内容";
 ln["BubbleContentDescription_cn"]="气泡的内容";
 ln["BubbleSizeDescription_cn"]="气泡的大小";
 ln["CategoriesDescription_cn"]="这种分类将y轴的值分离。如果选择此项，则仅考虑第一个选择的y轴。";
-ln["AudioUrlDescription_cn"]="";
-ln["AudioTimingDescription_cn"]="";
-ln["ImageUrlDescription_cn"]="";
-ln["AudioDescriptionDescription_cn"]="";
-ln["AreaDescription_cn"]="";
-ln["ValueDescription_cn"]="";
-ln["TooltipContentDescription_cn"]="";
+ln["AudioUrlDescription_cn"]=" ";
+ln["AudioTimingDescription_cn"]=" ";
+ln["ImageUrlDescription_cn"]=" ";
+ln["AudioDescriptionDescription_cn"]=" ";
+ln["AreaDescription_cn"]=" ";
+ln["ValueDescription_cn"]=" ";
+ln["TooltipContentDescription_cn"]=" ";
 
 //options
 ln["x-axis-label_cn"]="x轴标签";
@@ -1969,6 +2033,7 @@ ln["theme_cn"]="主题";
 ln["donut_cn"]="圆环图";
 ln["date-format_cn"]="日期格式";
 ln["animation_cn"]="动画";
+ln["animationDescription_cn"]= "Choose animation for the catalog.";
 
 ln["map_cn"]="地图";
 ln["1_italyRegion_cn"]="意大利地区";
@@ -2019,7 +2084,7 @@ ln["mosaicSpiralReverse_cn"]="反向旋转马克";
 ln["topLeftBottomRight_cn"]="左上右下";
 ln["bottomRightTopLeft_cn"]="右下左上";
 ln["bottomLeftTopRight_cn"]="左下右上";
-ln["bottomLeftTopRight_cn"]="左下右上";
+//ln["bottomLeftTopRight_cn"]="左下右上";
 ln["scrollLeft_cn"]="向左滑动";
 ln["scrollRight_cn"]="向右滑动";
 ln["scrollHorz_cn"]="水平滑动";
@@ -2035,6 +2100,18 @@ ln["themeDescription_cn"]="主题影响图表的外观和颜色";
 ln["stackDescription_cn"]="堆栈种类";
 ln["donutDescription_cn"]="饼状图将会变成圆环图！（反之亦然）";
 ln["mapDescription_cn"]="";
+
+ln["OpenStreetMap_cn"] = "OpenStreetMap";
+ln["OpenTopoMap_cn"] = "Topographic Map";
+ln["Esri.WorldImagery_cn"] = "Imagery Map";
+ln["Esri.WorldStreetMap_cn"] = "World Street Map";
+ln["Esri.DeLorme_cn"] = "DeLorme Topographic Map";
+ln["Esri.WorldTopoMap_cn"] = "Topographic Map";
+ln["Esri.OceanBasemap_cn"] = "Ocean Base Map";
+ln["Esri.NatGeoWorldMap_cn"] = "National Geographic Map";
+ln["Esri.WorldGrayCanvas_cn"] = "Gray Map";
+ln["Stamen.Watercolor_cn"] = "Watercolor Map";
+ln["NASAGIBS.ViirsEarthAtNight2012_cn"] = "View of the night lights";
 
 /**** CREATOR ****/
 
