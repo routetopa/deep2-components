@@ -389,7 +389,7 @@ ln["Esri.OceanBasemap_en"] = "Ocean Base Map";
 ln["Esri.NatGeoWorldMap_en"] = "National Geographic Map";
 ln["Esri.WorldGrayCanvas_en"] = "Gray Map";
 ln["Stamen.Watercolor_en"] = "Watercolor Map";
-ln["NASAGIBS.ViirsEarthAtNight2012_en"] = "View of the night lights";
+ln["NASAGIBS.ViirsEarthAtNight2012_en"] = "Night Lights Map";
 /******** IT ********/
 
 //PAGE SLIDER
@@ -735,8 +735,8 @@ ln["Esri.WorldGrayCanvas_it"] = "Mappa Grigia";
 ln["Stamen.Watercolor_it"] =  "Mappa Acquerello";
 ln["NASAGIBS.ViirsEarthAtNight2012_it"] = "Mappa con Luci Notturne";
 
-/******** FR ********/
 
+/******** FR ********/
 //PAGE SLIDER
 
 ln["slide1Title_fr"] = "SÉLECTIONNER UN JEU DE DONNÉES";
@@ -1079,7 +1079,7 @@ ln["Esri.OceanBasemap_fr"] = "Ocean Base Map";
 ln["Esri.NatGeoWorldMap_fr"] = "National Geographic Map";
 ln["Esri.WorldGrayCanvas_fr"] = "Gray Map";
 ln["Stamen.Watercolor_fr"] = "Watercolor Map";
-ln["NASAGIBS.ViirsEarthAtNight2012_fr"] = "View of the night lights";
+ln["NASAGIBS.ViirsEarthAtNight2012_fr"] = "Night Lights Map";
 
 /******** NL ********/
 
@@ -1422,7 +1422,7 @@ ln["Esri.OceanBasemap_nl"] = "Ocean Base Map";
 ln["Esri.NatGeoWorldMap_nl"] = "National Geographic Map";
 ln["Esri.WorldGrayCanvas_nl"] = "Gray Map";
 ln["Stamen.Watercolor_nl"] = "Watercolor Map";
-ln["NASAGIBS.ViirsEarthAtNight2012_nl"] = "View of the night lights";
+ln["NASAGIBS.ViirsEarthAtNight2012_nl"] = "Night Lights Map";
 /******** ES-es ********/
 
 //PAGE SLIDER
@@ -1760,7 +1760,7 @@ ln["Esri.OceanBasemap_es-ES"] = "Ocean Base Map";
 ln["Esri.NatGeoWorldMap_es-ES"] = "National Geographic Map";
 ln["Esri.WorldGrayCanvas_es-ES"] = "Gray Map";
 ln["Stamen.Watercolor_es-ES"] = "Watercolor Map";
-ln["NASAGIBS.ViirsEarthAtNight2012_es-ES"] = "View of the night lights";
+ln["NASAGIBS.ViirsEarthAtNight2012_es-ES"] = "Night Lights Map";
 
 /** (Simplified) CN**/
 //PAGE SLIDER - controllet
@@ -2111,7 +2111,7 @@ ln["Esri.OceanBasemap_cn"] = "Ocean Base Map";
 ln["Esri.NatGeoWorldMap_cn"] = "National Geographic Map";
 ln["Esri.WorldGrayCanvas_cn"] = "Gray Map";
 ln["Stamen.Watercolor_cn"] = "Watercolor Map";
-ln["NASAGIBS.ViirsEarthAtNight2012_cn"] = "View of the night lights";
+ln["NASAGIBS.ViirsEarthAtNight2012_cn"] = "Night Lights Map";
 
 /**** CREATOR ****/
 
