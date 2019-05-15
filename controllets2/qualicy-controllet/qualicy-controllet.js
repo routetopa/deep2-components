@@ -11,6 +11,7 @@ export default class QualicyControllet extends HTMLElement {
     constructor() {
         super();
         this.currentDocument = document.querySelector(`link[href*="qualicy-controllet"]`).import;
+        this.baseUri = this.currentDocument.baseURI.substring(0, this.currentDocument.baseURI.lastIndexOf("/") + 1);
         this.shadow_root = this.attachShadow({mode: 'open'});
     }
 
@@ -21,6 +22,12 @@ export default class QualicyControllet extends HTMLElement {
 
     connectedCallback() {
         let template = this.template();
+
+        this.load_script([{
+            template: template,
+            baseURI: this.baseUri
+        }]);
+
         this.shadow_root.appendChild(template);
 
         this.manageTabs();
@@ -306,6 +313,32 @@ export default class QualicyControllet extends HTMLElement {
         this.tableManager.fillInStructuralPrivacyBreachesStats(this.structuralPrivacyBreaches);
         this.tableManager.fillInCellStats(this.annotatedDataset);
         this.tableManager.fillInColumnStats(this.reportColumnStats, this.structuralPrivacyBreaches);
+    }
+
+    load_script(templates) {
+        templates.forEach((t) => {
+            let scripts = t.template.querySelectorAll('link, script'); //'script, link'
+
+            for (let i = 0; i < scripts.length; i++) {
+                let attribute = scripts[i].tagName === 'SCRIPT' ? 'src' : 'href';
+                scripts[i].setAttribute(attribute, this.build_uri(scripts[i].getAttribute(attribute), t.baseURI));
+            }
+        });
+    }
+
+    build_uri(resource, baseURI) {
+        if (this.is_absolute_path(resource))
+            return resource;
+
+        return (baseURI || this.baseUri) + resource;
+    }
+
+    is_absolute_path(path) {
+        return (path.indexOf('http') >= 0);
+    }
+
+    _resize() {
+        this.tableManager.redrawDataTable();
     }
 };
 
