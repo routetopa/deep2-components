@@ -251,7 +251,8 @@
                                 return;
                             }
 
-                            that.dataUrl = `${parent.ODE.deep_url}cors-proxy/proxy.php?csurl=${that.dataUrl}`;
+                            //that.dataUrl = `${parent.ODE.deep_url}cors-proxy/proxy.php?csurl=${that.dataUrl}`;
+                            that.dataUrl = `http://deep.routetopa.eu/deep2/DEEP/cors-proxy/proxy.php?csurl=${that.dataUrl}`;
 
                             $.ajax({
                                 url: that.dataUrl,
