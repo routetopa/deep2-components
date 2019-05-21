@@ -14,9 +14,12 @@ RC.injectHTML  = function(ln, datasets) {
 
 RC.init = function() {
     $("#controllet").attr("datasets", JSON.stringify(datasets));
-    $("#options")[0].innerHTML = "";
-    $(".tab-content")[0].innerHTML = "LISTA DATASET REGIONE CAMPANIA";//todo ln
-    $("#add_button").hide();
+    setTimeout(() =>
+    {
+        $("#options")[0].innerHTML = "";
+        $(".tab-content")[0].innerHTML = "LISTA DATASET REGIONE CAMPANIA";//todo ln
+        $("#add_button").hide();
 
-    $("button.outside").prop('disabled', true);
+        $("button.outside").prop('disabled', true);
+    }, 1000);
 };
