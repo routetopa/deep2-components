@@ -80,6 +80,11 @@
 
             properties : {
 
+                deepUrl : {
+                    type : String,
+                    value : undefined
+                },
+
                 dataUrl : {
                     type  : String,
                     value : undefined
@@ -213,13 +218,13 @@
                 this.$.data_table.setData(this.getData());
             },
 
-            init : function() {
+            init : function() {debugger
                 if(this.dataUrl) {
 
                     var that = this;
 
                     if(window.location.protocol.startsWith("https") && !this.dataUrl.startsWith("https"))
-                        this.dataUrl = `${parent.ODE.deep_url}cors-proxy/proxy.php?csurl=${that.dataUrl}`;
+                        this.dataUrl = `${this.deepUrl}cors-proxy/proxy.php?csurl=${that.dataUrl}`;
 
                     $.ajax({
                         url: this.dataUrl,
@@ -251,8 +256,7 @@
                                 return;
                             }
 
-                            //that.dataUrl = `${parent.ODE.deep_url}cors-proxy/proxy.php?csurl=${that.dataUrl}`;
-                            that.dataUrl = `http://deep.routetopa.eu/deep2/DEEP/cors-proxy/proxy.php?csurl=${that.dataUrl}`;
+                            that.dataUrl = `${that.deepUrl}cors-proxy/proxy.php?csurl=${that.dataUrl}`;
 
                             $.ajax({
                                 url: that.dataUrl,
