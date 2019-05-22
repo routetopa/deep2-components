@@ -31,10 +31,14 @@ CREATOR.injectHTML  = function(ln, datasets) {
 
 CREATOR.init = function() {
     $("#controllet").attr("datasets", JSON.stringify(datasets));
-    $("#options")[0].innerHTML = "";
-    $("#add_button").hide();
 
-    $("button.outside").prop('disabled', true);
+
+    setTimeout(() => {
+        $("#options")[0].innerHTML = "";
+        $("#add_button").hide();
+
+        $("button.outside").prop('disabled', true);
+    }, 1000);
 };
 
 CREATOR.translate = function() {
