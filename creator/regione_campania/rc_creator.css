@@ -1,5 +1,9 @@
 /* BUTTON */
 
+paper-button#add_button {
+    display: none;
+}
+
 button.outside {
     display: none;
 

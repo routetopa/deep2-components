@@ -22,9 +22,9 @@ CREATOR_FROM.injectHTML  = function(ln, datasets) {
 };
 
 CREATOR_FROM.init = function() {
-    $("#add_button").hide();
-
-    $("button.outside").prop('disabled', true);
+    setTimeout(() => {
+        $("button.outside").prop('disabled', true);
+    }, 1000);
 };
 
 CREATOR_FROM.setListeners = function() {

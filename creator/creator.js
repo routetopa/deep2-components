@@ -32,11 +32,8 @@ CREATOR.injectHTML  = function(ln, datasets) {
 CREATOR.init = function() {
     $("#controllet").attr("datasets", JSON.stringify(datasets));
 
-
     setTimeout(() => {
         $("#options")[0].innerHTML = "";
-        $("#add_button").hide();
-
         $("button.outside").prop('disabled', true);
     }, 1000);
 };
