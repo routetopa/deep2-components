@@ -1,6 +1,6 @@
 import '../shared/jquery/jquery-3.3.1.min.js'
 import '../shared/DataTables/DataTables-1.10.18/js/jquery.dataTables.min.js'
-import '../shared/DataTables/DataTables-1.10.18/js/dataTables.bootstrap4.min.js'
+
 import TypeAndMetatypeConfigFactory from './static/js/TypeAndMetatypeConfigFactory_qualicyLibrary.js'
 import DataChecker from './static/js/DataChecker_qualicyLibrary.js'
 import PrivacyReportViewBuilder from './static/js/PrivacyReportViewBuilder_qualicyLibrary.js'

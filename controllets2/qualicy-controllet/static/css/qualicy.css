@@ -1,3 +1,5 @@
+/* CONTAINER */
+
 #qualicy-container {
     width: 100%;
     height: 100%;
@@ -10,118 +12,200 @@
     background-color: #FFFFFF;
 }
 
+/* scrollbar */
+
+#qualicy-container ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+#qualicy-container ::-webkit-scrollbar-track {
+    background-color: #EEEEEE;
+}
+
+#qualicy-container ::-webkit-scrollbar-thumb {
+    background-color: #BDBDBD;
+}
+
 #qualicy-table {
-    width: 75%;
-    height: 100%;
+    width: calc(75% - 32px);
+    height: calc(100% - 32px);
 
-    padding: 8px;
-    border-right: 8px solid #9e9e9e;
+    margin: 16px;
+    padding: 16px;
 
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: hidden;
+
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    border-radius: 2px;
 }
 
 #qualicy-menu {
-    width: 25%;
-    height: 100%;
+    position: relative;
 
-    overflow: hidden;
-    /*background-color: #FFFFFF;*/
+    width: calc(25% - 32px);
+    height: calc(100% - 32px);
+
+    min-width: 400px;
+
+    margin: 16px;
+    /*padding: 16px;*/
+
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    border-radius: 2px;
 }
 
-#qualicy-menu i {
-    font-size: 24px;
-    color: blueviolet;
-    padding: 8px;
-}
+/* Qualicy Table */
 
-/* TABLE */
-
-td, th {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 300px;
-}
 
 td {
     position: relative;
 }
 
-td.metadatatypeInconsistency, td.typo, td.contentPrivacyBreach,td.datatypeInconsistency {
-    transition: background-color 0.5s linear;
-}
-
-th .columns_warnings, td::after{
+td::after, span.columns_warnings {
     content: '';
     position: absolute;
     top: 2px;
+    right: 2px;
     width: 0;
     height: 0;
     border: 8px solid transparent;
-    /*border-color: #2196f3 #9c27b0 #ff9800 #4caf50;*/
     border-radius: 50%;
+    cursor: pointer;
 }
 
-td::after{
-    right: 2px;
+span.columns_warnings {
+    top: 15px;
+    right: 12px;
+    border: 12px solid transparent;
 }
 
-th .columns_warnings{
-    right: 25px;
+table.dataTable th {
+    padding-right: 48px !important;
 }
 
-th .datatypeInconsistency, td.datatypeInconsistency::after{
-    border-color: #e0e0e0;
+th .datatypeInconsistency, td.datatypeInconsistency::after {
+    border-color: #E0E0E0;
     border-top-color: #2196f3 !important;
 }
 
-th .metadatatypeInconsistency, td.metadatatypeInconsistency::after{
-    border-color: #e0e0e0;
+th .metadatatypeInconsistency, td.metadatatypeInconsistency::after {
+    border-color: #E0E0E0;
     border-right-color: #9c27b0 !important;
 }
 
-th .structuralPrivacyBreach, td.contentPrivacyBreach::after{
-    border-color: #e0e0e0;
+th .structuralPrivacyBreach, td.contentPrivacyBreach::after {
+    border-color: #E0E0E0;
     border-bottom-color: #ff9800 !important;
 }
 
-td.typo::after{
-    border-color: #e0e0e0;
+td.typo::after {
+    border-color: #E0E0E0;
     border-left-color: #4caf50 !important;
 }
 
-td.focus{
-    background-color: #ffff00;
+td.metadatatypeInconsistency, td.typo, td.contentPrivacyBreach,td.datatypeInconsistency {
+    transition: background-color .3s linear;
 }
 
-/* END TABLE */
+td.focus {
+    background-color: #FFFF00;
+    box-shadow: none !important;
+}
+
+/* Qualicy Menu */
+
+#qualicy-menu::after {
+    content: '';
+    position: absolute;
+    top: calc(50% - 24px);
+    left: -17px;
+    height: 48px;
+    width: 16px;
+    background-color: #FFFFFF;
+    border: 1px solid #E0E0E0;
+    border-right-color: #FFFFFF;
+    border-radius: 2px 0 0 2px;
+    box-shadow: -0px 3px 4px rgba(0,0,0,0.16);
+    /*box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);*/
+    content: "\f053";
+    /*content: "\f054";*/
+    font-family: 'Font Awesome\ 5 Free';
+    font-weight: 900;
+    font-size: 14px;
+    padding: 17px 2px;
+    color: #212121;
+    cursor: pointer;
+
+    transition: all .3s linear;
+}
+
+#qualicy-menu * {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: 14px;
+    color: #212121;
+}
+
+/* Style the tab */
+.qualicy-tab {
+    height: 48px;
+    /*overflow: hidden;*/
+    /*border: 1px solid #ccc;*/
+    /*background-color: #f1f1f1;*/
+}
+
+/* Style the buttons that are used to open the tab content */
+.qualicy-tab button {
+    float: left;
+    border: none;
+    outline: none;
+    padding: 16px;
+    height: 48px;
+    transition: background-color .3s linear;
+    width: 50%;
+    vertical-align: bottom;
+    text-align:center;
+    font-weight: 700;
+    background-color: #FFFFFF;
+}
+
+.qualicy-tab button:hover {
+    background-color: #EEEEEE;
+}
+
+.qualicy-tab button.active {
+    color: #FFFFFF !important;
+    background-color: #2196F3;
+}
+
+.qualicy-tab-content {
+    overflow: auto;
+    height: calc(100% - 48px);
+}
 
 .tab-menu {
     position: relative;
     width: 100%;
-    height: 43px;
-    line-height: 18px;
-    padding: 12px;
+    height: 48px;
+    padding: 16px;
     text-align: center;
     font-weight: 700;
-    background-color: #f2f2f2;
-    border-bottom: 1px solid #dee2e6;
-    /*cursor: pointer;*/
+    background-color: #F5F5F5;
+    border-bottom: 1px solid #EEEEEE;
 }
 
 .tab-menu:first-child {
-    border-top: 1px solid #dee2e6;
+    border-top: 1px solid #EEEEEE;
 }
 
 .tab-menu:after {
     content: '';
     position: absolute;
-    top: 5px;
+    top: 8px;
     right: 8px;
     width: 0;
     height: 0;
-    border: 16px solid #e0e0e0;
+    border: 16px solid #E0E0E0;
     border-radius: 50%;
 }
 
@@ -142,48 +226,47 @@ td.focus{
 }
 
 .collapsible-container {
-    width: 100%;
     background-color: #FFFFFF;
-    border-bottom: 1px solid #dee2e6;
+    border-bottom: 1px solid #EEEEEE;
 }
 
 .collapsible-container > div {
-    width: 100%;
-    height: 84px;
-    line-height: 84px;
+    line-height: 54px;
     display: flex;
     flex-direction: row;
 }
 
-.collapsible-container span{
+.collapsible-container span {
     text-align: center;
     display: inline-block;
 }
 
 .collapsible-container span.span-l {
-    width: 50%;
+    min-width: 176px;
     font-weight: 700;
     text-align: left;
     padding-left: 16px;
 }
 
 .collapsible-container span.span-r {
-    width: 50%;
-    text-align: left;
-    font-size: 24px;
+    /*width: calc(100% - 176px);*/
+    width: 100%;
+    text-align: center;
 }
 
 .collapsible-container span.counter {
-    width: 84px;
+    width: 80px;
 }
 
 .collapsible-container .fas {
     cursor: pointer;
+    font-family: "Font Awesome 5 Free" !important;
+    font-size: 24px !important;
 }
 
 .collapsible-container .fas.disabled {
     cursor: auto;
-    opacity: 0.5;
+    opacity: 0.3;
 }
 
 #type-container .fas {
@@ -202,68 +285,46 @@ td.focus{
     color: #4caf50;
 }
 
-#qualicy-menu .title{
-    float:left;
+#qualicy-tab-2 div {
+    padding: 16px;
+    border-bottom: 1px solid #E0E0E0;
 }
 
-#qualicy-menu .content{
-    float:right;
+#qualicy-tab-2 div:first-child {
+    border-top: 1px solid #E0E0E0;
 }
 
-.qualicy-tab-content {
-    /*padding-top: 16px;
-    background-color: red;*/
-    overflow: auto;
-    height: calc(100% - 36px);
-
-    display: none;
-    animation: fadeEffect 1s; /* Fading effect takes 1 second */
-}
-
-/* Style the tab */
-.qualicy-tab {
-    overflow: hidden;
-    border: 1px solid #ccc;
-    background-color: #f1f1f1;
-}
-
-/* Style the buttons that are used to open the tab content */
-.qualicy-tab button {
-    background-color: inherit;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    transition: 0.3s;
-    display: table-cell;
-    width: 50%;
-    height: auto;
-    vertical-align: bottom;
-    text-align:center;
+#qualicy-tab-2 li {
     font-weight: 700;
 }
 
-/* Change background color of buttons on hover */
-.qualicy-tab button:hover {
-    background-color: #ddd;
+/* modal */
+
+.modal span, .modal div {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: 16px;
+    line-height: 32px;
+    color: #212121;
 }
 
-/* Create an active/current tablink class */
-.qualicy-tab button.active {
-    background-color: #ccc;
+.modal div span:nth-child(2) {
+/*#modal-value, #modal-datatype, #modal-metadatatype, #modal-typos, #modal-contentPrivacyBreach {*/
+    font-weight: 700;
 }
 
-/* Go from zero to full opacity */
-@keyframes fadeEffect {
-    from {opacity: 0;}
-    to {opacity: 1;}
+#modal-value {
+    color: #2196F3;
 }
 
-.modal-open{
+.modal i {
+    color: #4CAF50;
+}
+
+.modal-open {
     display:block !important;
+    background-color: rgba(0,0,0,.3);
 }
 
-.modal-close{
+.modal-close {
     display:none;
 }

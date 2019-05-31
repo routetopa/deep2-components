@@ -13,7 +13,7 @@ export default class TableManager {
         this.currentMissingMetadatatypes = menu.querySelector('#currentMissingMetadatatypes');
         this.currentContentPrivacyBreach = menu.querySelector('#currentContentPrivacyBreach');
         this.currentStructuralPrivacyBreach = menu.querySelector('#qualicy-tab-2');
-        this.pageLength = 10;
+        this.pageLength = 25;
     }
 
     redrawDataTable  = function () {
@@ -46,6 +46,7 @@ export default class TableManager {
             data: this.data,
             columns: columns,
             scrollX: 'auto',
+            scrollY: 'calc(100% - 135px)',
             order: [],
             rowId: '_id',
             pageLength: this.pageLength,
@@ -73,6 +74,7 @@ export default class TableManager {
         this.currentTypos.innerText = '0 / ' + typos.length;
 
         $(this.menu.querySelector('#prevTypo')).on( 'click', function () {
+            debugger
             if(this.counterTypo<0)
                 this.counterTypo = typos.length-1;
             else
@@ -84,7 +86,7 @@ export default class TableManager {
             $(this.selectedCell).addClass('focus');
             setTimeout(function(){
                 $(this.selectedCell).removeClass('focus');
-            }.bind(this), 500);
+            }.bind(this), 300);
 
             this.selectedCell.scrollIntoView({block: 'center', inline: 'center'});
 
@@ -103,7 +105,7 @@ export default class TableManager {
             $(this.selectedCell).addClass('focus');
             setTimeout(function(){
                 $(this.selectedCell).removeClass('focus');
-            }.bind(this), 500);
+            }.bind(this), 300);
 
             this.selectedCell.scrollIntoView({block: 'center', inline: 'center'});
 
@@ -111,12 +113,12 @@ export default class TableManager {
         }.bind(this) );
     }
 
-    fillInDatatypeStats = function(nullCells, mismatchDatatypes){
+    fillInDatatypeStats = function(nullCells, mismatchDatatypes) {
         this.fillInNullCells(nullCells);
         this.fillInMismatchDatatypes(mismatchDatatypes);
     }
 
-    fillInNullCells = function(nullCells){
+    fillInNullCells = function(nullCells) {
         if(nullCells.length == 0){
             this.currentNullCell.innerText = '0/0';
             $(this.menu.querySelector('#prevNull')).addClass('disabled');
@@ -149,7 +151,7 @@ export default class TableManager {
             $(this.selectedCell).addClass('focus');
             setTimeout(function(){
                 $(this.selectedCell).removeClass('focus');
-            }.bind(this), 500);
+            }.bind(this), 300);
 
             this.selectedCell.scrollIntoView({block: 'center', inline: 'center'});
 
@@ -169,7 +171,7 @@ export default class TableManager {
             $(this.selectedCell).addClass('focus');
             setTimeout(function(){
                 $(this.selectedCell).removeClass('focus');
-            }.bind(this), 500);
+            }.bind(this), 300);
 
             this.selectedCell.scrollIntoView({block: 'center', inline: 'center'});
 
@@ -177,7 +179,7 @@ export default class TableManager {
         }.bind(this) );
     }
 
-    fillInMismatchDatatypes = function(mismatchDatatypes){
+    fillInMismatchDatatypes = function(mismatchDatatypes) {
         if(mismatchDatatypes.length == 0){
             this.currentMismatchDatatypes.innerText = '0/0';
             $(this.menu.querySelector('#prevMismatchDatatypes')).addClass('disabled');
@@ -209,7 +211,7 @@ export default class TableManager {
             $(this.selectedCell).addClass('focus');
             setTimeout(function(){
                 $(this.selectedCell).removeClass('focus');
-            }.bind(this), 500);
+            }.bind(this), 300);
 
             this.selectedCell.scrollIntoView({block: 'center', inline: 'center'});
 
@@ -229,7 +231,7 @@ export default class TableManager {
             $(this.selectedCell).addClass('focus');
             setTimeout(function(){
                 $(this.selectedCell).removeClass('focus');
-            }.bind(this), 500);
+            }.bind(this), 300);
 
             this.selectedCell.scrollIntoView({block: 'center', inline: 'center'});
 
@@ -237,12 +239,12 @@ export default class TableManager {
         }.bind(this) );
     }
 
-    fillInMetaDatatypeStats = function(mismatchMetadatatypes, missingMetadatatypes){
+    fillInMetaDatatypeStats = function(mismatchMetadatatypes, missingMetadatatypes) {
         this.fillInMismatchMetadatatypes(mismatchMetadatatypes);
         this.fillInMissingMetadatatypes(missingMetadatatypes);
     }
 
-    fillInMismatchMetadatatypes = function(mismatchMetadatatypes){
+    fillInMismatchMetadatatypes = function(mismatchMetadatatypes) {
         if(mismatchMetadatatypes.length == 0){
             this.currentMismatchMetadatatypes.innerText = '0/0';
             $(this.menu.querySelector('#prevMismatchMetadatatypes')).addClass('disabled');
@@ -274,7 +276,7 @@ export default class TableManager {
             $(this.selectedCell).addClass('focus');
             setTimeout(function(){
                 $(this.selectedCell).removeClass('focus');
-            }.bind(this), 500);
+            }.bind(this), 300);
 
             this.selectedCell.scrollIntoView({block: 'center', inline: 'center'});
 
@@ -294,7 +296,7 @@ export default class TableManager {
             $(this.selectedCell).addClass('focus');
             setTimeout(function(){
                 $(this.selectedCell).removeClass('focus');
-            }.bind(this), 500);
+            }.bind(this), 300);
 
             this.selectedCell.scrollIntoView({block: 'center', inline: 'center'});
 
@@ -302,7 +304,7 @@ export default class TableManager {
         }.bind(this) );
     }
 
-    fillInMissingMetadatatypes = function(missingMetadatatypes){
+    fillInMissingMetadatatypes = function(missingMetadatatypes) {
         if(missingMetadatatypes.length == 0){
             this.currentMissingMetadatatypes.innerText = '0/0';
             $(this.menu.querySelector('#prevMissingMetadatatypes')).addClass('disabled');
@@ -334,7 +336,7 @@ export default class TableManager {
             $(this.selectedCell).addClass('focus');
             setTimeout(function(){
                 $(this.selectedCell).removeClass('focus');
-            }.bind(this), 500);
+            }.bind(this), 300);
 
             this.selectedCell.scrollIntoView({block: 'center', inline: 'center'});
 
@@ -354,7 +356,7 @@ export default class TableManager {
             $(this.selectedCell).addClass('focus');
             setTimeout(function(){
                 $(this.selectedCell).removeClass('focus');
-            }.bind(this), 500);
+            }.bind(this), 300);
 
             this.selectedCell.scrollIntoView({block: 'center', inline: 'center'});
 
@@ -362,7 +364,7 @@ export default class TableManager {
         }.bind(this) );
     }
 
-    fillInContentPrivacyBreachesStats = function(contentPrivacyBreachStats){
+    fillInContentPrivacyBreachesStats = function(contentPrivacyBreachStats) {
         if(contentPrivacyBreachStats.length == 0){
             this.currentContentPrivacyBreach.innerText = '0/0';
             $(this.menu.querySelector('#prevContentPrivacyBreach')).addClass('disabled');
@@ -394,7 +396,7 @@ export default class TableManager {
             $(this.selectedCell).addClass('focus');
             setTimeout(function(){
                 $(this.selectedCell).removeClass('focus');
-            }.bind(this), 500);
+            }.bind(this), 300);
 
             this.selectedCell.scrollIntoView({block: 'center', inline: 'center'});
 
@@ -414,7 +416,7 @@ export default class TableManager {
             $(this.selectedCell).addClass('focus');
             setTimeout(function(){
                 $(this.selectedCell).removeClass('focus');
-            }.bind(this), 500);
+            }.bind(this), 300);
 
             this.selectedCell.scrollIntoView({block: 'center', inline: 'center'});
 
@@ -422,7 +424,7 @@ export default class TableManager {
         }.bind(this) );
     }
 
-    fillInStructuralPrivacyBreachesStats = function(structuralPrivacyBreachStats){
+    fillInStructuralPrivacyBreachesStats = function(structuralPrivacyBreachStats) {
         for(let index in structuralPrivacyBreachStats){
             let structuralPrivacyBreach = structuralPrivacyBreachStats[index];
 
@@ -457,7 +459,7 @@ export default class TableManager {
 
     }
 
-    fillInCellStats = function(annotatedDataset){
+    fillInCellStats = function(annotatedDataset) {
         this.annotatedDataset = annotatedDataset;
 
         let _self = this;
@@ -517,7 +519,7 @@ export default class TableManager {
         });
     }
 
-    fillInColumnStats = function(columnStats, structuralPrivacyBreaches){
+    fillInColumnStats = function(columnStats, structuralPrivacyBreaches) {
         this.columnStats = columnStats;
 
         for(let columnName in this.columnStats.COLUMN_STATS){
@@ -588,8 +590,7 @@ export default class TableManager {
         }
     }
 
-    cartesianProduct = function(arr)
-    {
+    cartesianProduct = function(arr) {
         return arr.reduce(function(a,b){
             return a.map(function(x){
                 return b.map(function(y){
@@ -599,7 +600,7 @@ export default class TableManager {
         }, [[]])
     }
 
-    isColumnInvolvedInStructuralPrivacyBreach(columnMetadatatype, structuralPrivacyBreaches){
+    isColumnInvolvedInStructuralPrivacyBreach(columnMetadatatype, structuralPrivacyBreaches) {
         for(let i=0; i<structuralPrivacyBreaches.length; i++){
             let breach = structuralPrivacyBreaches[i].breach;
             if(columnMetadatatype in breach)
@@ -607,4 +608,5 @@ export default class TableManager {
         }
         return false;
     }
+
 }

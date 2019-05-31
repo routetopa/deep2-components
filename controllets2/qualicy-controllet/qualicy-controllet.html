@@ -3,12 +3,106 @@
 <template id="qualicy-controllet">
 
     <!-- CSS DEPENDENCY -->
-    <link rel="stylesheet" type="text/css" href="./static/css/qualicy.css">
+    <link rel="stylesheet" type="text/css" href="../shared/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../shared/DataTables/datatables.min.css">
     <link rel="stylesheet" type="text/css" href="../shared/fontawesome/css/all.min.css">
-    <link rel="stylesheet" type="text/css" href="../shared/DataTables/Bootstrap-4-4.1.1/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="../shared/DataTables/DataTables-1.10.18/css/dataTables.bootstrap4.min.css">
+
+    <link rel="stylesheet" type="text/css" href="./static/css/dataTables.material.css">
+    <link rel="stylesheet" type="text/css" href="./static/css/qualicy.css">
 
     <div id="qualicy-container">
+
+        <div id="qualicy-table">
+            <table id="ranking-list-datatable" width="100%"></table>
+        </div>
+
+        <div id="qualicy-menu">
+
+            <div class="qualicy-tab">
+                <button class="tablinks" id="qualicy-tab-1-link" href="qualicy-tab-1">Column / Cell</button>
+                <button class="tablinks" id="qualicy-tab-2-link" href="qualicy-tab-2">Schema</button>
+            </div>
+
+            <div id="qualicy-tab-1" class="qualicy-tab-content">
+                <!--TYPE-->
+                <div id="type-menu" class="tab-menu">TYPE</div>
+                <div id="type-container" class="collapsible-container">
+                    <div>
+                        <span id="nullLabel" class="span-l">Empty or <i>null</i> values:</span>
+                        <span class="span-r">
+                            <span id="prevNull" class="fas fa-chevron-circle-left"></span>
+                            <span id="currentNull" class="counter"> </span>
+                            <span id="nextNull" class="fas fa-chevron-circle-right"></span>
+                        </span>
+                    </div>
+
+                    <div>
+                        <span id="mismatchDatatypesLabel" class="span-l">Mismatches:</span>
+                        <span class="span-r">
+                            <span id="prevMismatchDatatypes" class="fas fa-chevron-circle-left"></span>
+                            <span id="currentMismatchDatatypes" class="counter"> </span>
+                            <span id="nextMismatchDatatypes" class="fas fa-chevron-circle-right"></span>
+                        </span>
+                    </div>
+
+                </div>
+
+                <!--METATYPE-->
+                <div id="metatype-menu" class="tab-menu">METATYPE</div>
+                <div id="metatype-container" class="collapsible-container">
+                    <div>
+                        <span id="missingMetadatatypeLabel" class="span-l">Missing:</span>
+                        <span class="span-r">
+                            <span id="prevMissingMetadatatypes" class="fas fa-chevron-circle-left"></span>
+                            <span id="currentMissingMetadatatypes" class="counter"> </span>
+                            <span id="nextMissingMetadatatypes" class="fas fa-chevron-circle-right"></span>
+                        </span>
+                    </div>
+                    <div>
+                        <span id="mismatchMetadatatypesLabel" class="span-l">Mismatches:</span>
+                        <span class="span-r">
+                            <span id="prevMismatchMetadatatypes" class="fas fa-chevron-circle-left"></span>
+                            <span id="currentMismatchMetadatatypes" class="counter"> </span>
+                            <span id="nextMismatchMetadatatypes" class="fas fa-chevron-circle-right"></span>
+                        </span>
+                    </div>
+                </div>
+
+                <!--PRIVACY-->
+                <div id="privacy-menu" class="tab-menu">PRIVACY</div>
+                <div id="privacy-container" class="collapsible-container">
+                    <div>
+                        <!--<span class="span-l"></span>-->
+                        <span class="span-r">
+                            <span id="prevContentPrivacyBreach" class="fas fa-chevron-circle-left"></span>
+                            <span id="currentContentPrivacyBreach" class="counter"> </span>
+                            <span id="nextContentPrivacyBreach" class="fas fa-chevron-circle-right"></span>
+                        </span>
+                    </div>
+                </div>
+
+                <!--TYPO-->
+                <div id="typo-menu" class="tab-menu">TYPO</div>
+                <div id="typo-container" class="collapsible-container">
+                    <div>
+                        <!--<span class="span-l"></span>-->
+                        <span class="span-r">
+                            <span id="prevTypo" class="fas fa-chevron-circle-left"></span>
+                            <span id="currentTypo" class="counter"> </span>
+                            <span id="nextTypo" class="fas fa-chevron-circle-right"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="qualicy-tab-2" class="qualicy-tab-content" style="display: none">
+
+            </div>
+
+        </div>
+
+
+
 
         <!-- The Modal -->
         <div class="modal" id="qualicy-modal">
@@ -52,7 +146,7 @@
 
                     <!-- Modal footer
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger close-button" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger close-button" data-dismiss="modal">Close</button>
                     </div>
                     -->
 
@@ -116,7 +210,7 @@
 
                     <!-- Modal footer
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger close-button" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger close-button" data-dismiss="modal">Close</button>
                     </div>
                     -->
 
@@ -124,104 +218,6 @@
             </div>
         </div>
 
-        <div id="qualicy-table">
-            <table id="ranking-list-datatable" class="table table-striped table-bordered dataTable" width="100%"></table>
-        </div>
-
-        <div id="qualicy-menu">
-            <div class="qualicy-tab">
-                <button class="tablinks" id="qualicy-tab-1-link" href="qualicy-tab-1">Column/Cell</button>
-                <button class="tablinks" id="qualicy-tab-2-link" href="qualicy-tab-2">Schema</button>
-            </div>
-
-            <!--
-            <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="column-cell-tab" data-toggle="tab" href="#column-cell" role="tab" aria-controls="column-cell" aria-selected="true">Column/Cell</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" id="schema-tab" href="#schema" role="tab" aria-controls="schema" aria-selected="false">Schema</a>
-                </li>
-            </ul>
-            -->
-
-            <div id="qualicy-tab-1" class="qualicy-tab-content">
-                <!--TYPE-->
-                <div id="type-menu" class="tab-menu">TYPE</div>
-                <div id="type-container" class="collapsible-container">
-                    <div>
-                        <span id="nullLabel" class="span-l">NULL :</span>
-                        <span class="span-r">
-                                    <span id="prevNull" class="fas fa-chevron-circle-left"></span>
-                                    <span id="currentNull" class="counter"> </span>
-                                    <span id="nextNull" class="fas fa-chevron-circle-right"></span>
-                                </span>
-                    </div>
-
-                    <div>
-                        <span id="mismatchDatatypesLabel" class="span-l">Type Mismatches :</span>
-                        <span class="span-r">
-                                    <span id="prevMismatchDatatypes" class="fas fa-chevron-circle-left"></span>
-                                    <span id="currentMismatchDatatypes" class="counter"> </span>
-                                    <span id="nextMismatchDatatypes" class="fas fa-chevron-circle-right"></span>
-                                </span>
-                    </div>
-
-                </div>
-
-                <!--METATYPE-->
-                <div id="metatype-menu" class="tab-menu">METATYPE</div>
-                <div id="metatype-container" class="collapsible-container">
-                    <div>
-                        <span id="missingMetadatatypeLabel" class="span-l">Missing Metatype :</span>
-                        <span class="span-r">
-                                    <span id="prevMissingMetadatatypes" class="fas fa-chevron-circle-left"></span>
-                                    <span id="currentMissingMetadatatypes" class="counter"> </span>
-                                    <span id="nextMissingMetadatatypes" class="fas fa-chevron-circle-right"></span>
-                                </span>
-                    </div>
-                    <div>
-                        <span id="mismatchMetadatatypesLabel" class="span-l">Metatype Mismatches :</span>
-                        <span class="span-r">
-                                    <span id="prevMismatchMetadatatypes" class="fas fa-chevron-circle-left"></span>
-                                    <span id="currentMismatchMetadatatypes" class="counter"> </span>
-                                    <span id="nextMismatchMetadatatypes" class="fas fa-chevron-circle-right"></span>
-                                </span>
-                    </div>
-                </div>
-
-                <!--PRIVACY-->
-                <div id="privacy-menu" class="tab-menu">PRIVACY</div>
-                <div id="privacy-container" class="collapsible-container">
-                    <div>
-                        <span class="span-l">Privacy :</span>
-                        <span class="span-r">
-                                    <span id="prevContentPrivacyBreach" class="fas fa-chevron-circle-left"></span>
-                                    <span id="currentContentPrivacyBreach" class="counter"> </span>
-                                    <span id="nextContentPrivacyBreach" class="fas fa-chevron-circle-right"></span>
-                                </span>
-                    </div>
-                </div>
-
-                <!--TYPO-->
-                <div id="typo-menu" class="tab-menu">TYPO</div>
-                <div id="typo-container" class="collapsible-container">
-                    <div>
-                        <span class="span-l">Typo :</span>
-                        <span class="span-r">
-                                    <span id="prevTypo" class="fas fa-chevron-circle-left"></span>
-                                    <span id="currentTypo" class="counter"> </span>
-                                    <span id="nextTypo" class="fas fa-chevron-circle-right"></span>
-                                </span>
-                    </div>
-                </div>
-            </div>
-
-            <div id="qualicy-tab-2" class="qualicy-tab-content" style="display: none">
-
-            </div>
-
-        </div>
     </div>
 
 </template>
