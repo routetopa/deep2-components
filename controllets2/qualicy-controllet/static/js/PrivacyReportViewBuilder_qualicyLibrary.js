@@ -187,6 +187,7 @@ export default class PrivacyReportViewBuilder {
             reportView.COLUMN_STATS[column_index].metadatatype = mdtkey;
 
             var subType;
+
             if(mdtkey !== 'NULL' && mdtkey !== 'UNKNOWN'){
                 reportView.COLUMN_STATS[column_index].metadatatypeConfidence = Math.round( column_metadatatypes[mdtkey] / num_of_rows * 100) / 100;
                 reportView.METADATATYPE_HOMOGENEITY *= reportView.COLUMN_STATS[column_index].metadatatypeConfidence;
