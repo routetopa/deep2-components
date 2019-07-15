@@ -1,4 +1,4 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html" />
+pa<link rel="import" href="../../bower_components/polymer/polymer.html" />
 
 <link rel="import" href="../../bower_components/neon-animation/neon-animation.html">
 <link rel="import" href="../../bower_components/neon-animation/neon-animatable.html">
@@ -9,6 +9,9 @@
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 
 <link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
+
+<script type="text/javascript" src="../../intro.js/intro.js"></script>
+<link rel="stylesheet" href="../../intro.js/introjs.css">
 
 <dom-module id="page-slider-controllet">
 
@@ -126,7 +129,7 @@
 
         <div class="header">
             <paper-icon-button id="slider_chevron_left" class="chevron-left" on-click="_onPrevClick" icon="arrow-back"></paper-icon-button>
-            <paper-icon-button id="slider_chevron_right" class="chevron-right" on-click="_onNextClick" icon="arrow-forward"></paper-icon-button>
+            <paper-icon-button id="slider_chevron_right" class="chevron-right step6 step11" on-click="_onNextClick" icon="arrow-forward"></paper-icon-button>
 
             <div class="box">
                 <div class="logo"></div>
@@ -135,6 +138,7 @@
                     <div class="title">[[title]] <paper-icon-button class="slider_helper" icon="help-outline" noink></paper-icon-button></div>
                     <div class="subtitle">[[subtitle]]</div>
                 </div>
+                <paper-icon-button id="btn_intro"   on-click="_onIntroClick"  icon="help"></paper-icon-button>
             </div>
         </div>
 
@@ -300,7 +304,160 @@
                 this.avatar = this.selected+1;
 
                 this.fire('page-slider-controllet_selected', {selected : this.selected});
-            }
+            },
+
+            _onIntroClick : function () {
+                var selectedPage = this.selected;
+                var intro = introJs();
+
+                btn_translation(intro);
+
+                if(this.pages == 3) {
+                    var index = selectedPage;
+                    switch (index) {
+                        case 0:
+                            start0_Intro();
+                            break;
+                        case 1:
+                            start1_Intro();
+                            break;
+                        case 2:
+                            start2_Intro();
+                    }
+                } else if (this.pages == 2) {
+                    var index = selectedPage;
+                    switch (index) {
+                        case 0:
+                            start1_Intro();
+                            break;
+                        case 1:
+                            start2_Intro();
+                    }
+                }
+
+                function start0_Intro(){
+                    intro.setOptions({
+                        steps: [
+                            {
+                                element: '#step1',
+                                intro: ln["step1_" + ln["localization"]],
+                            },
+                            {
+                                element: '.step2',
+                                intro: ln["step2_" + ln["localization"]],
+                                position: 'right'
+                            },
+                            {
+                                element: '.step3',
+                                intro: ln["step3_" + ln["localization"]],
+                                position: 'right'
+                            },
+                            {
+                                element: '#step4',
+                                intro: ln["step4_" + ln["localization"]],
+                                position: 'right'
+                            },
+                            {
+                                element: '#step5',
+                                intro: ln["step5_" + ln["localization"]],
+                                position: 'right'
+                            },
+                            {
+                                element: '.step6',
+                                intro: ln["step6_" + ln["localization"]],
+                                position: 'absolute'
+                            }
+                        ]
+                    });
+                    intro.start();
+                }
+
+                function start1_Intro(){
+                    intro.setOptions({
+                        steps: [
+                            {
+                                element: '#step7',
+                                intro: ln["step7_" + ln["localization"]],
+
+                            },
+                            {
+                                element: '#step8',
+                                intro: ln["step8_" + ln["localization"]],
+                                position: 'right'
+                            },
+                            {
+                                element: '.step9',
+                                intro: ln["step9_" + ln["localization"]],
+                                position: 'right'
+                            },
+                            {
+                                element: '#step10',
+                                intro: ln["step10_" + ln["localization"]],
+                                position: 'right'
+                            },
+                            {
+                                element: '.step11',
+                                intro: ln["step11_" + ln["localization"]]
+                            }
+                        ]
+                    });
+
+                    intro.start();
+                }
+                function start2_Intro(){
+                    intro.setOptions({
+                        steps: [
+                            {
+                                element: '#step12',
+                                intro: ln["step12_" + ln["localization"]]
+                            },
+                            {
+                                element: '.step13',
+                                intro: ln["step13_" + ln["localization"]],
+                                position: 'right'
+                            },
+                            {
+                                element: '.step14',
+                                intro: ln["step14_" + ln["localization"]],
+                                position: 'right'
+                            },
+                            {
+                                element: '.step15',
+                                intro: ln["step15_" + ln["localization"]],
+                                position: 'right'
+                            },
+                            {
+                                element: '.step16',
+                                intro: ln["step16_" + ln["localization"]],
+                                position: 'right'
+                            },
+                            {
+                                element: '.step17',
+                                intro: ln["step17_" + ln["localization"]],
+                            },
+                            {
+                                element: '.step18',
+                                intro: ln["step18_" + ln["localization"]],
+                            },
+                            {
+                                element: '.step19',
+                                intro: ln["step19_" + ln["localization"]],
+                                position: "absolute"
+                            }
+                        ]
+                    });
+                    intro.start();
+                }
+
+                function btn_translation(intro){
+                    intro.setOption('tooltipPosition', 'auto');
+
+                    intro.setOption("nextLabel", ln["Next_" + ln["localization"]] );
+                    intro.setOption("prevLabel", ln["Back_" + ln["localization"]] );
+                    intro.setOption("skipLabel", ln["Skip_" + ln["localization"]] );
+                    intro.setOption("doneLabel", ln["Done_" + ln["localization"]] );
+                }
+            },
 
         });
 
