@@ -12,7 +12,6 @@
 
 <script type="text/javascript" src="../../bower_components/jsdatachecker/jsdatachecker.min.js"></script>
 
-
 <dom-module id="items-vslider-controllet">
 
     <template>
@@ -142,12 +141,12 @@
         <iron-ajax auto handle-as="json" url={{dataletsListUrl}} on-response="_getDatalets"></iron-ajax>
         <paper-material id="items_vslider_container" class="step13" elevation="5">
 
-        <paper-input id="items_vslider_search"   value={{filter}} no-label-float label="">
-                <iron-icon  class="search" icon="search" prefix></iron-icon>
+            <paper-input id="items_vslider_search" value={{filter}} no-label-float label="">
+                <iron-icon class="search" icon="search" prefix></iron-icon>
                 <paper-icon-button class="clear" suffix on-click="_clearInput" icon="clear" tabindex="0"></paper-icon-button>
             </paper-input>
 
-            <div  class="arrow-up">
+            <div class="arrow-up">
                 <paper-icon-button on-click="_onPrevClick" icon="hardware:keyboard-arrow-up"></paper-icon-button>
             </div>
 

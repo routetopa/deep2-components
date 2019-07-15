@@ -13,7 +13,6 @@
 
 <script src="../shared_js/jquery.highlight-5.js"></script>
 
-
 <dom-module id="datasets-list-controllet">
     <template>
         <style>
@@ -271,9 +270,7 @@
                 </div>
                 <div id="info_container">
                     <div id="info">
-                        <div id="step5" class="span6">
-                            <div id="info_header"><span id="datasets_info"></span></div>
-                        </div>
+                        <div id="info_header" class="step5"><span id="datasets_info"></span></div>
                         <div id="info_body"></div>
                         <div id="spinner_container">
                             <paper-spinner id="spinner"></paper-spinner>
@@ -291,10 +288,10 @@
                     <paper-icon-button id="slider_chevron_right" class="chevron-right" on-click="_onNextClick" icon="chevron-right"></paper-icon-button>
                 </div>
                 <div class="footer_block">
-                        <paper-input id="filter" class="step3" value={{filter}} no-label-float>
-                            <iron-icon class="search" icon="search" prefix></iron-icon>
-                            <paper-icon-button class="clear" suffix on-click="_clearInput" icon="clear"></paper-icon-button>
-                        </paper-input>
+                    <paper-input id="filter" class="step3" value={{filter}} no-label-float>
+                        <iron-icon class="search" icon="search" prefix></iron-icon>
+                        <paper-icon-button class="clear" suffix on-click="_clearInput" icon="clear"></paper-icon-button>
+                    </paper-input>
                 </div>
             </div>
         </div>
