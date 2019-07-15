@@ -186,7 +186,7 @@
 
         <paper-material id="inputs_container" elevation="5">
 
-            <div class="header"><span id="baseInfo"></span></div>
+            <div  class="header step16"><span id="baseInfo"></span></div>
 
             <div class="inputs">
                 <paper-input id="datalettitle" maxlength="64" on-keyup="_addOption" invalid error-message=""></paper-input>
@@ -221,8 +221,8 @@
             </div>
 
             <paper-tabs selected="{{tabIndex}}" noink no-bar>
-                <paper-tab><span id="inputsTab"></span></paper-tab>
-                <paper-tab><span id="optionsTab"></span></paper-tab>
+                <paper-tab  class="step14"><span id="inputsTab"></span></paper-tab>
+                <paper-tab class="step15"><span id="optionsTab"></span></paper-tab>
             </paper-tabs>
 
             <neon-animated-pages id="neon_container" selected="{{_getNeonIndex(tabIndex)}}" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
