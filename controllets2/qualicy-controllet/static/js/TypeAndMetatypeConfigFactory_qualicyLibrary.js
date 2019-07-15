@@ -103,6 +103,7 @@ const BASIC_DATATYPES = {
     DT_DATEXXY: { name: "DATEXXY" },
     DT_DATEDMY: { name: "DATEDMY" },
     DT_DATEMDY: { name: "DATEMDY" },
+    DT_DATETIME: { name: "DATETIME" },
 
     DT_OBJECT:  { name: "OBJECT" },
 
@@ -163,7 +164,7 @@ const META_DATATYPES_LANGS = {
 const DATATYPES = Object.assign({}, BASIC_DATATYPES, META_DATATYPES);
 
 BASIC_DATATYPES.DT_NULL.evaluate = function(value) {
-    if (value === null || typeof value === 'undefined' || value.toLowerCase() == 'null')
+    if (value === null || value == '' || typeof value === 'undefined' || value.toLowerCase() == 'null')
         return { datatype: BASIC_DATATYPES.DT_NULL, value: value };
 
     return { datatype: BASIC_DATATYPES.DT_UNKNOWN, value: value };
@@ -194,7 +195,7 @@ BASIC_DATATYPES.DT_REAL.evaluate = function (value) {
 };
 BASIC_DATATYPES.DT_INT.evaluate = BASIC_DATATYPES.DT_REAL.evaluate;
 
-DATATYPES.DT_DATE.evaluate = function (value) {
+BASIC_DATATYPES.DT_DATE.evaluate = function (value) {
     var dtDate = new Date("YYYY-MM-DD");
 
     // [YYYY-MM] year-month.
@@ -260,11 +261,37 @@ DATATYPES.DT_DATE.evaluate = function (value) {
 
     return { datatype: DATATYPES.DT_UNKNOWN, value: value };
 };
-DATATYPES.DT_DATEYM.evaluate = DATATYPES.DT_DATE.evaluate;
-DATATYPES.DT_DATEYMD.evaluate = DATATYPES.DT_DATE.evaluate;
-DATATYPES.DT_DATEXXY.evaluate = DATATYPES.DT_DATE.evaluate;
-DATATYPES.DT_DATEDMY.evaluate = DATATYPES.DT_DATE.evaluate;
-DATATYPES.DT_DATEMDY.evaluate = DATATYPES.DT_DATE.evaluate;
+BASIC_DATATYPES.DT_DATEYM.evaluate = DATATYPES.DT_DATE.evaluate;
+BASIC_DATATYPES.DT_DATEYMD.evaluate = DATATYPES.DT_DATE.evaluate;
+BASIC_DATATYPES.DT_DATEXXY.evaluate = DATATYPES.DT_DATE.evaluate;
+BASIC_DATATYPES.DT_DATEDMY.evaluate = DATATYPES.DT_DATE.evaluate;
+BASIC_DATATYPES.DT_DATEMDY.evaluate = DATATYPES.DT_DATE.evaluate;
+
+BASIC_DATATYPES.DT_DATETIME.evaluate = function(value) {
+    value = value.replace(/\s/g,'');
+    var split_parts = value.split('T');
+
+    if(split_parts.length == 2){
+        if(BASIC_DATATYPES.DT_DATE.evaluate(split_parts[0])) {
+            var split_times = split_parts[1].split(":");
+
+            if (split_times.length == 3) {
+                var hour = split_times[0];
+                var minutes = split_times[1];
+                var seconds = split_times[2];
+
+                if (hour >= 0 && hour <= 24
+                    && minutes >= 0 && minutes <= 59
+                    && BASIC_DATATYPES.DT_REAL.evaluate(seconds) && seconds >= 0 && seconds < 60){
+                        return {datatype: BASIC_DATATYPES.DT_DATETIME, value: value};
+                }
+
+            }
+        }
+    }
+
+    return { datatype: META_DATATYPES.DT_UNKNOWN, value: value };
+}
 
 BASIC_DATATYPES.DT_OBJECT.evaluate = function(value) {
     var dt_null = BASIC_DATATYPES.DT_NULL.evaluate(value);
@@ -356,6 +383,11 @@ META_DATATYPES.DT_LATITUDE.evaluate = function(value){
     if (regex.test(value))
         return { datatype: META_DATATYPES.DT_LATITUDE, value: value };
 
+    regex = /^(\+|-)?(?:90(?:(?:\,0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\,[0-9]{1,6})?))$/;
+
+    if (regex.test(value))
+        return { datatype: META_DATATYPES.DT_LATITUDE, value: value };
+
     return { datatype: META_DATATYPES.DT_UNKNOWN, value: value };
 };
 
@@ -363,6 +395,11 @@ META_DATATYPES.DT_LONGITUDE.evaluate = function(value){
     value = value.trim();
 
     var regex = /^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/;
+
+    if (regex.test(value))
+        return { datatype: META_DATATYPES.DT_LONGITUDE, value: value };
+
+    regex = /^(\+|-)?(?:180(?:(?:\,0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\,[0-9]{1,6})?))$/;
 
     if (regex.test(value))
         return { datatype: META_DATATYPES.DT_LONGITUDE, value: value };
@@ -458,12 +495,19 @@ META_DATATYPES.DT_DEGREE.evaluate = function(value){
 };
 
 META_DATATYPES.DT_LAT_LONG.evaluate = function(value){
-    value = value.replace(/\s/g,'');
+    value = value.replace(/\s/g);
 
-    var regex = /^([-+]?)([\d]{1,2})((\.)(\d+))?,(([-+]?)([\d]{1,3})((\.)(\d+))?)$/;
+    var split_parts = value.split(',');
 
-    if (regex.test(value))
-        return { datatype: META_DATATYPES.DT_LAT_LONG, value: value };
+    if(split_parts.length == 2){
+        if(META_DATATYPES.DT_LATITUDE.evaluate(split_parts[0]) &&
+            META_DATATYPES.DT_LONGITUDE.evaluate(split_parts[1]))
+            return { datatype: META_DATATYPES.DT_LAT_LONG, value: value };
+
+        if(META_DATATYPES.DT_LONGITUDE.evaluate(split_parts[0]) &&
+            META_DATATYPES.DT_LATITUDE.evaluate(split_parts[1]))
+            return { datatype: META_DATATYPES.DT_LAT_LONG, value: value };
+    }
 
     return { datatype: META_DATATYPES.DT_UNKNOWN, value: value };
 };
@@ -901,6 +945,8 @@ export default class TypeAndMetatypeConfigFactory {
         const dt_date_dmy = new TDSNODE(this.BASICDATATYPES.DT_DATEDMY, dt_date_xxy);
         const dt_date_mdy = new TDSNODE(this.BASICDATATYPES.DT_DATEMDY, dt_date_xxy);
 
+        const dt_datetime = new TDSNODE(this.BASICDATATYPES.DT_DATETIME, dt_text);
+
         const dt_object = new TDSNODE(this.BASICDATATYPES.DT_OBJECT, dt_text);
 
         return new TDS(dt_text);
@@ -943,7 +989,7 @@ export default class TypeAndMetatypeConfigFactory {
         };
 
         if(_inferredDataType.datatype.name.startsWith(this.BASICDATATYPES.DT_DATE.name)){
-            _inferredMetaDataTypeObj.metatype = _inferredMetaDataType.datatype;
+            _inferredMetaDataTypeObj.metatype = _inferredDataType.datatype;
             return _inferredMetaDataTypeObj;
         }
         else{
@@ -963,7 +1009,7 @@ export default class TypeAndMetatypeConfigFactory {
 
             }
             else if(_inferredDataType.datatype.name == this.BASICDATATYPES.DT_REAL.name){
-                var _toTest = [this.METADATATYPES.DT_LATITUDE, this.METADATATYPES.DT_LONGITUDE];
+                var _toTest = [this.METADATATYPES.DT_LONGITUDE, this.METADATATYPES.DT_LATITUDE];
                 for (let i=0; i<_toTest.length; i++) {
                     let dtnode = _toTest[i];
                     var _inferredMetaDataType = dtnode.evaluate(value);
@@ -1013,8 +1059,8 @@ export default class TypeAndMetatypeConfigFactory {
                                 return _inferredMetaDataTypeObj;
                             }
                         }
-                        else if(value.indexOf('.')>=0){
-                            let dtnode = this.METADATATYPES.DT_ATECO_CODE;
+                        else if(value.indexOf(',')>=0){
+                            let dtnode = this.METADATATYPES.DT_LAT_LONG;
                             var _inferredMetaDataType = dtnode.evaluate(value);
 
                             if (_inferredMetaDataType.datatype.name !== this.BASICDATATYPES.DT_UNKNOWN.name){
@@ -1022,8 +1068,8 @@ export default class TypeAndMetatypeConfigFactory {
                                 return _inferredMetaDataTypeObj;
                             }
                         }
-                        else if(value.indexOf(',')>=0){
-                            let dtnode = this.METADATATYPES.DT_LAT_LONG;
+                        else if(value.indexOf('.')>=0){
+                            let dtnode = this.METADATATYPES.DT_ATECO_CODE;
                             var _inferredMetaDataType = dtnode.evaluate(value);
 
                             if (_inferredMetaDataType.datatype.name !== this.BASICDATATYPES.DT_UNKNOWN.name){
