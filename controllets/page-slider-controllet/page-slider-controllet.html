@@ -141,7 +141,7 @@
         <paper-tooltip for="slider_chevron_left" position="right" offset="0"><p><span id="back"></span></p></paper-tooltip>
         <paper-tooltip for="slider_chevron_right" position="left" offset="-16"><p><span id="forward"></span></p></paper-tooltip>
 
-        <neon-animated-pages on-neon-animation-finish="_onNeonAnimationFinish" selected="[[selected]]" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
+        <neon-animated-pages id ="pages-container"  on-neon-animation-finish="_onNeonAnimationFinish" selected="[[selected]]" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
             <content></content>
         </neon-animated-pages>
 
@@ -182,7 +182,8 @@
 
                 pages : {
                     type  : Number,
-                    value : document.querySelectorAll('neon-animatable').length
+                    value : 0
+//                    value : document.querySelectorAll('#pages-container > neon-animatable').length
                 },
 
                 title : {
@@ -207,7 +208,9 @@
 
             },
 
-            attached : function() {
+            attached : function() {debugger
+                this.pages = document.querySelectorAll('#pages-container > neon-animatable').length;
+
                 this.fire('page-slider-controllet_selected', {selected : this.selected});
 
 //                this.$.slider_chevron_left.setAttribute("title", ln["back_" + ln["localization"]]);
