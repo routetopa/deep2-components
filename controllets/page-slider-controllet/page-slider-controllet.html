@@ -10,8 +10,8 @@ pa<link rel="import" href="../../bower_components/polymer/polymer.html" />
 
 <link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
 
-<script type="text/javascript" src="../../intro.js/intro.js"></script>
-<link rel="stylesheet" href="../../intro.js/introjs.css">
+<script type="text/javascript" src="./introjs/intro.js"></script>
+<link rel="stylesheet" href="./introjs/intro.css">
 
 <dom-module id="page-slider-controllet">
 
@@ -38,7 +38,7 @@ pa<link rel="import" href="../../bower_components/polymer/polymer.html" />
             }
 
             .slider_helper {
-                display: none;
+                /*display: none;*/
             }
 
             .avatar {
@@ -125,6 +125,15 @@ pa<link rel="import" href="../../bower_components/polymer/polymer.html" />
                 float: right;
                 /*margin-top: 8px;*/
             }
+
+            /*btn_intro*/
+            /*paper-icon-button[icon="help-outline"] {*/
+                /*position: relative;*/
+                /*top: -2px;*/
+                /*height: 32px;*/
+                /*width: 32px;*/
+            /*}*/
+
         </style>
 
         <div class="header">
@@ -135,10 +144,9 @@ pa<link rel="import" href="../../bower_components/polymer/polymer.html" />
                 <div class="logo"></div>
                 <div class="avatar">[[avatar]]</div>
                 <div class="text">
-                    <div class="title">[[title]] <paper-icon-button class="slider_helper" icon="help-outline" noink></paper-icon-button></div>
+                    <div class="title">[[title]] <paper-icon-button id="btn_intro" on-click="_onIntroClick" class="slider_helper" icon="help-outline" noink></paper-icon-button></div>
                     <div class="subtitle">[[subtitle]]</div>
                 </div>
-                <paper-icon-button id="btn_intro"   on-click="_onIntroClick"  icon="help"></paper-icon-button>
             </div>
         </div>
 
@@ -212,7 +220,7 @@ pa<link rel="import" href="../../bower_components/polymer/polymer.html" />
 
             },
 
-            attached : function() {debugger
+            attached : function() {
                 this.pages = document.querySelectorAll('#pages-container > neon-animatable').length;
 
                 this.fire('page-slider-controllet_selected', {selected : this.selected});
@@ -353,12 +361,12 @@ pa<link rel="import" href="../../bower_components/polymer/polymer.html" />
                                 position: 'right'
                             },
                             {
-                                element: '#step4',
+                                element: '.step4',
                                 intro: ln["step4_" + ln["localization"]],
                                 position: 'right'
                             },
                             {
-                                element: '#step5',
+                                element: '.step5',
                                 intro: ln["step5_" + ln["localization"]],
                                 position: 'right'
                             },
@@ -381,7 +389,7 @@ pa<link rel="import" href="../../bower_components/polymer/polymer.html" />
 
                             },
                             {
-                                element: '#step8',
+                                element: '.step8',
                                 intro: ln["step8_" + ln["localization"]],
                                 position: 'right'
                             },
@@ -391,7 +399,7 @@ pa<link rel="import" href="../../bower_components/polymer/polymer.html" />
                                 position: 'right'
                             },
                             {
-                                element: '#step10',
+                                element: '.step10',
                                 intro: ln["step10_" + ln["localization"]],
                                 position: 'right'
                             },

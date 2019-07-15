@@ -4,9 +4,6 @@
 <link rel="import" href="../../bower_components/paper-menu/paper-menu.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 
-
-
-
 <dom-module id="select-fields-controllet">
 
     <style is="custom-style">
@@ -80,8 +77,6 @@
             background: white;
         }
 
-
-
         paper-item:hover:not(.iron-selected) {
             background-color: #BBDEFB;
         }
@@ -92,24 +87,22 @@
 
     </style>
 
-
     <template>
 
         <paper-material id="select_fields_controllet_container" elevation="5">
 
-            <div id="header" on-click="_invertSelection"> <div id="step8"><span id="fields"></span></div></div>
-                    <div id="menu_container">
-                        <paper-menu id="menu" multi>
-                            <template is="dom-repeat" items="{{fields}}">
-                                <paper-item title="{{item}}"><span>{{item}}</span></paper-item>
-                            </template>
-                        </paper-menu>
-                    </div>
+            <div id="header" class="step8" on-click="_invertSelection"> <span id="fields"></span></div>
+            <div id="menu_container">
+                <paper-menu id="menu" multi>
+                    <template is="dom-repeat" items="{{fields}}">
+                        <paper-item title="{{item}}"><span>{{item}}</span></paper-item>
+                    </template>
+                </paper-menu>
+            </div>
 
         </paper-material>
 
     </template>
-
 
     <script>
         Polymer({

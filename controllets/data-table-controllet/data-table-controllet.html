@@ -219,13 +219,12 @@
 
         <paper-material id="data_table_container" elevation="5">
 
-
-                <div id="header" class="step9">
-                    <template is="dom-if" if={{hasWarnings}}>
-                        <paper-icon-button class="warning" icon="warning"></paper-icon-button>
-                    </template>
-                    <span id="selected_data"></span>
-                </div>
+            <div id="header" class="step9">
+                <template is="dom-if" if={{hasWarnings}}>
+                    <paper-icon-button class="warning" icon="warning"></paper-icon-button>
+                </template>
+                <span id="selected_data"></span>
+            </div>
 
             <paper-tooltip id="tooltip_wornings" for="header" offset="56">
                 <template is="dom-repeat" items="{{fields}}">
