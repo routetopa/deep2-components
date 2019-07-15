@@ -390,6 +390,32 @@ ln["Esri.NatGeoWorldMap_en"] = "National Geographic Map";
 ln["Esri.WorldGrayCanvas_en"] = "Gray Map";
 ln["Stamen.Watercolor_en"] = "Watercolor Map";
 ln["NASAGIBS.ViirsEarthAtNight2012_en"] = "Night Lights Map";
+
+//Quick guide
+ln["Next_en"] = "Next";
+ln["Back_en"] = "Back";
+ln["Skip_en"] = "Skip";
+ln["Done_en"] = "Done";
+
+ln["step1_en"] = "Welcome. This is the first step of the datalet creator wizard.";
+ln["step2_en"] = "First, please select a dataset from the featured list.";
+ln["step3_en"] = "Or, you can search by title the dataset in the featured list.";
+ln["step4_en"] = "Or, you can enter a public dataset URL.";
+ln["step5_en"] = "You can take a look at the metadata of the chosen dataset.";
+ln["step6_en"] = "If the selected dataset is valid, the arrow will be colored and you can go to the next step";
+ln["step7_en"] = "This is the data selection screen.";
+ln["step8_en"] = "Select the columns contain the data you want to display or on which to apply filters or groupings. If you are undecided, click on the \"Fields\" heading to select them all.";
+ln["step9_en"] = "This area will show a preview of selected columns.";
+ln["step10_en"] = "You can apply filters and / or groupings to the dataset, by clicking on the right.";
+ln["step11_en"] = "Once your selection is done, click the arrow to proceed to the next step.";
+ln["step12_en"] = "This is the visualization creation screen.";
+ln["step13_en"] = "Search or select the type of datalet you want to create.";
+ln["step14_en"] = "Please select columns containing data to be visualized. Almost every datalet require you to fill at least the first two fields in order to show a preview.";
+ln["step15_en"] = "Use the “Options” area to customize the visualization by adding labels or changing the visual theme.";
+ln["step16_en"] = "Give a title and, optionally, a description.";
+ln["step17_en"] = "Once you have selected the minimum number of columns required by the selected datalet, this area will show a preview. The preview is refreshed whenever you change any setting in this screen.";
+ln["step18_en"] = "Select this tab for information on the selected graph (input values, options).";
+ln["step19_en"] = "If you are satisfied of the visualization, you can share the datalet by clicking the “Add” button.";
 /******** IT ********/
 
 //PAGE SLIDER
@@ -735,7 +761,31 @@ ln["Esri.WorldGrayCanvas_it"] = "Mappa Grigia";
 ln["Stamen.Watercolor_it"] =  "Mappa Acquerello";
 ln["NASAGIBS.ViirsEarthAtNight2012_it"] = "Mappa con Luci Notturne";
 
+//Quick guide
+ln["step1_it"] = "Benvenuto. Questo è il primo passo della creazione di una datalet.";
+ln["step2_it"] = "Prima di tutto deve selezionare un dataset dalla lista predefinita.";
+ln["step3_it"] = "Puoi ricercare per titolo il dataset presente nella lista predefinita.";
+ln["step4_it"] = "Oppure puoi inserire la URL di un dataset pubblico.";
+ln["step5_it"] = "Puoi dare uno sguardo ai metadata del dataset scelto.";
+ln["step6_it"] = "Se il dataset è valido, la freccia si colorerà e potrai andare al prossimo passo.";
+ln["step7_it"] = "Questa è la schermata di selezione delle colonne presenti nel dataset.";
+ln["step8_it"] = "Seleziona le colonne contengono i dati che vuoi visualizzare o sui quali applicare filtri o raggruppamenti.Se sei indeciso, clicca sull’intestazione “Campi” per selezionarli tutti.";
+ln["step9_it"] =  "Quest’area mostrerà un’anteprima delle colonne selezionate.";
+ln["step10_it"] = "Puoi applicare i filtri e/o raggruppamenti al dataset, cliccando, in basso, a destra.";
+ln["step11_it"] = "Una volta selezionate le colonne di tuo interesse, clicca sulla freccia per andare al prossimo passo.";
+ln["step12_it"] = "Questa è la schermata di creazione della visualizzazione.";
+ln["step13_it"] = "Cerca o seleziona il tipo di datalet che vuoi creare.";
+ln["step14_it"] = "Seleziona le colonne da usare per la visualizzazione. Quasi tutte le datalet richiedono di compilare almeno i primi due campi prima di mostrare un’anteprima.";
+ln["step15_it"] = "L’area Opzioni ti permette di personalizzare la visualizzazione aggiungendo etichette o cambiando il tema grafico.";
+ln["step16_it"] = "Dai un titolo alla datalet. Puoi anche aggiungere una descrizione.";
+ln["step17_it"] = "Se hai selezionato il numero minimo di colonne richieste dalla datalet, quest’area ti mostrerà un’anteprima. Ogni volta che cambi qualcosa in questa schermata, l’anteprima della datalet sarà aggiornata.";
+ln["step18_it"] = "Selezionare questa scheda per le informazioni relative al grafico selezionato (valori di input, opzioni).";
+ln["step19_it"] = "Quando sei pronto, puoi pubblicare la datalet che hai creato cliccando su “Aggiungi”.";
 
+ln["Next_it"] = "Prossimo";
+ln["Back_it"] = "Indietro";
+ln["Skip_it"] = "Salta";
+ln["Done_it"] = "Fine";
 /******** FR ********/
 //PAGE SLIDER
 
@@ -1081,6 +1131,33 @@ ln["Esri.WorldGrayCanvas_fr"] = "Gray Map";
 ln["Stamen.Watercolor_fr"] = "Watercolor Map";
 ln["NASAGIBS.ViirsEarthAtNight2012_fr"] = "Night Lights Map";
 
+//Quick guide
+//Quick guide
+ln["Next_fr"] = "Next";
+ln["Back_fr"] = "Back";
+ln["Skip_fr"] = "Skip";
+ln["Done_fr"] = "Done";
+
+ln["step1_fr"] = "Welcome. This is the first step of the datalet creator wizard.";
+ln["step2_fr"] = "First, please select a dataset from the featured list.";
+ln["step3_fr"] = "Or, you can search by title the dataset in the featured list.";
+ln["step4_fr"] = "Or, you can enter a public dataset URL.";
+ln["step5_fr"] = "You can take a look at the metadata of the chosen dataset.";
+ln["step6_fr"] = "If the selected dataset is valid, the arrow will be colored and you can go to the next step";
+ln["step7_fr"] = "This is the data selection screen.";
+ln["step8_fr"] = "Select the columns contain the data you want to display or on which to apply filters or groupings. If you are undecided, click on the \"Fields\" heading to select them all.";
+ln["step9_fr"] = "This area will show a preview of selected columns.";
+ln["step10_fr"] = "You can apply filters and / or groupings to the dataset, by clicking on the right.";
+ln["step11_fr"] = "Once your selection is done, click the arrow to proceed to the next step.";
+ln["step12_fr"] = "This is the visualization creation screen.";
+ln["step13_fr"] = "Search or select the type of datalet you want to create.";
+ln["step14_fr"] = "Please select columns containing data to be visualized. Almost every datalet require you to fill at least the first two fields in order to show a preview.";
+ln["step15_fr"] = "Use the “Options” area to customize the visualization by adding labels or changing the visual theme.";
+ln["step16_fr"] = "Give a title and, optionally, a description.";
+ln["step17_fr"] = "Once you have selected the minimum number of columns required by the selected datalet, this area will show a preview. The preview is refreshed whenever you change any setting in this screen.";
+ln["step18_fr"] = "Select this tab for information on the selected graph (input values, options).";
+ln["step19_fr"] = "If you are satisfied of the visualization, you can share the datalet by clicking the “Add” button.";
+
 /******** NL ********/
 
 //PAGE SLIDER
@@ -1423,6 +1500,36 @@ ln["Esri.NatGeoWorldMap_nl"] = "National Geographic Map";
 ln["Esri.WorldGrayCanvas_nl"] = "Gray Map";
 ln["Stamen.Watercolor_nl"] = "Watercolor Map";
 ln["NASAGIBS.ViirsEarthAtNight2012_nl"] = "Night Lights Map";
+
+//Quick guide
+
+//Quick guide
+ln["Next_nl"] = "Next";
+ln["Back_nl"] = "Back";
+ln["Skip_nl"] = "Skip";
+ln["Done_nl"] = "Done";
+
+ln["step1_nl"] = "Welcome. This is the first step of the datalet creator wizard.";
+ln["step2_nl"] = "First, please select a dataset from the featured list.";
+ln["step3_nl"] = "Or, you can search by title the dataset in the featured list.";
+ln["step4_nl"] = "Or, you can enter a public dataset URL.";
+ln["step5_nl"] = "You can take a look at the metadata of the chosen dataset.";
+ln["step6_nl"] = "If the selected dataset is valid, the arrow will be colored and you can go to the next step";
+ln["step7_nl"] = "This is the data selection screen.";
+ln["step8_nl"] = "Select the columns contain the data you want to display or on which to apply filters or groupings. If you are undecided, click on the \"Fields\" heading to select them all.";
+ln["step9_nl"] = "This area will show a preview of selected columns.";
+ln["step10_nl"] = "You can apply filters and / or groupings to the dataset, by clicking on the right.";
+ln["step11_nl"] = "Once your selection is done, click the arrow to proceed to the next step.";
+ln["step12_nl"] = "This is the visualization creation screen.";
+ln["step13_nl"] = "Search or select the type of datalet you want to create.";
+ln["step14_nl"] = "Please select columns containing data to be visualized. Almost every datalet require you to fill at least the first two fields in order to show a preview.";
+ln["step15_nl"] = "Use the “Options” area to customize the visualization by adding labels or changing the visual theme.";
+ln["step16_nl"] = "Give a title and, optionally, a description.";
+ln["step17_nl"] = "Once you have selected the minimum number of columns required by the selected datalet, this area will show a preview. The preview is refreshed whenever you change any setting in this screen.";
+ln["step18_nl"] = "Select this tab for information on the selected graph (input values, options).";
+ln["step19_nl"] = "If you are satisfied of the visualization, you can share the datalet by clicking the “Add” button.";
+
+
 /******** ES-es ********/
 
 //PAGE SLIDER
@@ -1761,6 +1868,33 @@ ln["Esri.NatGeoWorldMap_es-ES"] = "National Geographic Map";
 ln["Esri.WorldGrayCanvas_es-ES"] = "Gray Map";
 ln["Stamen.Watercolor_es-ES"] = "Watercolor Map";
 ln["NASAGIBS.ViirsEarthAtNight2012_es-ES"] = "Night Lights Map";
+
+//Quick guide
+//Quick guide
+ln["Next_es-ES"] = "Next";
+ln["Back_es-ES"] = "Back";
+ln["Skip_es-ES"] = "Skip";
+ln["Done_es-ES"] = "Done";
+
+ln["step1_es-ES"] = "Welcome. This is the first step of the datalet creator wizard.";
+ln["step2_es-ES"] = "First, please select a dataset from the featured list.";
+ln["step3_es-ES"] = "Or, you can search by title the dataset in the featured list.";
+ln["step4_es-ES"] = "Or, you can enter a public dataset URL.";
+ln["step5_es-ES"] = "You can take a look at the metadata of the chosen dataset.";
+ln["step6_es-ES"] = "If the selected dataset is valid, the arrow will be colored and you can go to the next step";
+ln["step7_es-ES"] = "This is the data selection screen.";
+ln["step8_es-ES"] = "Select the columns contain the data you want to display or on which to apply filters or groupings. If you are undecided, click on the \"Fields\" heading to select them all.";
+ln["step9_es-ES"] = "This area will show a preview of selected columns.";
+ln["step10_es-ES"] = "You can apply filters and / or groupings to the dataset, by clicking on the right.";
+ln["step11_es-ES"] = "Once your selection is done, click the arrow to proceed to the next step.";
+ln["step12_es-ES"] = "This is the visualization creation screen.";
+ln["step13_es-ES"] = "Search or select the type of datalet you want to create.";
+ln["step14_es-ES"] = "Please select columns containing data to be visualized. Almost every datalet require you to fill at least the first two fields in order to show a preview.";
+ln["step15_es-ES"] = "Use the “Options” area to customize the visualization by adding labels or changing the visual theme.";
+ln["step16_es-ES"] = "Give a title and, optionally, a description.";
+ln["step17_es-ES"] = "Once you have selected the minimum number of columns required by the selected datalet, this area will show a preview. The preview is refreshed whenever you change any setting in this screen.";
+ln["step18_es-ES"] = "Select this tab for information on the selected graph (input values, options).";
+ln["step19_es-ES"] = "If you are satisfied of the visualization, you can share the datalet by clicking the “Add” button.";
 
 /** (Simplified) CN**/
 //PAGE SLIDER - controllet
@@ -2113,6 +2247,33 @@ ln["Esri.WorldGrayCanvas_cn"] = "Gray Map";
 ln["Stamen.Watercolor_cn"] = "Watercolor Map";
 ln["NASAGIBS.ViirsEarthAtNight2012_cn"] = "Night Lights Map";
 
+//Quick guide
+//Quick guide
+ln["Next_cn"] = "Next";
+ln["Back_cn"] = "Back";
+ln["Skip_cn"] = "Skip";
+ln["Done_cn"] = "Done";
+
+ln["step1_cn"] = "Welcome. This is the first step of the datalet creator wizard.";
+ln["step2_cn"] = "First, please select a dataset from the featured list.";
+ln["step3_cn"] = "Or, you can search by title the dataset in the featured list.";
+ln["step4_cn"] = "Or, you can enter a public dataset URL.";
+ln["step5_cn"] = "You can take a look at the metadata of the chosen dataset.";
+ln["step6_cn"] = "If the selected dataset is valid, the arrow will be colored and you can go to the next step";
+ln["step7_cn"] = "This is the data selection screen.";
+ln["step8_cn"] = "Select the columns contain the data you want to display or on which to apply filters or groupings. If you are undecided, click on the \"Fields\" heading to select them all.";
+ln["step9_cn"] = "This area will show a preview of selected columns.";
+ln["step10_cn"] = "You can apply filters and / or groupings to the dataset, by clicking on the right.";
+ln["step11_cn"] = "Once your selection is done, click the arrow to proceed to the next step.";
+ln["step12_cn"] = "This is the visualization creation screen.";
+ln["step13_cn"] = "Search or select the type of datalet you want to create.";
+ln["step14_cn"] = "Please select columns containing data to be visualized. Almost every datalet require you to fill at least the first two fields in order to show a preview.";
+ln["step15_cn"] = "Use the “Options” area to customize the visualization by adding labels or changing the visual theme.";
+ln["step16_cn"] = "Give a title and, optionally, a description.";
+ln["step17_cn"] = "Once you have selected the minimum number of columns required by the selected datalet, this area will show a preview. The preview is refreshed whenever you change any setting in this screen.";
+ln["step18_cn"] = "Select this tab for information on the selected graph (input values, options).";
+ln["step19_cn"] = "If you are satisfied of the visualization, you can share the datalet by clicking the “Add” button.";
+
 /**** CREATOR ****/
 
 /** EN **/
@@ -2154,3 +2315,4 @@ ln["label_ml_it"] = "Invia Mail";
 
 ln["fb1_it"] = "Questa visualizzazione non supporta ancora la condivisione su Facebook.";
 ln["fb2_it"] = "Verr\u00e0 scaricata l'immagine della visualizzazione e sar\u00e0 copiato del testo descrittivo negli appunti per velocizzare e semplificare la pubblicazione su Facebook.";
+
