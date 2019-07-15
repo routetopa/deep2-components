@@ -167,6 +167,7 @@ td.focus {
     text-align:center;
     font-weight: 700;
     background-color: #FFFFFF;
+    cursor: pointer;
 }
 
 .qualicy-tab button:hover {
@@ -228,6 +229,8 @@ td.focus {
 .collapsible-container {
     background-color: #FFFFFF;
     border-bottom: 1px solid #EEEEEE;
+
+    user-select: none;
 }
 
 .collapsible-container > div {
@@ -259,7 +262,7 @@ td.focus {
 }
 
 .collapsible-container .fas {
-    cursor: pointer;
+    cursor: pointer !important;
     font-family: "Font Awesome 5 Free" !important;
     font-size: 24px !important;
 }

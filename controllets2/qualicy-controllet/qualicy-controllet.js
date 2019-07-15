@@ -1,6 +1,7 @@
 import '../shared/jquery/jquery-3.3.1.min.js'
 import '../shared/DataTables/DataTables-1.10.18/js/jquery.dataTables.min.js'
 
+import localizationManager from './static/js/localization/localizationManager.js'
 import TypeAndMetatypeConfigFactory from './static/js/TypeAndMetatypeConfigFactory_qualicyLibrary.js'
 import DataChecker from './static/js/DataChecker_qualicyLibrary.js'
 import PrivacyReportViewBuilder from './static/js/PrivacyReportViewBuilder_qualicyLibrary.js'
@@ -20,7 +21,7 @@ export default class QualicyControllet extends HTMLElement {
         return template.content.cloneNode(true);
     }
 
-    connectedCallback() {
+    async connectedCallback() {
         let template = this.template();
 
         this.load_script([{
@@ -30,16 +31,20 @@ export default class QualicyControllet extends HTMLElement {
 
         this.shadow_root.appendChild(template);
 
-        this.manageTabs();
-        this.modalInitialization();
+        // localization
+        const LM = new localizationManager();
+        LM.setUserLanguage(this.getAttribute("localization"));
+        // console.log(LM.translate("column"));
 
         //data initialization
         this.data = JSON.parse(this.getAttribute("data"));
         this.data_url = this.getAttribute("data-url");
 
-        if(this.data.length == 0){
+        if(this.data.length == 0)
             this.data = this.initializeData();
-        }
+
+        this.manageTabs();
+        this.modalInitialization();
 
         //datatable inizialization
         let ranking_table = this.shadow_root.querySelector('#ranking-list-datatable');
@@ -54,7 +59,7 @@ export default class QualicyControllet extends HTMLElement {
             this.tableManager.redrawDataTable();
         }.bind(this);
 
-        this.computeStatistics();
+        await this.computeStatistics();
         this.extractNullCells();
         this.extractDatatypeMismatches();
         this.extractMetaDatatypeMismatches();
@@ -137,7 +142,7 @@ export default class QualicyControllet extends HTMLElement {
         return output;
     }
 
-    computeStatistics(){
+    async computeStatistics(){
 
         if (this.data.length == 0) {
             return;
@@ -148,6 +153,8 @@ export default class QualicyControllet extends HTMLElement {
 
         const typeAndMetatypeFactory = new TypeAndMetatypeConfigFactory();
         const datachecker = new DataChecker(typeAndMetatypeFactory);
+
+        await typeAndMetatypeFactory.import_modules('it');
 
         //Datatype and metadatatype inference
         let evaLogs = datachecker.askForEvaluation(this.data, _fieldkeys);
@@ -314,6 +321,8 @@ export default class QualicyControllet extends HTMLElement {
         this.tableManager.fillInCellStats(this.annotatedDataset);
         this.tableManager.fillInColumnStats(this.reportColumnStats, this.structuralPrivacyBreaches);
     }
+
+    // utilities
 
     load_script(templates) {
         templates.forEach((t) => {
