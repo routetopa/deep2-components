@@ -416,6 +416,7 @@ ln["step16_en"] = "Give a title and, optionally, a description.";
 ln["step17_en"] = "Once you have selected the minimum number of columns required by the selected datalet, this area will show a preview. The preview is refreshed whenever you change any setting in this screen.";
 ln["step18_en"] = "Select this tab for information on the selected graph (input values, options).";
 ln["step19_en"] = "If you are satisfied of the visualization, you can share the datalet by clicking the “Add” button.";
+
 /******** IT ********/
 
 //PAGE SLIDER
