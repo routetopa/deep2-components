@@ -586,8 +586,8 @@ export default class BaseDatalet extends HTMLElement {
     save_csv(csv, name) {
         let csvContent = "data:text/csv;charset=utf-8,";
         csv.forEach(function(rowArray){
-            let row = Object.values(rowArray).join(",");
-            csvContent += row + "\r\n";
+            let row = Object.values(rowArray).join('","');
+            csvContent += '"'+row+'"' + "\r\n";
         });
 
         let encodedUri = encodeURI(csvContent);
