@@ -216,8 +216,12 @@ pa<link rel="import" href="../../bower_components/polymer/polymer.html" />
                 logo : {
                     type  : String,
                     value : undefined
-                }
+                },
 
+                helper : {
+                    type  : String,
+                    value : "true"
+                }
             },
 
             attached : function() {
@@ -230,6 +234,10 @@ pa<link rel="import" href="../../bower_components/polymer/polymer.html" />
 
                 this.$.back.innerHTML = ln["back_" + ln["localization"]];
                 this.$.forward.innerHTML = ln["forward_" + ln["localization"]];
+
+                if(this.helper === "false")
+                    $(this.$.btn_intro).hide();
+
             },
 
             setTitle : function(title, subtitle) {
