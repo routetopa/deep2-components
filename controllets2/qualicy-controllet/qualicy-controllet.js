@@ -53,19 +53,16 @@ export default class QualicyControllet extends HTMLElement {
         this.columnStatsModal= this.shadow_root.querySelector('#columnStats-modal');
         this.tableManager = new TableManager(ranking_table, menu, this.qualicyModal, this.columnStatsModal);
 
-        this.tableManager.initDataTable(this.data, this.data_url);
-
-        window.onload = function() {
+        window.onload = async function() {
+            this.tableManager.initDataTable(this.data, this.data_url);
+            await this.computeStatistics();
+            this.extractNullCells();
+            this.extractDatatypeMismatches();
+            this.extractMetaDatatypeMismatches();
+            this.extractMissingMetaDatatypes();
+            this.renderStatistics();
             this.tableManager.redrawDataTable();
         }.bind(this);
-
-        await this.computeStatistics();
-        this.extractNullCells();
-        this.extractDatatypeMismatches();
-        this.extractMetaDatatypeMismatches();
-        this.extractMissingMetaDatatypes();
-        this.renderStatistics();
-
     }
 
     attributeChangedCallback() {
@@ -163,7 +160,7 @@ export default class QualicyControllet extends HTMLElement {
         //Summarize datatype and metadatatype inference
         let viewBuilder = new PrivacyReportViewBuilder();
         let reportView = viewBuilder.buildDatatypeAndMetatype(evaLogs);
-        console.log(reportView);
+        // console.log(reportView);
 
         //typos and contentPrivacyBreaches
         this.typos = [];
@@ -210,15 +207,15 @@ export default class QualicyControllet extends HTMLElement {
             });
         });
 
-        console.log(reportView.DATASET);
+        // console.log(reportView.DATASET);
         this.annotatedDataset = reportView.DATASET;
 
-        console.log(this.typos);
-        console.log(this.contentPrivacyBreaches)
+        // console.log(this.typos);
+        // console.log(this.contentPrivacyBreaches)
 
         //structuralprivacybreaches
         this.reportColumnStats= viewBuilder.buildColumnStats(evaLogs);
-        console.log(this.reportColumnStats);
+        // console.log(this.reportColumnStats);
 
         let schema = {};
         for(let column_name in this.reportColumnStats.types){
@@ -234,7 +231,7 @@ export default class QualicyControllet extends HTMLElement {
             }
         }
         this.structuralPrivacyBreaches = datachecker.testStructuralPrivacyBreaches(schema);
-        console.log(this.structuralPrivacyBreaches);
+        // console.log(this.structuralPrivacyBreaches);
 
     }
 
@@ -297,7 +294,7 @@ export default class QualicyControllet extends HTMLElement {
                 }
             }
         }
-        console.log(this.metadatatypeMismatches);
+        // console.log(this.metadatatypeMismatches);
     }
 
     extractMissingMetaDatatypes(){
@@ -309,7 +306,7 @@ export default class QualicyControllet extends HTMLElement {
                 this.missingMetadatatypes = this.missingMetadatatypes.concat(this.reportColumnStats.types[column]._inferredSubTypes["UNKNOWN_cells"]);
             }
         }
-        console.log(this.missingMetadatatypes);
+        // console.log(this.missingMetadatatypes);
     }
 
     renderStatistics(){

@@ -21,7 +21,7 @@ export default class TableManager {
     };
 
     initDataTable = function (data, data_url) {
-        let _self = this;
+        // let _self = this;
         this.data = data || data_url; //todo data_url
 
         let columns = [];
@@ -46,7 +46,7 @@ export default class TableManager {
             data: this.data,
             columns: columns,
             scrollX: 'auto',
-            scrollY: 'calc(100% - 135px)',
+            scrollY: $(this.menu).height() - 135 - 48,
             order: [],
             rowId: '_id',
             pageLength: this.pageLength,
@@ -502,7 +502,7 @@ export default class TableManager {
                     let li = document.createElement("LI");
 
                     let span1 = document.createTextNode(cellAnnotations.contentPrivacyBreaches[i].match);
-                    let span2 = document.createTextNode(" [" + cellAnnotations.contentPrivacyBreaches[i].datatype.name + "]");
+                    let span2 = cellAnnotations.contentPrivacyBreaches[i].datatype ? document.createTextNode(" [" + cellAnnotations.contentPrivacyBreaches[i].datatype.name + "]") : "?";
 
                     li.appendChild(span1);
                     li.appendChild(span2);
