@@ -37,7 +37,7 @@ export default class QualicyControllet extends HTMLElement {
         // console.log(LM.translate("column"));
 
         //data initialization
-        this.data = JSON.parse(decodeURIComponent(decodeURIComponent(this.getAttribute("data"))));
+        this.data = JSON.parse(decodeURIComponent(this.getAttribute("data")));
         this.data_url = this.getAttribute("data-url");
 
         if(this.data.length == 0)
