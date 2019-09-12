@@ -305,6 +305,11 @@
 
                 properties: {
 
+                    deepUrl : {
+                        type : String,
+                        value : undefined
+                    },
+
                     datasets: {
                         type: Object,
                         value: undefined
@@ -608,6 +613,9 @@
 //                    console.log('datasetUrl');
 //                    console.log(datasetUrl);
 
+                    if(window.location.protocol.startsWith("https") && !datasetUrl.startsWith("https"))
+                        datasetUrl = `${this.deepUrl}cors-proxy/proxy.php?csurl=${datasetUrl}`;
+
                     var that = this;
                     $.ajax({
                         url: datasetUrl,
@@ -622,7 +630,30 @@
                             that._show_info(html);
                         },
                         error: function(e){
-                            console.log("datasets-list-controllet: " + e.responseJSON);
+
+                            if(datasetUrl.indexOf("cors-proxy") > -1) {
+                                console.log("datasets-list-controllet: " + e);
+                                return;
+                            }
+
+                            datasetUrl = `${that.deepUrl}cors-proxy/proxy.php?csurl=${datasetUrl}`;
+
+                            $.ajax({
+                                url: datasetUrl,
+                                dataType: "json",
+                                success: function(dataset){
+                                    let resourceUrl = provider.getResourceUrl(p.url, dataset, resourceIndex, datasetId);
+                                    that.fire("datasets-list-controllet_dataset", { dataset: { url: resourceUrl } });
+                                    that.fire("datasets-list-controllet_metadata", { meta: dataset.result });
+
+                                    var html = provider.getHTMLFormattedMetadata(dataset, resourceIndex, datasetId);
+                                    that._show_info(html);
+                                },
+                                error: function(e){
+                                    console.log("datasets-list-controllet: " + e);
+                                }
+                            });
+
                         }
                     });
                 },
