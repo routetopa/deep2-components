@@ -17,11 +17,11 @@
         <page-slider-controllet id="slider">
 
             <neon-animatable id="tabSelectDataset">
-                <select-dataset-controllet id="select_dataset" datasets={{datasets}} suggested-datasets={{suggestedDatasets}}></select-dataset-controllet>
+                <select-dataset-controllet id="select_dataset" deep-url={{deepUrl}} datasets={{datasets}} suggested-datasets={{suggestedDatasets}}></select-dataset-controllet>
             </neon-animatable>
 
             <neon-animatable id="tabFilterDataset">
-                <select-data-controllet id="select_data"></select-data-controllet>
+                <select-data-controllet id="select_data" deep-url={{deepUrl}}></select-data-controllet>
             </neon-animatable>
 
             <neon-animatable id="tabLoading">
