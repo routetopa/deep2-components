@@ -239,6 +239,7 @@ class LeafletDatalet extends BaseDatalet
 
         try
         {
+            this.coordinates = coordinates;
             this.map._onResize();
             this.map.invalidateSize(false);
             this.map.fitBounds(coordinates);
@@ -284,6 +285,16 @@ class LeafletDatalet extends BaseDatalet
 
             this._save_as_png(this);
         });
+    }
+
+    redraw () {debugger
+        try {
+            this.map._onResize();
+            this.map.invalidateSize(false);
+            this.map.fitBounds(this.coordinates);
+        } catch (e) {
+            console.log(e);
+        }
     }
 }
 
