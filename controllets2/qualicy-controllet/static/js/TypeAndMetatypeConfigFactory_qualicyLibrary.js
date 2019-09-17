@@ -566,7 +566,7 @@ TYPES.DT_INT.evaluate = function (value) {
 };
 
 TYPES.DT_NULL.evaluate = function(value) {
-    if (value === null || typeof value === 'undefined' || value.toLowerCase() == 'null')
+    if (value === null || typeof value === 'undefined' || value.toLowerCase() == 'null' || value.length == 0)
         return { name: TYPES.DT_NULL };
 
     return false;
@@ -689,10 +689,20 @@ METATYPES.DT_IBAN.evaluate = function (value) {
 METATYPES.DT_LAT_LONG.evaluate = function(value) {
     value = value.replace(/\s/g,'');
 
-    let regex = /^([-+]?)([\d]{1,2})((\.)(\d+))?,(([-+]?)([\d]{1,3})((\.)(\d+))?)$/;
+    //let regex = /^([-+]?)([\d]{1,2})((\.)(\d+))?,(([-+]?)([\d]{1,3})((\.)(\d+))?)$/;
+    let split_parts = value.split(',');
+    let lat = split_parts[0];
+    let long = split_parts[1];
 
-    if (regex.test(value))
+    if(METATYPES.DT_LATITUDE.evaluate(lat) && METATYPES.DT_LONGITUDE.evaluate(long)){
         return { name: METATYPES.DT_LAT_LONG };
+    }
+    else if(METATYPES.DT_LONGITUDE.evaluate(lat) && METATYPES.DT_LATITUDE.evaluate(long)){
+        return { name: METATYPES.DT_LAT_LONG };
+    }
+
+    //if (regex.test(value))
+    //    return { name: METATYPES.DT_LAT_LONG };
 
     return false;
 };
@@ -700,7 +710,8 @@ METATYPES.DT_LAT_LONG.evaluate = function(value) {
 METATYPES.DT_LATITUDE.evaluate = function(value) {
     value = value.trim();
 
-    let regex = /^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/;
+    //let regex = /^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/;
+    let regex = /^[-|+]?([1-8]?[0-9]((\.|\,)[0-9]+)?|90((\.|\,)0+)?)$/;
 
     if (regex.test(value))
         return { name: METATYPES.DT_LATITUDE };
@@ -711,7 +722,8 @@ METATYPES.DT_LATITUDE.evaluate = function(value) {
 METATYPES.DT_LONGITUDE.evaluate = function(value) {
     value = value.trim();
 
-    let regex = /^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/;
+    //let regex = /^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/;
+    let regex =/^[-+]?(180((\.|\,)0+)?|((1[0-7][0-9])|([1-9]?[0-9]))((\.|\,)[0-9]+)?)$/;
 
     if (regex.test(value))
         return { name: METATYPES.DT_LONGITUDE };
