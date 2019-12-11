@@ -7,7 +7,7 @@
 		</endpoint_description>
 		<query_executor>dbpediaLike</query_executor>
 		<endpoint>https://deep.routetopa.eu/deep2/DEEP/cors-proxy/proxy.php?csurl=http://dbpedia.org/sparql</endpoint>
-		<graph>http://dbpedia.org</graph>
+		<graph>https://dbpedia.org</graph>
 	</endpoint_item>
 
 	<endpoint_item>
@@ -16,7 +16,7 @@
 			À Persée, nous avons des articles, des illustrations, des collections, des auteurs… qui ont tous été décrits sous forme de triplets. Toutes les informations concernant chacun de ces “objets” sont stockées dans le triplestore de Persée et sont désormais interrogeables. Les schémas suivants montrent quelles informations sont disponibles pour chaque sorte d’entité et comment elles sont reliées entre elles.
 		</endpoint_description>
 		<query_executor>dbpediaLike</query_executor>
-		<endpoint>http://data.persee.fr/sparql</endpoint>
+		<endpoint>https://data.persee.fr/sparql</endpoint>
 		<graph>null</graph>
 	</endpoint_item>
 
@@ -27,7 +27,7 @@
 			En los inicios del proyecto Linked Open Data de la Biblioteca del Congreso Nacional de Chile trabajó el grupo de investigación WESO de la Universidad de Oviedo, obteniendo como resultado una implementación preliminar, un método de desarrollo y una arquitectura que puede ser replicada en otros espacios similares, y que ha sido publicada en la conferencia internacional I-Semantics 2011.
 		</endpoint_description>
 		<query_executor>dbpediaLike</query_executor>
-		<endpoint>http://datos.bcn.cl/sparql</endpoint>
+		<endpoint>https://datos.bcn.cl/sparql</endpoint>
 		<graph>null</graph>
 	</endpoint_item>
 
@@ -38,7 +38,7 @@
 			As the use of DBpedia, and the dynamism of Wikipedia content, have increased, the need for DBpedia to update constantly by processing the Wikipedia "firehose" changelog became apparent. DBpedia-Live is the current fruit of that effort.
 		</endpoint_description>
 		<query_executor>livedbpediaLike</query_executor>
-		<endpoint>http://live.dbpedia.org/sparql</endpoint>
+		<endpoint>https://live.dbpedia.org/sparql</endpoint>
 		<graph>null</graph>
 	</endpoint_item>
 
@@ -50,7 +50,7 @@
 			Tutti i dataset in formato open data e linked open data del MiBACT sono descritti nella pagina del Catalogo, sulla base delle specifiche dell’Agenzia per l’Italia Digitale (AGID).
 		</endpoint_description>
 		<query_executor>dbpediaLike</query_executor>
-		<endpoint>http://dati.beniculturali.it/sparql</endpoint>
+		<endpoint>https://dati.beniculturali.it/sparql</endpoint>
 		<graph>null</graph>
 	</endpoint_item>
 <!--
