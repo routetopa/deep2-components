@@ -21,7 +21,8 @@ var BoxFiller= function () {
 
 //concepts
 BoxFiller.prototype.retrieveConcepts = function(limit, callback) {
-	executor.getAllEntities(limit, function(roots, map){
+	//omit limit
+	executor.getAllEntities(false, function(roots, map){
 		callback(roots, map);
 	});
 }
@@ -82,25 +83,28 @@ BoxFiller.prototype.updatePredicatesByKeyword = function(keyword, callback){
 	var directData;
 	var reverseData;
 
+
+
 	var d1 = $.Deferred(mapCreator.addFictionalDirectPredicate(keyword, function(data){
 		directData = data;
 		//console.log(data);
 		d1.resolve();
 	}));
-	var d2 = $.Deferred(mapCreator.addFictionalReversePredicate(keyword, function(data){
+	/*var d2 = $.Deferred(mapCreator.addFictionalReversePredicate(keyword, function(data){
 		reverseData = data;
 		//console.log(data);
 		d2.resolve();
-	}));
+	}));*/
 
-	$.when(d1, d2).done(function(){
+	//$.when(d1, d2).done(function(){
+	$.when(d1).done(function(){
 
 		var resultObj = {
 			directArray: directData,
-			reverseArray: reverseData
+			reverseArray: directData
 		};
 
-		callback(resultObj);
+		callback(resultObj, true);
 	});
 
 }

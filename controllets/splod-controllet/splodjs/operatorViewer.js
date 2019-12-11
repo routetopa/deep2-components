@@ -283,13 +283,15 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 		var inputClass;
 		switch(type){
 			case 'date' :
-				inputClass = ['datepicker'];
+				//inputClass = ['datepicker'];
+				inputClass = ['date'];
 				break;
 			case 'time' :
 				inputClass = ['timepicker'];
 				break;
 			case 'dateTime' :
-				inputClass = ['datepicker', 'timepicker'];
+				//inputClass = ['datepicker', 'timepicker'];
+				inputClass = ['date', 'timepicker'];
 				break;
 			case 'text' :
 				inputClass = ['text'];
@@ -315,6 +317,19 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 			
 			input.appendTo(div);
 			label.appendTo(div);
+
+			div.appendTo(userInputDiv);
+		}
+		else if(type=='date'){
+			var div = $('<div/>')
+				.attr('class', 'input-field userValueDiv col s5 m5 l5');
+
+			var input = $("<input/>")
+				.attr('type', 'date')
+				.attr('class', 'userValue')
+				.attr('id', 'userValue_0');
+
+			input.appendTo(div);
 
 			div.appendTo(userInputDiv);
 		}
@@ -360,7 +375,7 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 		    return true;
 		});
 
-		$('.datepicker').pickadate({
+		/*$('.datepicker').pickadate({
 			selectMonths: true,
 			selectYears: 100,
 			today: 'Today',
@@ -369,7 +384,7 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 			closeOnSelect: true,
 			format: 'yyyy-mm-dd'
 		});
-
+		*/
 		$('.timepicker').pickatime({
 		    default: 'now', // Set default time: 'now', '1:30AM', '16:30'
 		    fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
@@ -380,6 +395,8 @@ function renderReusableResultList(reusableResults, onClickButtonFunction, onClic
 		    autoclose: true, // automatic close timepicker
 		    ampmclickable: true, // make AM PM clickable
 		  });
+
+
 
 	}
 

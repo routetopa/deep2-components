@@ -76,7 +76,7 @@ dbpediaLike.prototype.executeGetConcepts = function(querySPARQL, callback) {
 
    	var xhr = $.ajax({
         url: queryUrl,
-        method:'post',
+        method:'get',
         success: function(data, textStatus, jqXHR ) {
         	var arrayData = data.results.bindings;
 		    //var subMap = getResultMap(arrayData);
@@ -173,7 +173,9 @@ dbpediaLike.prototype.getAllEntities = function(limit, callback) {
 				query += " } ";
 
 	if(limit)
-		query += "LIMIT " + limit;  
+		query += "LIMIT " + limit;
+
+	console.log(query)
 
    	queryUrl = endpoint+"?query="+ encodeURIComponent(query) +"&format=json";
     var xhr = $.ajax({

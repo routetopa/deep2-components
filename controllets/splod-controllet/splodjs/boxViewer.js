@@ -396,46 +396,65 @@ function updateBoxesFromReversePredicate(){
 	$("#reversePredicatesList").empty();		
 }
 
-function renderPredicates(predicates){
+function renderPredicates(predicates, integrate){
 	/*var predicatesList = $("#predicatesList");
 	predicatesList.empty();*/
 
 	var directArray = predicates.directArray;
 	var reverseArray = predicates.reverseArray;
 
-	if(Object.keys(directArray).length == 0 && Object.keys(reverseArray).length == 0){
-		$("#predicatesTab").addClass('disabled');
-		if($("#predicatesTab a").attr('class') != undefined && $("#predicatesTab a").attr('class').includes("active"))
-			$('ul#myTabs').tabs('select_tab', ($("#myTabs li:not(.disabled) a")[0].getAttribute('href')).substr(1));
-	}
-	else{
-		$("#predicatesTab").removeClass('disabled');
-		if($("#predicatesTab a").attr('class') != undefined && $("#predicatesTab a").attr('class').includes("active")){
-			if(Object.keys(directArray).length == 0){
-				$('ul#predicatesTabBox').tabs('select_tab', 'reverse');
-			}else{
-				$('ul#predicatesTabBox').tabs('select_tab', 'direct');
+	if(!integrate){
+		if(Object.keys(directArray).length == 0 && Object.keys(reverseArray).length == 0){
+			$("#predicatesTab").addClass('disabled');
+			if($("#predicatesTab a").attr('class') != undefined && $("#predicatesTab a").attr('class').includes("active"))
+				$('ul#myTabs').tabs('select_tab', ($("#myTabs li:not(.disabled) a")[0].getAttribute('href')).substr(1));
+		}
+		else{
+			$("#predicatesTab").removeClass('disabled');
+			if($("#predicatesTab a").attr('class') != undefined && $("#predicatesTab a").attr('class').includes("active")){
+				if(Object.keys(directArray).length == 0){
+					$('ul#predicatesTabBox').tabs('select_tab', 'reverse');
+				}else{
+					$('ul#predicatesTabBox').tabs('select_tab', 'direct');
+				}
 			}
 		}
 	}
 
-	renderDirectPredicates(directArray);
-	renderReversePredicates(reverseArray);
+
+	renderDirectPredicates(directArray, integrate);
+	renderReversePredicates(reverseArray, integrate);
 
 	$('#predicatesSpinner').hide();	
 
-	filter('searchPredicatesBox', 'directPredicatesList', false);
-	filter('searchPredicatesBox', 'reversePredicatesList', false);
+	//filter('searchPredicatesBox', 'directPredicatesList', false);
+	//filter('searchPredicatesBox', 'reversePredicatesList', false);
 }
 
-function renderDirectPredicates(directMap){
+let currentDirectMap;
+
+function renderDirectPredicates(directMap, integrate){
+
+	let predicateMap = {}
 
 	var directPredicatesList = $("#directPredicatesList");
-	directPredicatesList.empty();
 
-	for(key in directMap){
-		element = directMap[key];
-		
+	if(!integrate){
+		currentDirectMap = directMap;
+		directPredicatesList.empty();
+		predicateMap = directMap;
+	}else{
+		for(key in directMap){
+			if(!(key in currentDirectMap)){
+				currentDirectMap[key] = directMap[key];
+				predicateMap[key] = directMap[key];
+			}
+		}
+	}
+
+	for(key in predicateMap){
+		element = predicateMap[key];
+
 		var li = $("<li/>")
 			.attr('class', 'collection-item withMargin addToQuery')
 			.attr('id', element.url + "item")
@@ -457,7 +476,7 @@ function renderDirectPredicates(directMap){
 			.attr('class', 'addToQuery liContent')
 			.attr('meta-url', element.url)
 			.attr('meta-label', element.label)
-			.attr('meta-predicateDirection', 'direct') 
+			.attr('meta-predicateDirection', 'direct')
 			.html(languageManager.getPredicateVerbalization(element.label, 'direct'))
 			.css('margin-left', '0.5em')
 			.appendTo(li);
@@ -484,13 +503,29 @@ function renderDirectPredicates(directMap){
 	$("#directPredicatesList").show();
 }
 
-function renderReversePredicates(reverseArray){
+let currentReverseMap;
+
+function renderReversePredicates(reverseArray, integrate){
+
+	let predicateMap = {}
 
 	var reversePredicatesList = $("#reversePredicatesList");
-	reversePredicatesList.empty();
 
-	$.each(reverseArray, function(index){
-		element = reverseArray[index];
+	if(!integrate){
+		currentReverseMap = reverseArray;
+		reversePredicatesList.empty();
+		predicateMap = reverseArray;
+	}else{
+		for(key in reverseArray){
+			if(!(key in currentReverseMap)){
+				currentReverseMap[key] = reverseArray[key];
+				predicateMap[key] = reverseArray[key];
+			}
+		}
+	}
+
+	$.each(predicateMap, function(index){
+		element = predicateMap[index];
 
 		var li = $("<li/>")
 			.attr('class', 'collection-item withMargin addToQuery')
@@ -513,7 +548,7 @@ function renderReversePredicates(reverseArray){
 			.attr('class', 'addToQuery liContent')
 			.attr('meta-url', element.url)
 			.attr('meta-label', element.label)
-			.attr('meta-predicateDirection', 'reverse') 
+			.attr('meta-predicateDirection', 'reverse')
 			.html(languageManager.getPredicateVerbalization(element.label, 'reverse'))
 			.css('margin-left', '0.5em')
 			.appendTo(li);
@@ -773,13 +808,13 @@ function setDefaultOrderTable(value){
 
 function fillBoxByKeyword(boxName, keyword){
 	switch(boxName){
-		case 'searchConceptsBox':
+		/*case 'searchConceptsBox':
 			$('#conceptsListBox').hide();
 			$('#conceptsSpinner').show();
 			$('#conceptsProgress').show();
 
 			boxFiller.updateConceptsByKeyword(keyword, renderConcept);
-			break;
+			break;*/
 		case 'searchPredicatesBox': 
 			$("#directPredicatesList").hide();
 			$("#reversePredicatesList").hide();

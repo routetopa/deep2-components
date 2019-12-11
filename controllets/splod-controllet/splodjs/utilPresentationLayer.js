@@ -27,10 +27,15 @@ jQuery.expr[':'].Contains = function(a, i, m) {
       .indexOf(m[3].toUpperCase()) >= 0;
 };
 
+var previousKeyword = null;
+
 function filter(inputName, boxName, extraSearch) {
+    if(extraSearch == undefined)
+        extraSearch = false;
+
     var filter, li, liContent, text;
 
-    filter = $('#'+inputName).val();
+    filter = $('#'+inputName).val().toLowerCase();
     li = $('#'+boxName+" li");
     liContent = $('#'+boxName+" .liContent");
 
@@ -43,11 +48,25 @@ function filter(inputName, boxName, extraSearch) {
         }
     }
 
-    if(extraSearch){
-        if($('#'+boxName+" li:visible").length == 0){
-            fillBoxByKeyword(inputName, filter);   
+    if(!extraSearch){
+        if(filter!= previousKeyword){
+            previousKeyword = filter;
+            if(filter.length>0)
+                extraSearch = true;
+            else{
+                extraSearch = false;
+            }
+        }
+        else{
+            extraSearch = false;
         }
     }
+
+    if(extraSearch && $('#'+boxName+" li:visible").length == 0){
+        fillBoxByKeyword(inputName, filter);
+    }
+
+
 
 }
 

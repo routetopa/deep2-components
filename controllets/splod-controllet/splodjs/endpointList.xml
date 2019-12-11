@@ -6,7 +6,7 @@
 			DBpedia (from "DB" for "database") is a project aiming to extract structured content from the information created in the Wikipedia project. This structured information is made available on the World Wide Web. DBpedia allows users to semantically query relationships and properties of Wikipedia resources, including links to other related datasets. Tim Berners-Lee described DBpedia as one of the most famous parts of the decentralized Linked Data effort.
 		</endpoint_description>
 		<query_executor>dbpediaLike</query_executor>
-		<endpoint>http://dbpedia.org/sparql</endpoint>
+		<endpoint>https://deep.routetopa.eu/deep2/DEEP/cors-proxy/proxy.php?csurl=http://dbpedia.org/sparql</endpoint>
 		<graph>http://dbpedia.org</graph>
 	</endpoint_item>
 
@@ -53,17 +53,68 @@
 		<endpoint>http://dati.beniculturali.it/sparql</endpoint>
 		<graph>null</graph>
 	</endpoint_item>
-	
-	<!--
+
 	<endpoint_item>
 		<endpoint_name>Lavanderia a gettoni</endpoint_name>
 		<endpoint_description>
 			...
 		</endpoint_description>
 		<query_executor>dbpediaLike</query_executor>
-		<endpoint>http://lodlaundromat.org/sparql/</endpoint>
+		<endpoint>https://query.wikidata.org/sparql</endpoint>
+		<graph>null</graph>
+	</endpoint_item>
+
+	<endpoint_item>
+		<endpoint_name>Lavanderia a gettoni</endpoint_name>
+		<endpoint_description>
+			...
+		</endpoint_description>
+		<query_executor>dbpediaLike</query_executor>
+		<endpoint>https://deep.routetopa.eu/deep2/DEEP/cors-proxy/proxy.php?csurl=https://babelnet.org/sparql/</endpoint>
+		<graph>null</graph>
+	</endpoint_item>
+
+
+
+	<endpoint_item>
+		<endpoint_name>Europeana - try</endpoint_name>
+		<endpoint_description>
+			...
+		</endpoint_description>
+		<query_executor>dbpediaLike</query_executor>
+		<endpoint>https://deep.routetopa.eu/deep2/DEEP/cors-proxy/proxy.php?csurl=http://sparql.europeana.eu/</endpoint>
 		<graph>null</graph>
 	</endpoint_item>-->
+
+	<endpoint_item>
+		<endpoint_name>Cultura Italia - try</endpoint_name>
+		<endpoint_description>
+			Il progetto pilota dati.culturaitalia.it contiene set di open data aggregati in CulturaItalia e rilasciati dai partner del progetto con licenza CC0 1.0 Universal Public Domain Dedication.
+			Attualmente dati.culturaitalia.it rende accessibili i dati di: Accademia S. Cecilia, Progetto ArtPast, Digibess, ICCU, Internet Culturale, Michael Italia, Polo Museale Fiorentino, Regione Marche e Anagrafe delle Biblioteche Italiane (i set sono descritti all'interno della pagina fonte dati), oltre al Thesaurus PICO.
+		</endpoint_description>
+		<query_executor>dbpediaLike</query_executor>
+		<endpoint>https://deep.routetopa.eu/deep2/DEEP/cors-proxy/proxy.php?http://dati.culturaitalia.it/sparql/</endpoint>
+		<graph>null</graph>
+	</endpoint_item>
+	<!--
+        <endpoint_item>
+            <endpoint_name>BabelNet</endpoint_name>
+            <endpoint_description>
+            </endpoint_description>
+            <query_executor>dbpediaLike</query_executor>
+            <endpoint>http://babelnet.org/sparql/</endpoint>
+            <graph>null</graph>
+        </endpoint_item>
+
+        <endpoint_item>
+            <endpoint_name>Lavanderia a gettoni</endpoint_name>
+            <endpoint_description>
+                ...
+            </endpoint_description>
+            <query_executor>dbpediaLike</query_executor>
+            <endpoint>http://lodlaundromat.org/sparql/</endpoint>
+            <graph>null</graph>
+        </endpoint_item>-->
 
 	<!--
 	<endpoint_item>

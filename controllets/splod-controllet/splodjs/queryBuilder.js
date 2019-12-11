@@ -988,6 +988,16 @@ function visitSPARQL(key){
 						operatorLabel = '<';
 					}
 
+					var datatypeSpecification;
+					if(queryLogicStructure[node.children[0]].penninculo!=''){
+						datatypeSpecification = queryLogicStructure[node.children[0]].penninculo;
+					}
+					else{
+						datatypeSpecification = '<http://www.w3.org/2001/XMLSchema#date>';
+					}
+					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(', parentVariable+ ' '+operatorLabel +' "'+queryLogicStructure[node.children[0]].label+'"^^'+datatypeSpecification, ')']});
+					queryLogicStructure[node.children[0]].variable = '"'+queryLogicStructure[node.children[0]].label+'"^^'+datatypeSpecification;
+					/*
 					if(queryLogicStructure[node.children[0]].penninculo!=''){
 						nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(', parentVariable+ ' '+operatorLabel +' "'+queryLogicStructure[node.children[0]].label+'"^^'+queryLogicStructure[node.children[0]].penninculo, ')']});
 						queryLogicStructure[node.children[0]].variable = '"'+queryLogicStructure[node.children[0]].label+'"^^'+queryLogicStructure[node.children[0]].penninculo;
@@ -995,6 +1005,7 @@ function visitSPARQL(key){
 						nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(','str(' + parentVariable+ ') '+operatorLabel +' "'+queryLogicStructure[node.children[0]].label+'"', ')']});
 						queryLogicStructure[node.children[0]].variable = '"'+queryLogicStructure[node.children[0]].label+'"';
 					}
+					*/
 					
 					childQuery = visitSPARQL(node.children[0]); 
 
@@ -1016,13 +1027,23 @@ function visitSPARQL(key){
 						operatorLabel = '>';
 					}
 
+					var datatypeSpecification;
+					if(queryLogicStructure[node.children[0]].penninculo!=''){
+						datatypeSpecification = queryLogicStructure[node.children[0]].penninculo;
+					}
+					else{
+						datatypeSpecification = '<http://www.w3.org/2001/XMLSchema#date>';
+					}
+					nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(', parentVariable+ ' '+operatorLabel +' "'+queryLogicStructure[node.children[0]].label+'"^^'+datatypeSpecification, ')']});
+					queryLogicStructure[node.children[0]].variable = '"'+queryLogicStructure[node.children[0]].label+'"^^'+datatypeSpecification;
+					/*
 					if(queryLogicStructure[node.children[0]].penninculo!=''){
 						nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(',parentVariable+ ' '+operatorLabel +' "'+queryLogicStructure[node.children[0]].label+'"^^'+queryLogicStructure[node.children[0]].penninculo, ')']});
 						queryLogicStructure[node.children[0]].variable = '"'+queryLogicStructure[node.children[0]].label+'"^^'+queryLogicStructure[node.children[0]].penninculo;
 					}else{
 						nodeWhere.push({relatedTo:tempRelatedTo, content:['FILTER(','str(' + parentVariable+ ') '+operatorLabel +' "'+queryLogicStructure[node.children[0]].label+'"', ')']});
 						queryLogicStructure[node.children[0]].variable = '"'+queryLogicStructure[node.children[0]].label+'"';
-					}
+					}*/
 					childQuery = visitSPARQL(node.children[0]); 
 
 					nodeSelect = nodeSelect.concat(childQuery.select);
@@ -1036,12 +1057,12 @@ function visitSPARQL(key){
 					if(queryLogicStructure[node.children[0]].penninculo != '')
 						rangeChildren[0] = '"'+queryLogicStructure[node.children[0]].label+'"^^'+queryLogicStructure[node.children[0]].penninculo;
 					else
-						rangeChildren[0] = '"'+queryLogicStructure[node.children[0]].label+'"';
+						rangeChildren[0] = '"'+queryLogicStructure[node.children[0]].label+'"'+ '^^<http://www.w3.org/2001/XMLSchema#date>';
 
 					if(queryLogicStructure[node.children[1]].penninculo != '')
 						rangeChildren[1] = '"'+queryLogicStructure[node.children[1]].label+'"^^'+queryLogicStructure[node.children[1]].penninculo;
 					else
-						rangeChildren[1] = '"'+queryLogicStructure[node.children[1]].label+'"';
+						rangeChildren[1] = '"'+queryLogicStructure[node.children[1]].label+'"'+'^^<http://www.w3.org/2001/XMLSchema#date>';
 
 					if(addNot){
 						nodeWhere.push({relatedTo:[node.children[0], node.children[1], node.key, node.parent], content:['FILTER(', '(' + parentVariable+' < '+rangeChildren[0]+') || ('+parentVariable+' > '+rangeChildren[1]+ ')', ')']});
@@ -1913,6 +1934,9 @@ function visitGetConcepts(key, queryLogicStructure){
 					break;
 
 				case 'range':
+
+
+
 					if(addNot){
 						nodeWhere.push('FILTER(', '('+parentVariable+' < '+queryLogicStructure[node.children[0]].label+' || '+parentVariable+' > '+queryLogicStructure[node.children[1]].label+')',')');
 						addNot = false;
@@ -1937,6 +1961,17 @@ function visitGetConcepts(key, queryLogicStructure){
 						operatorLabel = '<';
 					}
 
+					var datatypeSpecification;
+					if(queryLogicStructure[node.children[0]].penninculo!=''){
+						datatypeSpecification = queryLogicStructure[node.children[0]].penninculo;
+					}
+					else{
+						datatypeSpecification = '<http://www.w3.org/2001/XMLSchema#date>';
+					}
+					nodeWhere.push('FILTER(', parentVariable+ ' '+operatorLabel +' "'+queryLogicStructure[node.children[0]].label+'"^^'+datatypeSpecification, ')');
+					queryLogicStructure[node.children[0]].variable = '"'+queryLogicStructure[node.children[0]].label+'"^^'+datatypeSpecification;
+
+					/*
 					if(queryLogicStructure[node.children[0]].penninculo!=''){
 						nodeWhere.push('FILTER(', parentVariable+ ' '+operatorLabel +' "'+queryLogicStructure[node.children[0]].label+'"^^'+queryLogicStructure[node.children[0]].penninculo, ')');
 						queryLogicStructure[node.children[0]].variable = '"'+queryLogicStructure[node.children[0]].label+'"^^'+queryLogicStructure[node.children[0]].penninculo;
@@ -1944,6 +1979,7 @@ function visitGetConcepts(key, queryLogicStructure){
 						nodeWhere.push('FILTER(','str(' + parentVariable+ ') '+operatorLabel +' "'+queryLogicStructure[node.children[0]].label+'"', ')');
 						queryLogicStructure[node.children[0]].variable = '"'+queryLogicStructure[node.children[0]].label+'"';
 					}
+					*/
 					
 					childQuery = visitGetConcepts(node.children[0], queryLogicStructure); 
 
@@ -1960,6 +1996,17 @@ function visitGetConcepts(key, queryLogicStructure){
 						operatorLabel = '>';
 					}
 
+					var datatypeSpecification;
+					if(queryLogicStructure[node.children[0]].penninculo!=''){
+						datatypeSpecification = queryLogicStructure[node.children[0]].penninculo;
+					}
+					else{
+						datatypeSpecification = '<http://www.w3.org/2001/XMLSchema#date>';
+					}
+					nodeWhere.push('FILTER(', parentVariable+ ' '+operatorLabel +' "'+queryLogicStructure[node.children[0]].label+'"^^'+datatypeSpecification, ')');
+					queryLogicStructure[node.children[0]].variable = '"'+queryLogicStructure[node.children[0]].label+'"^^'+datatypeSpecification;
+
+					/*
 					if(queryLogicStructure[node.children[0]].penninculo!=''){
 						nodeWhere.push('FILTER(',parentVariable+ ' '+operatorLabel +' "'+queryLogicStructure[node.children[0]].label+'"^^'+queryLogicStructure[node.children[0]].penninculo, ')');
 						queryLogicStructure[node.children[0]].variable = '"'+queryLogicStructure[node.children[0]].label+'"^^'+queryLogicStructure[node.children[0]].penninculo;
@@ -1967,6 +2014,7 @@ function visitGetConcepts(key, queryLogicStructure){
 						nodeWhere.push('FILTER(','str(' + parentVariable+ ') '+operatorLabel +' "'+queryLogicStructure[node.children[0]].label+'"', ')');
 						queryLogicStructure[node.children[0]].variable = '"'+queryLogicStructure[node.children[0]].label+'"';
 					}
+					 */
 					childQuery = visitGetConcepts(node.children[0], queryLogicStructure); 
 
 					nodeSelect = nodeSelect.concat(childQuery.select);
@@ -1975,6 +2023,21 @@ function visitGetConcepts(key, queryLogicStructure){
 					break;
 				case 'range date':
 					var rangeChildren=[];
+
+					if(queryLogicStructure[node.children[0]].penninculo!=''){
+						rangeChildren[0] = '"'+queryLogicStructure[node.children[0]].label+'"^^'+queryLogicStructure[node.children[0]].penninculo;
+					}
+					else{
+						rangeChildren[0] = '"'+queryLogicStructure[node.children[0]].label+'^^<http://www.w3.org/2001/XMLSchema#date>';
+					}
+					if(queryLogicStructure[node.children[1]].penninculo!=''){
+						rangeChildren[1] = '"'+queryLogicStructure[node.children[1]].label+'"^^'+queryLogicStructure[node.children[1]].penninculo;
+					}
+					else{
+						rangeChildren[1] = '"'+queryLogicStructure[node.children[1]].label +'^^<http://www.w3.org/2001/XMLSchema#date>';
+					}
+
+					/*
 					if(queryLogicStructure[node.children[0]].penninculo != '')
 						rangeChildren[0] = '"'+queryLogicStructure[node.children[0]].label+'"^^'+queryLogicStructure[node.children[0]].penninculo;
 					else
@@ -1984,12 +2047,12 @@ function visitGetConcepts(key, queryLogicStructure){
 						rangeChildren[1] = '"'+queryLogicStructure[node.children[1]].label+'"^^'+queryLogicStructure[node.children[1]].penninculo;
 					else
 						rangeChildren[1] = '"'+queryLogicStructure[node.children[1]].label+'"';
-
+					*/
 					if(addNot){
-						nodeWhere.push('FILTER(', '(' + parentVariable+' < '+rangeChildren[0]+') || ('+parentVariable+' > '+rangeChildren[1]+ ')', ')');
+						nodeWhere.push('FILTER(', '(' + parentVariable+' < '+rangeChildren[0]+') || ('+parentVariable+' > '+rangeChildren[1]+')', ')');
 						addNot = false;
 					}else{
-						nodeWhere.push('FILTER(', '(' + parentVariable+' >= '+rangeChildren[0]+') && ('+parentVariable+' <= '+rangeChildren[1]+ ')', ')');
+						nodeWhere.push('FILTER(', '(' + parentVariable+' >= '+rangeChildren[0]+') && ('+parentVariable+' <= '+rangeChildren[1]+')', ')');
 					}	
 
 					for(var i=0; i<node.children.length; i++){
@@ -2116,11 +2179,11 @@ QueryBuilder.prototype.getReversePredicates = function(queryLogicRootList, query
 	buildPredicatesQuery(queryLogicRootList, queryLogicMap, callback);
 }
 
-function buildPredicatesQuery(queryLogicStructureRootList, queryLogicStructure, callback){
+function buildPredicatesQuery(actualQueryLogicStructureRootList, actualQueryLogicStructure, callback){
 	var	queryGetPredicates = {select:[], where:[]}; //add other field
 
-	if(queryLogicStructureRootList.length != 0){
-		createAllVariable(queryLogicStructure);
+	if(actualQueryLogicStructureRootList.length != 0){
+		createAllVariable(actualQueryLogicStructure);
 
 		var nodeSelect = [];
 		var nodeWhere = [];
@@ -2128,28 +2191,28 @@ function buildPredicatesQuery(queryLogicStructureRootList, queryLogicStructure, 
 		var childWhere = [];	
 		var childQuery = {};
 
-		for(var rootListIndex = 0; rootListIndex<queryLogicStructureRootList.length; rootListIndex++){
-			var queryLogicStructureRoot = queryLogicStructureRootList[rootListIndex];
+		for(var rootListIndex = 0; rootListIndex<actualQueryLogicStructureRootList.length; rootListIndex++){
+			var queryLogicStructureRoot = actualQueryLogicStructureRootList[rootListIndex];
 
-			childQuery = visitGetPredicates(queryLogicStructureRoot, queryLogicStructure); 
+			childQuery = visitGetPredicates(queryLogicStructureRoot, actualQueryLogicStructure);
 
 			nodeSelect = nodeSelect.concat(childQuery.select);
 			childWhere.push(childQuery.where);
 		}
 			
 		var sameLevelOperator = null;
-		if(queryLogicStructureRootList.length==1){
+		if(actualQueryLogicStructureRootList.length==1){
 
 			for(var j=0; j<childWhere[0].length; j++)
 				nodeWhere = nodeWhere.concat([childWhere[0][j]]);
 
-		}else if(queryLogicStructureRootList.length>1){
-			sameLevelOperator = queryLogicStructure[queryLogicStructureRootList[1]].subtype;
+		}else if(actualQueryLogicStructureRootList.length>1){
+			sameLevelOperator = actualQueryLogicStructure[actualQueryLogicStructureRootList[1]].subtype;
 
 			/*
 			var child = [];
-			for(var i = 1; i<queryLogicStructureRootList.length; i = i+2)
-				child.push(queryLogicStructureRootList[i]);
+			for(var i = 1; i<actualQueryLogicStructureRootList.length; i = i+2)
+				child.push(actualQueryLogicStructureRootList[i]);
 			*/
 			switch(sameLevelOperator){
 				case 'and':
@@ -2194,7 +2257,6 @@ function visitGetPredicates(key, queryLogicStructure){
 	var childQuery = {};
 
 	//'console.log'(node);
-
 	switch(node.type){
 		case 'everything' : 
 			var firstReverseChild = null;
@@ -2376,116 +2438,132 @@ function visitGetPredicates(key, queryLogicStructure){
 					node.variable = queryLogicStructure[node.sameAs].variable;
 				}
 
-				//where management
-				var parentNode = queryLogicStructure[node.parent];
-				var parentVariable = parentNode.variable;
-
-				if(addNot){
-					nodeWhere = nodeWhere.concat(['FILTER(!EXISTS{'+parentVariable+ ' <'+node.url+'> '+ node.variable+'.'+'})']);	
+				if('fictional' in node && node.parent == null){
+					var escaped_keyword = escape(node.keyword);
+					nodeWhere = nodeWhere.concat([ fictionalVariable + ' a rdf:Property. ', 'BIND( STR(' + fictionalVariable + ") AS ?string ) filter(contains(?string, '"+escaped_keyword+"'))"]);
+					askForSpecificKeyword = "FILTER(CONTAINS(lcase(?label), '"+node.keyword+"'))";
+					nodeWhere.push("OPTIONAL {"+fictionalVariable+" rdfs:label ?label. "+askForSpecificKeyword+ "FILTER (lang(?label) = '" + systemLang + "')}");
 				}
 				else{
-					if('fictional' in node){
-						if(node.keyword.length>0)
-							askForSpecificKeyword = "FILTER(CONTAINS(lcase(?label), '"+node.keyword+"'))";
-						else 
-							askForSpecificKeyword = "";
-						nodeWhere.push(parentVariable+" "+fictionalVariable+" ?o.");						
-						nodeWhere.push("OPTIONAL {"+fictionalVariable+" rdfs:label ?label. "+askForSpecificKeyword+ "FILTER (lang(?label) = '" + systemLang + "')}");
+					//where management
+					var parentNode = queryLogicStructure[node.parent];
+					var parentVariable = parentNode.variable;
+
+					if(addNot){
+						nodeWhere = nodeWhere.concat(['FILTER(!EXISTS{'+parentVariable+ ' <'+node.url+'> '+ node.variable+'.'+'})']);
 					}
-					else if(!(node.children.length>1 && queryLogicStructure[node.children[1]].type=='operator' && queryLogicStructure[node.children[1]].subtype=='or')){
-						nodeWhere = nodeWhere.concat([parentVariable+ ' <'+node.url+'> '+ node.variable+'.']);
+					else{
+						if('fictional' in node){
+							if(node.keyword.length>0)
+								askForSpecificKeyword = "FILTER(CONTAINS(lcase(?label), '"+node.keyword+"'))";
+							else
+								askForSpecificKeyword = "";
+							nodeWhere.push(parentVariable+" "+fictionalVariable+" ?o.");
+							nodeWhere.push("OPTIONAL {"+fictionalVariable+" rdfs:label ?label. "+askForSpecificKeyword+ "FILTER (lang(?label) = '" + systemLang + "')}");
+						}
+						else if(!(node.children.length>1 && queryLogicStructure[node.children[1]].type=='operator' && queryLogicStructure[node.children[1]].subtype=='or')){
+							nodeWhere = nodeWhere.concat([parentVariable+ ' <'+node.url+'> '+ node.variable+'.']);
+						}
+					}
+
+					if(!addNot){
+						for(var i=0; i<node.children.length; i++){
+							childQuery = visitGetPredicates(node.children[i], queryLogicStructure);
+
+							nodeSelect = nodeSelect.concat(childQuery.select);
+
+							childWhere.push(childQuery.where);
+						}
+
+						var sameLevelOperator = null;
+						if(node.children.length==1){
+							nodeWhere = nodeWhere.concat(childWhere[0]);
+						}else if(node.children.length > 1){
+							sameLevelOperator = queryLogicStructure[node.children[1]].subtype;
+						}
+
+						var child = [];
+						for(var i = 1; i<node.children.length; i = i+2)
+							child.push(node.children[i]);
+
+						switch(sameLevelOperator){
+							case 'and':
+								for(var i = 0; i < node.children.length; i = i+2){
+									nodeWhere = nodeWhere.concat(childWhere[i]);
+								}
+								break;
+
+							case 'or':
+								for(var i = 0; i < node.children.length; i = i+2){
+									nodeWhere = nodeWhere.concat(['{']);
+									nodeWhere = nodeWhere.concat([parentVariable+ ' <'+node.url+'> '+ node.variable+'.']);
+
+									for(var j=0; j<childWhere[i].length; j++)
+										nodeWhere = nodeWhere.concat([childWhere[i][j]]);
+
+									if(i == node.children.length-1)
+										nodeWhere = nodeWhere.concat(['}']);
+									else
+										nodeWhere = nodeWhere.concat(['} UNION']);
+
+								}
+								break;
+						}
+
+					}
+
+					if(addNot){
+						addNot = false;
 					}
 				}
 
-				if(!addNot){
-					for(var i=0; i<node.children.length; i++){ 
-						childQuery = visitGetPredicates(node.children[i], queryLogicStructure); 
-
-						nodeSelect = nodeSelect.concat(childQuery.select);
-					
-						childWhere.push(childQuery.where);
-					}
-
-					var sameLevelOperator = null;
-					if(node.children.length==1){
-						nodeWhere = nodeWhere.concat(childWhere[0]);
-					}else if(node.children.length > 1){
-						sameLevelOperator = queryLogicStructure[node.children[1]].subtype;
-					}
-
-					var child = [];
-					for(var i = 1; i<node.children.length; i = i+2)
-						child.push(node.children[i]);
-
-					switch(sameLevelOperator){
-						case 'and':
-							for(var i = 0; i < node.children.length; i = i+2){
-								nodeWhere = nodeWhere.concat(childWhere[i]);
-							}
-							break;
-						
-						case 'or':
-							for(var i = 0; i < node.children.length; i = i+2){
-								nodeWhere = nodeWhere.concat(['{']);
-								nodeWhere = nodeWhere.concat([parentVariable+ ' <'+node.url+'> '+ node.variable+'.']);
-
-								for(var j=0; j<childWhere[i].length; j++)
-									nodeWhere = nodeWhere.concat([childWhere[i][j]]);
-
-								if(i == node.children.length-1)
-									nodeWhere = nodeWhere.concat(['}']);
-								else
-									nodeWhere = nodeWhere.concat(['} UNION']);
-
-							}
-							break;
-					}
-					
-				}   
-
-				if(addNot){
-					addNot = false;
-				}
 
 			}else if(node.direction == 'reverse'){
-
-				var parentNode = queryLogicStructure[node.parent];
-				var parentVariable = parentNode.variable;
-
-				var childNode;
-				if(!('fictional' in node)){
-					childNode = queryLogicStructure[node.children[0]];
-					node.variable = childNode.variable;
+				/*
+				if('fictional' in node && node.parent == null){
+					nodeWhere = nodeWhere.concat([ fictionalVariable + ' a rdf:Property. ', 'BIND( STR(' + fictionalVariable + ") AS ?string ) filter(contains(?string, '"+node.keyword+"'))"]);
 				}
+				else{
+				*/
 
-				if(addNot){
-					if(childNode.type == 'something'){
-						nodeWhere = nodeWhere.concat(['FILTER(!EXISTS{'+node.variable+ ' <'+node.url+'> '+ parentVariable+'.})']);
-					}else if(childNode.type == 'concept'){
-						nodeWhere = nodeWhere.concat(['FILTER(!EXISTS{']);
-						nodeWhere = nodeWhere.concat([node.variable+ ' <'+node.url+'> '+ parentVariable+'.']);
-						nodeWhere = nodeWhere.concat([node.variable+ ' a <'+ childNode.url+'>']);
-						nodeWhere = nodeWhere.concat(['})']);
+					var parentNode = queryLogicStructure[node.parent];
+					var parentVariable = parentNode.variable;
+
+					var childNode;
+					if(!('fictional' in node)){
+						childNode = queryLogicStructure[node.children[0]];
+						node.variable = childNode.variable;
 					}
-				}else{
-					if('fictional' in node){
-						if(node.keyword.length>0)
-							askForSpecificKeyword = "FILTER(CONTAINS(lcase(?label), '"+node.keyword+"'))";
-						else 
-							askForSpecificKeyword = "";
 
-						nodeWhere.push('?o '+fictionalVariable+' '+ parentVariable+'.');
-						nodeWhere.push("OPTIONAL {"+fictionalVariable+" rdfs:label ?label. "+askForSpecificKeyword+"FILTER (lang(?label) = '" + systemLang + "')}");
+					if(addNot){
+						if(childNode.type == 'something'){
+							nodeWhere = nodeWhere.concat(['FILTER(!EXISTS{'+node.variable+ ' <'+node.url+'> '+ parentVariable+'.})']);
+						}else if(childNode.type == 'concept'){
+							nodeWhere = nodeWhere.concat(['FILTER(!EXISTS{']);
+							nodeWhere = nodeWhere.concat([node.variable+ ' <'+node.url+'> '+ parentVariable+'.']);
+							nodeWhere = nodeWhere.concat([node.variable+ ' a <'+ childNode.url+'>']);
+							nodeWhere = nodeWhere.concat(['})']);
+						}
 					}else{
-						nodeWhere = nodeWhere.concat([node.variable+ ' <'+node.url+'> '+ parentVariable+'.']);
-					
-						tempReverseWhere = node.variable+ ' <'+node.url+'> '+ parentVariable+'.';
-						childQuery = visitGetPredicates(childNode.key, queryLogicStructure); 
-						nodeSelect = nodeSelect.concat(childQuery.select);
-						nodeWhere = nodeWhere.concat(childQuery.where);
+						if('fictional' in node){
+							if(node.keyword.length>0)
+								askForSpecificKeyword = "FILTER(CONTAINS(lcase(?label), '"+node.keyword+"'))";
+							else
+								askForSpecificKeyword = "";
+
+							nodeWhere.push('?o '+fictionalVariable+' '+ parentVariable+'.');
+							nodeWhere.push("OPTIONAL {"+fictionalVariable+" rdfs:label ?label. "+askForSpecificKeyword+"FILTER (lang(?label) = '" + systemLang + "')}");
+						}else{
+							nodeWhere = nodeWhere.concat([node.variable+ ' <'+node.url+'> '+ parentVariable+'.']);
+
+							tempReverseWhere = node.variable+ ' <'+node.url+'> '+ parentVariable+'.';
+							childQuery = visitGetPredicates(childNode.key, queryLogicStructure);
+							nodeSelect = nodeSelect.concat(childQuery.select);
+							nodeWhere = nodeWhere.concat(childQuery.where);
+						}
+						addNot = false;
 					}
-					addNot = false;
-				}
+				//}
 			}
 			
 			break;
@@ -2821,6 +2899,7 @@ function visitGetPredicates(key, queryLogicStructure){
 
 					break;
 				case 'before':
+					debugger
 					if(addNot){
 						operatorLabel = '>=';
 						addNot=false;
@@ -2828,13 +2907,23 @@ function visitGetPredicates(key, queryLogicStructure){
 						operatorLabel = '<';
 					}
 
+					var datatypeSpecification;
+					if(queryLogicStructure[node.children[0]].penninculo!=''){
+						datatypeSpecification = queryLogicStructure[node.children[0]].penninculo;
+					}
+					else{
+						datatypeSpecification = '<http://www.w3.org/2001/XMLSchema#date>';
+					}
+					nodeWhere.push('FILTER(', parentVariable+ ' '+operatorLabel +' "'+queryLogicStructure[node.children[0]].label+'"^^'+datatypeSpecification, ')');
+					queryLogicStructure[node.children[0]].variable = '"'+queryLogicStructure[node.children[0]].label+'"^^'+datatypeSpecification;
+					/*
 					if(queryLogicStructure[node.children[0]].penninculo!=''){
 						nodeWhere.push('FILTER(', parentVariable+ ' '+operatorLabel +' "'+queryLogicStructure[node.children[0]].label+'"^^'+queryLogicStructure[node.children[0]].penninculo, ')');
 						queryLogicStructure[node.children[0]].variable = '"'+queryLogicStructure[node.children[0]].label+'"^^'+queryLogicStructure[node.children[0]].penninculo;
 					}else{
 						nodeWhere.push('FILTER(','str(' + parentVariable+ ') '+operatorLabel +' "'+queryLogicStructure[node.children[0]].label+'"', ')');
 						queryLogicStructure[node.children[0]].variable = '"'+queryLogicStructure[node.children[0]].label+'"';
-					}
+					}*/
 					
 					childQuery = visitGetPredicates(node.children[0], queryLogicStructure); 
 
@@ -2851,6 +2940,16 @@ function visitGetPredicates(key, queryLogicStructure){
 						operatorLabel = '>';
 					}
 
+					var datatypeSpecification;
+					if(queryLogicStructure[node.children[0]].penninculo!=''){
+						datatypeSpecification = queryLogicStructure[node.children[0]].penninculo;
+					}
+					else{
+						datatypeSpecification = '<http://www.w3.org/2001/XMLSchema#date>';
+					}
+					nodeWhere.push('FILTER(', parentVariable+ ' '+operatorLabel +' "'+queryLogicStructure[node.children[0]].label+'"^^'+datatypeSpecification, ')');
+					queryLogicStructure[node.children[0]].variable = '"'+queryLogicStructure[node.children[0]].label+'"^^'+datatypeSpecification;
+					/*
 					if(queryLogicStructure[node.children[0]].penninculo!=''){
 						nodeWhere.push('FILTER(',parentVariable+ ' '+operatorLabel +' "'+queryLogicStructure[node.children[0]].label+'"^^'+queryLogicStructure[node.children[0]].penninculo, ')');
 						queryLogicStructure[node.children[0]].variable = '"'+queryLogicStructure[node.children[0]].label+'"^^'+queryLogicStructure[node.children[0]].penninculo;
@@ -2858,6 +2957,7 @@ function visitGetPredicates(key, queryLogicStructure){
 						nodeWhere.push('FILTER(','str(' + parentVariable+ ') '+operatorLabel +' "'+queryLogicStructure[node.children[0]].label+'"', ')');
 						queryLogicStructure[node.children[0]].variable = '"'+queryLogicStructure[node.children[0]].label+'"';
 					}
+					 */
 					childQuery = visitGetPredicates(node.children[0], queryLogicStructure); 
 
 					nodeSelect = nodeSelect.concat(childQuery.select);
@@ -2865,16 +2965,17 @@ function visitGetPredicates(key, queryLogicStructure){
 
 					break;
 				case 'range date':
+
 					var rangeChildren=[];
 					if(queryLogicStructure[node.children[0]].penninculo != '')
 						rangeChildren[0] = '"'+queryLogicStructure[node.children[0]].label+'"^^'+queryLogicStructure[node.children[0]].penninculo;
 					else
-						rangeChildren[0] = '"'+queryLogicStructure[node.children[0]].label+'"';
+						rangeChildren[0] = '"'+queryLogicStructure[node.children[0]].label+'"'+ '^^<http://www.w3.org/2001/XMLSchema#date>';
 
 					if(queryLogicStructure[node.children[1]].penninculo != '')
 						rangeChildren[1] = '"'+queryLogicStructure[node.children[1]].label+'"^^'+queryLogicStructure[node.children[1]].penninculo;
 					else
-						rangeChildren[1] = '"'+queryLogicStructure[node.children[1]].label+'"';
+						rangeChildren[1] = '"'+queryLogicStructure[node.children[1]].label+'"' +'^^<http://www.w3.org/2001/XMLSchema#date>';
 
 					if(addNot){
 						nodeWhere.push('FILTER(', '(' + parentVariable+' < '+rangeChildren[0]+') || ('+parentVariable+' > '+rangeChildren[1]+ ')', ')');

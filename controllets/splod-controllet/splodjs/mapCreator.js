@@ -1031,6 +1031,7 @@ MapCreator.prototype.addFictionalConcept = function(keyword, callback){
 MapCreator.prototype.addFictionalDirectPredicate = function(keyword, callback){
 
 	var mapWithFictionalPredicate = $.extend(true, {}, queryLogicMap);
+	var cloneRootListQueryLogicMap = rootListQueryLogicMap.slice(0);
 
 	var key = 'SPLODFictionalDirectPredicate';
 	var index = 1;
@@ -1043,50 +1044,58 @@ MapCreator.prototype.addFictionalDirectPredicate = function(keyword, callback){
 						   fictional:'', keyword: keyword};
 	mapWithFictionalPredicate[key] = newLogicElement;
 
+	if(rootListQueryLogicMap.length!=0){ // it is not the first element
 
-	var precLogicElement = mapWithFictionalPredicate[elementOnFocus];
-		
-	//if i have sibling i put and before me
-	if(precLogicElement.children.length>0){
-		var operator;
-		if(precLogicElement.children.length>1)//new operator has to be the same type of operator
-			operator = mapWithFictionalPredicate[precLogicElement.children[1]].subtype;
-		else//default conjunction
-			operator = 'and';
-		 
-		var newOperatorVerbalization = languageManager.verbalizeOperator(operator);
+		var precLogicElement = mapWithFictionalPredicate[elementOnFocus];
 
-		var newOperatorIndex = 1;
+		//if i have sibling i put and before me
+		if (precLogicElement.children.length > 0) {
+			var operator;
+			if (precLogicElement.children.length > 1)//new operator has to be the same type of operator
+				operator = mapWithFictionalPredicate[precLogicElement.children[1]].subtype;
+			else//default conjunction
+				operator = 'and';
 
-		if(operator in indexMap){
-			newOperatorIndex = indexMap[operator] + 1;
+			var newOperatorVerbalization = languageManager.verbalizeOperator(operator);
+
+			var newOperatorIndex = 1;
+
+			if (operator in indexMap) {
+				newOperatorIndex = indexMap[operator] + 1;
+			}
+
+			var newOperatorKey = operator + "_" + newOperatorIndex;
+
+			var newOperatorLogicElement = {
+				key: newOperatorKey, index: newOperatorIndex,
+				url: operator, label: languageManager.getOperatorLabelVerbalization(operator),
+				type: 'operator', subtype: operator, direction: false,
+				verbalization: newOperatorVerbalization,
+				parent: precLogicElement.key, children: []
+			};
+			mapWithFictionalPredicate[newOperatorKey] = newOperatorLogicElement;
+
+			precLogicElement.children.push(newOperatorKey);
 		}
 
-		var newOperatorKey = operator + "_" + newOperatorIndex;
-
-		var newOperatorLogicElement = {key: newOperatorKey, index: newOperatorIndex,
-							   url: operator, label: languageManager.getOperatorLabelVerbalization(operator), 
-							   type:'operator', subtype: operator, direction: false, 
-							   verbalization: newOperatorVerbalization, 
-							   parent:precLogicElement.key, children: []};
-		mapWithFictionalPredicate[newOperatorKey] = newOperatorLogicElement;
-
-		precLogicElement.children.push(newOperatorKey);
+		// add me to parent's children list
+		precLogicElement.children.push(key);
+		newLogicElement.parent = precLogicElement.key;
+	}
+	else{
+		cloneRootListQueryLogicMap.push(key);
 	}
 
-	// add me to parent's children list
-	precLogicElement.children.push(key);
-	newLogicElement.parent = precLogicElement.key;
-	
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
-	queryBuilder.getDirectPredicates(rootListQueryLogicMap, mapWithFictionalPredicate, callback);
+	queryBuilder.getDirectPredicates(cloneRootListQueryLogicMap, mapWithFictionalPredicate, callback);
 
 }
 
 MapCreator.prototype.addFictionalReversePredicate = function(keyword, callback){
 
 	var mapWithFictionalPredicate = $.extend(true, {}, queryLogicMap);
+	var cloneRootListQueryLogicMap = rootListQueryLogicMap.slice(0);
 
 	var key = 'SPLODFictionalReversePredicate';
 	var index = 1;
@@ -1099,44 +1108,50 @@ MapCreator.prototype.addFictionalReversePredicate = function(keyword, callback){
 						   fictional:'', keyword:keyword};
 	mapWithFictionalPredicate[key] = newLogicElement;
 
+	if(rootListQueryLogicMap.length!=0){ // it is not the first element
+		var precLogicElement = mapWithFictionalPredicate[elementOnFocus];
+		//if i have sibling i put and before me
+		if (precLogicElement.children.length > 0) {
+			var operator;
+			if (precLogicElement.children.length > 1)//new operator has to be the same type of operator
+				operator = mapWithFictionalPredicate[precLogicElement.children[1]].subtype;
+			else//default conjunction
+				operator = 'and';
 
-	var precLogicElement = mapWithFictionalPredicate[elementOnFocus];
-		
-	//if i have sibling i put and before me
-	if(precLogicElement.children.length>0){
-		var operator;
-		if(precLogicElement.children.length>1)//new operator has to be the same type of operator
-			operator = mapWithFictionalPredicate[precLogicElement.children[1]].subtype;
-		else//default conjunction
-			operator = 'and';
-		 
-		var newOperatorVerbalization = languageManager.verbalizeOperator(operator);
+			var newOperatorVerbalization = languageManager.verbalizeOperator(operator);
 
-		var newOperatorIndex = 1;
+			var newOperatorIndex = 1;
 
-		if(operator in indexMap){
-			newOperatorIndex = indexMap[operator] + 1;
+			if (operator in indexMap) {
+				newOperatorIndex = indexMap[operator] + 1;
+			}
+
+			var newOperatorKey = operator + "_" + newOperatorIndex;
+
+			var newOperatorLogicElement = {
+				key: newOperatorKey, index: newOperatorIndex,
+				url: operator, label: languageManager.getOperatorLabelVerbalization(operator),
+				type: 'operator', subtype: operator, direction: false,
+				verbalization: newOperatorVerbalization,
+				parent: precLogicElement.key, children: []
+			};
+			mapWithFictionalPredicate[newOperatorKey] = newOperatorLogicElement;
+
+			precLogicElement.children.push(newOperatorKey);
 		}
 
-		var newOperatorKey = operator + "_" + newOperatorIndex;
+		// add me to parent's children list
 
-		var newOperatorLogicElement = {key: newOperatorKey, index: newOperatorIndex,
-							   url: operator, label: languageManager.getOperatorLabelVerbalization(operator), 
-							   type:'operator', subtype: operator, direction: false, 
-							   verbalization: newOperatorVerbalization, 
-							   parent:precLogicElement.key, children: []};
-		mapWithFictionalPredicate[newOperatorKey] = newOperatorLogicElement;
-
-		precLogicElement.children.push(newOperatorKey);
+		precLogicElement.children.push(key);
+		newLogicElement.parent = precLogicElement.key;
 	}
-
-	// add me to parent's children list
-	precLogicElement.children.push(key);
-	newLogicElement.parent = precLogicElement.key;
+	else{
+		cloneRootListQueryLogicMap.push(key);
+	}
 
 	if(queryBuilder == null)
 		queryBuilder = new QueryBuilder;
-	queryBuilder.getReversePredicates(rootListQueryLogicMap, mapWithFictionalPredicate, callback);
+	queryBuilder.getReversePredicates(cloneRootListQueryLogicMap, mapWithFictionalPredicate, callback);
 }
 
 MapCreator.prototype.focusHasNotAsParent = function(){

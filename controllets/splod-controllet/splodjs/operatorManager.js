@@ -247,12 +247,14 @@ OperatorManager.prototype.queryResult = function(select, labelSelect, keySelect,
 					literalLang[keySelect[arrayIndex]][langIndex].occurrences++;
 				}
 
-				if(keySelect[arrayIndex] == onFocusOperator && !(onFocusOperator in cachedResult))
-					cachedResult[onFocusOperator] = literalLang[onFocusOperator];
+				/*if(keySelect[arrayIndex] == onFocusOperator && !(onFocusOperator in cachedResult))
+					cachedResult[onFocusOperator] = literalLang[onFocusOperator];*/
+				cachedResult[keySelect[arrayIndex]] = literalLang[keySelect[arrayIndex]];
 			}
 			else{
-				if(keySelect[arrayIndex] == onFocusOperator && !(onFocusOperator in cachedResult))
-					cachedResult[onFocusOperator] = savedResult[onFocusOperator];
+				/*if(keySelect[arrayIndex] == onFocusOperator && !(onFocusOperator in cachedResult))
+					cachedResult[onFocusOperator] = savedResult[onFocusOperator];*/
+				cachedResult[keySelect[arrayIndex]] = savedResult[keySelect[arrayIndex]];
 			}
 		}
 

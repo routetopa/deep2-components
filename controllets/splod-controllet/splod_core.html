@@ -205,11 +205,13 @@
 		              	  	<div class="card searchBarPositioning col s6 m6 l6">
 	            				<div class=" valign-wrapper ">
 	            					<span class="input-field col s11 m11 l11 mySearch">
-						              	<input type="search" id="searchPredicatesBox" 
-											onkeyup="filter('searchPredicatesBox', 'directPredicatesList');filter('searchPredicatesBox', 'reversePredicatesList');" >
+						              	<input type="search" id="searchPredicatesBox"
+											onkeydown="filter('searchPredicatesBox', 'directPredicatesList');
+												filter('searchPredicatesBox', 'reversePredicatesList');"
+										>
 									</span>
 									<span class="col s2 m2 l2 right">
-										<i class="material-icons"> search</i>
+										<i class="material-icons">search</i>
 									</span>
 								</div>
 						  	</div>
