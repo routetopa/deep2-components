@@ -53,7 +53,7 @@
 		<endpoint>http://dati.beniculturali.it/sparql</endpoint>
 		<graph>null</graph>
 	</endpoint_item>
-
+<!--
 	<endpoint_item>
 		<endpoint_name>Lavanderia a gettoni</endpoint_name>
 		<endpoint_description>
@@ -84,7 +84,7 @@
 		<query_executor>dbpediaLike</query_executor>
 		<endpoint>https://deep.routetopa.eu/deep2/DEEP/cors-proxy/proxy.php?csurl=http://sparql.europeana.eu/</endpoint>
 		<graph>null</graph>
-	</endpoint_item>-->
+	</endpoint_item>
 
 	<endpoint_item>
 		<endpoint_name>Cultura Italia - try</endpoint_name>
@@ -95,7 +95,7 @@
 		<query_executor>dbpediaLike</query_executor>
 		<endpoint>https://deep.routetopa.eu/deep2/DEEP/cors-proxy/proxy.php?http://dati.culturaitalia.it/sparql/</endpoint>
 		<graph>null</graph>
-	</endpoint_item>
+	</endpoint_item>-->
 	<!--
         <endpoint_item>
             <endpoint_name>BabelNet</endpoint_name>
