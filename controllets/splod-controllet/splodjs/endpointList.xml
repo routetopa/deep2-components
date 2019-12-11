@@ -6,8 +6,8 @@
 			DBpedia (from "DB" for "database") is a project aiming to extract structured content from the information created in the Wikipedia project. This structured information is made available on the World Wide Web. DBpedia allows users to semantically query relationships and properties of Wikipedia resources, including links to other related datasets. Tim Berners-Lee described DBpedia as one of the most famous parts of the decentralized Linked Data effort.
 		</endpoint_description>
 		<query_executor>dbpediaLike</query_executor>
-		<endpoint>https://deep.routetopa.eu/deep2/DEEP/cors-proxy/proxy.php?csurl=http://dbpedia.org/sparql</endpoint>
-		<graph>https://dbpedia.org</graph>
+		<endpoint>https://dbpedia.org/sparql</endpoint>
+		<graph>null</graph> <!-->https://dbpedia.org-->
 	</endpoint_item>
 
 	<endpoint_item>
