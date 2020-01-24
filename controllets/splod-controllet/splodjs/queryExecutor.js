@@ -4,7 +4,7 @@ var systemGraph = null;
 var systemQueryExecutor = 'livedbpediaLike';
 */
 
-var systemEndpoint = 'http://dbpedia.org/sparql';
+var systemEndpoint = 'https://dbpedia.org/sparql';
 var systemGraph = '<http://dbpedia.org>';
 var systemQueryExecutor = 'dbpediaLike';
 
