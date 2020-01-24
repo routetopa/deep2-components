@@ -7,7 +7,7 @@
 		</endpoint_description>
 		<query_executor>dbpediaLike</query_executor>
 		<endpoint>https://dbpedia.org/sparql</endpoint>
-		<graph>https://dbpedia.org</graph> <!-->-->
+		<graph>http://dbpedia.org</graph> <!-->-->
 	</endpoint_item>
 
 	<endpoint_item>
