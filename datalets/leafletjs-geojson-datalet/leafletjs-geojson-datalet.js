@@ -21,8 +21,9 @@ class LeafletGeoJsonDatalet extends BaseDatalet
 
     template()
     {
-        const template = this.currentDocument.querySelector('#leafletjs-geojson-datalet');
-        return template.content.cloneNode(true);
+        return this.create_node(`
+            <link rel="stylesheet" href="./leafletjs/leaflet.css">        
+        `);
     }
 
     async render(data)

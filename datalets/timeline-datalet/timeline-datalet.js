@@ -1,4 +1,5 @@
 import BaseDatalet from '../base-datalet/base-datalet.js';
+import * as AjaxJsonAlasqlBehavior from '../lib/modules/AjaxJsonAlasqlBehavior.js';
 
 class TimelineDatalet extends BaseDatalet {
     constructor() {
@@ -8,19 +9,34 @@ class TimelineDatalet extends BaseDatalet {
     handle_behaviour() {
         try {
             //{requestData:0}, {selectData:0}, {filterData:0}, {trasformData:0} -> [0, 0, 0, 0]
-            this.set_behaviours(['../lib/modules/AjaxJsonAlasqlBehavior.js']);
+            this.set_behaviours([AjaxJsonAlasqlBehavior]);
         } catch (e) {
             console.log("ERROR");
             console.log(e);
         }
     }
 
-    template() {
-        const template = this.currentDocument.querySelector('#timeline-datalet');
-        return template.content.cloneNode(true);
+    template()
+    {
+        return this.create_node(`
+            <style>
+                #datalet_container
+                {
+                    display: block !important;
+                }
+            </style>             
+            <link title="timeline-styles" rel="stylesheet" href="https://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css">                          
+        `);
     }
 
-    render(data)
+/*    lightTemplate()
+    {
+        return this.create_node(`
+            <script src="./js/timeline-min.js"></script>
+        `);
+    }*/
+
+    async render(data)
     {
         let that = this;
         console.log('RENDER - timeline-datalet');

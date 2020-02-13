@@ -23,8 +23,7 @@ class BubblechartDatalet extends BaseDatalet
 
     template()
     {
-        const template = this.currentDocument.querySelector('#bubblechart-datalet');
-        return template.content.cloneNode(true);
+        return this.create_node('');
     }
 
     async render(data)

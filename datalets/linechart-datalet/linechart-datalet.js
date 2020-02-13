@@ -23,8 +23,7 @@ class LinechartDatalet extends BaseDatalet
 
     template()
     {
-        const template = this.currentDocument.querySelector('#linechart-datalet');
-        return template.content.cloneNode(true);
+        return this.create_node('');
     }
 
     async render(data)

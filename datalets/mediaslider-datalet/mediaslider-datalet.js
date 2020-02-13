@@ -21,8 +21,9 @@ class MediaSliderDatalet extends BaseDatalet
 
     template()
     {
-        const template = this.currentDocument.querySelector('#mediaslider-datalet');
-        return template.content.cloneNode(true);
+        return this.create_node(`
+            <link title="timeline-styles" rel="stylesheet" href="./js/camera.css">
+        `);
     }
 
     async render(data)

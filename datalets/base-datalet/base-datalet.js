@@ -1,16 +1,22 @@
 import {LN} from './static/ln/base-datalet-ln.js';
 import {importModule} from '../lib/vendors/import_polyfill/import_polyfill.js';
+import {DataletBaseTemplate, DataletBaseTemplateLightDom} from './base-datalet-template.js'
 
 export default class BaseDatalet extends HTMLElement {
 
-    constructor(component) {
+    constructor(component)
+    {
         // If you define a constructor, always call super() first as it is required by the CE spec.
         super();
 
         this.component = component;
-        this.currentDocument = document.querySelector(`link[href*="${this.component}"]`).import;
-        this.baseUri = this.currentDocument.baseURI.substring(0, this.currentDocument.baseURI.lastIndexOf("/") + 1);
-        this.deepUri = this.currentDocument.baseURI.split('/')[0] + '//' + this.currentDocument.baseURI.split('/')[2] + '/' + this.currentDocument.baseURI.split('/')[3];
+
+        let currentDocument = document.querySelector(`script[src*="${this.component}"]`).src;
+        this.baseUri = currentDocument.substring(0, currentDocument.lastIndexOf("/") + 1);
+
+        currentDocument = currentDocument.split('/');
+        this.deepUri = currentDocument[0] + '//' + currentDocument[2] + '/' + currentDocument[3];
+
         this.dynamic_import_support = this.get_dynamic_import();
 
         // Create a Shadow DOM using our template
@@ -18,7 +24,8 @@ export default class BaseDatalet extends HTMLElement {
 
     }
 
-    connectedCallback() {
+    connectedCallback()
+    {
         this.data_url = this.getAttribute("data-url");
         this.selected_fields = this.getAttribute("selectedfields");
         this.filters = this.getAttribute("filters");
@@ -28,23 +35,35 @@ export default class BaseDatalet extends HTMLElement {
         this.description = this.getAttribute("description");
         this.cache = this.getAttribute("data");
 
-        const base_document = document.querySelector(`link[href*="${this.component}"]`).import.querySelector('link[rel="import"]').import;
-        const base_template = base_document.querySelector('#base-datalet');
-        const base_instance = base_template.content.cloneNode(true); // clona (con true anche i figli) il template
-        const base_datalet_baseUri = base_document.baseURI.substring(0, base_document.baseURI.lastIndexOf("/") + 1);
+        const base_instance        = this.create_node(DataletBaseTemplate);
+        const base_datalet_baseUri = this.deepUri + '/COMPONENTS/datalets/base-datalet/';
 
         //GET DERIVED CLASS TEMPLATE
         let template = this.template();
 
         //APPEND SCRIPTS
-        this.load_script([{template: base_instance, baseURI: base_datalet_baseUri}, {
-            template: template,
-            baseURI: this.baseUri
-        }]);
+        this.load_script([
+            {
+                template: base_instance,
+                baseURI: base_datalet_baseUri},
+            {
+                template: template,
+                baseURI: this.baseUri
+            }
+        ]);
 
         //APPEND TEMPLATE TO SHADOW ROOT
         this.shadow_root.appendChild(this.replace_img_path(template));
         this.shadow_root.appendChild(this.replace_img_path(base_instance, base_datalet_baseUri));
+
+        //APPEND DEPS TO LIGHT DOM
+        document.querySelector(`head`).append(this.create_node(DataletBaseTemplateLightDom));
+
+        let lightTemplate = this.lightTemplate();
+        if(lightTemplate) {
+            this.load_script([{template: lightTemplate, baseURI: this.baseUri}]);
+            document.querySelector(`head`).append(lightTemplate);
+        }
 
         //SET BEHAVIOUR
         this.handle_behaviour();
@@ -65,6 +84,15 @@ export default class BaseDatalet extends HTMLElement {
         //todo remove event listeners ??
         this.shadow_root.innerHTML = ''; //svuota lo shadow DOM
     }
+
+    create_node(html_string)
+    {
+        let template = document.createElement('template');
+        template.innerHTML = html_string;
+        return template.content;
+    }
+
+    lightTemplate() {return null}
 
     async set_behaviours(module, config) {
         config = config || [0, 0, 0, 0];

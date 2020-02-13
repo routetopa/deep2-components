@@ -22,8 +22,7 @@ class TreemapDatalet extends BaseDatalet
 
     template()
     {
-        const template = this.currentDocument.querySelector('#treemap-datalet');
-        return template.content.cloneNode(true);
+        return this.create_node('');
     }
 
     transformData(data, selectedFields)

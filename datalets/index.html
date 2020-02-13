@@ -1,6 +1,8 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <meta charset=utf-8>
+
     <script>
         /*
         ODE = {};
@@ -20,7 +22,7 @@
     <script src="./lib/vendors/jquery/jquery.js"></script>
     <script src="./lib/vendors/require/require.js"></script>-->
 
-    <link rel="import" href="./linechart-datalet/linechart-datalet.html">
+<!--    <link rel="import" href="./linechart-datalet/linechart-datalet.html">
     <link rel="import" href="./columnchart-datalet/columnchart-datalet.html">
     <link rel="import" href="./barchart-datalet/barchart-datalet.html">
     <link rel="import" href="./areachart-datalet/areachart-datalet.html">
@@ -37,14 +39,30 @@
     <link rel="import" href="./funnelchart-datalet/funnelchart-datalet.html">
     <link rel="import" href="./wordcloud-datalet/wordcloud-datalet.html">
     <link rel="import" href="./datatable-datalet/datatable-datalet.html">
-    <link rel="import" href="./mediaslider-datalet/mediaslider-datalet.html">
+    <link rel="import" href="./mediaslider-datalet/mediaslider-datalet.html">-->
 
-    <!--
+    <script type="module" src="./linechart-datalet/linechart-datalet.js"></script>
+    <script type="module" src="./columnchart-datalet/columnchart-datalet.js"></script>
+    <script type="module" src="./barchart-datalet/barchart-datalet.js"></script>
+    <script type="module" src="./areachart-datalet/areachart-datalet.js"></script>
+    <script type="module" src="./scatterchart-datalet/scatterchart-datalet.js"></script>
+    <script type="module" src="./bubblechart-datalet/bubblechart-datalet.js"></script>
+    <script type="module" src="./piechart-datalet/piechart-datalet.js"></script>
+    <script type="module" src="./heatmap-datalet/heatmap-datalet.js"></script>
+    <script type="module" src="./italymap-datalet/italymap-datalet.js"></script>
+    <script type="module" src="./leafletjs-datalet/leafletjs-datalet.js"></script>
+    <script type="module" src="./leafletjs-geojson-datalet/leafletjs-geojson-datalet.js"></script>
+    <script type="module" src="./treemap-datalet/treemap-datalet.js"></script>
+    <script type="module" src="./timeline-datalet/timeline-datalet.js"></script>
+    <script type="module" src="./pyramidchart-datalet/pyramidchart-datalet.js"></script>
+    <script type="module" src="./funnelchart-datalet/funnelchart-datalet.js"></script>
+    <script type="module" src="./wordcloud-datalet/wordcloud-datalet.js"></script>
+    <script type="module" src="./datatable-datalet/datatable-datalet.js"></script>
+    <script type="module" src="./mediaslider-datalet/mediaslider-datalet.js"></script>
+
     <!--<link rel="import" href="./audioslider-datalet/audioslider-datalet.html">-->
 
 </head>
-
-<meta charset=utf-8>
 
 <body>
 
@@ -68,12 +86,12 @@
     <leafletjs-datalet         data-url="http://hetor.databenc.it/api/3/action/datastore_search?resource_id=ac24e515-aaf5-4119-a1cd-b1dfa7a2c2fb&amp;limit=99999" selectedfields="[{&quot;field&quot;:&quot;Latitude&quot;,&quot;value&quot;:&quot;Geolocalizzazione&quot;,&quot;index&quot;:4},{&quot;field&quot;:&quot;Longitude&quot;,&quot;value&quot;:&quot;Geolocalizzazione&quot;,&quot;index&quot;:4},{&quot;field&quot;:&quot;BalloonContent&quot;,&quot;value&quot;:&quot;Nome Località&quot;,&quot;index&quot;:7},{&quot;field&quot;:&quot;BalloonContent&quot;,&quot;value&quot;:&quot;Comune&quot;,&quot;index&quot;:1},{&quot;field&quot;:&quot;BalloonContent&quot;,&quot;value&quot;:&quot;Provincia&quot;,&quot;index&quot;:8},{&quot;field&quot;:&quot;BalloonContent&quot;,&quot;value&quot;:&quot;Immagine&quot;,&quot;index&quot;:5},null,null,null,null,null,{&quot;field&quot;:&quot;Categories&quot;,&quot;value&quot;:&quot;Fondale&quot;,&quot;index&quot;:3}]" filters="[]" aggregators="[]" orders="[]" datalettitle="Mappa delle spiagge con bandiera blu 2018 in Campania" description="" data=""></leafletjs-datalet>
     <leafletjs-geojson-datalet data-url='http://spod.routetopa.eu/cocreation/ajax/get-array-of-object-sheet-data/?sheetName=dataset_room_22_aSnOb'                      selectedfields='[{"field":"GEOJSON","value":"geo","index":1},null]' fields='[]' filters='[]' aggregators='[]' orders='[]' datalettitle='test' description=''></leafletjs-geojson-datalet>
     <treemap-datalet           data-url="http://ckan.routetopa.eu:8080//api/3/action/datastore_search?resource_id=f7d25b8a-64bd-4a4b-bcb9-6f3c5a1298a3&amp;limit=99999" selectedfields="[{&quot;field&quot;:&quot;Level&quot;,&quot;value&quot;:&quot;Cap&quot;,&quot;index&quot;:1},{&quot;field&quot;:&quot;Level&quot;,&quot;value&quot;:&quot;Codice_Istat_Comune&quot;,&quot;index&quot;:2}]" filters="[]" aggregators="[]" orders="[]" export_menu="0" datalettitle="test" description=""></treemap-datalet>
-    <timeline-datalet          data-url="http://ckan.routetopa.eu:8080//api/3/action/datastore_search?resource_id=3030cc82-645c-43d7-95ad-797979bfbead&amp;limit=99999" selectedfields="[{&quot;field&quot;:&quot;StartDate&quot;,&quot;value&quot;:&quot;PERIODO&quot;,&quot;index&quot;:9},{&quot;field&quot;:&quot;EndDate&quot;,&quot;value&quot;:&quot;PERIODO&quot;,&quot;index&quot;:9},{&quot;field&quot;:&quot;EventTitle&quot;,&quot;value&quot;:&quot;NOME&quot;,&quot;index&quot;:7},{&quot;field&quot;:&quot;EventDescription&quot;,&quot;value&quot;:&quot;DESCRIZIONE&quot;,&quot;index&quot;:3},{&quot;field&quot;:&quot;EventDescription&quot;,&quot;value&quot;:&quot;IMMAGINE&quot;,&quot;index&quot;:5},{&quot;field&quot;:&quot;EventDescription&quot;,&quot;value&quot;:&quot;DOCUMENTI&quot;,&quot;index&quot;:4},{&quot;field&quot;:&quot;EventDescription&quot;,&quot;value&quot;:&quot;STORIE&quot;,&quot;index&quot;:12},{&quot;field&quot;:&quot;EventDescription&quot;,&quot;value&quot;:&quot;TIPOLOGIA&quot;,&quot;index&quot;:14},{&quot;field&quot;:&quot;EventDescription&quot;,&quot;value&quot;:&quot;Rilevatore&quot;,&quot;index&quot;:11},{&quot;field&quot;:&quot;EventDescription&quot;,&quot;value&quot;:&quot;Sito web&quot;,&quot;index&quot;:13},null,null,null,null,{&quot;field&quot;:&quot;MediaUrl&quot;,&quot;value&quot;:&quot;IMMAGINE&quot;,&quot;index&quot;:5},null]" filters="[]" aggregators="[]" orders="[]" date-format="MDY" datalettitle="I tabernacoli a Prato (circa 275)" description="" data=""></timeline-datalet>
     <pyramidchart-datalet      data-url="http://hetor.databenc.it/api/3/action/datastore_search?resource_id=eb5ac153-e454-4c75-8ce4-3dd0946ac67f&amp;limit=99999" selectedfields="[{&quot;field&quot;:&quot;SliceLabels&quot;,&quot;value&quot;:&quot;Provincia&quot;,&quot;index&quot;:1},{&quot;field&quot;:&quot;SliceSizes&quot;,&quot;value&quot;:&quot;COUNT(Nome Azienda)&quot;,&quot;index&quot;:1}]" filters="[]" aggregators="[{&quot;field&quot;:&quot;Provincia&quot;,&quot;operation&quot;:&quot;GROUP BY&quot;},{&quot;field&quot;:&quot;Nome Azienda&quot;,&quot;operation&quot;:&quot;COUNT&quot;}]" orders="[{&quot;field&quot;:&quot;Provincia&quot;,&quot;operation&quot;:&quot;ASC&quot;}]" suffix="" legend="topRight" data-labels="true" donut="true" theme="themeDarkUnica" datalettitle="Divisione per provincia delle aziende biologiche" description="" data=""></pyramidchart-datalet>
     <funnelchart-datalet       data-url="http://hetor.databenc.it/api/3/action/datastore_search?resource_id=eb5ac153-e454-4c75-8ce4-3dd0946ac67f&amp;limit=99999" selectedfields="[{&quot;field&quot;:&quot;SliceLabels&quot;,&quot;value&quot;:&quot;Provincia&quot;,&quot;index&quot;:1},{&quot;field&quot;:&quot;SliceSizes&quot;,&quot;value&quot;:&quot;COUNT(Nome Azienda)&quot;,&quot;index&quot;:1}]" filters="[]" aggregators="[{&quot;field&quot;:&quot;Provincia&quot;,&quot;operation&quot;:&quot;GROUP BY&quot;},{&quot;field&quot;:&quot;Nome Azienda&quot;,&quot;operation&quot;:&quot;COUNT&quot;}]" orders="[{&quot;field&quot;:&quot;Provincia&quot;,&quot;operation&quot;:&quot;ASC&quot;}]" suffix="" legend="topRight" data-labels="true" donut="true" theme="themeDarkUnica" datalettitle="Divisione per provincia delle aziende biologiche" description="" data=""></funnelchart-datalet>
     <wordcloud-datalet         data-url="http://hetor.databenc.it/api/3/action/datastore_search?resource_id=eb5ac153-e454-4c75-8ce4-3dd0946ac67f&amp;limit=99999" selectedfields="[{&quot;field&quot;:&quot;SliceLabels&quot;,&quot;value&quot;:&quot;Provincia&quot;,&quot;index&quot;:1},{&quot;field&quot;:&quot;SliceSizes&quot;,&quot;value&quot;:&quot;COUNT(Nome Azienda)&quot;,&quot;index&quot;:1}]" filters="[]" aggregators="[{&quot;field&quot;:&quot;Provincia&quot;,&quot;operation&quot;:&quot;GROUP BY&quot;},{&quot;field&quot;:&quot;Nome Azienda&quot;,&quot;operation&quot;:&quot;COUNT&quot;}]" orders="[{&quot;field&quot;:&quot;Provincia&quot;,&quot;operation&quot;:&quot;ASC&quot;}]" suffix="" legend="topRight" data-labels="true" donut="true" theme="themeDarkUnica" datalettitle="Divisione per provincia delle aziende biologiche" description="" data=""></wordcloud-datalet>
     <datatable-datalet         data-url="http://ckan.routetopa.eu:8080//api/3/action/datastore_search?resource_id=f7d25b8a-64bd-4a4b-bcb9-6f3c5a1298a3&amp;limit=99999" selectedfields="[{&quot;field&quot;:&quot;Column&quot;,&quot;value&quot;:&quot;Cap&quot;,&quot;index&quot;:1},{&quot;field&quot;:&quot;Column&quot;,&quot;value&quot;:&quot;Cellulare&quot;,&quot;index&quot;:2},{&quot;field&quot;:&quot;Column&quot;,&quot;value&quot;:&quot;Codice_Isil&quot;,&quot;index&quot;:3}]" filters="[]" aggregators="[]" orders="[]" datalettitle="DatatableDatalet" description=""></datatable-datalet>
     <mediaslider-datalet       data-url="http://ckan.routetopa.eu:8080//api/3/action/datastore_search?resource_id=3030cc82-645c-43d7-95ad-797979bfbead&amp;limit=99999" selectedfields="[{&quot;field&quot;:&quot;MediaUrl&quot;,&quot;value&quot;:&quot;IMMAGINE&quot;,&quot;index&quot;:5},{&quot;field&quot;:&quot;MediaTitle&quot;,&quot;value&quot;:&quot;NOME&quot;,&quot;index&quot;:7},{&quot;field&quot;:&quot;MediaDescription&quot;,&quot;value&quot;:&quot;DESCRIZIONE&quot;,&quot;index&quot;:3}]" filters="[{&quot;field&quot;:&quot;Rilevatore&quot;,&quot;operation&quot;:&quot;contains&quot;,&quot;value&quot;:&quot;cironi&quot;,&quot;logicalOperator&quot;:&quot;&quot;,&quot;lp&quot;:&quot;&quot;,&quot;rp&quot;:&quot;&quot;}]" aggregators="[]" orders="[]" animation="random" datalettitle="Mappature Tabernacoli a Prato (Scuola I.C. S- Pier Cironi)" description="" data=""></mediaslider-datalet>
+    <timeline-datalet          data-url="http://ckan.routetopa.eu:8080//api/3/action/datastore_search?resource_id=3030cc82-645c-43d7-95ad-797979bfbead&amp;limit=99999" selectedfields="[{&quot;field&quot;:&quot;StartDate&quot;,&quot;value&quot;:&quot;PERIODO&quot;,&quot;index&quot;:9},{&quot;field&quot;:&quot;EndDate&quot;,&quot;value&quot;:&quot;PERIODO&quot;,&quot;index&quot;:9},{&quot;field&quot;:&quot;EventTitle&quot;,&quot;value&quot;:&quot;NOME&quot;,&quot;index&quot;:7},{&quot;field&quot;:&quot;EventDescription&quot;,&quot;value&quot;:&quot;DESCRIZIONE&quot;,&quot;index&quot;:3},{&quot;field&quot;:&quot;EventDescription&quot;,&quot;value&quot;:&quot;IMMAGINE&quot;,&quot;index&quot;:5},{&quot;field&quot;:&quot;EventDescription&quot;,&quot;value&quot;:&quot;DOCUMENTI&quot;,&quot;index&quot;:4},{&quot;field&quot;:&quot;EventDescription&quot;,&quot;value&quot;:&quot;STORIE&quot;,&quot;index&quot;:12},{&quot;field&quot;:&quot;EventDescription&quot;,&quot;value&quot;:&quot;TIPOLOGIA&quot;,&quot;index&quot;:14},{&quot;field&quot;:&quot;EventDescription&quot;,&quot;value&quot;:&quot;Rilevatore&quot;,&quot;index&quot;:11},{&quot;field&quot;:&quot;EventDescription&quot;,&quot;value&quot;:&quot;Sito web&quot;,&quot;index&quot;:13},null,null,null,null,{&quot;field&quot;:&quot;MediaUrl&quot;,&quot;value&quot;:&quot;IMMAGINE&quot;,&quot;index&quot;:5},null]" filters="[]" aggregators="[]" orders="[]" date-format="MDY" datalettitle="I tabernacoli a Prato (circa 275)" description="" data=""></timeline-datalet>
 
     <!-- ALL -->
     <!--

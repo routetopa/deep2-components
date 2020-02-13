@@ -22,8 +22,9 @@ class DatatableDatalet extends BaseDatalet
 
     template()
     {
-        const template = this.currentDocument.querySelector('#datatable-datalet');
-        return template.content.cloneNode(true);
+        return this.create_node(`
+            <link rel="stylesheet" type="text/css" href="./js/DataTables/datatables.css"/> 
+        `);
     }
 
     async render(data)

@@ -23,8 +23,7 @@ class AreachartDatalet extends BaseDatalet
 
     template()
     {
-        const template = this.currentDocument.querySelector('#areachart-datalet');
-        return template.content.cloneNode(true);
+        return this.create_node('');
     }
 
     async render(data)

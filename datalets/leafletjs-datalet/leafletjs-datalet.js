@@ -23,8 +23,11 @@ class LeafletDatalet extends BaseDatalet
 
     template()
     {
-        const template = this.currentDocument.querySelector('#leaflet-datalet');
-        return template.content.cloneNode(true);
+        return this.create_node(`
+            <link rel="stylesheet" href="./leafletjs/leaflet.css">
+            <link rel="stylesheet" href="./leafletjs/marker_cluster/dist/MarkerCluster.css">
+            <link rel="stylesheet" href="./leafletjs/marker_cluster/dist/MarkerCluster.Default.css">          
+        `);
     }
 
     async render(data)

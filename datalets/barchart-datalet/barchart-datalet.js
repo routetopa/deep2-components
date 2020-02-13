@@ -23,8 +23,7 @@ class BarchartDatalet extends BaseDatalet
 
     template()
     {
-        const template = this.currentDocument.querySelector('#barchart-datalet');
-        return template.content.cloneNode(true);
+        return this.create_node('');
     }
 
     async render(data)
