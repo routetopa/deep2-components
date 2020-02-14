@@ -11,7 +11,7 @@ export default class BaseDatalet extends HTMLElement {
 
         this.component = component;
 
-        let currentDocument = document.querySelector(`script[src*="${this.component}"]`).src;
+        let currentDocument = document.querySelector(`script[src*="${this.component}/${this.component}.js"]`).src;
         this.baseUri = currentDocument.substring(0, currentDocument.lastIndexOf("/") + 1);
 
         currentDocument = currentDocument.split('/');
