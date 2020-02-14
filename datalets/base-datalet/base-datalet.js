@@ -746,7 +746,7 @@ export default class BaseDatalet extends HTMLElement {
         // let script = `<script src="${baseUri}../lib/vendors/webcomponents_lite_polyfill/webcomponents-lite.js"></script>`;
 
         let style = `<style>html,body{height:100%;margin:0;padding:0;} ${this.component}{--base-datalet-visibility:none; --datalet-container-size:100%}</style>`;
-        let datalet_definition = `<link rel="import" href="${baseUri}${this.component}.html" />`;
+        let datalet_definition = `<script type="module" src="${baseUri}${this.component}.js" />`;
 
         let temp = document.createElement('div');
         temp.innerHTML = this.outerHTML;
