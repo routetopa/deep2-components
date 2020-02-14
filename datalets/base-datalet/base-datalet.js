@@ -741,9 +741,8 @@ export default class BaseDatalet extends HTMLElement {
     get_html() {
         let baseUri = this.baseUri.replace('http:', 'https:');
 
-        let script = `<script src="${baseUri}../lib/vendors/webcomponents_polyfill_ff/webcomponents-hi-sd-ce.js"></script>`;
-        script += `<script src="${baseUri}../lib/vendors/webcomponents_lite_polyfill/webcomponents-lite.js"></script>`;
-        // let script = `<script src="${baseUri}../lib/vendors/webcomponents_lite_polyfill/webcomponents-lite.js"></script>`;
+        //let script = `<script src="${baseUri}../lib/vendors/webcomponents_polyfill_ff/webcomponents-hi-sd-ce.js"></script>`;
+        let script = `<script src="${baseUri}../lib/vendors/webcomponents_lite_polyfill/webcomponents-lite.js"></script>`;
 
         let style = `<style>html,body{height:100%;margin:0;padding:0;} ${this.component}{--base-datalet-visibility:none; --datalet-container-size:100%}</style>`;
         let datalet_definition = `<script type="module" src="${baseUri}${this.component}.js" ></script>`;
