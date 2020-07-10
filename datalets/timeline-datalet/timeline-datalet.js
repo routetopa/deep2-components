@@ -48,7 +48,7 @@ class TimelineDatalet extends BaseDatalet {
         document.head.appendChild(newStyle);
         /**/
 
-        const existingScript = document.getElementById('timeline');
+        const existingScript = document.getElementById('timeline_id');
 
         if (!existingScript) {
             const script = document.createElement('script');
