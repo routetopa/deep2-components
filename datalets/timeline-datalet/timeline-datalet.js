@@ -52,7 +52,7 @@ class TimelineDatalet extends BaseDatalet {
 
         if (!existingScript) {
             const script = document.createElement('script');
-            script.src = './timeline-datalet/js/timeline.js'; // URL for the third-party library being loaded.
+            script.src = './datalets/timeline-datalet/js/timeline.js'; // URL for the third-party library being loaded.
             script.id = 'timeline_id'; // e.g., googleMaps or stripe
             document.body.appendChild(script);
 
