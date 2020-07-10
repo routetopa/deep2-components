@@ -52,8 +52,16 @@ class TimelineDatalet extends BaseDatalet {
 
         if (!existingScript) {
             const script = document.createElement('script');
-            script.src = './datalets/timeline-datalet/js/timeline.js'; // URL for the third-party library being loaded.
-            script.id = 'timeline_id'; // e.g., googleMaps or stripe
+            //local
+            // script.src = './timeline-datalet/js/timeline.js';
+            //creator
+            // script.src = './datalets/timeline-datalet/js/timeline.js';
+            //spod
+            if(typeof ODE !== 'undefined')
+                script.src = ODE.deep_components + 'datalets/timeline-datalet/js/timeline.js';
+            else //more
+                script.src = 'http://deep.routetopa.eu/deep2t/COMPONENTS/datalets/timeline-datalet/js/timeline.js'
+            script.id = 'timeline_id';
             document.body.appendChild(script);
 
             script.onload = () => {
