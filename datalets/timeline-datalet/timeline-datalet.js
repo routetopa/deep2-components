@@ -25,16 +25,44 @@ class TimelineDatalet extends BaseDatalet {
                     display: block !important;
                 }
             </style>             
-            <link title="timeline-styles" rel="stylesheet" href="https://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css">                          
+            <link title="timeline-styles" rel="stylesheet" href="./css/timeline.css">
         `);
     }
 
-/*    lightTemplate()
-    {
-        return this.create_node(`
-            <script src="./js/timeline-min.js"></script>
-        `);
-    }*/
+    loadDynamicScript(callback) {
+        /**/
+        let newStyle = document.createElement('style');
+        newStyle.appendChild(document.createTextNode(`
+            @font-face {
+                font-family:tl-icons;
+                src:url(https://cdn.knightlab.com/libs/timeline3/latest/css/icons/tl-icons.eot);
+                src:url(https://cdn.knightlab.com/libs/timeline3/latest/css/icons/tl-icons.eot?#iefix) format('embedded-opentype'),
+                url(https://cdn.knightlab.com/libs/timeline3/latest/css/icons/tl-icons.ttf) format('truetype'),
+                url(https://cdn.knightlab.com/libs/timeline3/latest/css/icons/tl-icons.woff2) format('woff2'),
+                url(https://cdn.knightlab.com/libs/timeline3/latest/css/icons/tl-icons.woff) format('woff'),
+                url(https://cdn.knightlab.com/libs/timeline3/latest/css/icons/tl-icons.svg#tl-icons) format('svg');
+                font-weight:400;
+                font-style:normal
+            }
+        `));
+        document.head.appendChild(newStyle);
+        /**/
+
+        const existingScript = document.getElementById('timeline');
+
+        if (!existingScript) {
+            const script = document.createElement('script');
+            script.src = './timeline-datalet/js/timeline.js'; // URL for the third-party library being loaded.
+            script.id = 'timeline_id'; // e.g., googleMaps or stripe
+            document.body.appendChild(script);
+
+            script.onload = () => {
+                if (callback) callback();
+            };
+        }
+
+        if (existingScript && callback) callback();
+    };
 
     async render(data)
     {
@@ -258,8 +286,9 @@ class TimelineDatalet extends BaseDatalet {
 
         let options = {};
 
-        new TL.Timeline(this.shadowRoot.querySelector('#datalet_container'), _json, options);
-
+        this.loadDynamicScript(()=>{
+            new TL.Timeline(this.shadowRoot.querySelector('#datalet_container'), _json, options);
+        })
     }
 }
 
