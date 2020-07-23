@@ -22,7 +22,7 @@ CREATOR.injectHTML  = function(ln, datasets) {
         '<demo-data-sevc-controllet'+
         ' id="controllet"'+
         ' components-url="../COMPONENTS/"'+
-        ' deep-url="../DEEP/"'+
+        ' deep-url="../DEEP/"'+//http://deep.routetopa.eu/deep2t/DEEP/
         ' datalets-list-url="../DEEP/datalets-list"'+
         ' localization="'+ ln + '">'+
         '</demo-data-sevc-controllet>'
@@ -33,12 +33,15 @@ CREATOR.init = function() {
     $("#controllet").attr("datasets", JSON.stringify(datasets));
 
     setTimeout(() => {
-        $("#options")[0].innerHTML = "";
+        if($("#options").length)
+            $("#options")[0].innerHTML = "";
         $("button.outside").prop('disabled', true);
     }, 1000);
 };
 
 CREATOR.translate = function() {
+    if(!LN)
+        return;
     $('#btn_share').attr("data-balloon", LN.translate("btn_share"));
     $('#btn_download').attr("data-balloon", LN.translate("btn_download"));
     $('#btn_embed').attr("data-balloon", LN.translate("btn_embed"));

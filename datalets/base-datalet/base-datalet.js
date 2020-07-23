@@ -125,10 +125,19 @@ export default class BaseDatalet extends HTMLElement {
     }
 
     async work_cycle() {
-        if (!this.cache || (typeof ODE === 'undefined' && typeof parent.ODE === 'undefined'))
-            this.use_live_data();
-        else
-            this.use_cache();
+        try{
+            if (!this.cache || (typeof ODE === 'undefined' && typeof parent.ODE === 'undefined'))
+                this.use_live_data();
+            else
+                this.use_cache();
+            // accessible
+        }catch(e){
+            if (!this.cache)
+                this.use_live_data();
+            else
+                this.use_cache();
+            // not accessible
+        }
     }
 
     async use_live_data() {
@@ -271,11 +280,16 @@ export default class BaseDatalet extends HTMLElement {
     }
 
     set_export_menu() {
-        if(typeof ODE === 'undefined' && typeof parent.ODE === 'undefined')
-        {
-            this.shadow_root.querySelector('#link').style.display = 'none';
-            this.shadow_root.querySelector('#myspace-action').style.display = 'none';
-            this.shadow_root.querySelector('#social').style.display = 'none';
+        try{
+            if(typeof ODE === 'undefined' && typeof parent.ODE === 'undefined')
+            {
+                this.shadow_root.querySelector('#link').style.display = 'none';
+                this.shadow_root.querySelector('#myspace-action').style.display = 'none';
+                this.shadow_root.querySelector('#social').style.display = 'none';
+            }
+            // accessible
+        }catch(e){
+            // not accessible
         }
 
         if(this.hasAttribute("disable_html_export") || this.hasAttribute("disable_html")) //todo ??
