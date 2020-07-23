@@ -323,8 +323,13 @@
 
                     this.options = true;
 
-                    if(!parent.ODE || !parent.ODE.ode_ultra_clarity_url) {
-                        $(this.$.tab_extended).attr("disabled", "disabled");
+                    try{
+                        // accessible
+                        if(!parent.ODE || !parent.ODE.ode_ultra_clarity_url) {
+                            $(this.$.tab_extended).attr("disabled", "disabled");
+                        }
+                    }catch(e){
+                        // not accessible
                     }
                 },
 
