@@ -20,7 +20,7 @@ RC.init = async function() {
     setTimeout(() => {
         if($("#options").length && Object.keys(datasets).length < 2)
             $("#options")[0].innerHTML = "";
-        $(".tab-content")[0].innerHTML = "LISTA DATASET REGIONE CAMPANIA";//todo ln
+        $(".tab-content")[0].innerHTML = "LISTA DATASET REGIONE CALABRIA";//todo ln
 
         $("button.outside").prop('disabled', true);
     }, 1000);

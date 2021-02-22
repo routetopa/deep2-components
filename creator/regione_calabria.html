@@ -1,0 +1,73 @@
+<html>
+
+    <head>
+        <meta charset="utf-8">
+
+        <link href="../../COMPONENTS/datalets/base-datalet/static/css/all.min.css" rel="stylesheet">
+        <link href="../../COMPONENTS/datalets/base-datalet/static/css/baloon.min.css" rel="stylesheet">
+
+        <link rel='shortcut icon' type='image/x-icon' href='regione_calabria/favicon.ico' />
+
+        <script src="../../COMPONENTS/datalets/lib/vendors/webcomponents_polyfill_ff/webcomponents-hi-sd-ce.js"></script>
+        <script type="text/javascript" src="../../COMPONENTS/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <script type="text/javascript" src="../../DEEPCLIENT/js/jquery-2.1.0.min.js"></script>
+        <link rel="import" href="../../COMPONENTS/controllets/data-sevc-controllet/demo-data-sevc-controllet.html">
+
+        <script type="text/javascript" src="./regione_calabria/datasets.js"></script>
+        <script type="text/javascript" src="create_cache.js"></script>
+        <script type="text/javascript" src="creator.js"></script>
+        <script type="text/javascript" src="regione_calabria/rc_creator.js"></script>
+        <link href="regione_calabria/rc_creator.css" rel="stylesheet">
+
+        <script>
+
+            $(function () {
+                let ln = CREATOR.ln();
+                RC.injectHTML(ln);
+                RC.init();
+                CREATOR.setListeners();
+            });
+
+            $( document ).ready(function() {
+                setTimeout(() => {
+                    CREATOR.translate();
+                }, 1000);
+            });
+
+        </script>
+
+    </head>
+
+    <body>
+
+        <button class="outside" id="btn_share" data-balloon="" data-balloon-pos="down"><i class="fas fa-share-alt"></i></button>
+        <button class="outside" id="btn_download" data-balloon="" data-balloon-pos="down"><i class="fas fa-download"></i></button>
+        <button class="outside" id="btn_embed" data-balloon="" data-balloon-pos="down"><i class="fas fa-code"></i></button>
+        <button class="outside" id="btn_fullscreen" data-balloon="" data-balloon-pos="down"><i class="fas fa-expand"></i></button>
+
+        <div id="download-modal" class="sm-modal">
+            <div class="sm-modal-content">
+                <div class="sm-modal-close">&times;</div>
+                <div id="btn_png" class="action"></div>
+                <div id="btn_doc" class="action"></div>
+                <div id="btn_csv" class="action"></div>
+                <!--<div id="btn_csv" class="action">Salva dataset completo (.csv)</div>-->
+                <!--<div id="btn_fcsv" class="action">Salva dataset filtrato (.csv)</div>-->
+                <!--<div id="btn_close" class="action">Servizio non disponibile per questa Datalet</div>-->
+            </div>
+        </div>
+
+        <div id="share-modal" class="sm-modal">
+            <div class="sm-modal-content">
+                <div class="sm-modal-close">&times;</div>
+                <div id="btn_fb" class="action"><i class="fab fa-facebook-square"></i> <span id="label_fb"></span></div>
+                <div id="btn_tw" class="action"><i class="fab fa-twitter-square"></i> <span id="label_tw"></span></div>
+                <div id="btn_li" class="action"><i class="fab fa-linkedin"></i> <span id="label_li"></span></div>
+                <div id="btn_pn" class="action"><i class="fab fa-pinterest-square"></i> <span id="label_pn"></span></div>
+                <div id="btn_ml" class="action"><i class="fas fa-envelope-square"></i> <span id="label_ml"></span></div>
+            </div>
+        </div>
+
+    </body>
+
+</html>

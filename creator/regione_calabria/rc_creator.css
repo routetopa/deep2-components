@@ -1,0 +1,229 @@
+/* BUTTON */
+
+paper-button#add_button {
+    display: none;
+}
+
+button.outside {
+    display: none;
+
+    position: absolute;
+    top: 16px;
+    z-index: 1;
+
+    height: 48px;
+    width: 72px;
+
+    font-family: Lato, Helvetica, Arial, sans-serif;
+    background-color: #ffffff;
+    border: 3px solid #3da5be;
+    border-radius: 24px;
+}
+
+button.outside:hover {
+    background-color: #eee;
+}
+
+button.outside:disabled {
+    opacity: 0.5;
+}
+
+.outside .fas {
+    font-size: 24px;
+    color: #3da5be;
+}
+
+#btn_share {
+    right: 344px;
+}
+#btn_download {
+    right: 240px;
+}
+#btn_embed {
+    right: 136px;
+}
+
+#btn_fullscreen {
+    right: 32px;
+}
+
+.outside[data-balloon]:after {
+    text-transform: uppercase;
+    font-weight: 700 !important;
+}
+
+/* MODAL */
+
+.sm-modal{
+    display: none; /* flex */
+    justify-content: center;
+    align-items: center;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 9000;
+
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.sm-modal-content {
+    position: relative;
+    width: 600px;
+    background-color: white;
+    border-radius: 25px;
+    border: 3px solid #3da5be !important;
+}
+
+.sm-modal-content .action {
+    height: 48px;
+    font-size: 24px;
+    font-weight: 700;
+    font-family: Lato, Helvetica, Arial, sans-serif;
+    color: #3da5be;
+    line-height: 48px;
+    padding: 12px 48px 12px 48px;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+/*.sm-modal-content #btn_close.action {*/
+    /*color: #b8b8b8;*/
+/*}*/
+
+.sm-modal-content .action:hover {
+    background-color: #eee;
+}
+
+.sm-modal-content .action i {
+    font-size: 48px;
+    margin-right: 48px;
+}
+
+#btn_fb i {
+    color: #4862A3;
+}
+
+#btn_tw i {
+    color: #55ACEE;
+}
+
+#btn_li i {
+    color: #0077B5;
+}
+
+#btn_in i {
+    color: #fb3958;
+}
+
+#btn_pn i {
+    color: #c8232c;
+}
+
+#btn_ml i {
+    color: #B6B6B6;
+}
+
+.sm-modal-close {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    height: 40px;
+    width: 40px;
+    border: 3px solid #3da5be;
+    border-radius: 50%;
+    line-height: 40px;
+    font-size: 32px;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+    background-color: #fff;
+    color: #3da5be;
+    z-index: 9002;
+}
+
+.sm-modal-close:hover {
+    background-color: #eee;
+}
+
+/* LOGO */
+
+.logo.page-slider-controllet {
+    display: inline-block;
+    background-image: url('logo.png');
+    background-repeat: no-repeat;
+    background-size: 64px 64px;
+}
+
+.logo2.page-slider-controllet {
+    display: inline-block;
+    height: 64px;
+    width: 178px;
+    margin: 0 20px;
+    background-image: url('logo_open_data.png');
+    background-repeat: no-repeat;
+    background-size: 178px 64px;
+}
+
+/* FONT */
+
+/* latin-ext */
+@font-face {
+    font-family: Lato, Helvetica, Arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+}
+/* latin */
+@font-face {
+    font-family: Lato, Helvetica, Arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+}
+
+demo-data-sevc-controllet * {
+    font-family: Lato, Helvetica, Arial, sans-serif !important;
+}
+
+div.close {
+    line-height: 36px !important;
+}
+
+/* COLORS */
+
+.avatar.page-slider-controllet,
+paper-tab.iron-selected.demo-select-dataset-controllet,
+#info_header,
+paper-item.iron-selected.datasets-list-controllet,
+paper-item.iron-selected.select-fields-controllet,
+#data_table_container.data-table-controllet th.data-table-controllet,
+paper-tab.iron-selected.expert-query-controllet,
+paper-button.aggregators-controllet,
+paper-button.filters-controllet,
+.arrow-up.style-scope.items-vslider-controllet,
+.arrow-down.style-scope.items-vslider-controllet,
+paper-tab.iron-selected.select-inputs-controllet,
+paper-tab.iron-selected.datalet-preview-controllet
+{
+    background-color: #3da5be !important;
+}
+
+paper-item.datasets-list-controllet:hover:not(.iron-selected) {
+    background-color: #3dbeb7 !important;
+}
+
+.title.page-slider-controllet,
+paper-icon-button.add.filters-controllet,
+paper-icon-button.add.aggregators-controllet
+{
+    color: #3da5be !important;
+}
+
+/*paper-icon-button.page-slider-controllet {*/
+    /*color: #ff5722 !important;*/
+/*}*/
+
+/*paper-icon-button.page-slider-controllet:hover {*/
+    /*color: #c41c00 !important;*/
+/*}*/

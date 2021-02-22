@@ -29,11 +29,13 @@ CREATOR.injectHTML  = function(ln, datasets) {
     );
 };
 
-CREATOR.init = function() {
-    $("#controllet").attr("datasets", JSON.stringify(datasets));
+CREATOR.init = async function() {
+    if(!datasets)
+        datasets = await CREATE_CACHE.init();
 
+    $("#controllet").attr("datasets", JSON.stringify(datasets));
     setTimeout(() => {
-        if($("#options").length)
+        if($("#options").length && Object.keys(datasets).length < 2)
             $("#options")[0].innerHTML = "";
         $("button.outside").prop('disabled', true);
     }, 1000);
