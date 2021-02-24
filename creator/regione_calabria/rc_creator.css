@@ -160,11 +160,14 @@ button.outside:disabled {
 .logo2.page-slider-controllet {
     display: inline-block;
     height: 64px;
-    width: 178px;
-    margin: 0 20px;
+    width: 128px;
     background-image: url('logo_open_data.png');
     background-repeat: no-repeat;
-    background-size: 178px 64px;
+    background-size: 128px 64px;
+}
+
+.text.page-slider-controllet {
+    width: calc(100% - 316px);
 }
 
 /* FONT */
@@ -217,6 +220,10 @@ paper-item.datasets-list-controllet:hover:not(.iron-selected) {
 paper-icon-button.add.filters-controllet,
 paper-icon-button.add.aggregators-controllet
 {
+    color: #3da5be !important;
+}
+
+#select_fields_controllet_container.select-fields-controllet #header.select-fields-controllet:hover {
     color: #3da5be !important;
 }
 
