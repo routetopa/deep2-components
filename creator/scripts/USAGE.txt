@@ -1,0 +1,3 @@
+To use the script and update the dataset cache
+
+php PATH/ckan_dataset_generator.php > CREATOR_PATH/dataset.js
