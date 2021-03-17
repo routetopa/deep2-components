@@ -21,6 +21,28 @@
         <script>
 
             $(function () {
+
+                CREATOR_FROM.injectHTML  = function(ln, datasets) {
+                    let url_string = window.location.href;
+                    let url = new URL(url_string);
+                    let dataUrl = url.searchParams.get("data-url");
+                    let limit = url.searchParams.get("limit");
+
+                    if(limit)
+                        dataUrl += '&limit=' + limit;
+
+                    $("body").append(
+                        '<co-datalets-creator-controllet'+
+                        ' id="controllet"'+
+                        ' components-url="../COMPONENTS/"'+
+                        ' deep-url="../../DEEP/"'+
+                        ' datalets-list-url="../../DEEP/datalets-list"'+
+                        ' data-url="'+ dataUrl + '"'+
+                        ' localization="'+ ln + '">'+
+                        '</co-datalets-creator-controllet>'
+                    );
+                };
+
                 let ln = CREATOR.ln();
                 CREATOR_FROM.injectHTML(ln);
                 CREATOR_FROM.init();
