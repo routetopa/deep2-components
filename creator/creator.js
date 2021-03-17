@@ -87,10 +87,13 @@ CREATOR.enableButtons  = function(e) {
 };
 
 CREATOR.toggleButtons  = function(e) {
-    if(e.detail.selected == 2)
+    if(e.detail.selected == 2) {
         $("button.outside").show();
-    else
+        $("div.outside").show();
+    } else {
         $("button.outside").hide();
+        $("div.outside").hide();
+    }
 };
 
 CREATOR.closeDownloadModal = function() {
