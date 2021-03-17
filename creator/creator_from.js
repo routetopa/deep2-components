@@ -49,8 +49,12 @@ CREATOR_FROM.setListeners = function() {
 };
 
 CREATOR_FROM.toggleButtons  = function(e) {
-    if(e.detail.selected == 1)
+    if(e.detail.selected == 1) {
         $("button.outside").show();
-    else
+        $("div.outside").show();
+    }
+    else {
         $("button.outside").hide();
+        $("div.outside").hide();
+    }
 };

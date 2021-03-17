@@ -4,12 +4,23 @@ paper-button#add_button {
     display: none;
 }
 
+div.outside {
+    position: absolute;
+    top: 16px;
+    right: 8px;
+    z-index: 1;
+
+    height: 48px;
+    width: 396px;
+
+    background-color: #ffffff;
+}
+
 button.outside {
     display: none;
 
-    position: absolute;
-    top: 16px;
-    z-index: 1;
+    position: relative;
+    margin-left: 32px;
 
     height: 48px;
     width: 72px;
@@ -34,17 +45,18 @@ button.outside:disabled {
 }
 
 #btn_share {
-    right: 344px;
+    margin-left: 0;
+    /*right: 344px;*/
 }
 #btn_download {
-    right: 240px;
+    /*right: 240px;*/
 }
 #btn_embed {
-    right: 136px;
+    /*right: 136px;*/
 }
 
 #btn_fullscreen {
-    right: 32px;
+    /*right: 32px;*/
 }
 
 .outside[data-balloon]:after {
