@@ -2317,3 +2317,53 @@ ln["label_ml_it"] = "Invia Mail";
 ln["fb1_it"] = "Questa visualizzazione non supporta ancora la condivisione su Facebook.";
 ln["fb2_it"] = "Verr\u00e0 scaricata l'immagine della visualizzazione e sar\u00e0 copiato del testo descrittivo negli appunti per velocizzare e semplificare la pubblicazione su Facebook.";
 
+
+//logtimeline english lan
+ln["timeline_en"] = "logtimeline-datalet";
+
+ln["Start Date"] = "StartDate";
+ln["StartDatedescription_en"] = "Event Start Date";
+
+ln["End Date"] = "EndDate";
+ln["EndDatedescription_en"] = "Event End Date";
+
+ln["Event Title"] = "EventTitle";
+ln["EventTitledescription_en"] = "Name of the event";
+
+ln["Event Description"] = "EventDescription";
+ln["EventDescriptiondescription_en"] = "Event Description";
+
+ln["MediaUrl"] = "MediaUrl";
+ln["MediaUrldescription_en"] = "Url of video/image";
+
+ln["Background"] = "Background";
+ln["Backgrounddescription_en"] = "Url of background image";
+
+ln["Start Time"] = "StartTime";
+ln["StartTimedescription_en"] = "Event start time";
+
+ln["Finish Time"] = "FinishTime";
+ln["FinishTimedescription_en"] = "Event end time";
+
+ln["Event info 1"] = "Event-info1";
+ln["EventInfo1description_en"] = "Additional info 1";
+
+ln["Event info 2"] = "Event-info2";
+ln["EventInfo2description_en"] = "Additional info 2";
+
+ln["Event info 3"] = "Event-info3";
+ln["EventInfo3description_en"] = "Additional info 3";
+
+//logtimeline italian lan
+ln["timeline_it"] = "logtimeline-datalet";
+ln["StartDatedescription_it"] = "Event Start Date";
+ln["EndDatedescription_it"] = "Event End Date";
+ln["EventTitledescription_it"] = "Name of the event";
+ln["EventDescriptiondescription_it"] = "Event Description";
+ln["MediaUrldescription_it"] = "Url of video/image";
+ln["Backgrounddescription_it"] = "Url of background image";
+ln["StartTimedescription_it"] = "Event start time";
+ln["FinishTimedescription_it"] = "Event end time";
+ln["EventInfo1description_it"] = "Additional info 1";
+ln["EventInfo2description_it"] = "Additional info 2";
+ln["EventInfo3description_it"] = "Additional info 3";
