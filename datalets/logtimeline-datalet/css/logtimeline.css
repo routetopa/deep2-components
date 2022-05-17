@@ -1,0 +1,91 @@
+#imgList{ cursor: pointer; line-height: 20px; text-align: center; }
+#textDate{ margin-left: 3%; }
+#list_timestamp{ margin-right: 1%; }
+#listContainer{ width: 100%; height: 80%; border-left-color: #0a6ebd; overflow: hidden; }
+.center { display: block; margin-left: auto; margin-right: auto; width: 50%; }
+#divListContainer{ display: block; border: black; height: 100%; }
+#listLink{ font-size: medium; background-color: whitesmoke; padding: 2px; font-family: sans-serif; }
+#event-description_data{ display: table-header-group; }
+.closeList {
+    color: #00BCD4;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    line-height: 40px;
+    font-size: 32px;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+    font-family: initial;
+}
+#event-name-text{
+    margin-top: 2px;
+    font-size: 90%;
+}
+.icon-logtimeline-container{
+    position: absolute;
+    top: -2px;
+    margin-right: 3px;
+    margin-left: 3px;
+    font-size: 60% !important;
+}
+.tl-headline-date{
+    margin-left: 3px !important;
+}
+.icon-logtimeline{
+    font-style: normal !important;
+}
+#icon-logtimeline-link:hover, #icon-logtimeline-link.active{
+    color: #0a68b4 !important;
+}
+
+.zoom-out-box {
+    animation: zoom-out 0.5s forwards;
+}
+
+@keyframes zoom-out {
+    from{
+        margin-left: 15%;
+        transform: scale(0, 0.5);
+    }
+    to{
+        margin-left: 30%;
+        transform: scale(1, 1);
+    }
+}
+
+.banner {
+    width: 40%;
+    opacity: 1 !important;
+    position: absolute;
+    text-align: center;
+    z-index: 9999;
+    padding: .85rem 1.35rem;
+    margin-top: 10%;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem; display: none;
+}
+.banner.active { display: block; }
+.banner-bottom { left: 0; right: 0; bottom: 10px; }
+.banner-top { left: 0; right: 0; top: 10px; }
+.banner-right { right: 10px; bottom: 10%; min-height: 10vh; }
+.banner-left { left: 10px; bottom: 10%; min-height: 10vh; }
+.alert-primary { color: #004085; background-color: #cce5ff; border-color: #b8daff; }
+.banner-close { position: absolute; right: 1.5%; color: #69f; }
+.banner-close:hover { color: #004085; }
+.banner-button {
+    background-color: #0a68b4;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 4px 2px;
+    cursor: pointer;
+}

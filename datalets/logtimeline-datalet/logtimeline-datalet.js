@@ -30,7 +30,7 @@
 */
 import BaseDatalet from '../base-datalet/base-datalet.js';
 import * as AjaxJsonAlasqlBehavior from '../lib/modules/AjaxJsonAlasqlBehavior.js';
-
+import {LN_logtimeline} from './ln/logtimeline-datalet-ln.js';
 /**
  * `logtimeline-datalet` is a particular timeline datalet optimized for network events.
  * Pass to this component a data url(CKAN api uri), a string in Json PATH format of Selected fields,
@@ -42,9 +42,8 @@ import * as AjaxJsonAlasqlBehavior from '../lib/modules/AjaxJsonAlasqlBehavior.j
      data-url="http://ckan.routetopa.eu/api/action/datastore_search?resource_id=#"
      fields='["field1","field2"]'
      datalettitle = 'Title'
-     description = 'Description'>
+     description = 'Description'
      </logtimeline-datalet>
-
 
  @element logtimeline-datalet
  @status v0.1
@@ -52,6 +51,7 @@ import * as AjaxJsonAlasqlBehavior from '../lib/modules/AjaxJsonAlasqlBehavior.j
  @group datalets
  */
 class LogtimelineDatalet extends BaseDatalet {
+
     constructor() {
         super('logtimeline-datalet');
     }
@@ -68,17 +68,21 @@ class LogtimelineDatalet extends BaseDatalet {
     template()
     {
         return this.create_node(`
-            <style>
+            <style id="style">
                 #datalet_container
                 {
                     display: block !important;
                 }
             </style>             
-            <link title="timeline-styles" rel="stylesheet" href="./css/timeline.css">
-            <link title="timeline-styles" rel="stylesheet" href="./css/timelinenet.css">
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+            <link id="light" title="timeline-styles" rel="stylesheet" href="./css/timeline.css">
+            <link type="text/css" rel="stylesheet" href="./css/logtimeline.css">
+            <head><script src="https://kit.fontawesome.com/f5cb14a92d.js" crossorigin="anonymous"></script></head>
+            
         `);
+    }
+
+    addOffsetAttribute(offset){
+        this.shadowRoot.querySelector('#datalet_container').setAttribute('offset', offset);
     }
 
     loadDynamicScript(callback) {
@@ -109,10 +113,13 @@ class LogtimelineDatalet extends BaseDatalet {
             //creator
             // script.src = './datalets/timeline-datalet/js/timeline.js';
             //spod
-            if(typeof ODE !== 'undefined')
+            if(typeof ODE !== 'undefined'){
                 script.src = ODE.deep_components + 'datalets/logtimeline-datalet/js/timeline.js';
-            else //more
-                script.src = 'http://deep.routetopa.eu/deep2t/COMPONENTS/datalets/timeline-datalet/js/timeline.js'
+            }
+            else{ //more
+                script.src = 'http://deep.routetopa.eu/deep2t/COMPONENTS/datalets/logtimeline-datalet/js/timeline.js';
+            }
+
             script.id = 'timeline_id';
             document.body.appendChild(script);
 
@@ -127,7 +134,10 @@ class LogtimelineDatalet extends BaseDatalet {
     async render(data)
     {
         let that = this;
+        LN_logtimeline.init();
         console.log('RENDER - logtimeline-datalet');
+        let offset = '';
+        let showAlert = false;
 
         let _toDate = function (startDateString, endDateString)
         {
@@ -139,18 +149,12 @@ class LogtimelineDatalet extends BaseDatalet {
             s = _format(endDateString);
             let string_2 = s[0];
             let sign_2 = s[1];
-            let startDate = null, endDate = null;
-            if(sign_1 === 6 || sign_1 === 7 || sign_1 === 8){
-                let arrayStartDate = _dateStringToObject(string_1, sign_1);
-                let arrayEndDate = _dateStringToObject(string_2, sign_2);
-                startDate = arrayStartDate[0];
-                startDateString = arrayStartDate[1];
-                endDate = arrayEndDate[0];
-                endDateString = arrayEndDate[1];
-            }else{
-                startDate = _dateStringToObject(string_1, sign_1);
-                endDate = _dateStringToObject(string_2, sign_2);
-            }
+            let arrayStartDate = _dateStringToObject(string_1, sign_1);
+            let arrayEndDate = _dateStringToObject(string_2, sign_2);
+            let startDate = arrayStartDate[0];
+            startDateString = arrayStartDate[1];
+            let endDate = arrayEndDate[0];
+            endDateString = arrayEndDate[1];
 
             if (startDate && _isRoman(string_1)) {
 
@@ -195,34 +199,6 @@ class LogtimelineDatalet extends BaseDatalet {
                 }
             }
 
-
-            if(_isISOFormat(startDateString) && _isISOFormat(endDateString)){
-                let removeTZ = function (str)  {
-                    return str.replace('Z', '');
-                }
-                startDateString = removeTZ(startDateString);
-                endDateString = removeTZ(endDateString);
-            }
-
-            startDateString = !(pacDelTime(startDateString)) ? startDateString : startDateString.replace(pacDelTime(startDateString)[0], 'PDT');
-            endDateString = !(pacDelTime(endDateString)) ? endDateString : endDateString.replace(pacDelTime(endDateString)[0], 'PDT');
-
-
-            if(_ad(startDateString) && _ad(endDateString)){
-                startDateString = startDateString.replace(_ad(startDateString)[0], '');
-                endDateString = endDateString.replace(_ad(endDateString)[0], '');
-            }
-
-            if(_endsWithGMT(startDateString) && _endsWithGMT(endDateString)){
-                let removeGMT = function (str) {
-                    let gmtInString = (str.match(/GMT[ +.0-9]+$/g));
-                    return str.replace(('' + gmtInString), '');
-                };
-                startDateString = removeGMT(startDateString);
-                endDateString = removeGMT(endDateString);
-            }
-
-
             let startDateYYMMDD = startDate.year + startDate.month + startDate.day;
             let startDateHHMMSSMS = startDate.hour + startDate.minute + startDate.second + startDate.millisecond;
             let endDateYYMMDD = endDate.year + endDate.month + endDate.day;
@@ -234,17 +210,6 @@ class LogtimelineDatalet extends BaseDatalet {
                 let endStringMatch = endDateString.match(/[0-9]{2}[:.][0-9][0-9]([:.][0-9][0-9])?((:|.)[0-9][0-9]){0,2}[0-9]*( (a(.?)m(.?)|p(.?)m(.?))*)?( ?)((ad|pdt|Pacific Daylight Time)?)(([-+]?)((\d{4})?))/gi);
                 endDateString = endStringMatch.length === 2 ? endStringMatch[1] : endStringMatch[0];
             }
-
-            if((startDateString + '').match(/,( *)$/g)){
-                startDateString = startDateString.replace(',', '');
-                endDateString = endDateString.replace(',', '');
-            }
-
-            if((startDateString + '').match(/\d( ?)T( ?)\d/g)) startDateString = startDateString.replace('T', ' ');
-            if((endDateString + '').match(/\d( ?)T( ?)\d/g)) endDateString = endDateString.replace('T', ' ');
-
-            /*if(startDateString.startsWith('0')) startDateString = startDateString.substring(1);
-            if(endDateString.startsWith('0')) endDateString = endDateString.substring(1);*/
 
             startDate.display_date = startDateString;
             endDate.display_date = endDateString;
@@ -293,59 +258,39 @@ class LogtimelineDatalet extends BaseDatalet {
          */
         let _dateStringToObject = function (dateElem, sign)
         {
+            if (dateElem === "") return null;
+            let date = null;
             if(typeof dateElem === "string"){
                 dateElem = dateElem.trim();
             }
 
-            if (dateElem === "") return null;
-            let date = null;
-
             let _isPm = (dateElem + '').match(/P(.?)M(.?)/i);
             let pacDelTIme = pacDelTime(dateElem);
+            if(pacDelTIme)
+                dateElem = dateElem.replace(pacDelTIme[0], 'PDT');
+
 
             /**
              *
-             * @param dateElem is the string or number of date
-             * @returns {string|*} dataElem replaced with day before month if is DMY date-format
-             * @private
+             * @param date is the date object
+             * @returns {boolean} true if date reading attribute is alternative mode (day before month)
              */
-            let _checkDMY = function (dateElem) {
-                if (that.getAttribute('date-format') === "DMY") {
-                    let dataElemString = (dateElem + '');
-                    if(dataElemString.match(/^\d((\d)?)[-. /]\d((\d)?)[-. /]\d{2}((\d{2})?)/g)){
-                        let split = dataElemString.match(/[-. /]/g)[0];
-                        let dayToMonth = dataElemString.match(/\d((\d)?)/g)[0];
-                        let monthToDay = dataElemString.match(/\d((\d)?)/g)[1];
-                        if(Number.parseInt(monthToDay) > 12)
-                            return dateElem;
-                        return dataElemString.replace((dayToMonth + split + monthToDay), (monthToDay + split + dayToMonth));
+            let isAlternativeReading = function(date) {
+                if(that.getAttribute('date-reading') === 'Alt') {
+                    if(date.getDate() > 12) {
+                        showAlert = true;
                     }
+                    return true;
                 }
-                return dateElem;
-            };
-
-            /** case format "Unix Timestamp", example: 126.233491 */
-            if(sign === 2){
-                dateElem = _checkDMY(dateElem);
-                date = new Date(dateElem * 1000);
-                let year = date.getFullYear();
-                let month = date.getMonth() + 1;
-                let day = date.getDate();
-                let hour = date.getHours();
-                let min = date.getMinutes();
-                let sec = date.getSeconds();
-                let millisecond = date.getUTCMilliseconds();
-                date = {
-                    "year": year,
-                    "month": month,
-                    "day": day,
-                    "hour": hour,
-                    "minute": min,
-                    "second": sec,
-                    "millisecond": millisecond,
-                }
-                return date;
+                return false;
             }
+
+            let offsetRgx = /(((GMT( *))?)[+-]((\d{4})|(\d+:\d+))|PDT)$/i;
+            if((dateElem + '').match(offsetRgx)){
+                offset = (dateElem + '').match(offsetRgx)[0];
+                dateElem = (dateElem + '').replace(offset, '');
+            }
+
             /** case format "WWW-date time", example: Wed-14-02-2018*/
             if(sign === 3){
                 let weekDay = ((dateElem + '').match(/(-*)([a-zA-Z]{3})([a-zA-Z]{0,6})(-*)/g));
@@ -356,23 +301,9 @@ class LogtimelineDatalet extends BaseDatalet {
                     let month = dateElem.charAt(3) + dateElem.charAt(4);
                     dateElem = dateElem.replace((day + "/" + month), (month + "/" + day));
                     dateElem = dateElem.replace((day + "-" + month), (month + "-" + day));
-                    if(pacDelTIme){
-                        dateElem += " PDT";
-                    }
                 }
-                dateElem = _checkDMY(dateElem);
-                date = new Date(dateElem);
-                date = {
-                    "year": date.getFullYear(),
-                    "month": date.getUTCMonth() + 1,
-                    "day": date.getUTCDate(),
-                    "hour": date.getHours(),
-                    "minute": date.getUTCMinutes(),
-                    "second": date.getUTCSeconds(),
-                    "millisecond": date.getUTCMilliseconds(),
-                }
-                return date;
             }
+
             /** case format "yyyy.MM.dd G 'at' HH:mm:ss z", example: 2001.07.04 AD at 12:08:56 PDT */
             if(sign === 4){
                 dateElem = (dateElem + '').replace(_ad(dateElem)[0], '');
@@ -380,23 +311,9 @@ class LogtimelineDatalet extends BaseDatalet {
                 if(match){
                     dateElem = dateElem.replace(match[0], '');
                 }
-                if(pacDelTime(dateElem)){
-                    dateElem.replace(pacDelTime(dateElem)[0], 'PDT');
-                }
-                dateElem = _checkDMY(dateElem);
-                date = new Date(dateElem);
-                date = {
-                    "year": date.getFullYear(),
-                    "month": date.getUTCMonth() + 1,
-                    "day": date.getDate(),
-                    "hour": date.getHours(),
-                    "minute": date.getUTCMinutes(),
-                    "second": date.getUTCSeconds(),
-                    "millisecond": date.getUTCMilliseconds(),
-                }
-                return date;
             }
-            /** case format "hh-english_time a, zzzz", example: 12 o'clock PM, Pacific Daylight Time */
+
+            /** case format "hh-english_time a, zzzz", example: 12 o'clock PM */
             if(sign === 6){
                 let hour, minutes;
                 let _getSecondDigit = function (str, number){
@@ -419,9 +336,6 @@ class LogtimelineDatalet extends BaseDatalet {
                         dateElem = (dateElem + '').replace('#', '');
                     }
                     dateElem += ":00";
-                    if(pacDelTIme){
-                        dateElem += " PDT";
-                    }
                 }else{
                     let englishNumbers = {
                         names : ["one","two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
@@ -446,9 +360,6 @@ class LogtimelineDatalet extends BaseDatalet {
                                 }
                                 dateElem = dateElem.replace(dateElem.match(/#([\w .,]*)/g)[0], '');
                                 dateElem += hour + ":" + minutes;
-                                if(pacDelTIme){
-                                    dateElem += " PDT";
-                                }
                             }
                         }
                     }else if((dateElem + '').match(/TO/i)){
@@ -469,25 +380,44 @@ class LogtimelineDatalet extends BaseDatalet {
                                 }
                                 dateElem = dateElem.replace(dateElem.match(/#([\w .,]*)/g)[0], '');
                                 dateElem += hour + ":" + minutes;
-                                if(pacDelTIme){
-                                    dateElem += " PDT";
-                                }
                             }
                         }
                     }
                 }
-                dateElem = _checkDMY(dateElem);
+            }
+
+            /** case format "dd-monthName-yyyy:HH:mm:ss SSSZ", example: 28/Jan/2022:00:06:59 +0000 */
+            if(sign === 7){
+                dateElem = (dateElem + '').replace(splitYearTime(dateElem)[0], ' ');
+                //dateElem = _checkDMY(dateElem);
                 date = new Date(dateElem);
-                date = {
-                    "year": date.getFullYear(),
-                    "month": date.getUTCMonth() + 1,
-                    "day": date.getDate(),
-                    "hour": date.getHours(),
-                    "minute": date.getUTCMinutes(),
-                    "second": date.getUTCSeconds(),
-                    "millisecond": date.getUTCMilliseconds(),
+            }
+            /** case format "yyMMddHHmmssZ"	, example: 010704120856-0700 */
+            if(sign === 8){
+                let arrayDate = [];
+                let milliSec = '', timeZone = '';
+                let i;
+                for(i = 0; i < 12; i+=2){
+                    arrayDate.push((dateElem + '').charAt(i) + (dateElem + '').charAt(i + 1));
                 }
-                return [date, dateElem];
+                if(Number.parseInt((dateElem + '').charAt(12))){
+                    milliSec = (dateElem + '').charAt(12) + (dateElem + '').charAt(13);
+                    i+=2;
+                    if(Number.parseInt((dateElem + '').charAt(14))){
+                        milliSec += (dateElem + '').charAt(14);
+                        i++;
+                    }
+                }
+                if(i !== (dateElem + '').length){
+                    while(i < (dateElem + '').length){
+                        timeZone += (dateElem + '').charAt(i);
+                        i++;
+                    }
+                }
+                let j = 0;
+                dateElem = arrayDate[j+1] + '/' + arrayDate[j+2] + '/' + arrayDate[j]; j+=2;
+                dateElem += ' ';
+                dateElem += arrayDate[++j] + ':' + arrayDate[++j] + ':' + arrayDate[++j] + (milliSec !== '' ? ':' + milliSec : '') + ' ' + timeZone;
             }
 
             if (_isInt(dateElem)) {
@@ -502,98 +432,38 @@ class LogtimelineDatalet extends BaseDatalet {
             }
             else {
                 try {
-                    /*if (that.getAttribute('date-format') === "DMY") {
-                        let dateParts = dateElem.split("/");
-                        if (dateParts.length !== 3)
-                            dateParts = dateElem.split("-");
-                        if (dateParts[1] > 12)
-                            date = null;
-                        else
-                            date = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]); // month is 0-based
-                    }*/
-                    /*else*/
                     /** case format "yyyy-MM-dd'T'HH:mm:ss.SSSZ", example: 2001-07-04T12:08:56.235-0700 */
-                        if(sign === 5){
-                            dateElem = (dateElem + '').replace('T', ' ').replace('Z', '');
-                        }
-                        if(pacDelTIme){
-                            dateElem = (dateElem + '').replace(pacDelTIme[0], 'PDT')
-                        }
-                    /** case format "dd-monthName-yyyy:HH:mm:ss SSSZ", example: 28/Jan/2022:00:06:59 +0000 */
-                        if(sign === 7){
-                            dateElem = (dateElem + '').replace(splitYearTime(dateElem), ' ');
-                            dateElem = _checkDMY(dateElem);
-                            date = new Date(dateElem);
-                            date = {
-                                "year": date.getFullYear(),
-                                "month": date.getUTCMonth() + 1,
-                                "day": date.getUTCDate() + 1,
-                                "hour" : date.getHours(),
-                                "minute": date.getUTCMinutes(),
-                                "second": date.getUTCSeconds(),
-                                "millisecond": date.getUTCMilliseconds(),
-                            }
-                            return [date, dateElem];
-                        }
-                    /** case format "yyMMddHHmmssZ"	, example: 010704120856-0700 */
-                        if(sign === 8){
-                            let arrayDate = [];
-                            let milliSec = '', timeZone = '';
-                            let i;
-                            for(i = 0; i < 12; i+=2){
-                                arrayDate.push((dateElem + '').charAt(i) + (dateElem + '').charAt(i + 1));
-                            }
-                            if(Number.parseInt((dateElem + '').charAt(12))){
-                                milliSec = (dateElem + '').charAt(12) + (dateElem + '').charAt(13);
-                                i+=2;
-                                if(Number.parseInt((dateElem + '').charAt(14))){
-                                    milliSec += (dateElem + '').charAt(14);
-                                    i++;
-                                }
-                            }
-                            if(i !== (dateElem + '').length){
-                                while(i < (dateElem + '').length){
-                                    timeZone += (dateElem + '').charAt(i);
-                                    i++;
-                                }
-                            }
-                            let j = 0;
-                            dateElem = arrayDate[j+1] + '/' + arrayDate[j+2] + '/' + arrayDate[j]; j+=2;
-                            dateElem += ' ';
-                            dateElem += arrayDate[++j] + ':' + arrayDate[++j] + ':' + arrayDate[++j] + (milliSec !== '' ? ':' + milliSec : '') + ' ' + timeZone;
-                            dateElem = _checkDMY(dateElem);
-                            date = new Date(dateElem);
-                            date = {
-                                "year": date.getFullYear(),
-                                "month": date.getUTCMonth() + 1,
-                                "day": date.getUTCDate(),
-                                "hour" : date.getHours(),
-                                "minute": date.getUTCMinutes(),
-                                "second": date.getUTCSeconds(),
-                                "millisecond": date.getUTCMilliseconds(),
-                            }
-                            return [date, dateElem];
-                        }
-                        dateElem = _checkDMY(dateElem);
-                        date = new Date(dateElem); //https://www.w3schools.com/js/js_date_formats.asp
-                    if (isNaN(date.getFullYear()))
+                    if(sign === 5)
+                        dateElem = (dateElem + '').replace('T', ' ');
+                        dateElem = (dateElem + '').replace('Z', '');
+
+                    if(_ad(dateElem))
+                        dateElem = (dateElem + '').replace(_ad(dateElem)[0], '');
+
+                    /** 1 VALUE IN TERNARY OPERATOR: case format "Unix Timestamp", example: 126.233491 */
+                    date = sign === 2 ? new Date(dateElem * 1000) : new Date(dateElem); //https://www.w3schools.com/js/js_date_formats.asp
+                    if (isNaN(date.getUTCFullYear()))
                         return null;
 
                     date = {
-                        "year": date.getFullYear(),
-                        "month": date.getUTCMonth() + 1,
-                        "day": date.getDate(),
+                        "year": date.getUTCFullYear(),
+                        "month": isAlternativeReading(date) ? date.getDate() : (date.getUTCMonth() + 1),
+                        "day": isAlternativeReading(date) ? (date.getUTCMonth() + 1) : date.getDate(),
                         "hour" : date.getHours(),
                         "minute": date.getUTCMinutes(),
                         "second": date.getUTCSeconds(),
-                        "millisecond": date.getUTCMilliseconds(),
+                        "millisecond": date.getUTCMilliseconds()
                     }
                 }
                 catch (e) {
-                    date = null
+                    date = null;
                 }
             }
-            return date;
+
+            if(offset !== '')
+                dateElem = (dateElem + '').endsWith(' ') ? dateElem + offset : dateElem + ' ' + offset;
+
+            return [date, dateElem];
         };
 
         let _isInt = function (value)
@@ -656,7 +526,7 @@ class LogtimelineDatalet extends BaseDatalet {
         };
 
         let _isISOFormat = function (str) {
-            return ((str + '').match(/^([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2})(:[0-9]{2})*(:[0-9]{2})*(:[0-9][0-9]([0-9]?))Z$/g));
+            return ((str + '').match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}([.:/_+-Z\d]*)$/g));
         };
 
         let _isyyMMddHHmmssmsZ = function (str) {
@@ -668,8 +538,7 @@ class LogtimelineDatalet extends BaseDatalet {
         }*/
 
         let _isUnixTimestamp = function (str) {
-
-            if ((str + '').match(/^(1[0-9]{2,3}.[0-9]{5,6})$/g) || (str + '').match(/^(1[0-9]{7,8})$/g)) return true;
+            if ((str + '').match(/^1((\d{2})|(\d{3})|(\d{4})).((\d{3}))(\d*)$/g) || (str + '').match(/^(1[0-9]{7,8})$/g)) return true;
             else return false;
         };
 
@@ -680,6 +549,15 @@ class LogtimelineDatalet extends BaseDatalet {
         let _isRoman = function (value)
         {
             return /^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/.test(value);
+        };
+
+        let _isWordEnglishTime = function (str) {
+            return (str + '').match(/O'CLOCK|A QUARTER|PAST|TO/i);
+        };
+
+        let _isHour = function (hour){
+            return ('' + hour).match(/^[0-9]{1,2}(:|.)[0-9][0-9]((:|.)[0-9][0-9])?((:|.)[0-9][0-9]){0,2}[0-9]*( (a(.?)m(.?)|p(.?)m(.?))*)?( ?)((ad|pdt|Pacific Daylight Time)?)(([-+]?)((\d{4})?))$/gi) ||
+                _isWordEnglishTime('' + hour);
         };
 
         let _fromRoman = function (str)
@@ -699,33 +577,28 @@ class LogtimelineDatalet extends BaseDatalet {
 
         let events = [];
 
+        let links = [];
+
         if (!data || data[0] === undefined) return;
 
         let selectedFields = JSON.parse(this.selected_fields);
         let inputs = [];
 
         for (let i = 0; i < selectedFields.length; i++)
-            if (selectedFields[i])
+            if (selectedFields[i]) {
                 inputs.push(selectedFields[i].field);
+            }
+        let text_i = inputs.indexOf("LOGTIMELINEEventDescription");
+        let url_i = inputs.indexOf("LOGTIMELINEMediaUrl");
+        let background_i = inputs.indexOf("LOGTIMELINEBackground");
+        let initialHour_i = inputs.indexOf("LOGTIMELINEStartTime");
+        let finalHour_i = inputs.indexOf("LOGTIMELINEFinishTime");
+        let eventInfo1_i = inputs.indexOf("LOGTIMELINEEventInfo1");
+        let eventInfo2_i = inputs.indexOf("LOGTIMELINEEventInfo2");
+        let eventInfo3_i = inputs.indexOf("LOGTIMELINEEventInfo3");
+        let link_i = inputs.indexOf("LOGTIMELINELink");
 
-        let text_i = inputs.indexOf("EventDescription");
-        let url_i = inputs.indexOf("MediaUrl");
-        let background_i = inputs.indexOf("Background");
-        let initialHour_i = inputs.indexOf("StartTime");
-        let finalHour_i = inputs.indexOf("FinishTime");
-        let eventInfo1_i = inputs.indexOf("Event-info1");
-        let eventInfo2_i = inputs.indexOf("Event-info2");
-        let eventInfo3_i = inputs.indexOf("Event-info3");
-
-        let _isWordEnglishTime = function (str) {
-            return (str + '').match(/O'CLOCK|A QUARTER|PAST|TO/i);
-        };
-
-        let _isHour = function (hour){
-            return ('' + hour).match(/^[0-9]{1,2}(:|.)[0-9][0-9]((:|.)[0-9][0-9])?((:|.)[0-9][0-9]){0,2}[0-9]*( (a(.?)m(.?)|p(.?)m(.?))*)?( ?)((ad|pdt|Pacific Daylight Time)?)(([-+]?)((\d{4})?))$/gi) ||
-                              _isWordEnglishTime('' + hour);
-        }
-
+        let titleTooltip = '';
         for (let i = 0; i < data[0].data.length; i++)
         {
             let date = [], start_date = '', end_date = '';
@@ -751,15 +624,15 @@ class LogtimelineDatalet extends BaseDatalet {
             start_date = date[0];
             end_date = date[1];
 
-            let titleTooltip = data[2].name;
+            titleTooltip = data[2].name;
             let headline = data[2] ? data[2].data[i] : '';
 
             let text = '', url = '', background = '';
             let j = 3;
 
             if (text_i > -1) {
-                while (inputs[j] === "EventDescription") {
-                    text += "<table><tr><td style='display: inline !important;'><b style='color: black'>" + data[j].name + "</b>:</td><td style='max-width: 350px'>" + data[j].data[i] + "</td></tr></table>";
+                while (inputs[j] === "LOGTIMELINEEventDescription") {
+                    text += "<table><tr class='event-description_row'><td id='event-description_data'><b>" + data[j].name + "</b>:</td><td style='max-width: 350px'>" + data[j].data[i] + "</td></tr></table>";
                     //text += "<div><small><b style='color: black'>" + data[j].name + "</b></small>: " + data[j].data[i] + "</div>";
                     j++;
                 }
@@ -781,7 +654,7 @@ class LogtimelineDatalet extends BaseDatalet {
             }
 
             if((eventInfo1_i > -1) || (eventInfo2_i > -1) || (eventInfo3_i > -1)){
-                text += "<hr width='50%'>";
+                text += "<hr style='width: 50%; margin-right: 50%'>";
             }
 
             if(eventInfo1_i > -1){
@@ -794,6 +667,35 @@ class LogtimelineDatalet extends BaseDatalet {
             }
             if(eventInfo3_i > -1){
                 text += "<div><small><b>" + data[j].name + "</b>: " + data[j].data[i] + "</small></div>";
+                j++;
+            }
+            if(link_i > -1){
+                links.push(data[j].data[i]);
+
+                let validURL = function(str) {
+                    let pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+                        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+                        '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+                        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+                        '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+                        '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+                    return !!pattern.test(str);
+                }
+
+                if(!validURL(links[i])) {
+                    if(links[i] !== '' && links[i] !== null && links[i] !== undefined) {
+                        let _window = window;
+                        if(_window.location.href === 'about:srcdoc')
+                            _window = _window.parent;
+
+                        let errorPageAbsolutePath = (_window.location.href + '').match(/[\w:/=.?_"' -]+COMPONENTS/g)[0] + '/datalets/logtimeline-datalet/error/errorPage-link.html';
+                        links[i] = errorPageAbsolutePath + '?' + that.getAttribute("lang-timeline");
+                    }
+                }else{
+                    if(!(links[i] + '').startsWith("http")) {
+                        links[i] = "https://" + links[i];
+                    }
+                }
             }
 
             if (start_date)
@@ -801,7 +703,7 @@ class LogtimelineDatalet extends BaseDatalet {
                     "start_date": start_date,
                     "end_date": end_date,
                     "text": {
-                        "headline": '<img src="https://img.icons8.com/external-those-icons-fill-those-icons/17/000000/external-event-time-calendar-those-icons-fill-those-icons-1.png" data-bs-toggle="tooltip" data-bs-placement="top" title =' + titleTooltip + ' /> ' + headline,
+                        "headline": headline,
                         "text": '' + text
                     },
                     "media": {
@@ -827,9 +729,176 @@ class LogtimelineDatalet extends BaseDatalet {
 
         let options = {};
 
+        let isDark = false;
+
+        let makeTLOptions = function () {
+            /*timenav on top*/
+            if (that.getAttribute("timenav-position") === "Top") {
+                options.timenav_position = "top";
+            }
+
+            /*hash bookmark*/
+            if (that.getAttribute("hash_bookmark") === "on") {
+                options.hash_bookmark = true;
+            }
+
+            /*start at end*/
+            if (that.getAttribute("slides-order") === "end") {
+                options.start_at_end = true;
+            }
+
+            /*lang timeline*/
+            let lang_timeline = that.getAttribute("lang-timeline");
+            switch (lang_timeline){
+                case "en":
+                    options.language = "en";
+                    LN_logtimeline.setUserLanguage("en");
+                    break;
+                case "it":
+                    options.language = "it";
+                    LN_logtimeline.setUserLanguage("it");
+                    break;
+                case "fr":
+                    options.language = "fr";
+                    LN_logtimeline.setUserLanguage("fr");
+                    break;
+                case "de":
+                    options.language = "de";
+                    LN_logtimeline.setUserLanguage("de");
+                    break;
+                case "es":
+                    options.language = "es";
+                    LN_logtimeline.setUserLanguage("es");
+                    break;
+                case "cn":
+                    options.language = "zh-cn";
+                    LN_logtimeline.setUserLanguage("cn");
+                    break;
+                case "ja":
+                    options.language = "ja";
+                    LN_logtimeline.setUserLanguage("ja");
+                    break;
+            }
+
+            /*theme*/
+            if(that.getAttribute("LOGTIMELINETheme") === "dark") {
+                that.shadowRoot.querySelector("#light").setAttribute("href", "http://localhost:8012/SPOD-CREATOR/COMPONENTS/datalets/logtimeline-datalet/css/themes/timeline.theme.dark.css");
+                options.default_bg_color = "#302e2e";
+                isDark = true;
+            }
+        }
+
+        let makeTLContainer = function () {
+
+            /*Set alert*/
+            if(showAlert) {
+                let dataletContainer = that.shadow_root.querySelector("#datalet_container");
+                let baseDataletContainer = that.shadow_root.querySelector("#base_datalet_container");
+                dataletContainer.setAttribute("style", "opacity: 0.1; pointer-events: none;");
+                baseDataletContainer.setAttribute("style", "opacity: 0.1; pointer-events: none;");
+                let banner = document.createElement('div');
+                banner.setAttribute("class", "banner banner-top alert-primary active center");
+                banner.setAttribute("role", "alert");
+                banner.innerHTML = LN_logtimeline.translate("banner-text") + '<br>';
+                let bannerButton = document.createElement('button');
+                bannerButton.setAttribute("type", "button");
+                bannerButton.setAttribute("class", "banner-button");
+                bannerButton.innerHTML = LN_logtimeline.translate("banner-button").toUpperCase();
+                bannerButton.onclick = function () {
+                    that.setAttribute('date-reading', 'Std');
+                    dataletContainer.setAttribute("style", "opacity: 1; pointer-events: auto;");
+                    baseDataletContainer.setAttribute("style", "opacity: 1; pointer-events: auto;");
+                    banner.style.display = 'none';
+                    that.render(data);
+                }
+                banner.appendChild(bannerButton);
+                dataletContainer.parentNode.appendChild(banner);
+            }
+
+            /*Set offset on date suffix*/
+            if(offset !== ''){
+                let setOffset = function () {
+                    let listTimes = that.shadow_root.querySelectorAll(".tl-timeaxis-tick-text");
+                    for(let timeSuffix of listTimes){
+                        timeSuffix.innerHTML += ' ' + offset;
+                    }
+                }
+                setOffset();
+                /*replace on zoom*/
+                let menuBArs = that.shadow_root.querySelectorAll(".tl-menubar-button");
+                for (let menuBar of menuBArs){
+                    menuBar.onclick = function (){setOffset();}
+                }
+            }
+
+            /*Set event description in dark theme*/
+            if(isDark) {
+                let eventDescriptions = that.shadow_root.querySelectorAll(".event-description_row");
+                for(let eventDescription of eventDescriptions){
+                    eventDescription.setAttribute("style", "color: darkgrey");
+                }
+            }
+
+            /*Set headline*/
+            let headlines = that.shadow_root.querySelectorAll(".tl-headline");
+            let i = 0;
+            for (let headline of headlines) {
+                if(headline.getAttribute("class") === 'tl-headline tl-headline-title')
+                    continue;
+                if(headline.parentNode.getAttribute("class") === 'tl-timemarker-text')
+                    continue;
+
+                let iconLink = '<span class ="icon-logtimeline-container" data-balloon-pos="up-left" data-balloon="' + LN_logtimeline.translate("icon-link") + '"><i id="icon-logtimeline-link" class="fas fa-external-link-alt icon-logtimeline"></i></span>';
+                let iconEvent = '<span class ="icon-logtimeline-container" data-balloon-pos="up-left" data-balloon="' + titleTooltip + '"><i id="icon-logtimeline-event"  class="fas fa-calendar-minus icon-logtimeline"></i></span>';
+                headline.innerHTML = iconEvent + ' <span id="event-name-text">' + headline.innerHTML + '</span>';
+                /*Set iframe with page*/
+                if(links[i] !== '' && links[i] !== null && links[i] !== undefined) {
+                    headline.innerHTML = iconLink + headline.innerHTML;
+                    let divPageContainer = document.createElement('div');
+                    let iframe = document.createElement('iframe');
+                    let titleLink = document.createElement('h5');
+                    divPageContainer.setAttribute("id", "divListContainer");
+                    titleLink.setAttribute("id", "listLink");
+                    titleLink.setAttribute("class", "center");
+                    titleLink.innerHTML = '<div style="text-align: center"><a target="_blank" href="' + links[i] + '"><span id="titleLink">' + LN_logtimeline.translate("title-link") + '</span></a></div>';
+                    iframe.setAttribute("frameborder", "0");
+                    iframe.setAttribute("class", "center");
+                    iframe.setAttribute("id", 'listContainer');
+                    iframe.setAttribute("src", links[i]);
+                    headline.children[0].onclick = function () {
+                        let fullscreen = that.shadow_root.querySelector("#fullscreen-iframe");
+                        if(fullscreen != null)
+                            fullscreen.remove();
+                            that.hasPreview = false;
+
+                        that.shadow_root.querySelector('#fullscreen-placeholder').style.display = 'block';
+                        let fullScreenContainer = that.shadow_root.querySelector('#fullscreen-container');
+                        fullScreenContainer.setAttribute("style", "width: 60%;");
+                        let fullscreen_close = that.shadow_root.querySelector("#fullscreen-close");
+                        fullscreen_close.removeAttribute("class");
+                        fullscreen_close.setAttribute("class", "closeList");
+                        fullScreenContainer.setAttribute("class", fullScreenContainer.getAttribute("class") + " zoom-out-box");
+                        fullScreenContainer.appendChild(divPageContainer);
+                        divPageContainer.appendChild(titleLink);
+                        divPageContainer.appendChild(iframe);
+                        that.shadow_root.querySelector('#fullscreen-close').onclick = function () {
+                            if(divPageContainer != null)
+                                fullScreenContainer.removeAttribute("style");
+                                fullScreenContainer.setAttribute("class", "container");
+                                fullscreen_close.removeAttribute("class");
+                                fullscreen_close.setAttribute("class", "close");
+                                divPageContainer.remove();
+                        }
+                    }
+                } i++;
+            }
+        }
+
         this.loadDynamicScript(()=>{
+            makeTLOptions();
             new TL.Timeline(this.shadowRoot.querySelector('#datalet_container'), _json, options);
-        })
+            makeTLContainer();
+        });
     }
 }
 

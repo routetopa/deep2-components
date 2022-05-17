@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title id="error-page"></title>
+    <style>
+        h2{
+            font-family: 'MS Sans Serif', sans-serif, Verdana, Arial;
+            text-align: center;
+        }
+        h5{
+            font-family: 'MS Sans Serif', sans-serif, Verdana, Arial;
+            text-align: center;
+        }
+        .center{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+    </style>
+</head>
+<body>
+    <img class="center" src="404-Error.png">
+    <h2 id="error-title" class="center"></h2>
+    <h5 id="error-description" class="center"></h5>
+    <script type="module">
+        import {LN_logtimeline} from "../ln/logtimeline-datalet-ln.js";
+        LN_logtimeline.init();
+        LN_logtimeline.setUserLanguage(location.search.substring(1));
+        document.querySelector("#error-page").innerHTML = LN_logtimeline.translate("error-page");
+        document.querySelector("#error-title").innerHTML = LN_logtimeline.translate("error-title");
+        document.querySelector("#error-description").innerHTML = LN_logtimeline.translate("error-description");
+    </script>
+    <script>
+
+    </script>
+</body>
+</html>

@@ -2,15 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>TIMELINE NET DATALET</title>
+    <title>LOGTIMELINE DATALET</title>
     <link rel='shortcut icon' type='image/x-icon' href='../logtimeline-datalet.png'/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="../js/jquery-3.6.0.min.js"></script>
     <script type="module" src="../../timeline-datalet/timeline-datalet.js"></script>
+    <!--<script type="module" src="https://deep.routetopa.eu/deep2t/COMPONENTS/datalets/logtimeline-datalet/logtimeline-datalet.js"></script>-->
     <script type="module" src="../../logtimeline-datalet/logtimeline-datalet.js"></script>
     <script src="../js/useful_functions.js"></script>
     <script src="../js/SelectField.js"></script>
+    <script src="../../../locales/controllet_ln.js"></script>
     <style>
         #card{
             width: 90%;
@@ -34,28 +36,61 @@
 </head>
 <body>
     <div id="card" class="card text-white bg-light mb-3 position-absolute top-50 start-50 translate-middle">
-        <div id="card-header" class="card-header"><b id="title">TIMELINENET-DATALET (demo)</b></div>
+        <div id="card-header" class="card-header"><b id="title">LOGTIMELINE-DATALET (demo)</b></div>
         <div class="card-body">
-            <logtimeline-datalet>
+            <logtimeline-datalet
+                    data-url="http://ckan.routetopa.eu:8080/api/3/action/datastore_search?resource_id=181baaf7-78f9-4961-8877-0f6464bb901a"
+                    selectedfields = '[
+                        {
+                         "field":"LOGTIMELINEStartDate",
+                         "value":"start",
+                         "index":1
+                        },
+                        {
+                         "field":"LOGTIMELINEEndDate",
+                         "value":"end",
+                         "index":1
+                        },
+                        {
+                         "field":"LOGTIMELINEEventTitle",
+                         "value":"name",
+                         "index":3
+                        },
+                        {
+                         "field":"LOGTIMELINEEventDescription",
+                         "value":"description",
+                         "index":2
+                        },
+                        {
+                         "field":"LOGTIMELINELink",
+                         "value":"link",
+                         "index":4
+                        }
+                      ]'
+                    datalettitle = 'Test'
+                    description = 'test'
+                    lang-timeline = 'en'
+					hash_bookmark = 'on'>
             </logtimeline-datalet>
         </div>
     </div>
     <script>
         //--------add info timelinenet datalet---------------//
-        /*
-        let datalet = $('logtimeline-datalet')[0];
+        /*let datalet = $('logtimeline-datalet')[0];
         let title = 'Test';
         let description = 'test';
         datalet.setAttribute('data-url', null);
         datalet.setAttribute('datalettitle', title);
         datalet.setAttribute('description', description);
-        $.getJSON('../json/logs/AIT-LDS/mail.cup.com-error.json', function (data){
+        $.getJSON('../json/logs/PWNSPOOF/pwnspoof-log.json', function (data){
             datalet.setAttribute('data', JSON.stringify(data));
-        });*/
-        /** THE SELECTED FIELDS MUST CORRESPOND TO FIELDS ON DATASET */
-        /*datalet.setAttribute('selectedFields',
-            SelectField.select(SelectField.EVENT_INFO1));
-        //datalet.setAttribute('date-format', 'DMY');*/
+        });
+        datalet.setAttribute('selectedFields',
+            SelectField.select());
+        datalet.setAttribute('lang-timeline', 'en');*/
+        //datalet.setAttribute('date-reading', 'Alt');
+        //datalet.setAttribute('LOGTIMELINETheme', 'dark');
+        //datalet.setAttribute('timenav-position', 'Top');
     </script>
 </body>
 </html>
@@ -67,29 +102,31 @@ LOGTIMELINE FROM DATA-URL:
                 data-url="..."
                 selectedfields = '[
                         {
-                         "field":"StartDate",
+                         "field":"LOGTIMELINEStartDate",
                          "value":"...",
                          "index":1
                         },
                         {
-                         "field":"EndDate",
+                         "field":"LOGTIMELINEEndDate",
                          "value":"...",
                          "index":1
                         },
                         {
-                         "field":"EventTitle",
+                         "field":"LOGTIMELINEEventTitle",
                          "value":"...",
                          "index":3
                         },
                         {
-                         "field":"EventDescription",
+                         "field":"LOGTIMELINEEventDescription",
                          "value":"...",
                          "index":2
-                        }
+                        },
+                        null,
+                        null
                       ]'
-                datalettitle = 'Title'
-                description = 'Description'>
-    </logtimeline-datalet>
+                datalettitle = 'Test'
+                description = 'test'>
+</logtimeline-datalet>
 
 
 LOGTIMELINE FROM DATA-URL (example):
@@ -98,22 +135,22 @@ LOGTIMELINE FROM DATA-URL (example):
                 data-url="http://ckan.routetopa.eu:8080/api/3/action/datastore_search?resource_id=2e9a5b58-255e-45ba-bf97-4cdd98f204d3"
                 selectedfields = '[
                         {
-                         "field":"StartDate",
+                         "field":"LOGTIMELINEStartDate",
                          "value":"timestamp",
                          "index":1
                         },
                         {
-                         "field":"EndDate",
+                         "field":"LOGTIMELINEEndDate",
                          "value":"timestamp",
                          "index":1
                         },
                         {
-                         "field":"EventTitle",
+                         "field":"LOGTIMELINEEventTitle",
                          "value":"eventName",
                          "index":3
                         },
                         {
-                         "field":"EventDescription",
+                         "field":"LOGTIMELINEEventDescription",
                          "value":"eventId",
                          "index":2
                         },
@@ -122,4 +159,4 @@ LOGTIMELINE FROM DATA-URL (example):
                       ]'
                 datalettitle = 'Test'
                 description = 'test'>
-    </logtimeline-datalet>-->
+</logtimeline-datalet>-->
