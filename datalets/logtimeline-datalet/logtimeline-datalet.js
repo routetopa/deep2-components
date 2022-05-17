@@ -1,33 +1,33 @@
 /**
-@license
-    The MIT License (MIT)
+ @license
+ The MIT License (MIT)
 
-    Copyright (c) 2022 Dipartimento di Informatica - Universit� di Salerno - Italy
+ Copyright (c) 2022 Dipartimento di Informatica - Universit� di Salerno - Italy
 
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
 
-    The above copyright notice and this permission notice shall be included in
-    all copies or substantial portions of the Software.
+ The above copyright notice and this permission notice shall be included in
+ all copies or substantial portions of the Software.
 
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-    THE SOFTWARE.
-*/
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ THE SOFTWARE.
+ */
 
 /**
-* Developed by :
-* ROUTE-TO-PA Project - grant No 645860. - www.routetopa.eu
-*
-*/
+ * Developed by :
+ * ROUTE-TO-PA Project - grant No 645860. - www.routetopa.eu
+ *
+ */
 import BaseDatalet from '../base-datalet/base-datalet.js';
 import * as AjaxJsonAlasqlBehavior from '../lib/modules/AjaxJsonAlasqlBehavior.js';
 import {LN_logtimeline} from './ln/logtimeline-datalet-ln.js';
@@ -36,14 +36,14 @@ import {LN_logtimeline} from './ln/logtimeline-datalet-ln.js';
  * Pass to this component a data url(CKAN api uri), a string in Json PATH format of Selected fields,
  * a string in datalettitle and a string in dataletdescription
 
-     Example:
+ Example:
 
-     <logtimeline-datalet
-     data-url="http://ckan.routetopa.eu/api/action/datastore_search?resource_id=#"
-     fields='["field1","field2"]'
-     datalettitle = 'Title'
-     description = 'Description'
-     </logtimeline-datalet>
+ <logtimeline-datalet
+ data-url="http://ckan.routetopa.eu/api/action/datastore_search?resource_id=#"
+ fields='["field1","field2"]'
+ datalettitle = 'Title'
+ description = 'Description'
+ </logtimeline-datalet>
 
  @element logtimeline-datalet
  @status v0.1
@@ -435,7 +435,7 @@ class LogtimelineDatalet extends BaseDatalet {
                     /** case format "yyyy-MM-dd'T'HH:mm:ss.SSSZ", example: 2001-07-04T12:08:56.235-0700 */
                     if(sign === 5)
                         dateElem = (dateElem + '').replace('T', ' ');
-                        dateElem = (dateElem + '').replace('Z', '');
+                    dateElem = (dateElem + '').replace('Z', '');
 
                     if(_ad(dateElem))
                         dateElem = (dateElem + '').replace(_ad(dateElem)[0], '');
@@ -522,7 +522,7 @@ class LogtimelineDatalet extends BaseDatalet {
 
         let _isFormatWithWeekDay = function (str) {
             return ((str + '').match(/^([a-zA-Z]{3})([a-zA-Z]{0,6})(-| )([0-9]{2,4})-([0-9]{2})-([0-9]{2,4})([-0-9, :/_|()]*)$/g) ||
-                    (str + '').match(/^([0-9]{2,4})-([0-9]{2})-([0-9]{2,4})(-| )([a-zA-Z]{3})([a-zA-Z]{0,6})([-0-9, :/_|()]*)$/g));
+                (str + '').match(/^([0-9]{2,4})-([0-9]{2})-([0-9]{2,4})(-| )([a-zA-Z]{3})([a-zA-Z]{0,6})([-0-9, :/_|()]*)$/g));
         };
 
         let _isISOFormat = function (str) {
@@ -684,11 +684,12 @@ class LogtimelineDatalet extends BaseDatalet {
 
                 if(!validURL(links[i])) {
                     if(links[i] !== '' && links[i] !== null && links[i] !== undefined) {
-                        let _window = window;
+                        /*let _window = window;
                         if(_window.location.href === 'about:srcdoc')
                             _window = _window.parent;
 
-                        let errorPageAbsolutePath = (_window.location.href + '').match(/[\w:/=.?_"' -]+COMPONENTS/g)[0] + '/datalets/logtimeline-datalet/error/errorPage-link.html';
+                        let errorPageAbsolutePath = (_window.location.href + '').match(/[\w:/=.?_"' -]+COMPONENTS/g)[0] + '/datalets/logtimeline-datalet/error/errorPage-link.html';*/
+                        let errorPageAbsolutePath = "https://deep.routetopa.eu/deep2t/COMPONENTS/datalets/logtimeline-datalet/error/errorPage-link.html";
                         links[i] = errorPageAbsolutePath + '?' + that.getAttribute("lang-timeline");
                     }
                 }else{
@@ -869,7 +870,7 @@ class LogtimelineDatalet extends BaseDatalet {
                         let fullscreen = that.shadow_root.querySelector("#fullscreen-iframe");
                         if(fullscreen != null)
                             fullscreen.remove();
-                            that.hasPreview = false;
+                        that.hasPreview = false;
 
                         that.shadow_root.querySelector('#fullscreen-placeholder').style.display = 'block';
                         let fullScreenContainer = that.shadow_root.querySelector('#fullscreen-container');
@@ -884,10 +885,10 @@ class LogtimelineDatalet extends BaseDatalet {
                         that.shadow_root.querySelector('#fullscreen-close').onclick = function () {
                             if(divPageContainer != null)
                                 fullScreenContainer.removeAttribute("style");
-                                fullScreenContainer.setAttribute("class", "container");
-                                fullscreen_close.removeAttribute("class");
-                                fullscreen_close.setAttribute("class", "close");
-                                divPageContainer.remove();
+                            fullScreenContainer.setAttribute("class", "container");
+                            fullscreen_close.removeAttribute("class");
+                            fullscreen_close.setAttribute("class", "close");
+                            divPageContainer.remove();
                         }
                     }
                 } i++;
