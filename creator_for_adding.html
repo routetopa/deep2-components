@@ -1,35 +1,33 @@
 <html>
 
 <head>
-  <meta charSet="utf-8">
+  <meta charset="utf-8">
 
   <link href="../COMPONENTS/datalets/base-datalet/static/css/all.min.css" rel="stylesheet">
   <link href="../COMPONENTS/datalets/base-datalet/static/css/baloon.min.css" rel="stylesheet">
 
-  <link rel='shortcut icon' type='image/x-icon'
-        href='../COMPONENTS/datalets/base-datalet/static/images/rtpalogo.png'/>
+  <link rel='shortcut icon' type='image/x-icon' href='../COMPONENTS/datalets/base-datalet/static/images/rtpalogo.png' />
 
   <script src="../COMPONENTS/datalets/lib/vendors/webcomponents_polyfill_ff/webcomponents-hi-sd-ce.js"></script>
   <script type="text/javascript" src="../COMPONENTS/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
   <script type="text/javascript" src="../DEEPCLIENT/js/jquery-2.1.0.min.js"></script>
-  <link rel="import"
-        href="../COMPONENTS/controllets/co-datalets-creator-controllet/co-datalets-creator-controllet.html">
+  <link rel="import" href="../COMPONENTS/controllets/data-sevc-controllet/demo-data-sevc-controllet.html">
 
   <script type="text/javascript" src="creator/datasets.js"></script>
+  <script type="text/javascript" src="creator/create_cache.js"></script>
   <script type="text/javascript" src="creator/creator.js"></script>
-  <script type="text/javascript" src="creator/creator_from.js"></script>
   <link href="creator/creator.css" rel="stylesheet">
 
   <script>
 
     $(function () {
       let ln = CREATOR.ln();
-      CREATOR_FROM.injectHTML(ln);
-      CREATOR_FROM.init();
-      CREATOR_FROM.setListeners();
+      CREATOR.injectHTML(ln);
+      CREATOR.init();
+      CREATOR.setListeners();
     });
 
-    $(document).ready(function () {
+    $( document ).ready(function() {
       setTimeout(() => {
         CREATOR.translate();
       }, 1000);
