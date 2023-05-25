@@ -34,12 +34,14 @@
     });
 
     window.addEventListener("data-sevc-controllet.dataletCreated", function(e){
-      console.log(e);
       window.top.postMessage(
-              e.details.data,
+              {
+                type: 'add-datalet',
+                data : e.details.data,
+              },
               '*'
       );
-    }, false);
+    });
 
 
   </script>
