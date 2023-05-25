@@ -7,6 +7,22 @@
   <script src="./datalets/lib/vendors/webcomponents_polyfill_ff/webcomponents-hi-sd-ce.js"></script>
   <script type="text/javascript" src="./bower_components/webcomponentsjs/webcomponents-lite.js"></script>
   <script type="text/javascript" src="../DEEPCLIENT/js/jquery-2.1.0.min.js"></script>
+  <script>
+
+    $(function () {
+      let ln = CREATOR.ln();
+      CREATOR.injectHTML(ln);
+      CREATOR.init();
+      CREATOR.setListeners();
+    });
+
+    $( document ).ready(function() {
+      setTimeout(() => {
+        CREATOR.translate();
+      }, 1000);
+    });
+
+  </script>
 </head>
 
 <body>
