@@ -202,6 +202,7 @@ ln["leafletjs_en"] = "Map";
 ln["leafletjs-geojson_en"] = "Geojson Map";
 ln["audioslider_en"] = "Audio Slider";
 ln["italymap_en"] = "Italy Map";
+ln["europemap_en"] = "European Map"
 
 ln["datatableDescription_en"] = "A table is a means of arranging data in rows and columns.";
 ln["barchartDescription_en"] = "A bar chart is a chart that presents grouped data with rectangular bars plotted horizontally with lengths proportional to the values that they represent.";
@@ -942,6 +943,7 @@ ln["leafletjs_fr"] = "Carte";
 ln["leafletjs-geojson_fr"] = "Carte Geojson";
 ln["audioslider_fr"] = "Audio Slider";
 ln["italymap_fr"] = "Italy Map";
+ln["europemap_fr"] = "European Map"
 
 ln["datatableDescription_fr"] = "Un tableau est un moyen d'organiser les données dans des rangées et des colonnes.";
 ln["barchartDescription_fr"] = "Un diagramme 00e0 barres est un graphique qui représente des données groupées au moyen de barres rectangulaires disposées horizontallement avec des longueurs proportionnelles aux valeurs qu'elles représentent.";
@@ -1315,6 +1317,7 @@ ln["leafletjs_nl"] = "Map";
 ln["leafletjs-geojson_nl"] = "Geojson Map";
 ln["audioslider_nl"] = "Audio Slider";
 ln["italymap_nl"] = "Italy Map";
+ln["europemap_nl"] = "European Map"
 
 ln["datatableDescription_nl"] = "A table is a means of arranging data in rows and columns.";
 ln["barchartDescription_nl"] = "A bar chart is a chart that presents grouped data with rectangular bars plotted horizontally with lengths proportional to the values that they represent.";
@@ -1682,6 +1685,7 @@ ln["leafletjs_es-ES"] = "Mapa";
 ln["leafletjs-geojson_es-ES"] = "Mapa Geojson";
 ln["audioslider_es-ES"] = "Audio Slider";
 ln["italymap_es-ES"] = "Italy Map";
+ln["europemap_es-ES"] = "European Map"
 
 ln["datatableDescription_es-ES"] = "Una tabla es un medio de organizar datos en filas y columnas.";
 ln["barchartDescription_es-ES"] = "Un gráfico de barras es un gráfico que presenta los datos agrupados con barras rectangulares trazadas horizontalmente con longitudes proporcionales a los valores que representan.";
