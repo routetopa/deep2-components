@@ -70,10 +70,9 @@ class ItalymapDatalet extends BaseDatalet
             else
                 data.series[i] = undefined;
         }
-
+        console.log(data)
         data.series = data.series.filter(function(n){ return n !== undefined });
         const pointsInfo = JSON.parse(JSON.stringify(data.data));
-
         let options = await builder.build('map', this, data);
 
         let suffix = this.getAttribute("suffix");
@@ -92,7 +91,7 @@ class ItalymapDatalet extends BaseDatalet
                 verticalAlign: 'bottom'
             }
         };
-
+    
         if(data.categories != null) {
 
             //todo BUG : with "transparent trick" only last serie tooltips works
