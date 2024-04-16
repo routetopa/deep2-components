@@ -50,10 +50,14 @@ class EuropeMapDatalet extends BaseDatalet
         await this.import_module('./maps/europe.js');
         map = "custom/europe";
 
-        //data.series.push(["Spain",1])
-
         let arrayMap = Highcharts.maps[map].features;
         let obj;
+        for(let i=0; i < data.series.length; i++){
+            if(data.series[i][0].trim() == 'Czechia')
+                data.series[i][0] = 'Czech Republic'
+            if(data.series[i][0].trim() == 'The Netherlands')
+                data.series[i][0] = 'Netherlands'
+        }
         for (let i=0; i < data.series.length; i++) {
             obj =  arrayMap.find(x => x.properties["name"].toLowerCase() === data.series[i][0].trim().toLowerCase());
             if(obj)
@@ -131,6 +135,15 @@ class EuropeMapDatalet extends BaseDatalet
                 min: min,
                 max: max,
                 minColor: "#FFFFFF",
+                stops: [
+                    [0, '#EFEFFF'],
+                    [0.02, Highcharts.getOptions().colors[0]],
+                    [
+                        1,
+                        Highcharts.color(Highcharts.getOptions().colors[0])
+                            .brighten(-0.7).get()
+                    ]
+                ],
                 maxColor: options.colors ? options.colors[0] : Highcharts.getOptions().colors[0]
             };
         }
@@ -139,6 +152,12 @@ class EuropeMapDatalet extends BaseDatalet
             shared: true,
             formatter: function() {
                 let name = this.point ? this.point["name"] : '';
+                for(let i = 0; i<pointsInfo[0].data.length; i++){
+                    if(pointsInfo[0].data[i] == 'Czechia')
+                        pointsInfo[0].data[i] = 'Czech Republic'
+                    if(pointsInfo[0].data[i] == 'The Netherlands')
+                        pointsInfo[0].data[i] = 'Netherlands'
+                }
                 let index = pointsInfo[0].data.findIndex(x => x.trim().toLowerCase() === name.trim().toLowerCase());
 
                 let s = "";
