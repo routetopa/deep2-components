@@ -75,7 +75,7 @@ class HeatpmapDatalet extends BaseDatalet
 
         options.xAxis.categories = Xcategories;
 
-        options.yAxis.categories = Xcategories;
+        options.yAxis.categories = Ycategories;
 
         options.colorAxis = {
             stops: stops,
