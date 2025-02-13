@@ -10,6 +10,7 @@
 <script type="text/javascript" src="../../alasql-utility/alasql-utility.js"></script>
 
 <script type="text/javascript" src="../../bower_components/jsdatachecker/jsdatachecker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 
 <dom-module id="select-data-controllet">
 
@@ -218,78 +219,91 @@
                 this.$.data_table.setData(this.getData());
             },
 
-            init : function() {
-                if(this.dataUrl) {
-
+            init: function() {
+                if (this.dataUrl) {
                     var that = this;
-
-                    if(window.location.protocol.startsWith("https") && !this.dataUrl.startsWith("https"))
+                    
+                    // If we are on HTTPS and the data is not HTTPS, we use the proxy
+                    if (window.location.protocol.startsWith("https") && !this.dataUrl.startsWith("https")) {
                         this.dataUrl = `${this.deepUrl}cors-proxy/proxy.php?csurl=${that.dataUrl}`;
+                    }
 
                     $.ajax({
                         url: this.dataUrl,
-                        dataType: "json",
-                        success: function(data){
+                        dataType: "text", // Accept any kind of data
+                        success: function(data) {
                             that.reset();
+
+                            var jsonData;
+                            try {
+                                jsonData = JSON.parse(data); // Try to parse JSON
+                            } catch (e) {
+                                console.warn("The response is not JSON, trying to parse CSV...");
+                                jsonData = Papa.parse(data, { header: true, skipEmptyLines: true }).data; // Convert CSV to JSON
+                            }
 
                             var f = Object.create(providerFactory);
                             var provider = f.getProvider(that.dataUrl);
-                            data = provider.selectData(data);
+                            jsonData = provider.selectData(jsonData);
 
                             var converter = new DataTypeConverter();
-                            var result = converter.inferJsonDataType(data, ["*"]);
+                            var result = converter.inferJsonDataType(jsonData, ["*"]);
                             result = converter.cast(result);
                             that.fields = utility_getFields(result.types);
-                            data = result.dataset;
-                            that.data = alasql_QUERY(data, that.fields, null, null, null);
+                            jsonData = result.dataset;
+                            that.data = alasql_QUERY(jsonData, that.fields, null, null, null);
 
                             that.$.select_fields.setFields(that.fields);
                             that.$.expert.setFields(that.fields);
-//                            that.$.expert.setSelectedFields(that.selectedFields);
 
-                            that.fire('data-ready', {ready : true, url : that.dataUrl});
+                            that.fire('data-ready', { ready: true, url: that.dataUrl });
                         },
-                        error: function(){
-
-                            if(that.dataUrl.indexOf("cors-proxy") > -1) {
-                                that.fire('data-ready', {ready : false});
+                        error: function() {
+                            if (that.dataUrl.indexOf("cors-proxy") > -1) {
+                                that.fire('data-ready', { ready: false });
                                 return;
                             }
 
+                            // Se fallisce la richiesta, proviamo di nuovo col proxy
                             that.dataUrl = `${that.deepUrl}cors-proxy/proxy.php?csurl=${that.dataUrl}`;
 
                             $.ajax({
                                 url: that.dataUrl,
-                                dataType: "json",
-                                success: function(data){
+                                dataType: "text",
+                                success: function(data) {
                                     that.reset();
+
+                                    var jsonData;
+                                    try {
+                                        jsonData = JSON.parse(data);
+                                    } catch (e) {
+                                        console.warn("The response is not JSON, trying to parse CSV...");
+                                        jsonData = Papa.parse(data, { header: true, skipEmptyLines: true }).data;
+                                    }
 
                                     var f = Object.create(providerFactory);
                                     var provider = f.getProvider(that.dataUrl);
-                                    data = provider.selectData(data);
+                                    jsonData = provider.selectData(jsonData);
 
                                     var converter = new DataTypeConverter();
-                                    var result = converter.inferJsonDataType(data, ["*"]);
+                                    var result = converter.inferJsonDataType(jsonData, ["*"]);
                                     result = converter.cast(result);
                                     that.fields = utility_getFields(result.types);
-                                    data = result.dataset;
-                                    that.data = alasql_QUERY(data, that.fields, null, null, null);
+                                    jsonData = result.dataset;
+                                    that.data = alasql_QUERY(jsonData, that.fields, null, null, null);
 
                                     that.$.select_fields.setFields(that.fields);
                                     that.$.expert.setFields(that.fields);
 
-                                    that.fire('data-ready', {ready : true, url : that.dataUrl});
+                                    that.fire('data-ready', { ready: true, url: that.dataUrl });
                                 },
-                                error: function(){
-                                    that.fire('data-ready', {ready : false});
+                                error: function() {
+                                    that.fire('data-ready', { ready: false });
                                 }
                             });
-
                         }
                     });
-                }
-
-                else {
+                } else {
                     this.reset();
 
                     var converter = new DataTypeConverter();
@@ -301,7 +315,6 @@
 
                     this.$.select_fields.setFields(this.fields);
                     this.$.expert.setFields(this.fields);
-//                    this.$.expert.setSelectedFields(this.selectedFields);
                 }
             },
 
