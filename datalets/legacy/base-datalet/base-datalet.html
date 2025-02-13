@@ -795,7 +795,7 @@ Example :
                         '\<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"\>\<\/script\>\n' +
                         '<!-- REMOVE THE PREVIOUS SCRIPT TAGS IF YOUR PAGE ALREADY USES JQUERY AND POLYFILL LIBRARIES  -->\n';
 
-                let dataletLink = '<link rel="import" href="http://deep.routetopa.eu/deep_1_25/COMPONENTS/datalets/'+parent.is+'/'+parent.is+'.html" /> \n';
+                let dataletLink = '<link rel="import" href="https://deep.routetopa.eu/deep_1_25/COMPONENTS/datalets/'+parent.is+'/'+parent.is+'.html" /> \n';
 
                 let div = document.createElement('div');
                 div.innerHTML = '<div class="overlay" id="overlay">' +
@@ -839,7 +839,7 @@ Example :
 
                 //xhr.open('POST', 'http://172.16.15.77/DEEalerProvider/DEEP/export/export-datalet-as-img', true);
                 //xhr.open('POST', 'http://stage.routetopa.eu/deep/DEEP/export/export-datalet-as-img', true);
-                xhr.open('POST', 'http://deep.routetopa.eu/deep/DEEP/export/export-datalet-as-img', true);
+                xhr.open('POST', 'https://deep.routetopa.eu/deep/DEEP/export/export-datalet-as-img', true);
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
                 var post = 'svg_data=' + window.encodeURIComponent(svg);
@@ -868,7 +868,7 @@ Example :
                     data: {"post_id" : post_id, "datalet_id" : datalet_id, "is_public_room" : isPublicRoom},
                     dataType: "json",
                     success: function(e){
-                        xhr.open('POST', 'http://deep.routetopa.eu/deep/DEEP/export/export-datalet-as-rtf', true);
+                        xhr.open('POST', 'https://deep.routetopa.eu/deep/DEEP/export/export-datalet-as-rtf', true);
                         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
                         var post = 'svg_data=' + window.encodeURIComponent(svg) + '&datalet=' + parent.is + '&dataset=' + t.$.base_datalet_link.getAttribute("href");
@@ -988,7 +988,7 @@ Example :
                         '<!-- REMOVE THE PREVIOUS SCRIPT TAGS IF YOUR PAGE ALREADY USES JQUERY AND POLYFILL LIBRARIES  -->\n';
 
 //                var dataletLink = '<link rel="import" href="http://172.16.15.128/Datalet-Ecosystem-Provider/COMPONENTS/datalets/'+parent.is+'/'+parent.is+'.html" /> \n';
-                var dataletLink = '<link rel="import" href="http://deep.routetopa.eu/deep/COMPONENTS/datalets/'+parent.is+'/'+parent.is+'.html" /> \n';
+                var dataletLink = '<link rel="import" href="https://deep.routetopa.eu/deep/COMPONENTS/datalets/'+parent.is+'/'+parent.is+'.html" /> \n';
 
                 var div = document.createElement('div');
                 div.innerHTML = '<div class="overlay" id="overlay">' +

@@ -239,7 +239,7 @@ class TimelineDatalet extends BaseDatalet {
             let start_date = date[0];
             let end_date = date[1];
             let headline = data[2] ? data[2].data[i] : '';
-
+            
             /*******************/
 
             let text = '', url = '', background = '';
@@ -247,6 +247,9 @@ class TimelineDatalet extends BaseDatalet {
 
             if (text_i > -1) {
                 while (inputs[j] === "EventDescription") {
+                    if (data[j].name.includes('Brief event description')){
+                        data[j].name = data[j].name.replace('Brief event description','')
+                    }
                     text += "<p><b>" + data[j].name + "</b></p>" +
                         "<p>" + data[j].data[i] + "</p>";
                     j++;
@@ -256,7 +259,6 @@ class TimelineDatalet extends BaseDatalet {
             if (url_i > -1) {
                 url = data[j].data[i];
                 j++;
-
             }
             if (background_i > -1) {
                 background = data[j].data[i];
