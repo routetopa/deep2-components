@@ -32,6 +32,12 @@ LN.translate = function(text, ul = LN.userLanguage) {
 };
 
 let base_datalet_ln = [];
+base_datalet_ln['dataset_license_en'] = 'License:';
+base_datalet_ln['dataset_license_it'] = 'Licenza:';
+base_datalet_ln['dataset_license_fr'] = 'Licence :';
+base_datalet_ln['dataset_license_es'] = 'Licencia:';
+base_datalet_ln['dataset_license_nl'] = 'Licentie:';
+base_datalet_ln['dataset_license_cn'] = '许可证：';
 
 /** EN **/
 

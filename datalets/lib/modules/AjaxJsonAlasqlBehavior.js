@@ -17,8 +17,11 @@ export const requestData = function(data_url)
         {
             if (this.readyState === 4 )
             {
-                if(this.status === 200)
-                    res(JSON.parse(this.responseText));
+                if(this.status === 200) {
+                    // Reject non-JSON responses so the datalet can use its cached data.
+                    try { res(JSON.parse(this.responseText)); }
+                    catch (error) { rej(error); }
+                }
                 else
                     rej(this);
             }

@@ -60,7 +60,7 @@ class TimelineDatalet extends BaseDatalet {
             if(typeof ODE !== 'undefined')
                 script.src = ODE.deep_components + 'datalets/timeline-datalet/js/timeline.js';
             else //more
-                script.src = 'http://deep.routetopa.eu/deep2t/COMPONENTS/datalets/timeline-datalet/js/timeline.js'
+                script.src = 'https://deep.routetopa.eu/deep2t/COMPONENTS/datalets/timeline-datalet/js/timeline.js'
             script.id = 'timeline_id';
             document.body.appendChild(script);
 
@@ -239,7 +239,6 @@ class TimelineDatalet extends BaseDatalet {
             let start_date = date[0];
             let end_date = date[1];
             let headline = data[2] ? data[2].data[i] : '';
-            
             /*******************/
 
             let text = '', url = '', background = '';
@@ -251,7 +250,7 @@ class TimelineDatalet extends BaseDatalet {
                         data[j].name = data[j].name.replace('Brief event description','')
                     }
                     text += "<p><b>" + data[j].name + "</b></p>" +
-                        "<p>" + data[j].data[i] + "</p>";
+                            "<p>" + data[j].data[i] + "</p>";
                     j++;
                 }
             }
@@ -263,7 +262,6 @@ class TimelineDatalet extends BaseDatalet {
             if (background_i > -1) {
                 background = data[j].data[i];
             }
-
 
             if (start_date)
                 events.push({
@@ -293,7 +291,6 @@ class TimelineDatalet extends BaseDatalet {
             },
             "events": events
         };
-
         let options = {};
 
         this.loadDynamicScript(()=>{

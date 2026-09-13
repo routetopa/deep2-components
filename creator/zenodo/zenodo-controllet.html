@@ -1,0 +1,54 @@
+<link rel="import" href="../../controllets/data-sevc-controllet/demo-data-sevc-controllet.html">
+<script src="zenodo-api.js"></script>
+
+<dom-module id="zenodo-data-sevc-controllet">
+    <template>
+        <style>
+            .zenodo-panel { box-sizing: border-box; margin: 16px auto; padding: 28px; max-width: 900px; max-height: calc(100vh - 120px); overflow: auto; background: white; border: 1px solid #ddd; border-radius: 6px; font: 16px/1.5 Arial, sans-serif; }
+            h2 { margin-top: 0; color: #1976d2; }
+            form { display: flex; gap: 12px; margin: 8px 0; }
+            input[type=text] { flex: 1; min-width: 0; padding: 12px; border: 1px solid #888; border-radius: 4px; font: inherit; }
+            button { padding: 12px 18px; border: 0; border-radius: 4px; background: #1976d2; color: white; font: inherit; cursor: pointer; }
+            button:disabled { background: #ddd; color: #555; cursor: default; }
+            a { color: #1565c0; }
+            .hint { color: #555; font-size: 14px; }
+            #status { min-height: 24px; }
+            #status[data-error] { color: #b71c1c; }
+            #files { padding: 0; border: 0; margin: 16px 0; }
+            .file { display: flex; align-items: center; gap: 12px; padding: 14px 8px; border-bottom: 1px solid #ddd; cursor: pointer; overflow-wrap: anywhere; }
+            .file input { flex: none; }
+            .file span { flex: 1; }
+            .file small { color: #555; white-space: nowrap; }
+            [hidden] { display: none !important; }
+            @media (max-width: 600px) { .zenodo-panel { padding: 16px; } form { flex-direction: column; } }
+        </style>
+        <page-slider-controllet id="slider" helper="false">
+            <neon-animatable>
+                <section class="zenodo-panel">
+                    <h2>Choose a CSV from Zenodo</h2>
+                    <label for="doi">Zenodo DOI</label>
+                    <form id="lookup" on-submit="_findRecord">
+                        <input id="doi" type="text" required placeholder="10.5281/zenodo.15099149" aria-describedby="doi_hint" on-input="_inputChanged">
+                        <button id="find" type="submit">Find CSV files</button>
+                    </form>
+                    <p class="hint" id="doi_hint">Paste a DOI or a doi.org link. Public CSV files up to 50 MB are supported.</p>
+                    <p id="status" role="status" aria-live="polite"></p>
+                    <div id="record" hidden>
+                        <h3 id="record_title"></h3>
+                        <a id="record_link" target="_blank" rel="noopener noreferrer">View record on Zenodo</a>
+                        <p class="hint" id="record_doi"></p>
+                        <fieldset id="files"><legend>Available CSV files</legend><div id="file_list" on-change="_selectFile"></div></fieldset>
+                        <button id="use_csv" on-click="_useCsv" disabled>Use selected CSV</button>
+                    </div>
+                </section>
+            </neon-animatable>
+            <neon-animatable>
+                <select-data-controllet id="select_data" deep-url="{{deepUrl}}"></select-data-controllet>
+            </neon-animatable>
+            <neon-animatable>
+                <select-visualization-controllet id="select_visualization" deep-url="{{deepUrl}}" components-url="{{componentsUrl}}" datalets-list-url="{{dataletsListUrl}}"></select-visualization-controllet>
+            </neon-animatable>
+        </page-slider-controllet>
+    </template>
+    <script src="zenodo-controllet.js"></script>
+</dom-module>

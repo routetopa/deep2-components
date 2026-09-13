@@ -109,11 +109,6 @@
                      "p1",
                      "REGIONE CAMPANIA",
                      "https://dati.regione.campania.it/ckan"
-                  ),
-                  new Provider(
-                      "p2",
-                      "ROUTE-TO-PA",
-                      "http://ckan.routetopa.eu:8080"
                   )
             );
 

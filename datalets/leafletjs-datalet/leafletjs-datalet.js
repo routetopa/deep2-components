@@ -143,7 +143,10 @@ class LeafletDatalet extends BaseDatalet
         let coordinates_index  = 0;
         let isArray = data[0].data[0] ? data[0].data[0].constructor === Array : false;
         let geo;
-        let markers_cluster = L.markerClusterGroup({ disableClusteringAtZoom: 17 });
+        let markers_cluster = L.markerClusterGroup(
+		{
+			disableClusteringAtZoom: false,
+		});
 
         this.printer = L.easyPrint({
             tileLayer: tiles,

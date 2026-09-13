@@ -222,7 +222,6 @@
             init: function() {
                 if (this.dataUrl) {
                     var that = this;
-                    
                     // If we are on HTTPS and the data is not HTTPS, we use the proxy
                     if (window.location.protocol.startsWith("https") && !this.dataUrl.startsWith("https")) {
                         this.dataUrl = `${this.deepUrl}cors-proxy/proxy.php?csurl=${that.dataUrl}`;

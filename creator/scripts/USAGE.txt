@@ -1,19 +1,14 @@
 To use the script and update the dataset cache
 
-php PATH/ckan_dataset_generator.php > CREATOR_PATH/dataset.js
+php PATH/ckan_dataset_generator.php > CREATOR_PATH/datasets.js
 
-To change the or add new provider simply change / add antry to the $providers var in the php script
+To change or add a provider, edit the $providers variable in the PHP script.
 
  $providers =  array(
                   new Provider(
                      "p1",
                      "REGIONE CAMPANIA",
                      "https://dati.regione.campania.it/ckan"
-                  ),
-                  new Provider(
-                      "p2",
-                      "ROUTE-TO-PA",
-                      "http://ckan.routetopa.eu:8080"
                   )
                   ...
                   new Provider(

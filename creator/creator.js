@@ -17,16 +17,20 @@ CREATOR.ln  = function() {
     return ln;
 };
 
-CREATOR.injectHTML  = function(ln, datasets) {
-    $("body").append(
-        '<demo-data-sevc-controllet'+
-        ' id="controllet"'+
-        ' components-url="../COMPONENTS/"'+
-        ' deep-url="../DEEP/"'+//http://deep.routetopa.eu/deep2t/DEEP/
-        ' datalets-list-url="../DEEP/datalets-list"'+
-        ' localization="'+ ln + '">'+
-        '</demo-data-sevc-controllet>'
-    );
+CREATOR.injectHTML  = function(ln, datasets, controlletTag = 'demo-data-sevc-controllet') {
+    // A static preview server can use a separately hosted DEEP PHP service.
+    let pageUrl = new URL(window.location.href);
+    let deepUrl = new URL(pageUrl.searchParams.get("deep-url") || "../DEEP/", pageUrl).href;
+    if (!deepUrl.endsWith("/"))
+        deepUrl += "/";
+
+    $(document.createElement(controlletTag)).attr({
+        id: "controllet",
+        "components-url": "../COMPONENTS/",
+        "deep-url": deepUrl,
+        "datalets-list-url": deepUrl + "datalets-list",
+        localization: ln
+    }).appendTo("body");
 };
 
 CREATOR.init = async function() {
@@ -35,7 +39,7 @@ CREATOR.init = async function() {
 
     $("#controllet").attr("datasets", JSON.stringify(datasets));
     setTimeout(() => {
-        if($("#options").length && Object.keys(datasets).length < 2)
+        if(!$("#controllet")[0].externalProviders && $("#options").length && Object.keys(datasets).length < 2)
             $("#options")[0].innerHTML = "";
         $("button.outside").prop('disabled', true);
     }, 1000);
@@ -82,8 +86,7 @@ CREATOR.setListeners = function() {
 };
 
 CREATOR.enableButtons  = function(e) {
-    if(e.detail.isReady)
-        $("button.outside").prop('disabled', false);
+    $("button.outside").prop('disabled', !e.detail.isReady);
 };
 
 CREATOR.toggleButtons  = function(e) {

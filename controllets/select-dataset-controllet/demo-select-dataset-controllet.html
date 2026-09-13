@@ -11,6 +11,11 @@
 
 <link rel="import" href="../datasets-list-controllet/datasets-list-controllet.html">
 
+<script src="../../creator/zenodo/zenodo-api.js"></script>
+<script src="../../creator/providers/provider-api.js"></script>
+<script src="../../creator/providers/provider-metadata.js"></script>
+<script src="../../creator/providers/provider-behavior.js"></script>
+
 <dom-module id="demo-select-dataset-controllet">
     <template>
         <style>
@@ -194,17 +199,18 @@
                     {{_getLocalization('provider')}}:
                     <paper-dropdown-menu id="ddl_provider" label="" no-label-float>
                         <paper-menu id="menu_provider" class="dropdown-content">
-                            <paper-item id="0" on-tap="_setProvidersDatasets"><span id="all"></span></paper-item>
                             <template is="dom-repeat" items="{{providers}}">
                                 <paper-item id={{item.id}} on-tap="_setProvidersDatasets">{{item.name}}</paper-item>
+                            </template>
+                            <template is="dom-if" if="{{externalProviders}}">
+                                <paper-item id="zenodo" on-tap="_setProvidersDatasets">Zenodo</paper-item>
+                                <paper-item id="ckan" on-tap="_setProvidersDatasets">CKAN</paper-item>
                             </template>
                         </paper-menu>
                     </paper-dropdown-menu>
                     <paper-icon-button id="info_provider" icon="info-outline" noink></paper-icon-button>
                     <paper-tooltip id="tooltip_provider" for="info_provider" offset="8">
                         <p>
-                            <span class="option">{{_getLocalization('all')}}</span><br>
-                            <span class="description">{{_getLocalization('allDescription')}}</span><br>
                             <span class="option">{{_getLocalization('providerName')}}</span><br>
                             <span class="description">{{_getLocalization('providerNameDescription')}}</span><br>
                         </p>
@@ -232,6 +238,13 @@
 
             </div>
 
+            <div hidden$="{{!externalProvider}}" style="padding: 0 12px; height: 108px; box-sizing: border-box;">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <paper-input style="flex:1" label="{{providerLabel}}" value="{{providerInput}}" on-input="_providerInputChanged" on-keydown="_providerKey"></paper-input>
+                    <paper-icon-button icon="search" title="Find resources" aria-label="Find resources" on-tap="_findProviderFiles"></paper-icon-button>
+                </div>
+                <div role="status" aria-live="polite" style="font-size:14px;">{{providerStatus}}</div>
+            </div>
             <div id="datasets_list_container">
                 <datasets-list-controllet id="datasets_list"></datasets-list-controllet>
             </div>
@@ -245,6 +258,7 @@
         HTMLImports.whenReady(function() {
             Polymer({
                 is: 'demo-select-dataset-controllet',
+                behaviors: [CreatorProviderBehavior],
 
                 properties: {
 
@@ -323,6 +337,10 @@
                     this.$.datasets_list.setDatasets(this.providersDatasets);
                     this.$.datasets_list.setProviders(this.providers);
                     this._showOptions();
+                    this.async(function () {
+                        this.$.menu_provider.select(0);
+                        this._setProvidersDatasets();
+                    }, 0);
                 },
 
                 showDatasetInfo : function() {
@@ -339,7 +357,6 @@
 
                     this.$.options_header.innerHTML = ln["datasets_" + ln["localization"]];
 
-                    this.$.all.innerHTML = ln["all_" + ln["localization"]];
 //                    this.$.list.innerHTML = ln["list_" + ln["localization"]];
 //                    this.$.tree.innerHTML = ln["tree_" + ln["localization"]];
 //                    this.$.standard.innerHTML = ln["standard_" + ln["localization"]];
@@ -361,13 +378,12 @@
                         var ddl_provider = $(this.$.ddl_provider).find("paper-menu")[0].selectedItem;
 //                        var name = ddl_provider.innerHTML.trim();
 //                        var id = this._getIdByProviderName(name);
+                        if (!ddl_provider) return;
                         var id = ddl_provider.id;
-                        if (id == 0) {
-                            this.$.datasets_list.setDatasets(this.allDatasets);
-                        } else {
-                            var providerDatasets = this.datasets[id]['p_datasets'];
-                            this.$.datasets_list.setDatasets(providerDatasets);
-                        }
+                        this._chooseExternalProvider(this.externalProviders && (id === 'zenodo' || id === 'ckan') ? id : '');
+                        if (this.externalProvider) return;
+                        var providerDatasets = this.datasets[id]['p_datasets'];
+                        this.$.datasets_list.setDatasets(providerDatasets);
 
                         this._showOptions();
                     }, 0);
@@ -487,12 +503,14 @@
 //                },
 
                 _selectDataUrl : function(e){
+                    if (this.externalProvider) { this._loadProviderFile(e.detail.dataset.url); return; }
                     this.async(function () {
                         this.dataUrl = e.detail.dataset.url;
                     }, 0);
                 },
 
                 _fireDataUrl : function(){
+                    if (this.externalProvider || !this.dataUrl) return;
                     this.fire('select-dataset-controllet_data-url', {url: this.dataUrl});
                 },
 

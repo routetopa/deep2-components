@@ -14,8 +14,9 @@ export default class BaseDatalet extends HTMLElement {
         let currentDocument = document.querySelector(`script[src*="${this.component}/${this.component}.js"]`).src;
         this.baseUri = currentDocument.substring(0, currentDocument.lastIndexOf("/") + 1);
 
-        currentDocument = currentDocument.split('/');
-        this.deepUri = currentDocument[0] + '//' + currentDocument[2] + '/' + currentDocument[3];
+        // Resolve the installation root from COMPONENTS/datalets/<component>/.
+        // The installation may be at the origin root or under nested directories.
+        this.deepUri = new URL('../../../', this.baseUri).href.replace(/\/$/, '');
 
         this.dynamic_import_support = this.get_dynamic_import();
 
@@ -36,7 +37,7 @@ export default class BaseDatalet extends HTMLElement {
         this.cache = this.getAttribute("data");
 
         const base_instance        = this.create_node(DataletBaseTemplate);
-        const base_datalet_baseUri = this.deepUri + '/COMPONENTS/datalets/base-datalet/';
+        const base_datalet_baseUri = new URL('../base-datalet/', this.baseUri).href;
 
         //GET DERIVED CLASS TEMPLATE
         let template = this.template();
@@ -125,6 +126,12 @@ export default class BaseDatalet extends HTMLElement {
     }
 
     async work_cycle() {
+        // Provider imports already contain the complete selected rows. A fresh
+        // DataStore request may otherwise return only the server's default page.
+        if (this.cache && this.getAttribute('use-cache') === 'true') {
+            this.use_cache();
+            return;
+        }
         try{
             if (!this.cache || (typeof ODE === 'undefined' && typeof parent.ODE === 'undefined'))
                 this.use_live_data();
@@ -201,7 +208,27 @@ export default class BaseDatalet extends HTMLElement {
         throw new Error("Render method not implemented");
     }
 
+    add_dataset_license() {
+        const row = this.shadow_root.querySelector('#dataset_license_row');
+        const value = this.shadow_root.querySelector('#dataset_license_value');
+        const license = (this.getAttribute('dataset-license') || '').trim();
+        row.hidden = !license;
+        value.textContent = license;
+        if (!license) return;
+        try {
+            const url = new URL(this.getAttribute('dataset-license-url'));
+            if (!['https:', 'http:'].includes(url.protocol)) return;
+            const link = document.createElement('a');
+            link.href = url.href;
+            link.textContent = license;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            value.replaceChildren(link);
+        } catch (_) { /* A license without a public URL is displayed as text. */ }
+    }
+
     async add_datalet_info() {
+        this.add_dataset_license();
         this.shadow_root.querySelector('#datalet_title').innerHTML = this.datalettitle;
         this.shadow_root.querySelector('#datalet_title').setAttribute("title", this.datalettitle);
         if(this.description) {
@@ -239,7 +266,12 @@ export default class BaseDatalet extends HTMLElement {
                 if (data_url.indexOf("/cocreation/") > -1) {
                     data_link.setAttribute("href", urlSource + "/cocreation/data-room-list");
                 }
-                // ?
+                // Zenodo file APIs belong to the record's public landing page.
+                else if (new URL(data_url).hostname === "zenodo.org" && /\/records\/\d+/.test(data_url)) {
+                    const recordPath = new URL(data_url).pathname.match(/\/records\/\d+/)[0];
+                    data_link.setAttribute("href", "https://zenodo.org" + recordPath);
+                }
+                // OpenDataSoft
                 else if (data_url.indexOf("/records/") > -1) {
                     let i;
                     if (data_url.indexOf("&") > -1)
@@ -880,6 +912,8 @@ export default class BaseDatalet extends HTMLElement {
         let preview_download = this.shadow_root.querySelector("#label_download");
         preview_download.innerHTML = LN.translate("download");
 
+
+        this.shadow_root.querySelector('#dataset_license_label').textContent = LN.translate('dataset_license');
 
         let data_source_span = this.shadow_root.querySelector("#data_source_span");
         data_source_span.innerHTML = LN.translate("data_source");

@@ -28,7 +28,8 @@ a:hover {
 #base_datalet_container {
     display: var(--base-datalet-visibility, block);
     position: relative;
-    height: 72px;
+    min-height: 72px;
+    height: auto;
     background-color: #fafafa;
     font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-weight: normal;
@@ -399,3 +400,11 @@ a:hover {
 .routetopa a:hover {
     color: #00ACC1;
 }
+/* Licenses can have long names; keep them readable below the source links. */
+#dataset_license_row {
+    padding: 4px 100px 4px 4px;
+    font-size: 14px;
+    line-height: 20px;
+    overflow-wrap: anywhere;
+}
+#dataset_license_row[hidden] { display: none; }

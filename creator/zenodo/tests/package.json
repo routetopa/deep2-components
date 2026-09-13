@@ -1,0 +1,5 @@
+{
+  "private": true,
+  "scripts": {"test": "node run.cjs"},
+  "devDependencies": {"papaparse": "5.3.2"}
+}

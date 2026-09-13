@@ -41,6 +41,10 @@ export const DataletBaseTemplate = `
             </div>
         </div>
 
+        <div id="dataset_license_row" hidden>
+            <strong id="dataset_license_label"></strong> <span id="dataset_license_value"></span>
+        </div>
+
         <div id="routetopa" class="routetopa">
             <a href="http://www.routetopa.eu/" target="_blank">ROUTE-TO-PA</a>
             <!--<a href="http://www.routetopa.eu/" target="_blank"><img id="rtpalogo" src="./static/images/rtpalogo.png">-->

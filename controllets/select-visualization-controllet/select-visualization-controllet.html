@@ -299,6 +299,12 @@
                 }
 
                 this.params = {'data-url' : this.dataUrl};/*???*/
+                if (this.preferCachedData) this.params['use-cache'] = 'true';
+                if (this.datasetMetadata && this.datasetMetadata.license) {
+                    this.params['dataset-license'] = this.datasetMetadata.license;
+                    if (this.datasetMetadata.licenseUrl)
+                        this.params['dataset-license-url'] = this.datasetMetadata.licenseUrl;
+                }
 
                 this.params["selectedfields"] = JSON.stringify(this.$.inputs.getSelectedInputs());
                 this.params["filters"] = JSON.stringify(this.filters);
